@@ -1,16 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- JavaFX FXML belgesi -->
+<!-- Ana kaplama düzeni olarak VBox kullanılıyor -->
+
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.ibb_ecodation_javafx.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+<!--
+ JavaFX’te VBox, bir layout (yerleşim) yöneticisidir. Yani sahnedeki bileşenlerin (button, label, textfield vb.)
+ nasıl konumlandırılacağını belirleyen bir konteynerdir.
+ VBox özel olarak bileşenleri dikey (vertical) olarak yerleştirir.
+ Her yeni bileşen, bir öncekinin altına gelecek şekilde sıralanır.
+ -->
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" prefHeight="444.0" prefWidth="290.0" spacing="10" style="-fx-padding: 0; -fx-background-radius: 20px; -fx-background-color: #f4f2f4;" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.UserController">
+   <HBox alignment="CENTER" prefHeight="45.0" prefWidth="226.0" spacing="10.0" style="-fx-padding: 15;">
+      <children>
+         <Label prefHeight="21.0" prefWidth="251.0" text="IBB - ATM Projesi">
+            <font>
+               <Font name="System Bold" size="15.0" />
+            </font>
+         </Label>
+         <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#login" prefHeight="33.0" prefWidth="33.0" style="-fx-background-color: #2fa8ac; -fx-background-radius: 9999px; -fx-text-fill: white;" text="X" textFill="#ff0101">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Button>
+      </children>
+      <padding>
+         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      </padding>
+   </HBox>
+   <VBox alignment="CENTER" prefHeight="400.0" prefWidth="290.0" spacing="10.0" style="-fx-padding: 20;">
+      <children>
+         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@assets/Garanti_BBVA.png" />
+            </image>
+         </ImageView>
+      
+          <!-- Uygulama başlığını göstermek için bir etiket -->
+          <Label style="-fx-font-size: 18px;" text="Kullanıcı Girişi" />
+      
+          <!-- Kullanıcı adını girmek için bir TextField -->
+          <TextField fx:id="usernameField" maxHeight="1.7976931348623157E308" prefHeight="44.0" promptText="Kullanıcı Adı" style="-fx-background-radius: 10px;" />
+      
+          <!-- Şifreyi girmek için bir PasswordField -->
+          <PasswordField fx:id="passwordField" maxHeight="1.7976931348623157E308" prefHeight="44.0" promptText="Şifre" style="-fx-background-radius: 10px;" />
+      
+          <!-- Giriş yapma işlemini tetiklemek için bir buton -->
+          <!--
+          inline css
+          style="-fx-background-color: #2F2F2F; -fx-text-fill: white;"
+          -->
+          <Button maxHeight="1.7976931348623157E308" onAction="#login" prefHeight="44.0" prefWidth="250.0" style="-fx-background-color: #089040; -fx-background-radius: 10px; -fx-text-fill: white;" text="Giriş Yap">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Button>
+         <Button maxHeight="1.7976931348623157E308" onAction="#switchToRegister" prefHeight="44.0" prefWidth="250.0" style="-fx-background-color: #2fa8ac; -fx-background-radius: 10px; -fx-text-fill: white;" text="Hesap Oluştur">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Button>
+      </children>
+   </VBox>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </VBox>
