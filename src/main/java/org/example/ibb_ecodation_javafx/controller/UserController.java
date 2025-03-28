@@ -17,7 +17,9 @@ import lombok.NoArgsConstructor;
 import org.example.ibb_ecodation_javafx.common.interfaces.IDatabaseConnection;
 import org.example.ibb_ecodation_javafx.common.util.AlertUtil;
 import org.example.ibb_ecodation_javafx.common.util.GuiAnimationUtil;
+import org.example.ibb_ecodation_javafx.common.util.SceneUtil;
 import org.example.ibb_ecodation_javafx.constant.AlertConstant;
+import org.example.ibb_ecodation_javafx.constant.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.dao.UserDao;
 import org.example.ibb_ecodation_javafx.database.SingletonDBConnection;
 import org.example.ibb_ecodation_javafx.dto.UserDto;
@@ -70,7 +72,7 @@ public class UserController {
 
     private void switchToDashboard() {
         try {
-
+            SceneUtil.loadScene(UserController.class,(Stage) usernameField.getScene().getWindow());
         } catch (Exception e) {
             System.out.println("Failed to load the Dashboard scene.");
             e.printStackTrace();
@@ -84,7 +86,7 @@ public class UserController {
     private void switchToRegister(ActionEvent actionEvent) {
         try {
             // FXML Dosyalarını Yükle (Kayıt ekranının FXML dosyasını yüklüyoruz)
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/ibb_ecodation_javafx/register.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ViewPathConstant.REGISTER));
             Parent parent = fxmlLoader.load();
 
             // Var olan sahneyi alıp ve değiştirmek

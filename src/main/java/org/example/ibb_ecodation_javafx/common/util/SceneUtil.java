@@ -7,15 +7,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.experimental.UtilityClass;
 
+import java.io.IOException;
+
 @UtilityClass
 public class SceneUtil {
-    public void loadScene(Class<?> currentClass){
+    public void loadScene(Class<?> currentClass, Stage stage) throws IOException {
         // Load the FXML for the user dashboard screen
         FXMLLoader fxmlLoader = new FXMLLoader(currentClass.getResource("/org/example/ibb_ecodation_javafx/user-view.fxml"));
         Parent parent = fxmlLoader.load();  // This returns the root node of the FXML file
 
         // Get the current stage and change the scene
-        Stage stage = (Stage) usernameField.getScene().getWindow();
 
         Scene scene = new Scene(parent);
         scene.setFill(Color.TRANSPARENT); // Optional: makes the background transparent

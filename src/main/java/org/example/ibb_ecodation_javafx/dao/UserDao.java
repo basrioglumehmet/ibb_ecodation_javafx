@@ -9,6 +9,7 @@ import org.example.ibb_ecodation_javafx.dto.UserDto;
 import org.example.ibb_ecodation_javafx.exceptions.RegisterNotFoundException;
 import org.example.ibb_ecodation_javafx.mapper.UserMapper;
 import org.example.ibb_ecodation_javafx.model.User;
+import org.example.ibb_ecodation_javafx.security.BcryptEncoder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -55,10 +56,10 @@ public class UserDao implements Dao<User, UserDto> {
 
     @Override
     public void read(User user) throws SQLException {
-        String sql = "SELECT * FROM users WHERE username=? AND password=?";
+        String sql = "SELECT * FROM users WHERE username=? LIMIT 1";
         QueryUtil.setConnection(connection);
-        var result = selectSingle(sql, User.class, user.getUsername(), user.getPassword());
-        if(result.isPresent()){
+        var result = selectSingle(sql, User.class, user.getUsername());
+        if(result.isPresent() && BcryptEncoder.verifyPassword(user.getPassword(),result.get().getPassword())){
             AlertUtil.showAlert(Alert.AlertType.INFORMATION, AlertConstant.INFORMATION_HEADER,"Giriş Başarılı, OK tuşuna basarak ilerleyin.");
             System.out.println(result.get().toString());
             connection.close();

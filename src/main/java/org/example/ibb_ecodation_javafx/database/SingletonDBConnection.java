@@ -2,6 +2,7 @@ package org.example.ibb_ecodation_javafx.database;
 
 import lombok.Getter;
 import org.example.ibb_ecodation_javafx.common.interfaces.IDatabaseConnection;
+import org.h2.tools.Server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,6 +20,7 @@ public class SingletonDBConnection implements IDatabaseConnection {
 
     private SingletonDBConnection() {
         openConnection();
+        H2DbStarting();
     }
 
     private void openConnection() {
@@ -51,6 +53,15 @@ public class SingletonDBConnection implements IDatabaseConnection {
             } catch (SQLException e) {
                 throw new RuntimeException("Error closing connection!", e);
             }
+        }
+    }
+
+    private void H2DbStarting() {
+        try {
+            Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082").start();
+            System.out.println("H2 Web Console is running at: http://localhost:8082");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
