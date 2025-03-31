@@ -1,17 +1,21 @@
 package org.example.ibb_ecodation_javafx;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.example.ibb_ecodation_javafx.common.components.NotificationDialog;
 import org.example.ibb_ecodation_javafx.common.util.GuiAnimationUtil;
 import org.example.ibb_ecodation_javafx.constant.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.database.SingletonDBConnection;
 import org.example.ibb_ecodation_javafx.security.BcryptEncoder;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -21,30 +25,76 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class HelloApplication extends Application {
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @Override
     public void start(Stage stage) throws IOException {
-        // Set up the UI
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(ViewPathConstant.LOGIN));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(ViewPathConstant.ADMIN));
         Parent parent = fxmlLoader.load();
+        // Apply rounded corners
+
+        // Window dragging functionality
+        parent.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        parent.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
+
+        // Kullanıcı sürüklemeyi bıraktığında ekran boyutlarını al ve güncelle
+        parent.setOnMouseReleased(event -> {
+            updateSize(stage, (Region) parent);
+        });
+
         Scene scene = new Scene(parent);
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Login");
         stage.setScene(scene);
 
-        // Initialize the database
-        initializeDatabase();
-
+        // Window resize and repositioning listener
+        ChangeListener<Number> stageSizeListener = (obs, oldValue, newValue) -> updateSize(stage, (Region) parent);
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
+        stage.xProperty().addListener(stageSizeListener);
+        stage.yProperty().addListener(stageSizeListener);
+        NotificationDialog dialog = new NotificationDialog("Header", "Content");
+        //dialog.openDialog();
         GuiAnimationUtil.runAnimation(parent);
         stage.show();
     }
 
-    /// //////////////////////////////////////////////////////////////////////////
-    /// DATABASE
+    private void updateSize(Stage stage, Region root) {
+        if (Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight()).isEmpty()) {
+            return;
+        }
+
+        Rectangle2D screenBounds = Screen.getScreensForRectangle(
+                stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight()).get(0).getBounds();
+
+        double screenWidth = screenBounds.getWidth();
+        double screenHeight = screenBounds.getHeight();
+
+        double newWidth = screenWidth * 0.75;
+        double newHeight = screenHeight * 0.88;
+
+        stage.setWidth(newWidth);
+        stage.setHeight(newHeight);
+
+//        stage.setX(screenBounds.getMinX() + (screenWidth - newWidth) / 2);
+//        stage.setY(screenBounds.getMinY() + (screenHeight - newHeight) / 2);
+
+        root.setPrefWidth(newWidth);
+        root.setPrefHeight(newHeight);
+    }
+
     private void initializeDatabase() {
-        try {
-            Connection conn = SingletonDBConnection.getInstance().getConnection();
-            Statement stmt = conn.createStatement();
+        try (Connection conn = SingletonDBConnection.getInstance().getConnection();
+             Statement stmt = conn.createStatement()) {
 
             String createTableSQL = """
                 CREATE TABLE IF NOT EXISTS users (
@@ -54,47 +104,51 @@ public class HelloApplication extends Application {
                     email VARCHAR(100) NOT NULL UNIQUE,
                     role VARCHAR(100) DEFAULT 'USER'
                 );
-            CREATE TABLE IF NOT EXISTS vats (
-             id INT AUTO_INCREMENT PRIMARY KEY,
-             amount DOUBLE NOT NULL,
-             vatRate DOUBLE NOT NULL,
-             vatAmount DOUBLE NOT NULL,
-             totalAmount DOUBLE NOT NULL,
-             receiptNumber VARCHAR(100) NOT NULL,
-             transactionDate DATE NOT NULL,
-             description VARCHAR(255),
-             exportFormat VARCHAR(50)
-         );""";
+                
+                CREATE TABLE IF NOT EXISTS vats (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    amount DOUBLE NOT NULL,
+                    vatRate DOUBLE NOT NULL,
+                    vatAmount DOUBLE NOT NULL,
+                    totalAmount DOUBLE NOT NULL,
+                    receiptNumber VARCHAR(100) NOT NULL,
+                    transactionDate DATE NOT NULL,
+                    description VARCHAR(255),
+                    exportFormat VARCHAR(50)
+                );
+            """;
             stmt.execute(createTableSQL);
 
-            // Kullanıcı ekleme
-            String insertSQL = """
-            MERGE INTO users (username, password, email, role)
-            KEY(username) VALUES (?, ?, ?, ?);
-        """;
-            try (PreparedStatement ps = conn.prepareStatement(insertSQL)) {
-                // 1. kullanıcı
-                ps.setString(1, "test");
-                ps.setString(2, BcryptEncoder.hashPassword("test"));
-                ps.setString(3, "test@gmail.com");
-                ps.setString(4, "USER");
-                ps.executeUpdate();
-
-                // 2. kullanıcı
-                ps.setString(1, "admin");
-                //ps.setString(2, BCrypt.hashpw("root", BCrypt.gensalt()));
-                ps.setString(2, BcryptEncoder.hashPassword("0000"));
-                ps.setString(3, "root@gmail.com");
-                ps.setString(4, "ADMIN");
-                ps.executeUpdate();
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
-
-            System.out.println("✅ BCrypt ile şifrelenmiş ve roller atanmış kullanıcılar başarıyla eklendi.");
+            insertDefaultUsers(conn);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("Database error: " + e.getMessage());
+        }
+    }
+
+    private void insertDefaultUsers(Connection conn) {
+        String insertSQL = """
+            MERGE INTO users (username, password, email, role) 
+            KEY(username) VALUES (?, ?, ?, ?);
+        """;
+        try (PreparedStatement ps = conn.prepareStatement(insertSQL)) {
+
+            ps.setString(1, "test");
+            ps.setString(2, BcryptEncoder.hashPassword("test"));
+            ps.setString(3, "test@gmail.com");
+            ps.setString(4, "USER");
+            ps.executeUpdate();
+
+            ps.setString(1, "admin");
+            ps.setString(2, BcryptEncoder.hashPassword("0000"));
+            ps.setString(3, "root@gmail.com");
+            ps.setString(4, "ADMIN");
+            ps.executeUpdate();
+
+            System.out.println("✅ Default users inserted successfully.");
+
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            System.err.println("Error inserting default users: " + e.getMessage());
         }
     }
 

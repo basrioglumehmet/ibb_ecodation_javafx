@@ -1,6 +1,7 @@
 package org.example.ibb_ecodation_javafx.model;
 
 import lombok.*;
+import org.example.ibb_ecodation_javafx.enums.Role;
 
 // Lombok
 @Getter
@@ -14,4 +15,5 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private Role role;
 }

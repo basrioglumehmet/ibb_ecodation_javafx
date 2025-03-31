@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.ibb_ecodation_javafx.common.component.controller.AvatarController">
+    <Circle fx:id="avatarCircle"  radius="99999" fill="lightgray" stroke="black" strokeWidth="2" />
+</StackPane>

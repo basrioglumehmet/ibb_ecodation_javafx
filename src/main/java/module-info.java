@@ -15,6 +15,7 @@ module org.example.ibb_ecodation_javafx {
     requires  org.mapstruct;
 
     // Açılması gereken paketler:
+
     opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok,org.mapstruct;
     opens org.example.ibb_ecodation_javafx.mapper to org.mapstruct, lombok;  // Mapper için açılmalı
     opens org.example.ibb_ecodation_javafx.controller to javafx.fxml, lombok,org.mapstruct;
@@ -25,6 +26,7 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.security to java.sql, lombok,org.mapstruct;
     opens org.example.ibb_ecodation_javafx.common to java.sql, lombok,org.mapstruct;
     opens org.example.ibb_ecodation_javafx.constant to java.sql, lombok,org.mapstruct;
+    // Mapper için açılmalı
     // Java Compiler modülünü ekleyin
     requires java.compiler;
     requires jbcrypt;
@@ -39,5 +41,6 @@ module org.example.ibb_ecodation_javafx {
     exports org.example.ibb_ecodation_javafx.enums;
     exports org.example.ibb_ecodation_javafx.database;
     exports org.example.ibb_ecodation_javafx.common;
+    exports org.example.ibb_ecodation_javafx.common.components;
     exports org.example.ibb_ecodation_javafx.constant;
 }

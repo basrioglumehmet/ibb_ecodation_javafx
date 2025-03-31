@@ -14,6 +14,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.ibb_ecodation_javafx.common.components.Avatar;
 import org.example.ibb_ecodation_javafx.common.interfaces.IDatabaseConnection;
 import org.example.ibb_ecodation_javafx.common.util.AlertUtil;
 import org.example.ibb_ecodation_javafx.common.util.GuiAnimationUtil;
@@ -58,7 +59,7 @@ public class UserController {
         username = usernameField.getText();
         password = passwordField.getText();
         try{
-            userDao.read(
+            userDao.login(
                     User.builder()
                             .username(username)
                             .password(password)
@@ -72,7 +73,7 @@ public class UserController {
 
     private void switchToDashboard() {
         try {
-            SceneUtil.loadScene(UserController.class,(Stage) usernameField.getScene().getWindow());
+            SceneUtil.loadScene(UserController.class,(Stage) usernameField.getScene().getWindow(), ViewPathConstant.USER_HOME,"Home");
         } catch (Exception e) {
             System.out.println("Failed to load the Dashboard scene.");
             e.printStackTrace();
@@ -85,25 +86,7 @@ public class UserController {
     @FXML
     private void switchToRegister(ActionEvent actionEvent) {
         try {
-            // FXML Dosyalarını Yükle (Kayıt ekranının FXML dosyasını yüklüyoruz)
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ViewPathConstant.REGISTER));
-            Parent parent = fxmlLoader.load();
-
-            // Var olan sahneyi alıp ve değiştirmek
-            Stage stage = (Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
-
-            var scene = new Scene(parent);
-            scene.setFill(Color.TRANSPARENT);
-            stage.setScene(scene);
-
-            // Pencere başlığını 'Kayıt Ol' olarak ayarlıyalım
-            stage.setTitle("Kayıt Ol");
-
-
-            GuiAnimationUtil.runAnimation(parent);
-
-            // Sahneyi göster
-            stage.show();
+            SceneUtil.loadScene(UserController.class,(Stage) usernameField.getScene().getWindow(), ViewPathConstant.REGISTER,"Register");
         } catch (Exception e) {
             System.out.println("Register Sayfasında yönlendirilmedi");
             e.printStackTrace();

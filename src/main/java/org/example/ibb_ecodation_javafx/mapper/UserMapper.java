@@ -9,8 +9,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface UserMapper extends ToEntityMapper<User, UserDto>, ToDtoMapper<User, UserDto> {
+public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+    User toEntity(UserDto dto);
+    UserDto toDto(User entity);
 
     // Enum'dan String'e dönüşüm
     default String map(Role role) {

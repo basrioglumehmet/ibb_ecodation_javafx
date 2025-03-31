@@ -1,8 +1,8 @@
 package org.example.ibb_ecodation_javafx.enums;
 public enum Role {
-    USER("Kullanıcı"),
-    MODERATOR("Moderatör"),
-    ADMIN("Yönetici");
+    USER("User"),
+    MODERATOR("MODERATOR"),
+    ADMIN("ADMIN");
 
     private final String description;
 
