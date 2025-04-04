@@ -1,7 +1,6 @@
  .menu-button > .arrow-button, .menu-button > .arrow-button > .arrow { -fx-padding: 0; }
  /* Menü öğelerinin temel stilleri */
 .menu-item {
-
     -fx-background-color: transparent;
     -fx-padding: 5px;
        -fx-background-radius: 6px;
@@ -9,7 +8,7 @@
 
 /* Menü öğesi üzerine gelindiğinde arka plan rengini yeşil yap */
 .menu-item:hover {
-    -fx-background-color: #089040;
+    -fx-background-color: #2855ac;
 }
 
 /* Menü öğesi üzerine gelindiğinde, Label metni beyaz olsun */
@@ -49,8 +48,14 @@
           -fx-padding: 5px;
             -fx-border-color:  #ececec;
            -fx-border-width: 3px ;
+
 }
+.menu .context-menu  .label {
+    -fx-font-weight: normal;  /* Set the font weight to normal (regular) */
+}
+
 .menu:hover .label {
+
        -fx-text-fill: white;
 }
 
@@ -58,6 +63,7 @@
        -fx-text-fill: black;
 }
 .menu .label {
+-fx-font-weight: bold;
        -fx-text-fill: black;
 }
 .menu {
@@ -84,7 +90,7 @@
 }
 
 .menu:hover {
-    -fx-background-color: #089040;
+    -fx-background-color: #2855ac;
         -fx-background-radius: 9999px;
 }
 
@@ -117,10 +123,27 @@
 
 }
 
+.hoverable-btn {
+    /* Add your desired hover effect styles */
+    -fx-background-color: transparent;
+    -fx-background-radius: 9999px;
+    -fx-border-color: transparent;
+    -fx-text-fill: #2855ac;
+    -fx-font-weight: bold;  /* Makes the text bold */
+}
+.hoverable-btn:hover {
+    -fx-background-color: #2855ac;  /* Example hover color */
+        -fx-text-fill: #fff;
+}
 
 .table-view .column-header-background {
 -fx-background-radius: 99999;
 -fx-border-color: transparent;
 -fx-border-width: 0 0 0 0;
  -fx-background-color: white;    /* made transparent */
+}
+
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 5 0 5;
+     -fx-background-color: #f4f2f4;    /* made transparent */
 }

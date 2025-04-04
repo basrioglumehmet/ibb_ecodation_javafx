@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+
+<?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
+<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
+<?import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.ibb_ecodation_javafx.controller.AdminDashboardController">
+
+    <!-- Navbar (Sabit Üst Menü) -->
+    <top>
+        <ShadcnNavbar fx:id="navbar" />
+<!--        <VBox style="-fx-background-color: black; -fx-padding: 20; -fx-border-width: 0 0 1; -fx-border-color: #27272a;">-->
+<!--           -->
+<!--        </VBox>-->
+    </top>
+
+    <!-- Sol Sidebar (Sabit Genişlik) -->
+    <left>
+        <VBox fx:id="sidebar" spacing="10">
+
+            <VBox VBox.vgrow="ALWAYS" style="-fx-padding: 15;" spacing="10">
+                <ShadcnButton glyphIconName="HOME" fullWidth="true" onAction="#handleHomeButton" text="Anasayfa" type="GHOST"/>
+                <ShadcnButton glyphIconName="NOTIFICATION" fullWidth="true" onAction="#handleNotificationsButton" text="Bildirimler" type="GHOST"/>
+                <ShadcnButton glyphIconName="USER" fullWidth="true" onAction="#handleProfileButton" text="Profil" type="GHOST"/>
+                <ShadcnButton glyphIconName="NOTE" fullWidth="true" onAction="#handleNotesButton" text="Notlar" type="GHOST"/>
+                <ShadcnButton glyphIconName="CLOUD_UPLOAD" fullWidth="true" onAction="#handleBackupButton" text="Yedekler" type="GHOST"/>
+                <ShadcnButton glyphIconName="COG" fullWidth="true" onAction="#handleConfigButton" text="Arayüz Ayarları" type="GHOST"/>
+            </VBox>
+
+            <VBox fx:id="sidebarBottom" >
+                <HBox>
+                    <ShadcnAvatar fx:id="shadcnAvatar" />
+                    <VBox style=" -fx-padding: 15;">
+                        <Label text="Mehmet Basrioğlu" style="-fx-text-fill:white;"/>
+                        <Label text="Admin" style="-fx-text-fill:#7f7f86;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- Ana İçerik Alanı (Sağ tarafı dolduran büyüyen alan) -->
+    <center>
+        <StackPane style="-fx-background-color:black;">
+            <fx:include fx:id="contentArea" source="admin-home-view.fxml" />
+        </StackPane>
+    </center>
+
+</BorderPane>

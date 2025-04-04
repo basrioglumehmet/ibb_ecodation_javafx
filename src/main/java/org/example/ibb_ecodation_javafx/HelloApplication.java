@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
@@ -11,30 +12,26 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.example.ibb_ecodation_javafx.common.components.NotificationDialog;
-import org.example.ibb_ecodation_javafx.common.util.GuiAnimationUtil;
-import org.example.ibb_ecodation_javafx.constant.ViewPathConstant;
-import org.example.ibb_ecodation_javafx.database.SingletonDBConnection;
-import org.example.ibb_ecodation_javafx.security.BcryptEncoder;
-
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
+import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotification;
 
 public class HelloApplication extends Application {
     private double xOffset = 0;
     private double yOffset = 0;
+    private final Store store = Store.getInstance();
+
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(ViewPathConstant.ADMIN));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.
+                getResource("/org/example/ibb_ecodation_javafx/views/admin-dashboard-view.fxml"));
         Parent parent = fxmlLoader.load();
-        // Apply rounded corners
 
-        // Window dragging functionality
+
         parent.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
@@ -50,23 +47,61 @@ public class HelloApplication extends Application {
             updateSize(stage, (Region) parent);
         });
 
+
+
         Scene scene = new Scene(parent);
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Login");
         stage.setScene(scene);
 
-        // Window resize and repositioning listener
+
         ChangeListener<Number> stageSizeListener = (obs, oldValue, newValue) -> updateSize(stage, (Region) parent);
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
         stage.xProperty().addListener(stageSizeListener);
         stage.yProperty().addListener(stageSizeListener);
-        NotificationDialog dialog = new NotificationDialog("Header", "Content");
-        //dialog.openDialog();
-        GuiAnimationUtil.runAnimation(parent);
+
         stage.show();
+        centerOnScren(stage,(Region) parent);
+
+        showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
+
+        store.getState().subscribe(stateRegistry -> {
+            // Get the dark mode state
+            boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            String textColor = isDarkMode ? "black" : "white";
+            updateLabelStyles(parent, textColor);
+        });
+        // JSON dosyasını oku
+//       JsonUtils.readJsonFile("statemanager.json");
+//        JsonNode defaultLanguage = objectMapper.createObjectNode().put("languageCode", "tr");
+//        JsonNode darkTheme = objectMapper.createObjectNode().put("isDarkTheme", true);
+//        JsonNode isSystemNotificationEnabled = objectMapper.createObjectNode().put("isSystemNotificationEnabled", true);
+//        JsonUtils.insertDataToJsonFile("/org/example/ibb_ecodation_javafx/jsons/statemanager.json","data", defaultLanguage);
+//        JsonUtils.insertDataToJsonFile("/org/example/ibb_ecodation_javafx/jsons/statemanager.json","data", darkTheme);
+//        JsonUtils.insertDataToJsonFile("/org/example/ibb_ecodation_javafx/jsons/statemanager.json","data", isSystemNotificationEnabled);
     }
+
+
+    private void centerOnScren(Stage stage, Region root) {
+        if (Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight()).isEmpty()) {
+            return;
+        }
+
+        Rectangle2D screenBounds = Screen.getScreensForRectangle(
+                stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight()).get(0).getBounds();
+
+        double screenWidth = screenBounds.getWidth();
+        double screenHeight = screenBounds.getHeight();
+
+        double newWidth = screenWidth * 0.88;
+        double newHeight = screenHeight * 0.88;
+
+      stage.setX(screenBounds.getMinX() + (screenWidth - newWidth) / 2);
+       stage.setY(screenBounds.getMinY() + (screenHeight - newHeight) / 2);
+    }
+
 
     private void updateSize(Stage stage, Region root) {
         if (Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight()).isEmpty()) {
@@ -79,7 +114,7 @@ public class HelloApplication extends Application {
         double screenWidth = screenBounds.getWidth();
         double screenHeight = screenBounds.getHeight();
 
-        double newWidth = screenWidth * 0.75;
+        double newWidth = screenWidth * 0.88;
         double newHeight = screenHeight * 0.88;
 
         stage.setWidth(newWidth);
@@ -92,65 +127,7 @@ public class HelloApplication extends Application {
         root.setPrefHeight(newHeight);
     }
 
-    private void initializeDatabase() {
-        try (Connection conn = SingletonDBConnection.getInstance().getConnection();
-             Statement stmt = conn.createStatement()) {
 
-            String createTableSQL = """
-                CREATE TABLE IF NOT EXISTS users (
-                    id INT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
-                    username VARCHAR(50) NOT NULL UNIQUE,
-                    password VARCHAR(255) NOT NULL,
-                    email VARCHAR(100) NOT NULL UNIQUE,
-                    role VARCHAR(100) DEFAULT 'USER'
-                );
-                
-                CREATE TABLE IF NOT EXISTS vats (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    amount DOUBLE NOT NULL,
-                    vatRate DOUBLE NOT NULL,
-                    vatAmount DOUBLE NOT NULL,
-                    totalAmount DOUBLE NOT NULL,
-                    receiptNumber VARCHAR(100) NOT NULL,
-                    transactionDate DATE NOT NULL,
-                    description VARCHAR(255),
-                    exportFormat VARCHAR(50)
-                );
-            """;
-            stmt.execute(createTableSQL);
-
-            insertDefaultUsers(conn);
-
-        } catch (SQLException e) {
-            System.err.println("Database error: " + e.getMessage());
-        }
-    }
-
-    private void insertDefaultUsers(Connection conn) {
-        String insertSQL = """
-            MERGE INTO users (username, password, email, role) 
-            KEY(username) VALUES (?, ?, ?, ?);
-        """;
-        try (PreparedStatement ps = conn.prepareStatement(insertSQL)) {
-
-            ps.setString(1, "test");
-            ps.setString(2, BcryptEncoder.hashPassword("test"));
-            ps.setString(3, "test@gmail.com");
-            ps.setString(4, "USER");
-            ps.executeUpdate();
-
-            ps.setString(1, "admin");
-            ps.setString(2, BcryptEncoder.hashPassword("0000"));
-            ps.setString(3, "root@gmail.com");
-            ps.setString(4, "ADMIN");
-            ps.executeUpdate();
-
-            System.out.println("✅ Default users inserted successfully.");
-
-        } catch (SQLException | NoSuchAlgorithmException e) {
-            System.err.println("Error inserting default users: " + e.getMessage());
-        }
-    }
 
     public static void main(String[] args) {
         launch();

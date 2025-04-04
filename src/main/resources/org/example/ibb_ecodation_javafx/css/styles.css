@@ -1,0 +1,31 @@
+/* styles.css (CSS Styling) */
+.root {
+    -fx-background-color: #0f0f0f;
+    -fx-padding: 20px;
+}
+.custom-table {
+    -fx-background-color: #181818;
+    -fx-border-color: #303030;
+    -fx-border-radius: 8px;
+    -fx-padding: 10px;
+    -fx-text-fill: white;
+}
+.table-view .column-header-background {
+    -fx-background-color: #202020;
+    -fx-text-fill: white;
+}
+.table-view .table-row-cell {
+    -fx-background-color: #181818;
+    -fx-border-color: #303030;
+    -fx-text-fill: white;
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: #303030;
+}
+.filter-input {
+    -fx-background-color: #202020;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: gray;
+    -fx-border-radius: 8px;
+    -fx-padding: 10px;
+}

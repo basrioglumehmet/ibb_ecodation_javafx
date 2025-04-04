@@ -200,6 +200,7 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
+        <!-- Jackson Databind (for ObjectMapper and JSON processing) -->
 
         <!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx-fontawesome -->
         <dependency>
@@ -207,12 +208,24 @@
             <artifactId>fontawesomefx-fontawesome</artifactId>
             <version>4.7.0-9.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.18.3</version>
+        </dependency>
 
         <!-- Lombok için annotation processor -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>0.2.0</version>
+        </dependency>
+
+<!--        Reactive Java Paketi-->
+        <dependency>
+            <groupId>io.reactivex.rxjava3</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>3.1.5</version> <!-- Use the latest version available -->
         </dependency>
 
 
