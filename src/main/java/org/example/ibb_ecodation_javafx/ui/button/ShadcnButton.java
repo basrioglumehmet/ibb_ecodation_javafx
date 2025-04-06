@@ -21,6 +21,8 @@ import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import javafx.application.Platform;
 
+import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
+
 public class ShadcnButton extends Button {
     public enum ButtonType {
         GHOST,
@@ -112,7 +114,7 @@ public class ShadcnButton extends Button {
     @FXML
     public void setGlyphIconName(String glyphIconName) {
         this.glyphIconName.set(glyphIconName);
-        FontAwesomeIconView iconView = getGlyphIcon(); // Get the updated icon
+        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName); // Get the updated icon
         setGraphic(iconView); // Update the button's icon graphic
     }
 
@@ -121,59 +123,7 @@ public class ShadcnButton extends Button {
         return glyphIconName.get();
     }
 
-    private FontAwesomeIconView getGlyphIcon() {
-        String iconName = glyphIconName.get();
-        FontAwesomeIcon icon = FontAwesomeIcon.USER; // Default icon
 
-        switch (iconName.toUpperCase()) {
-            case "USER":
-                icon = FontAwesomeIcon.USER;
-                break;
-            case "CART":
-                icon = FontAwesomeIcon.SHOPPING_CART;
-                break;
-            case "HOME":
-                icon = FontAwesomeIcon.HOME;
-                break;
-            case "NOTIFICATION":
-                icon = FontAwesomeIcon.BELL;
-                break;
-            case "NOTE":
-                icon = FontAwesomeIcon.STICKY_NOTE;
-                break;
-            case "CLOUD_UPLOAD":
-                icon = FontAwesomeIcon.CLOUD_UPLOAD;
-                break;
-            case "COG":
-                icon = FontAwesomeIcon.COG;
-                break;
-            case "EXIT":
-                icon = FontAwesomeIcon.SIGN_OUT;
-                break;
-            case "MAXIMIZE":
-                icon = FontAwesomeIcon.ARROWS_ALT;
-                break;
-            case "CLOSE":
-                icon = FontAwesomeIcon.CLOSE;
-                break;
-            case "QUESTION":
-                icon = FontAwesomeIcon.QUESTION;
-                break;
-            case "MINIMIZE":
-                icon = FontAwesomeIcon.WINDOW_MINIMIZE;
-                break;
-            case "UPLOAD":
-                icon = FontAwesomeIcon.CLOUD_UPLOAD;
-                break;
-            default:
-                icon = FontAwesomeIcon.USER;
-                break;
-        }
-
-        FontAwesomeIconView iconView = new FontAwesomeIconView(icon);
-        iconView.setSize("16px");
-        return iconView;
-    }
 
     private void initializeStyle(ButtonType type) {
         Disposable stateSubscription = store.getState().subscribe(stateRegistry -> {
@@ -240,7 +190,7 @@ public class ShadcnButton extends Button {
         setFont(Font.font("Arial", 16));
         setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
 
-        FontAwesomeIconView iconView = getGlyphIcon();
+        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
         iconView.setFill(Paint.valueOf(textColor));
 
         String finalHoverTextColor = hoverTextColor;

@@ -1,0 +1,2 @@
+ insert into dbo.profile_pictures values (1,'https://i.pinimg.com/736x/b9/dc/4f/b9dc4f6d9a53f3d3feeaa1ffc61b0607.jpg');
+ insert into dbo.profile_pictures values (2,'https://i.pinimg.com/736x/b9/dc/4f/b9dc4f6d9a53f3d3feeaa1ffc61b0607.jpg');

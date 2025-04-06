@@ -1,5 +1,7 @@
 package org.example.ibb_ecodation_javafx.ui.avatar;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -8,6 +10,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 public class ShadcnAvatar extends Button {
@@ -16,6 +22,7 @@ public class ShadcnAvatar extends Button {
     private Circle paddingCircle;
     private double avatarSize = 24;
     private double padding = 5;
+
 
     public ShadcnAvatar() {
         this(24);
@@ -46,7 +53,17 @@ public class ShadcnAvatar extends Button {
         // Set the stackPane as the button's graphic
         this.setGraphic(stackPane);
     }
-
+    public void setImage(BufferedImage bufferedImage) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage,"png",byteArrayOutputStream);
+            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+            Image image = new Image(new ByteArrayInputStream(imageBytes));
+            avatarCircle.setFill(new ImagePattern(image));
+        } catch (Exception ex) {
+            System.out.println("Geçersiz Resim Adresi: " + ex.getMessage());
+        }
+    }
     public void setImage(URL imagePath) {
         try {
             if (imagePath != null) {

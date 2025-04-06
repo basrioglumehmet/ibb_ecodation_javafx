@@ -1,0 +1,73 @@
+package org.example.ibb_ecodation_javafx.utils;
+
+
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.property.StringProperty;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class FontAwesomeUtil {
+    public static FontAwesomeIconView getGlyphIcon(StringProperty glyphIconName) {
+        String iconName = glyphIconName.get();
+        FontAwesomeIcon icon = FontAwesomeIcon.USER; // Default icon
+
+        switch (iconName.toUpperCase()) {
+            case "USER":
+                icon = FontAwesomeIcon.USER;
+                break;
+            case "SUCCESS":
+                icon = FontAwesomeIcon.CHECK_CIRCLE;
+                break;
+            case "ERROR":
+                icon = FontAwesomeIcon.TIMES_CIRCLE;
+                break;
+            case "INFO":
+                icon = FontAwesomeIcon.INFO_CIRCLE;
+                break;
+            case "CART":
+                icon = FontAwesomeIcon.SHOPPING_CART;
+                break;
+            case "HOME":
+                icon = FontAwesomeIcon.HOME;
+                break;
+            case "NOTIFICATION":
+                icon = FontAwesomeIcon.BELL;
+                break;
+            case "NOTE":
+                icon = FontAwesomeIcon.STICKY_NOTE;
+                break;
+            case "CLOUD_UPLOAD":
+                icon = FontAwesomeIcon.CLOUD_UPLOAD;
+                break;
+            case "COG":
+                icon = FontAwesomeIcon.COG;
+                break;
+            case "EXIT":
+                icon = FontAwesomeIcon.SIGN_OUT;
+                break;
+            case "MAXIMIZE":
+                icon = FontAwesomeIcon.ARROWS_ALT;
+                break;
+            case "CLOSE":
+                icon = FontAwesomeIcon.CLOSE;
+                break;
+            case "QUESTION":
+                icon = FontAwesomeIcon.QUESTION;
+                break;
+            case "MINIMIZE":
+                icon = FontAwesomeIcon.WINDOW_MINIMIZE;
+                break;
+            case "UPLOAD":
+                icon = FontAwesomeIcon.CLOUD_UPLOAD;
+                break;
+            default:
+                icon = FontAwesomeIcon.USER;
+                break;
+        }
+
+        FontAwesomeIconView iconView = new FontAwesomeIconView(icon);
+        iconView.setSize("16px");
+        return iconView;
+    }
+}

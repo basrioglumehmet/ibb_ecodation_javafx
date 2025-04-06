@@ -121,6 +121,7 @@ public class AdminDashboardController {
     // İçeriği dinamik olarak yükleme fonksiyonu
     private void loadContent(String fxmlFile) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+
         StackPane newContent = loader.load();
         contentArea.getChildren().setAll(newContent);
     }

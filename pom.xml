@@ -43,29 +43,34 @@
             <version>2.2.224</version>
         </dependency>
 
-        <!-- JDBC Driver -->
         <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.36.0.3</version>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>10.2.0.jre8</version>
         </dependency>
 
-        <!-- RDBMS MYSQL-->
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <!--
-            <dependency>
-                 <groupId>mysql</groupId>
-                 <artifactId>mysql-connector-java</artifactId>
-                 <version>8.0.28</version>
-             </dependency>
-         -->
-
-        <!-- OTHER SPECIAL LIBRARIES -->
-        <!-- JavaMail API -->
+        <!-- Spring Framework Context for Dependency Injection -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.34</version> <!-- Veya projenle uyumlu en son sürüm -->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.34</version> <!-- Use the appropriate version -->
+        </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.24.3</version>
         </dependency>
 
         <!-- Apache POI: Excel -->

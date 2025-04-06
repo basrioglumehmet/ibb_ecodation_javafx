@@ -4,6 +4,19 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Label?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="Admin Bildirimler" style="-fx-font-size: 24px; " />
+<?import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar?>
+<?import javafx.scene.layout.VBox?>
+<?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+<?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.ibb_ecodation_javafx.controller.NotificationController">
+
+    <VBox spacing="10"  style="-fx-padding: 15;">
+        <Label text="Bildirimler" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        <ListView VBox.vgrow="ALWAYS"  fx:id="notificationList" prefHeight="400.0" prefWidth="300.0" />
+    </VBox>
+
 </StackPane>
+

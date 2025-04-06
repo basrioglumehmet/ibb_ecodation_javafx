@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
@@ -25,8 +24,10 @@ public class HelloApplication extends Application {
     private final Store store = Store.getInstance();
 
 
+
     @Override
     public void start(Stage stage) throws IOException {
+        // Initialize Dagger and create the component
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.
                 getResource("/org/example/ibb_ecodation_javafx/views/admin-dashboard-view.fxml"));
         Parent parent = fxmlLoader.load();
@@ -63,7 +64,7 @@ public class HelloApplication extends Application {
         stage.yProperty().addListener(stageSizeListener);
 
         stage.show();
-        centerOnScren(stage,(Region) parent);
+       centerOnScren(stage,(Region) parent);
 
         showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
 
@@ -73,14 +74,6 @@ public class HelloApplication extends Application {
             String textColor = isDarkMode ? "black" : "white";
             updateLabelStyles(parent, textColor);
         });
-        // JSON dosyasını oku
-//       JsonUtils.readJsonFile("statemanager.json");
-//        JsonNode defaultLanguage = objectMapper.createObjectNode().put("languageCode", "tr");
-//        JsonNode darkTheme = objectMapper.createObjectNode().put("isDarkTheme", true);
-//        JsonNode isSystemNotificationEnabled = objectMapper.createObjectNode().put("isSystemNotificationEnabled", true);
-//        JsonUtils.insertDataToJsonFile("/org/example/ibb_ecodation_javafx/jsons/statemanager.json","data", defaultLanguage);
-//        JsonUtils.insertDataToJsonFile("/org/example/ibb_ecodation_javafx/jsons/statemanager.json","data", darkTheme);
-//        JsonUtils.insertDataToJsonFile("/org/example/ibb_ecodation_javafx/jsons/statemanager.json","data", isSystemNotificationEnabled);
     }
 
 

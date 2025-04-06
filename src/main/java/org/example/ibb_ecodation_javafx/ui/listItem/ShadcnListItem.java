@@ -1,5 +1,7 @@
 package org.example.ibb_ecodation_javafx.ui.listItem;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,40 +9,57 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import io.reactivex.rxjava3.disposables.Disposable;
+import javafx.scene.paint.Paint;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnSwitchButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnComboBox;
+
+import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 
 public class ShadcnListItem extends HBox {
 
     public enum ListItemType {
         NORMAL,
         WITH_SWITCH,
-        WITH_LANGUAGE_OPTION
+        WITH_LANGUAGE_OPTION,
+        WITH_ICON
     }
 
     private final ObjectProperty<ListItemType> type = new SimpleObjectProperty<>(ListItemType.NORMAL);
     private final StringProperty headerText = new SimpleStringProperty("Lütfen Başlık Giriniz");
     private final StringProperty descriptionText = new SimpleStringProperty("Lütfen açıklama Giriniz");
+    private final StringProperty glyphIconName = new SimpleStringProperty("USER");
     private ShadcnSwitchButton switchButton;
     private Disposable switchButtonSubscription;
     private final Store store = Store.getInstance();
     private boolean isLightMode;
     public ShadcnListItem() {
-        this(ListItemType.NORMAL,"Lütfen Başlık Giriniz","Lütfen açıklama Giriniz");
+        this(ListItemType.NORMAL,"Lütfen Başlık Giriniz","Lütfen açıklama Giriniz","USER");
     }
 
-    public ShadcnListItem(ListItemType type, String headerText, String descriptionText) {
+    public ShadcnListItem(ListItemType type, String headerText, String descriptionText,String glyphIconName) {
         this.type.set(type);
         this.headerText.set(headerText);
         this.descriptionText.set(descriptionText);
+        this.glyphIconName.set(glyphIconName);
         initializeStyle(type);
+    }
+
+    public StringProperty glyphIconNameProperty() {
+        return glyphIconName;
+    }
+
+    @FXML
+    public void setGlyphIconName(String glyphIconName) {
+        this.glyphIconName.set(glyphIconName);
+    }
+
+    @FXML
+    public String getGlyphIconName() {
+        return glyphIconName.get();
     }
 
     @FXML
@@ -126,12 +145,37 @@ public class ShadcnListItem extends HBox {
                 this.getChildren().addAll(spacer, rightContainer);
 
                 // Initialize subscription to the switch button's state changes
-                subscribeToSwitchButtonState();
                 break;
 
-            case WITH_LANGUAGE_OPTION:
+            case WITH_ICON:
+                // Create a spacer to push elements to the right
                 Region spacer2 = new Region();
                 HBox.setHgrow(spacer2, Priority.ALWAYS);
+
+                // Get the icon using the glyph name
+                FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
+                iconView.setGlyphSize(40);
+
+                // Set icon color
+                iconView.setFill(Paint.valueOf("white"));
+
+                // Wrap the icon in a StackPane to ensure it's added as a valid child node
+                StackPane iconWrapper = new StackPane(iconView);
+
+                // Create a container for the switchButton
+                HBox rightContainer2 = new HBox(iconWrapper);
+                rightContainer2.setAlignment(Pos.CENTER_RIGHT);
+                rightContainer2.setSpacing(10);
+
+                // Add the elements to the parent node
+                this.getChildren().addAll(spacer2, rightContainer2);
+
+                break;
+
+
+            case WITH_LANGUAGE_OPTION:
+                Region spacer3 = new Region();
+                HBox.setHgrow(spacer3, Priority.ALWAYS);
 
                 ShadcnComboBox languageComboBox = new ShadcnComboBox();
 
@@ -139,7 +183,7 @@ public class ShadcnListItem extends HBox {
                 rightContainerLanguage.setAlignment(Pos.CENTER_RIGHT);
                 rightContainerLanguage.setSpacing(10);
 
-                this.getChildren().addAll(spacer2, rightContainerLanguage);
+                this.getChildren().addAll(spacer3, rightContainerLanguage);
                 break;
         }
     }
@@ -150,17 +194,9 @@ public class ShadcnListItem extends HBox {
         detail.setStyle( String.format("-fx-text-fill: %s;",isLightMode ? "black":"white") +
                 " -fx-font-size: 14px;");
     }
-    // Subscribe to the switch button's state changes
-    private void subscribeToSwitchButtonState() {
-        if (switchButton != null) {
-            switchButtonSubscription = switchButton.watchIsActive().subscribe(value -> {
-                System.out.println("Switch state changed: " + value);
-                // Handle switch state changes, like updating the store or UI
-            });
-        }
-    }
 
-    // Memory leak prevention: Dispose of subscription when not needed
+
+    // Memory leak
     public void dispose() {
         if (switchButtonSubscription != null && !switchButtonSubscription.isDisposed()) {
             switchButtonSubscription.dispose();
