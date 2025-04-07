@@ -2,8 +2,11 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.model.User;
+import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.statemanagement.action.IncrementAction;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.enums.CountryCode;
@@ -13,6 +16,7 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
@@ -46,14 +50,15 @@ public class AdminDashboardController {
             changeNavbarColor(darkModeValue);
             changeContentColor(darkModeValue);
             String textColor = darkModeValue ? "black" : "white";
+            setAvatarImageSource();
         });
-
-        store.dispatch(UserState.class, new UserState("mehmet", true));
-        store.dispatch(DarkModeState.class, new DarkModeState(true));
+//        //User Bilgisi dispatch edilmeli login olduğunda.
+//        store.dispatch(UserState.class, new UserState(new UserDetailDto(), true));
+//        store.dispatch(DarkModeState.class, new DarkModeState(true));
         setAvatarImageSource();
-
-        store.dispatch(TranslatorState.class, new TranslatorState(CountryCode.EN));
-        store.dispatch(DarkModeState.class, new DarkModeState(false));
+//
+//        store.dispatch(TranslatorState.class, new TranslatorState(CountryCode.EN));
+//        store.dispatch(DarkModeState.class, new DarkModeState(false));
     }
 
     private void changeContentColor(boolean lightModeValue) {
@@ -128,7 +133,17 @@ public class AdminDashboardController {
 
     private void setAvatarImageSource() {
         try {
-            shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
+            byte[] imageBytes = store.getCurrentState(UserState.class).getUserDetail().getProfilePicture();
+
+            if(imageBytes != null && imageBytes.length > 0){
+
+                Image image = new Image(new ByteArrayInputStream(imageBytes));
+                shadcnAvatar.setImage(image);
+            }
+            else{
+                shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
+            }
+            //shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

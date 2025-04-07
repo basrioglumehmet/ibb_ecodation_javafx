@@ -53,6 +53,14 @@ public class ShadcnAvatar extends Button {
         // Set the stackPane as the button's graphic
         this.setGraphic(stackPane);
     }
+    public void setImage(Image image) {
+        try {
+            avatarCircle.setFill(new ImagePattern(image));
+        } catch (Exception ex) {
+            System.out.println("Geçersiz Resim Adresi: " + ex.getMessage());
+        }
+    }
+
     public void setImage(BufferedImage bufferedImage) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

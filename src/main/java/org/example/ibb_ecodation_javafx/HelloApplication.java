@@ -29,7 +29,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         // Initialize Dagger and create the component
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.
-                getResource("/org/example/ibb_ecodation_javafx/views/admin-dashboard-view.fxml"));
+                getResource("/org/example/ibb_ecodation_javafx/views/login-view.fxml"));
         Parent parent = fxmlLoader.load();
 
 
@@ -68,12 +68,12 @@ public class HelloApplication extends Application {
 
         showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
 
-        store.getState().subscribe(stateRegistry -> {
-            // Get the dark mode state
-            boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
-            String textColor = isDarkMode ? "black" : "white";
-            updateLabelStyles(parent, textColor);
-        });
+//        store.getState().subscribe(stateRegistry -> {
+//            // Get the dark mode state
+//            boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+//            String textColor = !isDarkMode ? "black" : "white";
+//            updateLabelStyles(parent, textColor);
+//        });
     }
 
 

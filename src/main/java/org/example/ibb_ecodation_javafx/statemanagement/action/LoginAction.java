@@ -1,13 +1,16 @@
 package org.example.ibb_ecodation_javafx.statemanagement.action;
 
-public class LoginAction {
-    private final String username;
+import org.example.ibb_ecodation_javafx.model.User;
+import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 
-    public LoginAction(String username) {
-        this.username = username;
+public class LoginAction {
+    private final UserDetailDto userDetail;
+
+    public LoginAction(UserDetailDto userDetail) {
+        this.userDetail = userDetail;
     }
 
-    public String getUsername() {
-        return username;
+    public UserDetailDto getUserDetail() {
+        return userDetail;
     }
 }

@@ -1,6 +1,7 @@
 package org.example.ibb_ecodation_javafx.statemanagement;
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.statemanagement.enums.CountryCode;
 import org.example.ibb_ecodation_javafx.statemanagement.state.CounterState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
@@ -19,7 +20,7 @@ public class Store {
         if (instance == null) {
             StateRegistry initialRegistry = new StateRegistry();
             initialRegistry.registerState(CounterState.class, new CounterState(0));
-            initialRegistry.registerState(UserState.class, new UserState("", false));
+            initialRegistry.registerState(UserState.class, new UserState(new UserDetailDto(), false));
             initialRegistry.registerState(DarkModeState.class, new DarkModeState(false));
             initialRegistry.registerState(TranslatorState.class, new TranslatorState(CountryCode.TR));
             instance = new Store(initialRegistry);

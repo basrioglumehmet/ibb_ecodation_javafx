@@ -15,7 +15,7 @@ public class Reducer {
             CounterState newCounterState = currentState.getCounterState().decrement();
             return currentState.updateCounter(newCounterState);
         } else if (action instanceof LoginAction) {
-            UserState newUserState = currentState.getUserState().login(((LoginAction) action).getUsername());
+            UserState newUserState = currentState.getUserState().login(((LoginAction) action).getUserDetail());
             return currentState.updateUser(newUserState);
         } else if (action instanceof LogoutAction) {
             UserState newUserState = currentState.getUserState().logout();

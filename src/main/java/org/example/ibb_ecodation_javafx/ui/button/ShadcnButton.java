@@ -208,7 +208,7 @@ public class ShadcnButton extends Button {
 
         setGraphic(iconView);
         setContentDisplay(ContentDisplay.LEFT);
-        setAlignment(Pos.CENTER_LEFT);
+        setAlignment(Pos.CENTER);
         setGraphicTextGap(10);
 
         updateWidth();

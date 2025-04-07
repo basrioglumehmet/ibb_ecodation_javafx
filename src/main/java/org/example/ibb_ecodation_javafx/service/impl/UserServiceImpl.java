@@ -42,8 +42,9 @@ public class UserServiceImpl implements UserService {
 
 
 
+
     @Override
-    public User update(User entity) {
+    public void update(User entity, Consumer<User> callback) {
         System.out.println(entity);
         var user = userRepository.update(entity,
                 UserQuery.UPDATE_USER_BY_ID,
@@ -54,7 +55,5 @@ public class UserServiceImpl implements UserService {
                         entity.is_locked(),
                         entity.getId(),
                         entity.getVersion()));
-        return null;
     }
-
 }

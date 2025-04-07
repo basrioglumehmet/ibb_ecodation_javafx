@@ -1,5 +1,6 @@
 package org.example.ibb_ecodation_javafx.repository.base;
 
+import org.example.ibb_ecodation_javafx.annotation.JdbcNamedField;
 import org.example.ibb_ecodation_javafx.exception.OptimisticLockException;
 import org.example.ibb_ecodation_javafx.repository.GenericRepository;
 import org.example.ibb_ecodation_javafx.utils.TrayUtil;
@@ -33,7 +34,7 @@ public class BaseRepository<T> implements GenericRepository<T> {
         } catch (SQLException e) {
             if (e.getMessage().contains("PRIMARY KEY constraint")) {
                 throw new RuntimeException("Create hatası (Duplicate veri): " + e.getMessage());
-                // Gerekirse özel bir işlem yap
+                // Gerekirse özel bir işlem yapılabilir
             } else {
                 throw new RuntimeException("Create hatası: " + e.getMessage(), e);
             }
@@ -61,12 +62,10 @@ public class BaseRepository<T> implements GenericRepository<T> {
     @Override
     public T update(T entity, String query, List<Object> params) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            // Include the version in the query parameters
             setParameters(preparedStatement, params);
 
             int affectedRows = preparedStatement.executeUpdate();
 
-            // If no rows were updated, it means the version didn't match, indicating a conflict
             if (affectedRows > 0) {
                 System.out.println("Kayıt başarıyla güncellendi.");
                 return entity;
@@ -100,34 +99,45 @@ public class BaseRepository<T> implements GenericRepository<T> {
 
     private void setParameters(PreparedStatement preparedStatement, List<Object> params) throws SQLException {
         if (params == null || params.isEmpty()) {
-            return; // No parameters to set
+            return;
         }
         for (int i = 0; i < params.size(); i++) {
             preparedStatement.setObject(i + 1, params.get(i));
         }
     }
-
     private T mapToEntity(Class<T> entityClass, ResultSet resultSet) throws SQLException {
         try {
             T entity = entityClass.getDeclaredConstructor().newInstance();
 
             for (Field field : entityClass.getDeclaredFields()) {
                 field.setAccessible(true);
+
+                // Varsayılan olarak field ismini al
                 String columnName = field.getName();
 
+                // Annotation varsa, kolon adını ondan al
+                //Şuanki yapıda Hibernate olmamasından kaynaklı jdbc için özel bir  annotation oluşturduk.
+                JdbcNamedField annotation = field.getAnnotation(JdbcNamedField.class);
+                if (annotation != null && !annotation.dbFieldName().isEmpty()) {
+                    columnName = annotation.dbFieldName();
+                }
+
                 Object value = resultSet.getObject(columnName);
-                if (field.getType().isEnum() && value != null) {
-                    System.out.println("Enum geldi aq");
-                    field.set(entity, Enum.valueOf((Class<Enum>) field.getType(), value.toString()));
-                } else {
-                    field.set(entity, value);
+
+                if (value != null) {
+                    if (field.getType().isEnum()) {
+                        field.set(entity, Enum.valueOf((Class<Enum>) field.getType(), value.toString()));
+                    } else {
+                        field.set(entity, value);
+                    }
                 }
             }
 
             return entity;
 
         } catch (Exception e) {
-            throw new SQLException("Error mapping ResultSet to entity: " + e.getMessage(), e);
+            throw new SQLException("Result set verisini entity modeline çevirirken sorun oldu " + e.getMessage(), e);
         }
     }
+
 }
