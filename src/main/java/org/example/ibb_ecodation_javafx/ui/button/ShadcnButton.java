@@ -1,6 +1,5 @@
 package org.example.ibb_ecodation_javafx.ui.button;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -8,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -20,36 +18,37 @@ import javafx.fxml.FXML;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import javafx.application.Platform;
+import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
 
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
+import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimationForNode;
 
 public class ShadcnButton extends Button {
     public enum ButtonType {
-        GHOST,
-        PRIMARY, SECONDARY, DESTRUCTIVE,SUCCESS
+        GHOST, PRIMARY, SECONDARY, DESTRUCTIVE, SUCCESS
     }
 
     private final StringProperty type = new SimpleStringProperty("PRIMARY");
     private final BooleanProperty fullWidth = new SimpleBooleanProperty(false);
     private final StringProperty glyphIconName = new SimpleStringProperty("USER");
     private final BooleanProperty isIconOnly = new SimpleBooleanProperty(false);
+    private final StringProperty align = new SimpleStringProperty("CENTER"); // Yeni align property
     private final Store store = Store.getInstance();
     private boolean isLightMode = false;
-
-
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     public ShadcnButton() {
         super();
     }
 
-    public ShadcnButton(String text, ButtonType type, String glyphIconName, Boolean fullWidth, Boolean isIconOnly) {
+    public ShadcnButton(String text, ButtonType type, String glyphIconName, Boolean fullWidth, Boolean isIconOnly, String align) {
         super(text);
         setPrefWidth(120);
         this.type.set(type.name());
         this.glyphIconName.set(glyphIconName);
         this.fullWidth.set(fullWidth);
         this.isIconOnly.set(isIconOnly);
+        this.align.set(align.toUpperCase()); // Yeni align değeri constructor’a eklendi
         initializeStyle(type);
         updateWidth();
     }
@@ -60,6 +59,7 @@ public class ShadcnButton extends Button {
         }
     }
 
+    // Mevcut Property’ler
     public StringProperty typeProperty() {
         return type;
     }
@@ -74,6 +74,15 @@ public class ShadcnButton extends Button {
 
     public BooleanProperty isIconOnlyProperty() {
         return isIconOnly;
+    }
+
+    // Yeni Align Property
+    /**
+     * Düğmenin hizalama özelliğini döndürür (LEFT, CENTER, RIGHT).
+     * @return Hizalama property’si
+     */
+    public StringProperty alignProperty() {
+        return align;
     }
 
     @FXML
@@ -114,22 +123,36 @@ public class ShadcnButton extends Button {
     @FXML
     public void setGlyphIconName(String glyphIconName) {
         this.glyphIconName.set(glyphIconName);
-        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName); // Get the updated icon
-        setGraphic(iconView); // Update the button's icon graphic
+        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
+        setGraphic(iconView);
     }
 
-    @FXML
     public String getGlyphIconName() {
         return glyphIconName.get();
     }
 
+    // Yeni Align Getter/Setter
+    /**
+     * Düğmenin hizalamasını ayarlar (LEFT, CENTER, RIGHT).
+     * @param align Yeni hizalama değeri
+     */
+    @FXML
+    public void setAlign(String align) {
+        this.align.set(align.toUpperCase());
+        updateButtonStyle(ButtonType.valueOf(getType())); // Stil güncellemesi için çağır
+    }
 
+    /**
+     * Düğmenin mevcut hizalamasını döndürür.
+     * @return Hizalama değeri (LEFT, CENTER, RIGHT)
+     */
+    public String getAlign() {
+        return align.get();
+    }
 
     private void initializeStyle(ButtonType type) {
         Disposable stateSubscription = store.getState().subscribe(stateRegistry -> {
             boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-
-            //  GUI in the GUI thread Güncelle
             Platform.runLater(() -> {
                 if (darkModeValue != isLightMode) {
                     isLightMode = darkModeValue;
@@ -137,9 +160,7 @@ public class ShadcnButton extends Button {
                 }
             });
         });
-
         disposables.add(stateSubscription);
-
         updateButtonStyle(type);
     }
 
@@ -195,6 +216,7 @@ public class ShadcnButton extends Button {
 
         String finalHoverTextColor = hoverTextColor;
         setOnMouseEntered(e -> {
+            runAnimationForNode(this, GuiAnimationUtil.HoverType.HOVERING);
             setStyle("-fx-background-color: " + hoverColor + "; " + "-fx-text-fill: " + finalHoverTextColor + "; " + baseStyle);
             setCursor(Cursor.HAND);
             iconView.setFill(Paint.valueOf(finalHoverTextColor));
@@ -202,15 +224,29 @@ public class ShadcnButton extends Button {
 
         setOnMouseExited(e -> {
             setCursor(Cursor.DEFAULT);
+            runAnimationForNode(this, GuiAnimationUtil.HoverType.EXIT);
             setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
             iconView.setFill(Paint.valueOf(textColor));
         });
 
         setGraphic(iconView);
         setContentDisplay(ContentDisplay.LEFT);
-        setAlignment(Pos.CENTER);
-        setGraphicTextGap(10);
 
+        // Align özelliğine göre hizalamayı ayarla
+        switch (align.get().toUpperCase()) {
+            case "LEFT":
+                setAlignment(Pos.CENTER_LEFT);
+                break;
+            case "RIGHT":
+                setAlignment(Pos.CENTER_RIGHT);
+                break;
+            case "CENTER":
+            default:
+                setAlignment(Pos.CENTER);
+                break;
+        }
+
+        setGraphicTextGap(10);
         updateWidth();
     }
 
@@ -218,13 +254,12 @@ public class ShadcnButton extends Button {
         if (fullWidth.get()) {
             setMaxWidth(Double.MAX_VALUE);
         } else {
-            setMaxWidth(isIconOnly.get() ? 30: getPrefWidth());
+            setMaxWidth(isIconOnly.get() ? 30 : getPrefWidth());
         }
     }
 
-    // Button yok olduğunda bu metod çağrılır
     @FXML
     public void onDestroy() {
-        dispose();  // Abonelikleri temizle
+        dispose();
     }
 }

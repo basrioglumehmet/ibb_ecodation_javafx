@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.model.User;
@@ -19,6 +20,7 @@ import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacityAnimation;
 import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
 import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotification;
 
@@ -73,8 +75,7 @@ public class AdminDashboardController {
 
     private void changeSidebarColor(boolean value){
         this.sidebar.setStyle(String.format("-fx-background-color: %s;", value ? "white":"black") +
-                "-fx-min-width: 300px;" +
-                "-fx-pref-width: 300px;" +
+
                 "-fx-border-width: 0 1;" +
                 String.format("-fx-border-color:%s",!value ? "#27272a": "#f2f2f3"));
         this.sidebarBottom.setStyle(
@@ -128,6 +129,7 @@ public class AdminDashboardController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
 
         StackPane newContent = loader.load();
+        runOpacityAnimation(newContent);
         contentArea.getChildren().setAll(newContent);
     }
 

@@ -34,11 +34,11 @@ public class ShadcnNavbar extends HBox {
         logoView.setPreserveRatio(true);
         Label version = new Label("v1.0.0 - IBB Bootcamp");
         version.setStyle("-fx-font-size: 16px; -fx-text-fill:#7f7f86;");
-        ShadcnButton helpButton = new ShadcnButton("Yardım", ShadcnButton.ButtonType.SECONDARY, "QUESTION", true,false);
-        ShadcnButton exitButton = new ShadcnButton("Çıkış Yap", ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", true,false);
-        ShadcnButton minimizeButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MINIMIZE", false,true);
-        ShadcnButton fullWindow = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MAXIMIZE", false,true);
-        ShadcnButton close = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "CLOSE", false,true);
+        ShadcnButton helpButton = new ShadcnButton("Yardım", ShadcnButton.ButtonType.SECONDARY, "QUESTION", true,false,"LEFT");
+        ShadcnButton exitButton = new ShadcnButton("Çıkış Yap", ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", true,false,"LEFT");
+        ShadcnButton minimizeButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MINIMIZE", false,true,"LEFT");
+        ShadcnButton fullWindow = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MAXIMIZE", false,true,"LEFT");
+        ShadcnButton close = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "CLOSE", false,true,"LEFT");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
