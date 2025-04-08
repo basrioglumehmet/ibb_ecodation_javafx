@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import javafx.application.Platform;
+import org.example.ibb_ecodation_javafx.ui.spinner.LoadingSpinner;
 import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
 
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
@@ -32,13 +33,18 @@ public class ShadcnButton extends Button {
     private final BooleanProperty fullWidth = new SimpleBooleanProperty(false);
     private final StringProperty glyphIconName = new SimpleStringProperty("USER");
     private final BooleanProperty isIconOnly = new SimpleBooleanProperty(false);
-    private final StringProperty align = new SimpleStringProperty("CENTER"); // Yeni align property
+    private final StringProperty align = new SimpleStringProperty("CENTER");
     private final Store store = Store.getInstance();
     private boolean isLightMode = false;
     private final CompositeDisposable disposables = new CompositeDisposable();
+    private final BooleanProperty isLoading = new SimpleBooleanProperty(false);
+    private LoadingSpinner loadingSpinner; // Spinner instance
+    private String originalText; // To store original text
+    private FontAwesomeIconView originalIcon; // To store original icon
 
     public ShadcnButton() {
         super();
+        initializeLoadingBehavior();
     }
 
     public ShadcnButton(String text, ButtonType type, String glyphIconName, Boolean fullWidth, Boolean isIconOnly, String align) {
@@ -48,9 +54,11 @@ public class ShadcnButton extends Button {
         this.glyphIconName.set(glyphIconName);
         this.fullWidth.set(fullWidth);
         this.isIconOnly.set(isIconOnly);
-        this.align.set(align.toUpperCase()); // Yeni align değeri constructor’a eklendi
+        this.align.set(align.toUpperCase());
+        this.originalText = text; // Store original text
         initializeStyle(type);
         updateWidth();
+        initializeLoadingBehavior();
     }
 
     public void dispose() {
@@ -59,7 +67,7 @@ public class ShadcnButton extends Button {
         }
     }
 
-    // Mevcut Property’ler
+    // Property getters
     public StringProperty typeProperty() {
         return type;
     }
@@ -76,19 +84,27 @@ public class ShadcnButton extends Button {
         return isIconOnly;
     }
 
-    // Yeni Align Property
-    /**
-     * Düğmenin hizalama özelliğini döndürür (LEFT, CENTER, RIGHT).
-     * @return Hizalama property’si
-     */
     public StringProperty alignProperty() {
         return align;
+    }
+
+    public BooleanProperty isLoadingProperty() {
+        return isLoading;
     }
 
     @FXML
     public void setFullWidth(boolean fullWidth) {
         this.fullWidth.set(fullWidth);
         updateWidth();
+    }
+
+    @FXML
+    public void setIsLoading(boolean loading) {
+        this.isLoading.set(loading);
+    }
+
+    public boolean getIsLoading() {
+        return this.isLoading.get();
     }
 
     @FXML
@@ -131,21 +147,12 @@ public class ShadcnButton extends Button {
         return glyphIconName.get();
     }
 
-    // Yeni Align Getter/Setter
-    /**
-     * Düğmenin hizalamasını ayarlar (LEFT, CENTER, RIGHT).
-     * @param align Yeni hizalama değeri
-     */
     @FXML
     public void setAlign(String align) {
         this.align.set(align.toUpperCase());
-        updateButtonStyle(ButtonType.valueOf(getType())); // Stil güncellemesi için çağır
+        updateButtonStyle(ButtonType.valueOf(getType()));
     }
 
-    /**
-     * Düğmenin mevcut hizalamasını döndürür.
-     * @return Hizalama değeri (LEFT, CENTER, RIGHT)
-     */
     public String getAlign() {
         return align.get();
     }
@@ -164,11 +171,34 @@ public class ShadcnButton extends Button {
         updateButtonStyle(type);
     }
 
+    private void initializeLoadingBehavior() {
+        loadingSpinner = new LoadingSpinner(20, Color.BLACK, Color.BLACK); // Customize size and colors as needed
+        isLoading.addListener((obs, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (newValue) {
+                    // Save original content
+                    originalText = getText();
+                    originalIcon = (FontAwesomeIconView) getGraphic();
+
+                    // Show loading spinner
+                    setText("");
+                    setGraphic(loadingSpinner);
+                    setDisable(true);
+                } else {
+                    // Restore original content
+                    setText(originalText);
+                    setGraphic(originalIcon);
+                    setDisable(false);
+                }
+            });
+        });
+    }
+
     private void updateButtonStyle(ButtonType type) {
         String baseStyle = "-fx-background-radius: 8px; " +
                 "-fx-padding: 10px 20px; " +
                 "-fx-focus-color: transparent; " +
-                "-fx-faint-focus-color: transparent;";
+                "-fx-faint-focus-color: transparent; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold; ";
 
         String backgroundColor;
         String hoverColor;
@@ -208,7 +238,6 @@ public class ShadcnButton extends Button {
                 hoverColor = "#1E3A8A";
         }
 
-        setFont(Font.font("Arial", 16));
         setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
 
         FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
@@ -229,10 +258,12 @@ public class ShadcnButton extends Button {
             iconView.setFill(Paint.valueOf(textColor));
         });
 
-        setGraphic(iconView);
-        setContentDisplay(ContentDisplay.LEFT);
+        // Only set graphic if not loading
+        if (!isLoading.get()) {
+            setGraphic(iconView);
+            setContentDisplay(ContentDisplay.LEFT);
+        }
 
-        // Align özelliğine göre hizalamayı ayarla
         switch (align.get().toUpperCase()) {
             case "LEFT":
                 setAlignment(Pos.CENTER_LEFT);

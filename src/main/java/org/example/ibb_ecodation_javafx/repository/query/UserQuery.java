@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 public class UserQuery {
     public static String CREATE_USER = "INSERT INTO users (username, email, password, role, is_verified, is_locked) VALUES(?,?,?,?,?,?)";
     public static String READ_USER_BY_ID = "SELECT * FROM users WHERE id=?";
+    public static String READ_USER_BY_EMAIL = "SELECT * FROM users WHERE email=?";
     public static String UPDATE_USER_BY_ID = "UPDATE users " +
             "SET username=?, " +
             "email=?, " +

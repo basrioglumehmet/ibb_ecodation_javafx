@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Label?>
+<?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+<?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<StackPane fx:id="rootPane"
+            fx:controller="org.example.ibb_ecodation_javafx.controller.SignUpController"
+           style="-fx-background-color: white; "
+           xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+
+<VBox alignment="CENTER" spacing="20.0"
+      maxWidth="Infinity" maxHeight="Infinity"
+      VBox.vgrow="ALWAYS" StackPane.alignment="CENTER">
+<children>
+    <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../assets/avatar.png" />
+        </image>
+    </ImageView>
+    <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
+           style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-font-size: 28px;"
+           text="Sign Up" wrapText="true">
+
+    </Label>
+
+
+    <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />
+    <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
+    <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
+
+    <ShadcnButton onAction="#handleSignUpProcess" fullWidth="true" text="Continue" type="PRIMARY" align="LEFT"
+                  mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
+
+
+    <ShadcnButton onAction="#handleBack"  fullWidth="true"  fx:id="login"  text="Back" type="SECONDARY" align="LEFT"
+                  mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
+
+    <VBox alignment="CENTER">
+        <Label text="By clicking continue, you agree to our"
+               alignment="CENTER" textAlignment="CENTER" wrapText="true" style="-fx-font-family: 'Poppins'; -fx-font-size: 16px;"
+               maxWidth="385.0">
+
+        </Label>
+        <Label text="Terms of Service and Privacy Policy."
+               alignment="CENTER" textAlignment="CENTER" wrapText="true"
+               maxWidth="385.0" style="-fx-text-fill:#3b82f6; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold;">
+
+        </Label>
+    </VBox>
+</children>
+</VBox>
+        </StackPane>

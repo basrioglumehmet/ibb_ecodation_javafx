@@ -26,8 +26,8 @@
               spacing="10"
               style="-fx-padding: 10;"
               alignment="CENTER_LEFT"
-              maxWidth="300"
-              prefWidth="250">
+              maxWidth="350"
+              prefWidth="300">
 
             <!-- Butonlar -->
             <VBox VBox.vgrow="ALWAYS" spacing="10" style="-fx-padding: 15;">
@@ -40,14 +40,18 @@
             </VBox>
 
             <!-- Sidebar Alt Kısmı -->
-            <VBox fx:id="sidebarBottom" style="-fx-padding: 10;" alignment="CENTER">
-                <HBox spacing="10" alignment="CENTER">
+            <VBox fx:id="sidebarBottom"  alignment="CENTER">
+                <HBox spacing="5" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                     <ShadcnAvatar fx:id="shadcnAvatar" />
-                    <VBox style="-fx-padding: 10;" alignment="CENTER">
+
+                    <VBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
                         <Label text="Mehmet Basrioğlu" style="-fx-text-fill:white;" />
                         <Label text="Admin" style="-fx-text-fill:#7f7f86;" />
                     </VBox>
+
+                    <ShadcnButton glyphIconName="EXIT" type="DESTRUCTIVE"/>
                 </HBox>
+
             </VBox>
         </VBox>
     </left>

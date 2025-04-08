@@ -9,15 +9,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.control.ScrollPane?>
 
 <?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+<?import org.example.ibb_ecodation_javafx.ui.spinner.LoadingSpinner?>
+<?import javafx.scene.layout.StackPane?>
+
 <HBox maxHeight="-Infinity" maxWidth="-Infinity"
       fx:controller="org.example.ibb_ecodation_javafx.controller.LoginController"
-      minHeight="-Infinity" minWidth="-Infinity" prefHeight="853.0" prefWidth="1413.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="853.0" prefWidth="1413.0"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" HBox.hgrow="ALWAYS">
+      <VBox style="-fx-background-color: black;" alignment="CENTER"
+            prefHeight="108.0" prefWidth="590.0"
+            VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
          <children>
             <VBox prefHeight="76.0" prefWidth="758.0" style="-fx-background-color: #18181b; -fx-padding: 30;">
                <children>
@@ -31,12 +37,14 @@
             <VBox prefHeight="108.0" prefWidth="590.0" style="-fx-background-color: #18181b;" VBox.vgrow="ALWAYS" />
             <VBox alignment="BOTTOM_CENTER" prefHeight="261.0" prefWidth="590.0" style="-fx-background-color: #17171a; -fx-padding: 30;">
                <children>
-                  <Label prefHeight="129.0" prefWidth="99999.0" text="“This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before.”" textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
+                  <Label prefHeight="129.0" prefWidth="99999.0"
+                         text="“This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before.”"
+                         textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Poppins';">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="31.0" prefWidth="9999.0" text="Sofia Davis" textFill="WHITE" wrapText="true">
+                  <Label prefHeight="31.0" prefWidth="9999.0" text="Sofia Davis" textFill="WHITE" wrapText="true" style="-fx-font-family: 'Poppins';">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -45,44 +53,16 @@
             </VBox>
          </children>
       </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-         <children>
-            <VBox alignment="CENTER" prefHeight="108.0" prefWidth="590.0" spacing="20.0" style="-fx-background-color: white; -fx-padding: 30;" VBox.vgrow="ALWAYS">
-               <children>
-
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0" text="Create an Account" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0" text="Enter your email below to create your account" wrapText="true">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <ShadcnInput fx:id="email" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="43.0" prefWidth="387.0" header="Email" />
-                  <ShadcnInput maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="43.0" prefWidth="387.0" header="Password" />
-                  <ShadcnButton align="LEFT"  onAction="#handleHomeButton" type="PRIMARY" mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" text="Sign In" />
-                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="481.0" style="-fx-padding: 0;">
-                     <children>
-                        <Pane maxHeight="-Infinity" prefHeight="3.0" prefWidth="187.0" style="-fx-background-color: #e5e5e5;" />
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="162.0" text="OR CONTINUE WITH" style="-fx-text-fill:black;" wrapText="true">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Pane maxHeight="-Infinity" prefHeight="3.0" prefWidth="187.0" style="-fx-background-color: #e5e5e5;" />
-                     </children>
-                  </HBox>
-                  <ShadcnButton align="LEFT"  type="SECONDARY"  mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" text="Sign Up" />
-                  <Label alignment="CENTER" prefHeight="53.0" prefWidth="385.0" text="By clicking continue, you agree to our Terms of Service and Privacy Policy." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-               </children>
+      <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" pannable="true"
+                  hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED"
+                  HBox.hgrow="ALWAYS">
+         <content>
+            <VBox alignment="CENTER"
+                  prefHeight="108.0" prefWidth="590.0"
+                  VBox.vgrow="ALWAYS" style="-fx-padding: 30; -fx-background-color:white;" >
+               <fx:include fx:id="loginContent" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" source="signin-view.fxml" />
             </VBox>
-         </children>
-      </VBox>
+         </content>
+      </ScrollPane>
    </children>
 </HBox>

@@ -1,9 +1,10 @@
 package org.example.ibb_ecodation_javafx.utils;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
+import javafx.animation.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import lombok.experimental.UtilityClass;
 
@@ -34,6 +35,9 @@ public class GuiAnimationUtil {
         // Animasyonu başlat
         scaleTransition.play();
     }
+
+
+
     /**
      * Fare olaylarına (hover/exit) bağlı olarak bir düğüm için ölçek animasyonu çalıştırır.
      *
@@ -51,13 +55,13 @@ public class GuiAnimationUtil {
                 // Üzerine gelindiğinde büyüt (1'den 1.1'e)
                 scaleTransition.setFromX(1.0);  // Normal boyut
                 scaleTransition.setFromY(1.0);
-                scaleTransition.setToX(0.93);    // %10 büyüt
-                scaleTransition.setToY(0.93);
+                scaleTransition.setToX(0.98);    // %10 büyüt
+                scaleTransition.setToY(0.98);
             }
             case EXIT -> {
                 // Çıkıldığında normale dön (1.1'den 1'e)
-                scaleTransition.setFromX(0.93);  // Büyütülmüş boyut
-                scaleTransition.setFromY(0.93);
+                scaleTransition.setFromX(0.98);  // Büyütülmüş boyut
+                scaleTransition.setFromY(0.98);
                 scaleTransition.setToX(1.0);    // Normal boyut
                 scaleTransition.setToY(1.0);
             }
@@ -67,6 +71,23 @@ public class GuiAnimationUtil {
         scaleTransition.play();
     }
 
+    public static void runSceneSlideAnimation(Parent newRoot, Pane parentContainer, Node oldRoot) {
+        Scene scene = parentContainer.getScene();
+        newRoot.translateYProperty().set(scene.getHeight());
+
+        parentContainer.getChildren().add(newRoot);
+
+        Timeline timeline = new Timeline();
+        KeyValue kv = new KeyValue(newRoot.translateYProperty(), 0, Interpolator.EASE_IN);
+        KeyFrame kf = new KeyFrame(Duration.seconds(0.5), kv);
+        timeline.getKeyFrames().add(kf);
+
+        timeline.setOnFinished(event -> {
+            parentContainer.getChildren().remove(oldRoot);
+        });
+
+        timeline.play();
+    }
     /**
      * Fare olay tiplerini tanımlayan enum.
      */

@@ -56,4 +56,10 @@ public class UserServiceImpl implements UserService {
                         entity.getId(),
                         entity.getVersion()));
     }
+
+    @Override
+    public void readByEmail(String email, Consumer<User> callback) {
+        var dbResponse = userRepository.read(User.class, UserQuery.READ_USER_BY_EMAIL, List.of(email));
+        callback.accept(dbResponse);
+    }
 }

@@ -3,17 +3,24 @@ package org.example.ibb_ecodation_javafx.utils;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import lombok.experimental.UtilityClass;
+import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 
 import java.io.IOException;
+
+import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacityAnimation;
+import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runSceneSlideAnimation;
 
 /**
  * Sahne (Scene) ve pencere (Stage) yönetimini kolaylaştıran yardımcı sınıf.
@@ -45,6 +52,12 @@ public class SceneUtil {
      * @throws IOException FXML dosyası yüklenemezse
      */
     public static void loadScene(Class<?> clazz, Stage stage, String fxmlPath, String title) throws IOException {
+
+        // Load each font weight
+        Font.loadFont(clazz.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf"), 12);
+        Font.loadFont(clazz.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Bold.ttf"), 12);
+        Font.loadFont(clazz.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Medium.ttf"), 12);
+
         // FXML dosyasını yükle
         FXMLLoader loader = new FXMLLoader(clazz.getResource(fxmlPath));
         Parent root = loader.load();
@@ -285,5 +298,31 @@ public class SceneUtil {
             return Screen.getPrimary();
         }
         return determineTargetScreen(existingStage);
+    }
+
+    // İçeriği dinamik olarak yükleme fonksiyonu
+    public static void loadContent(String fxmlFile, StackPane contentArea) throws IOException {
+        FXMLLoader loader = new FXMLLoader(SceneUtil.class.getResource(fxmlFile));
+        // Load each font weight
+        Font.loadFont(SceneUtil.class.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf"), 12);
+        Font.loadFont(SceneUtil.class.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Bold.ttf"), 12);
+        Font.loadFont(SceneUtil.class.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Medium.ttf"), 12);
+
+        StackPane newContent = loader.load();
+        runOpacityAnimation(newContent);
+        contentArea.getChildren().setAll(newContent);
+    }
+
+    public static void loadSlidingContent(StackPane rootPane, String viewName) throws IOException {
+        // Load the new FXML file (adjust the path to your target FXML)
+        FXMLLoader loader = new FXMLLoader(SceneUtil.class.getResource(String.format(ViewPathConstant.FORMAT, viewName)));
+        Parent newRoot = loader.load();
+
+        // Get the current root node to be replaced
+        Node oldRoot = rootPane.getChildren().get(0);
+        oldRoot.setOpacity(0.2);
+
+        // Run the slide animation
+        runSceneSlideAnimation(newRoot, rootPane, oldRoot);
     }
 }

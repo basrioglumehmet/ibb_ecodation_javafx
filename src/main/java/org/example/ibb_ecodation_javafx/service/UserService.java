@@ -6,4 +6,5 @@ import org.example.ibb_ecodation_javafx.model.User;
 import java.util.function.Consumer;
 
 public interface UserService extends Crud<User> {
+    void readByEmail(String email,Consumer<User> callback);
 }

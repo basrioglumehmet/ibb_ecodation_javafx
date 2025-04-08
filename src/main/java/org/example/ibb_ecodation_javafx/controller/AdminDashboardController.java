@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacityAnimation;
 import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
+import static org.example.ibb_ecodation_javafx.utils.SceneUtil.loadContent;
 import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotification;
 
 
@@ -81,57 +82,50 @@ public class AdminDashboardController {
         this.sidebarBottom.setStyle(
                 "-fx-border-width: 1 0; " +
                         String.format("-fx-border-color:%s;",!value ? "#27272a": "#f2f2f3")+
-                "-fx-padding: 15;"
+                "-fx-padding: 10;"
         );
     }
 
     // Home butonuna tıklama işlemi
     @FXML
     private void handleHomeButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-home-view.fxml");
+        loadContent("/org/example/ibb_ecodation_javafx/views/admin-home-view.fxml",contentArea);
         showTrayNotification("Anasayfada kullanıcı ve kdv yönetimi yapabilirsiniz.", "IBB ve Ecodation Bootcamp Projesi");
     }
 
     // About butonuna tıklama işlemi
     @FXML
     private void handleNotificationsButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-notification-view.fxml");
+        loadContent("/org/example/ibb_ecodation_javafx/views/admin-notification-view.fxml",contentArea);
     }
 
     // Contact butonuna tıklama işlemi
     @FXML
     private void handleProfileButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-profile-view.fxml");
+        loadContent("/org/example/ibb_ecodation_javafx/views/admin-profile-view.fxml",contentArea);
     }
 
     // Contact butonuna tıklama işlemi
     @FXML
     private void handleNotesButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-note-view.fxml");
+        loadContent("/org/example/ibb_ecodation_javafx/views/admin-note-view.fxml",contentArea);
     }
 
     // Contact butonuna tıklama işlemi
     @FXML
     private void handleBackupButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-backup-view.fxml");
+        loadContent("/org/example/ibb_ecodation_javafx/views/admin-backup-view.fxml",contentArea);
         showTrayNotification("Yedeklerinizi kayıt etmeyi unutmayın.", "IBB ve Ecodation Bootcamp Projesi");
     }
 
     // Contact butonuna tıklama işlemi
     @FXML
     private void handleConfigButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-configs-view.fxml");
+        loadContent("/org/example/ibb_ecodation_javafx/views/admin-configs-view.fxml",contentArea);
         showTrayNotification("Ayarları kayıt etmeyi unutmayın.", "IBB ve Ecodation Bootcamp Projesi");
     }
 
-    // İçeriği dinamik olarak yükleme fonksiyonu
-    private void loadContent(String fxmlFile) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
 
-        StackPane newContent = loader.load();
-        runOpacityAnimation(newContent);
-        contentArea.getChildren().setAll(newContent);
-    }
 
     private void setAvatarImageSource() {
         try {
