@@ -2,7 +2,7 @@
 
 -- One to many: Bir kullanıcıya birden fazla bildirim atanabilir
 CREATE TABLE user_notifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,   -- Otomatik artan birincil anahtar
+    id INT IDENTITY(1,1) PRIMARY KEY,   -- Otomatik artan birincil anahtar
     user_id INT NOT NULL,                -- users tablosuna dış anahtar
     header VARCHAR(255),                 -- Bildirim başlığı
     description VARCHAR(255),            -- Bildirim açıklaması

@@ -16,5 +16,6 @@ public class UserOtpCode  implements Entity {
     private int userId;
     @JdbcNamedField(dbFieldName = "otp")
     private String otpCode;
+    @JdbcNamedField(dbFieldName = "version")
     private int version = 1;
 }

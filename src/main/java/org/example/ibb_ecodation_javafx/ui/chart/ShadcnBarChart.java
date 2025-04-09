@@ -16,7 +16,7 @@ import javafx.util.Duration;
 import java.util.Map;
 
 public class ShadcnBarChart extends BarChart<String, Number> {
-    private final ObservableList<XYChart.Data<String, Number>> monthlyData;
+    private final ObservableList<XYChart.Data<String, Number>> chartData;
     private Label totalLabel;
     private XYChart.Series<String, Number> series;
 
@@ -27,14 +27,14 @@ public class ShadcnBarChart extends BarChart<String, Number> {
     public ShadcnBarChart(boolean withSampleData) {
         super(new CategoryAxis(), new NumberAxis());
 
-        this.monthlyData = FXCollections.observableArrayList();
+        this.chartData = FXCollections.observableArrayList();
         this.series = new XYChart.Series<>();
 
         if (withSampleData) {
             initializeDefaultData();
         }
 
-        series.setData(monthlyData);
+        series.setData(chartData);
         getData().add(series);
         configureChart();
 
@@ -43,20 +43,20 @@ public class ShadcnBarChart extends BarChart<String, Number> {
     }
 
     private void initializeDefaultData() {
-        String[] months = {"Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+        String[] categories = {"Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
                 "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"};
-        double[] vatValues = {12500.50, 9800.75, 15300.20, 11200.00, 13750.30, 14500.60,
+        double[] values = {12500.50, 9800.75, 15300.20, 11200.00, 13750.30, 14500.60,
                 16800.90, 15400.25, 13200.80, 14700.45, 15900.70, 17200.15};
 
-        for (int i = 0; i < months.length; i++) {
-            monthlyData.add(new XYChart.Data<>(months[i], vatValues[i]));
+        for (int i = 0; i < categories.length; i++) {
+            chartData.add(new XYChart.Data<>(categories[i], values[i]));
         }
     }
 
     private void configureChart() {
         setLegendVisible(false);
-        ((CategoryAxis) getXAxis()).setLabel("Aylar");
-        ((NumberAxis) getYAxis()).setLabel("KDV (TL)");
+        ((CategoryAxis) getXAxis()).setLabel("Categories");
+        ((NumberAxis) getYAxis()).setLabel("Values");
 
         getYAxis().setStyle("-fx-tick-label-fill:white;");
         getXAxis().setStyle("-fx-tick-label-fill:white;");
@@ -86,7 +86,7 @@ public class ShadcnBarChart extends BarChart<String, Number> {
                 yAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
             }
 
-            monthlyData.forEach(data -> {
+            chartData.forEach(data -> {
                 Node node = data.getNode();
                 if (node != null) {
                     node.setOnMouseEntered(event -> {
@@ -114,13 +114,11 @@ public class ShadcnBarChart extends BarChart<String, Number> {
         };
 
         Platform.runLater(() -> {
-            for (int i = 0; i < monthlyData.size(); i++) {
-                XYChart.Data<String, Number> data = monthlyData.get(i);
+            for (int i = 0; i < chartData.size(); i++) {
+                XYChart.Data<String, Number> data = chartData.get(i);
                 Node node = data.getNode();
                 if (node != null) {
                     String color = colors[i % colors.length];
-
-                    // Yuvarlatılmış üst köşeler
                     node.setStyle(
                             "-fx-background-color: " + color + ";" +
                                     "-fx-background-radius: 10 10 0 0;" +
@@ -131,23 +129,36 @@ public class ShadcnBarChart extends BarChart<String, Number> {
         });
     }
 
-    // Harici veri setleme metodu
-    public void setMonthlyData(Map<String, Double> newData) {
-        monthlyData.clear();
-        newData.forEach((month, value) -> monthlyData.add(new XYChart.Data<>(month, value)));
-        series.setData(monthlyData);
+    // New method for external data with custom header
+    public void setData(String title, String xAxisLabel, String yAxisLabel, Map<String, Number> data) {
+        chartData.clear();
+        data.forEach((category, value) -> chartData.add(new XYChart.Data<>(category, value)));
+        series.setData(chartData);
+
+        setTitle(title);
+        ((CategoryAxis) getXAxis()).setLabel(xAxisLabel);
+        ((NumberAxis) getYAxis()).setLabel(yAxisLabel);
+
         applyCustomColors();
         updateTotal();
     }
 
-    // Veri alma metodu
-    public ObservableList<XYChart.Data<String, Number>> getMonthlyData() {
-        return monthlyData;
+    // Existing method renamed for consistency
+    public void setMonthlyData(Map<String, Double> newData) {
+        chartData.clear();
+        newData.forEach((month, value) -> chartData.add(new XYChart.Data<>(month, value)));
+        series.setData(chartData);
+        applyCustomColors();
+        updateTotal();
     }
 
-    public void updateData(String month, double value) {
-        monthlyData.stream()
-                .filter(data -> data.getXValue().equals(month))
+    public ObservableList<XYChart.Data<String, Number>> getChartData() {
+        return chartData;
+    }
+
+    public void updateData(String category, double value) {
+        chartData.stream()
+                .filter(data -> data.getXValue().equals(category))
                 .findFirst()
                 .ifPresent(data -> data.setYValue(value));
         updateTotal();
@@ -156,10 +167,10 @@ public class ShadcnBarChart extends BarChart<String, Number> {
     private void updateTotal() {
         if (totalLabel == null) return;
 
-        double total = monthlyData.stream()
+        double total = chartData.stream()
                 .mapToDouble(data -> data.getYValue().doubleValue())
                 .sum();
-        totalLabel.setText(String.format("Toplam KDV: %.2f TL", total));
+        totalLabel.setText(String.format("Total: %.2f", total));
     }
 
     public Label getTotalLabel() {

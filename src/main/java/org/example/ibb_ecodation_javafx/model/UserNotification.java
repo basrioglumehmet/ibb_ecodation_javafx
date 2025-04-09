@@ -10,11 +10,17 @@ import org.example.ibb_ecodation_javafx.core.db.Entity;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class UserPicture implements Entity {
+public class UserNotification implements Entity {
+    @JdbcNamedField(dbFieldName = "id")
+    private int id;
     @JdbcNamedField(dbFieldName = "user_id")
     private int userId;
-    @JdbcNamedField(dbFieldName = "image_data")
-    private byte[] imageData;
+    @JdbcNamedField(dbFieldName = "header")
+    private String header;
+    @JdbcNamedField(dbFieldName = "description")
+    private String description;
+    @JdbcNamedField(dbFieldName = "type")
+    private String type;
     @JdbcNamedField(dbFieldName = "version")
     private int version = 1;
 }

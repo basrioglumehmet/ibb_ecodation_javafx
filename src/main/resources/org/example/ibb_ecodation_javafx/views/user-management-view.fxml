@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.example.ibb_ecodation_javafx.ui.chart.ShadcnPieChart?>
 <?import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart?>
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
 <?import org.example.ibb_ecodation_javafx.ui.table.DynamicTable?>

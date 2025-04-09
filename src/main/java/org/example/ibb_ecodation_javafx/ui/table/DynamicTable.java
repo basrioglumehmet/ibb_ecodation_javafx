@@ -1,72 +1,68 @@
 package org.example.ibb_ecodation_javafx.ui.table;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnComboBox;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DynamicTable<T> extends VBox {
 
-    private final TableView<ObservableList<String>> tableView;
+    private final VBox tableContent;
     private final StackPane tableWrapper;
-    private final ScrollPane scrollPane; // Horizontal scrolling için ScrollPane ekliyoruz
-    private String headerText = "Header"; // Varsayılan header değeri
-    private String descriptionText = "Description"; // Varsayılan description değeri
+    private final ScrollPane scrollPane;
+    private String headerText = "Header";
+    private String descriptionText = "Description";
     private ShadcnComboBox comboBox;
+    private List<String> headers = new ArrayList<>();
+    private List<List<String>> data = new ArrayList<>();
+    private List<Pair<CheckBox, List<String>>> selectedRows = new ArrayList<>();
 
     public DynamicTable() {
-        // VBox özelliklerini ayarla
         this.setSpacing(20);
         this.setPadding(new Insets(20));
         this.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
 
-        // DynamicTable'ın parent içinde esnek olmasını sağla
         VBox.setVgrow(this, Priority.ALWAYS);
         HBox.setHgrow(this, Priority.ALWAYS);
 
-        // TableView oluştur
-        tableView = new TableView<>();
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Sütunların genişliğini manuel olarak ayarlayabilmek için
-        tableView.setStyle("-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #121214; -fx-control-inner-background: #121214; -fx-text-fill: white;");
-        tableView.setPlaceholder(new Label("No data available"));
+        tableContent = new VBox();
+        tableContent.setStyle("-fx-background-color: #121214; -fx-background-radius: 20; -fx-border-radius: 20; ");
 
-        // ScrollPane oluştur ve TableView'ı içine yerleştir
-        scrollPane = new ScrollPane(tableView);
-        scrollPane.setFitToHeight(true); // Yükseklik otomatik ayarlansın
-        scrollPane.setFitToWidth(false); // Genişlik için kaydırma çubuğu aktif olsun
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Yatay kaydırma çubuğu gerektiğinde görünsün
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Dikey kaydırma çubuğu gerektiğinde görünsün
-        scrollPane.setStyle("-fx-background: #121214; -fx-background-color: #121214;");
+        scrollPane = new ScrollPane(tableContent);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setStyle("-fx-background: #121214; -fx-background-color: #121214; -fx-background-radius: 20;");
 
-        // TableWrapper oluştur
         tableWrapper = new StackPane(scrollPane);
         tableWrapper.setStyle("-fx-background-color:#121214; -fx-padding:20px;");
         applyRoundedClipping(tableWrapper, 20);
 
-        // TableWrapper'ın VBox içinde esnek olmasını sağla
         VBox.setVgrow(tableWrapper, Priority.ALWAYS);
         StackPane.setAlignment(scrollPane, Pos.CENTER);
 
-        // TableView'un genişliğini ve yüksekliğini ayarla
-        tableView.setMinWidth(Region.USE_PREF_SIZE); // İçeriğe göre genişlik
-        tableView.setMaxWidth(Double.MAX_VALUE);
-        tableView.setMaxHeight(Double.MAX_VALUE);
-        StackPane.setMargin(scrollPane, new Insets(0)); // Kenar boşluklarını sıfırla
+        tableContent.setMinWidth(Region.USE_PREF_SIZE);
+        tableContent.setMaxWidth(Double.MAX_VALUE);
+        tableContent.setMaxHeight(Double.MAX_VALUE);
 
-        // Bileşenleri ekle
+        StackPane.setMargin(scrollPane, new Insets(0));
+        applyRoundedClipping(scrollPane, 20);
         this.getChildren().addAll(createHeader(), tableWrapper);
     }
 
-    // Yuvarlatılmış köşeler için clipping
     private void applyRoundedClipping(Region region, double radius) {
         Rectangle clip = new Rectangle();
         clip.setArcWidth(radius * 2);
@@ -86,10 +82,10 @@ public class DynamicTable<T> extends VBox {
         header.setMaxHeight(Region.USE_PREF_SIZE);
 
         VBox titleSection = new VBox(5);
-        Label titleLabel = new Label(headerText); // headerText kullanımı
+        Label titleLabel = new Label(headerText);
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
 
-        Label subtitleLabel = new Label(descriptionText); // descriptionText kullanımı
+        Label subtitleLabel = new Label(descriptionText);
         subtitleLabel.setStyle("-fx-text-fill: #fff; -fx-font-size: 14px;");
         titleSection.getChildren().addAll(titleLabel, subtitleLabel);
 
@@ -99,98 +95,161 @@ public class DynamicTable<T> extends VBox {
         HBox buttonGroup = new HBox(10);
         buttonGroup.setAlignment(Pos.CENTER_RIGHT);
 
-//        Button exportButton = new Button("Export");
-//        exportButton.setStyle("-fx-background-color: #fff; -fx-text-fill: #000; -fx-background-radius: 20;");
-//        exportButton.setPadding(new Insets(8, 15, 8, 15));
-//
-//        Button downloadButton = new Button("Download");
-//        downloadButton.setStyle("-fx-background-color: #f27a1a; -fx-text-fill: white; -fx-background-radius: 20;");
-//        downloadButton.setPadding(new Insets(8, 15, 8, 15));
-
         comboBox = new ShadcnComboBox(s -> s);
-
-
-
         buttonGroup.getChildren().addAll(comboBox);
+
         header.getChildren().addAll(titleSection, spacer, buttonGroup);
 
         return header;
     }
-    public PublishSubject<Pair<String,T>> watchComboBox(){
+
+    public PublishSubject<Pair<String, T>> watchComboBox() {
         return comboBox.watchSelection();
     }
-    public void setComboBoxItems(Map<String, String> items){
+
+    public void setComboBoxItems(Map<String, String> items) {
         comboBox.setItems(items);
     }
 
-    public void setComboBoxTitle(String title){
+    public void setComboBoxTitle(String title) {
         comboBox.setTitle(title);
     }
 
     public void addHeaders(String... headers) {
-        tableView.getColumns().clear();
-
-        for (int i = 0; i < headers.length; i++) {
-            final int colIndex = i;
-            TableColumn<ObservableList<String>, String> column = new TableColumn<>(headers[i]);
-
-            column.setCellValueFactory(param ->
-                    new ReadOnlyStringWrapper(param.getValue().get(colIndex))
-            );
-
-            // Dinamik genişlik hesaplama
-            double baseWidthPerChar = 20.0; // Her karakter için temel piksel genişliği
-            double minWidth = 80; // Minimum genişlik (örneğin "ID" gibi kısa başlıklar için)
-            double headerLength = headers[i].length();
-            double calculatedWidth = headerLength * baseWidthPerChar;
-
-            // Minimum genişlik ile hesaplanan genişlik arasında maksimumu al
-            column.setPrefWidth(Math.max(minWidth, calculatedWidth));
-            column.setMinWidth(minWidth); // Çok kısa başlıklar için minimum genişlik garanti edilir
-
-            column.setStyle("-fx-alignment: CENTER; -fx-text-fill: white;");
-
-            tableView.getColumns().add(column);
-        }
+        this.headers.clear();
+        this.headers.addAll(List.of(headers));
+        refreshTable();
     }
 
     public void addData(String... rowData) {
-        ObservableList<String> row = FXCollections.observableArrayList(rowData);
-        tableView.getItems().add(row);
+        data.add(new ArrayList<>(List.of(rowData)));
+        refreshTable();
     }
 
     public void clearData() {
-        tableView.getItems().clear();
+        data.clear();
+        selectedRows.clear();
+        refreshTable();
     }
 
-    public TableView<ObservableList<String>> getTableView() {
-        return tableView;
+    public List<List<String>> getData() {
+        return new ArrayList<>(data);
     }
 
-    // Header için getter ve setter
+    public List<List<String>> getSelectedData() {
+        return selectedRows.stream()
+                .filter(pair -> pair.getKey().isSelected())
+                .map(Pair::getValue)
+                .collect(Collectors.toList());
+    }
+
     public String getHeaderText() {
         return headerText;
     }
 
     public void setHeaderText(String headerText) {
         this.headerText = headerText;
-        refreshHeader(); // Header'ı güncelle
+        refreshHeader();
     }
 
-    // Description için getter ve setter
     public String getDescriptionText() {
         return descriptionText;
     }
 
     public void setDescriptionText(String descriptionText) {
         this.descriptionText = descriptionText;
-        refreshHeader(); // Description'ı güncelle
+        refreshHeader();
     }
 
-    // Header'ı yeniden oluşturup güncelleyen yardımcı metod
     private void refreshHeader() {
-        this.getChildren().remove(0); // Eski header'ı kaldır
-        this.getChildren().add(0, createHeader()); // Yeni header'ı ekle
+        this.getChildren().remove(0);
+        this.getChildren().add(0, createHeader());
+    }
+
+    private void refreshTable() {
+        tableContent.getChildren().clear();
+        selectedRows.clear();
+
+        if (headers.isEmpty()) {
+            tableContent.getChildren().add(new Label("No headers defined"));
+            return;
+        }
+
+        // Add header row with an empty space for checkbox column
+        HBox headerRow = new HBox();
+        headerRow.setStyle("-fx-background-color: #1a1a1d; -fx-padding: 10px; -fx-border-color: #303034; -fx-border-width: 0 0 1 0; -fx-background-radius: 10 10 0 0;");
+        Label emptyLabel = new Label("");
+        emptyLabel.setMinWidth(40);
+        emptyLabel.setAlignment(Pos.CENTER);
+        HBox.setHgrow(emptyLabel, Priority.ALWAYS);
+        headerRow.getChildren().add(emptyLabel);
+
+        for (String header : headers) {
+            Label headerLabel = new Label(header);
+            headerLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5px;");
+            headerLabel.setMinWidth(calculateCellWidth(header));
+            headerLabel.setAlignment(Pos.CENTER);
+            HBox.setHgrow(headerLabel, Priority.ALWAYS);
+            headerRow.getChildren().add(headerLabel);
+        }
+        tableContent.getChildren().add(headerRow);
+
+        // Add data rows with custom checkboxes
+        if (data.isEmpty()) {
+            Label noDataLabel = new Label("No data available");
+            noDataLabel.setStyle("-fx-text-fill: white; -fx-padding: 10px;");
+            tableContent.getChildren().add(noDataLabel);
+        } else {
+            for (int i = 0; i < data.size(); i++) {
+                List<String> row = data.get(i);
+                HBox dataRow = new HBox();
+
+                dataRow.setStyle("-fx-padding: 10px;  " );
+
+                CheckBox checkBox = new CheckBox();
+
+                checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+
+                    updateRowStyle(dataRow, newVal);
+                });
+
+                checkBox.setMinWidth(40);
+                checkBox.setAlignment(Pos.CENTER);
+                HBox.setHgrow(checkBox, Priority.ALWAYS);
+
+                selectedRows.add(new Pair<>(checkBox, row));
+
+                dataRow.setOnMouseClicked((MouseEvent event) -> {
+                    checkBox.setSelected(!checkBox.isSelected());
+                });
+
+                dataRow.getChildren().add(checkBox);
+
+                for (int j = 0; j < headers.size(); j++) {
+                    String cellText = j < row.size() ? row.get(j) : "";
+                    Label cellLabel = new Label(cellText);
+                    cellLabel.setStyle("-fx-text-fill: white; -fx-padding: 5px;");
+                    cellLabel.setMinWidth(calculateCellWidth(headers.get(j)));
+                    cellLabel.setAlignment(Pos.CENTER);
+                    HBox.setHgrow(cellLabel, Priority.ALWAYS);
+                    dataRow.getChildren().add(cellLabel);
+                }
+                tableContent.getChildren().add(dataRow);
+            }
+        }
+    }
+
+    private void updateRowStyle(HBox row, boolean isSelected) {
+        String baseStyle = "-fx-padding: 10px; -fx-border-color: #303034; -fx-border-width: 0 0 1 0;";
+        String radiusStyle = (data.indexOf(selectedRows.get(tableContent.getChildren().indexOf(row) - 1).getValue()) == data.size() - 1 && data.size() > 1) ? "-fx-background-radius: 0 0 10 10;" : "";
+        row.setStyle(baseStyle + (isSelected ? " -fx-background-color: #2a2a2e;" : " -fx-background-color: transparent;") + radiusStyle);
+    }
+
+    private double calculateCellWidth(String text) {
+        double baseWidthPerChar = 20.0;
+        double minWidth = 80;
+        double calculatedWidth = text.length() * baseWidthPerChar;
+        return Math.max(minWidth, calculatedWidth);
     }
 
     @Override

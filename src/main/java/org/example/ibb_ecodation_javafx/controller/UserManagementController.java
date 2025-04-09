@@ -48,6 +48,7 @@ public class UserManagementController {
             comboItems.put("add", "Add User");
             comboItems.put("remove", "Remove User");
             comboItems.put("update", "Update User");
+            comboItems.put("print", "Print User to Printer");
 
             userTable.setComboBoxTitle("Actions");
             userTable.setComboBoxItems(comboItems);
