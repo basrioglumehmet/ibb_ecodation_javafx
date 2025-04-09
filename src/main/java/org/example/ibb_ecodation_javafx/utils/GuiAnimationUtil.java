@@ -37,7 +37,6 @@ public class GuiAnimationUtil {
     }
 
 
-
     /**
      * Fare olaylarına (hover/exit) bağlı olarak bir düğüm için ölçek animasyonu çalıştırır.
      *

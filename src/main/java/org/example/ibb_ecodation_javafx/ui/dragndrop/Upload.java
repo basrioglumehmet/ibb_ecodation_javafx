@@ -10,24 +10,20 @@ import javafx.scene.shape.Rectangle;
 
 public class Upload extends StackPane {
 
-    private String droppedImagePath;  // Field to store the dropped image path
+    private String droppedImagePath;
     private Label dragLabel;
     private HBox insideContainer;
-    private Pane placeholder;
     private Region region;
     private String BASE_STYLE = "-fx-background-radius: 4px; -fx-padding: 10;";
 
     public Upload() {
 
-        this.setStyle("-fx-background-color: black; -fx-border-width:2px; -fx-border-color:#27272a;" +
+        this.setStyle("-fx-background-color: #1a1a1e; -fx-border-width:2px; -fx-border-color:#2c2c30;" +
                 "-fx-border-style: dashed;-fx-border-insets: 10; -fx-border-radius: 8px;");
-        this.setPrefSize(Double.MAX_VALUE, 60);
+        this.setPrefSize(Double.MAX_VALUE, 120);
         this.setPadding(new javafx.geometry.Insets(10));
 
         insideContainer = new HBox();
-        placeholder = new Pane();
-        placeholder.setStyle("-fx-background-color: #27272a; -fx-background-radius:4px;");
-        placeholder.setPrefSize(30, 30);
 
         // Region oluştur
         region = new Region();
@@ -37,7 +33,7 @@ public class Upload extends StackPane {
         dragLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:white;");
 
         // Elemanları sırayla ekle
-        insideContainer.getChildren().addAll(placeholder, region, dragLabel);
+        insideContainer.getChildren().addAll(dragLabel);
         this.getChildren().add(insideContainer);
 
 
@@ -63,23 +59,19 @@ public class Upload extends StackPane {
                     droppedImagePath  = file.getAbsolutePath();
                     Image image = new Image(file.toURI().toString());
                     ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(30);
-                    imageView.setFitHeight(30);
+                    imageView.setFitWidth(80);
+                    imageView.setFitHeight(60);
 
                     // Köşe yuvarlamak için clip
-                    Rectangle clip = new Rectangle(30, 30);
+                    Rectangle clip = new Rectangle(60, 60);
                     clip.setArcWidth(8);
                     clip.setArcHeight(8);
                     imageView.setClip(clip);
 
-                    // Gölgelendirme gibi şeyler eklemek istersen StackPane'e still verebilirsin
                     StackPane imageContainer = new StackPane(imageView);
                     imageContainer.setStyle("-fx-background-color: transparent;");
 
-                    // Temizle & ekle
-                    if (placeholder != null && insideContainer.getChildren().contains(placeholder)) {
-                        insideContainer.getChildren().removeAll(placeholder, region, dragLabel);
-                    }
+                    insideContainer.getChildren().removeAll( dragLabel);
                     insideContainer.getChildren().addAll(imageContainer, region, dragLabel);
 
 

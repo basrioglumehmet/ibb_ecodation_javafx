@@ -10,8 +10,7 @@ module org.example.ibb_ecodation_javafx {
     requires com.h2database;
     requires org.mapstruct;
 
-    // Add this to access SendGrid's automatic module (if on module path)
-    requires sendgrid.java; // For 4.9.3, this works if moved to module path
+    requires sendgrid.java;
 
     opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok, org.mapstruct, javafx.base;
     opens org.example.ibb_ecodation_javafx.controller to javafx.fxml, lombok, org.mapstruct;
@@ -24,7 +23,9 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.ui.input to javafx.fxml, lombok, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.service to javafx.fxml, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.ui.dragndrop to javafx.fxml, lombok, org.mapstruct, spring.beans;
-
+    opens org.example.ibb_ecodation_javafx.ui.splitpane to javafx.fxml, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.ui.chart to javafx.fxml, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.ui.table to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.service.impl to spring.beans, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.mapper to spring.beans;
     opens org.example.ibb_ecodation_javafx.repository to spring.beans;
@@ -44,4 +45,5 @@ module org.example.ibb_ecodation_javafx {
     exports org.example.ibb_ecodation_javafx;
     exports org.example.ibb_ecodation_javafx.mapper;
     exports org.example.ibb_ecodation_javafx.model;
+    exports org.example.ibb_ecodation_javafx.model.dto;
 }

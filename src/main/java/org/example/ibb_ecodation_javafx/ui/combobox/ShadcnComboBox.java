@@ -1,7 +1,6 @@
 package org.example.ibb_ecodation_javafx.ui.combobox;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,14 +9,22 @@ import javafx.geometry.Pos;
 import javafx.util.Pair;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
-public class ShadcnComboBox extends Button {
+public class ShadcnComboBox<T> extends Button {
 
-    private static final PublishSubject<Pair<String,String>> subject = PublishSubject.create();
-
-    public ShadcnComboBox() {
-        setStyle("-fx-background-color: black;" +
+    private  final PublishSubject<Pair<String,T>> subject = PublishSubject.create();
+    private final Map<String, T> itemMap = new HashMap<>();
+    private String selectedKey = "";
+    private T selectedValue = null;
+    private final Function<T, String> displayConverter;
+    private String title = "OPERATIONS";
+    private Label titleLabel;
+    public ShadcnComboBox(Function<T, String> displayConverter) {
+        this.displayConverter = displayConverter;
+        setStyle("-fx-background-color: #222225;" +
                 "-fx-background-radius: 6px;" +
                 "-fx-border-radius: 6px;   " +
                 "-fx-border-color: #2e2e2e; " +
@@ -25,7 +32,8 @@ public class ShadcnComboBox extends Button {
                 "-fx-text-fill: #fff;");
 
         ContextMenu menu = new ContextMenu();
-        menu.  setStyle("-fx-background-color: black;" +
+
+        menu.setStyle("-fx-background-color: #222225;" +
                 "-fx-background-radius: 6px;" +
                 "-fx-border-radius: 6px;   " +
                 "-fx-border-color: #2e2e2e; " +
@@ -33,86 +41,103 @@ public class ShadcnComboBox extends Button {
                 "-fx-padding:5;"+
                 "-fx-text-fill: #fff;");
         setContextMenu(menu);
-        loadFlagAndLabel();
-        loadLanguages();
+        loadLabel();
         setOnMouseClicked(event -> {
             if (event.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
-                // Get the position of the button in screen coordinates
                 double screenX = this.localToScreen(this.getLayoutX(), this.getLayoutY()).getX();
                 double screenY = this.localToScreen(this.getLayoutX(), this.getLayoutY()).getY();
-
-                // Open the context menu below the button
                 menu.show(this, screenX, screenY + getHeight());
             }
         });
     }
 
-    private void loadFlagAndLabel() {
+    public void addItem(String key, T value) {
+        itemMap.put(key, value);
+        refreshMenuItems();
+    }
+
+    public void setTitle(String newTitle) {
+        this.title = newTitle;
+        if (titleLabel != null) {
+            titleLabel.setText(newTitle);
+        } else {
+            loadLabel();
+        }
+    }
+    public void setItems(Map<String, T> items) {
+        this.itemMap.clear();
+        this.itemMap.putAll(items);
+        refreshMenuItems();
+    }
+
+    public void removeItem(String key) {
+        itemMap.remove(key);
+        if (key.equals(selectedKey)) {
+            selectedKey = "";
+            selectedValue = null;
+            loadLabel();
+        }
+        refreshMenuItems();
+    }
+    private void refreshMenuItems() {
+        ContextMenu menu = getContextMenu();
+        menu.getItems().clear();
+        itemMap.forEach((key, value) -> {
+            menu.getItems().add(createMenuItem(key, value));
+        });
+    }
+
+
+    private void loadLabel() {
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
 
-        ImageView flag = createImageView("tr.png", 34, 26);
-        Label label = new Label("Türkçe");
-        label.setStyle("-fx-text-fill:white;");
-        header.getChildren().addAll(flag, label);
+        titleLabel = new Label(title);
+        titleLabel.setStyle("-fx-text-fill:white; -fx-font-weight:bold;");
+
+        Label selectionLabel = new Label(selectedValue != null ? displayConverter.apply(selectedValue) : "Select an option");
+        selectionLabel.setStyle("-fx-text-fill:white;");
+
+        header.getChildren().addAll(titleLabel, selectionLabel);
         setGraphic(header);
 
-        watchLanguageValue().subscribe(pair -> {
-            Image newFlag = loadImage(pair.getKey() + ".png");
-            if (newFlag != null) {
-                flag.setImage(newFlag);
-                label.setText(pair.getValue());
-            }
-        });
-
     }
 
-    private void loadLanguages() {
-        Map<String, String[]> languages = Map.of(
-                "Türkçe", new String[]{"tr", "tr.png"},
-                "English", new String[]{"en", "en.png"}
-        );
 
-        ContextMenu menu = getContextMenu();  // Get the ContextMenu associated with the MenuButton
-        languages.forEach((language, data) -> {
-            menu.getItems().add(createMenuItem(language, data[0], data[1]));  // Add items to the ContextMenu
-        });
-    }
-
-    private MenuItem createMenuItem(String language, String countryCode, String flagPath) {
-        MenuItem item = new MenuItem();
+    private MenuItem createMenuItem(String key, T value) {
         HBox content = new HBox(10);
         content.setAlignment(Pos.CENTER_LEFT);
+        content.setStyle("-fx-padding: 5; -fx-background-radius: 3px;");
 
-        ImageView flag = createImageView(flagPath, 32, 24);
-        Label label = new Label(language + " (" + countryCode.toUpperCase() + ")");
+        // Sabit genişlik ver (örneğin 160 piksel)
+        content.setPrefWidth(160);
 
-        content.getChildren().addAll(flag, label);
-        item.setGraphic(content);
-        item.setOnAction(event -> publish(countryCode,language));
+        Label label = new Label(displayConverter.apply(value));
+        label.setStyle("-fx-text-fill:white;");
+        content.getChildren().addAll(label);
 
+        CustomMenuItem item = new CustomMenuItem(content);
+        item.setHideOnClick(true);
+        item.getStyleClass().clear();
+        item.setStyle("-fx-background-color: transparent;");
+
+        // Hover efekti
+        content.setOnMouseEntered(e -> content.setStyle("-fx-background-color: #f27a1a; -fx-padding: 5; -fx-background-radius: 3px;"));
+        content.setOnMouseExited(e -> content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;"));
+
+        item.setOnAction(event -> publish(key,value));
         return item;
     }
 
-    private ImageView createImageView(String fileName, int width, int height) {
-        Image image = loadImage(fileName);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(height);
-        return imageView;
+
+    public void publish(String key, T value) {
+
+        subject.onNext(new Pair<>(key, value));
     }
 
-    private Image loadImage(String fileName) {
-        String path = "/org/example/ibb_ecodation_javafx/assets/flags/" + fileName;
-        InputStream stream = getClass().getResourceAsStream(path);
-        return (stream != null) ? new Image(stream) : null;
-    }
-
-    public void publish(String code,String value) {
-        subject.onNext(new Pair<>(code,value));
-    }
-
-    public static synchronized  PublishSubject<Pair<String,String>> watchLanguageValue() {
+    public PublishSubject<Pair<String, T>> watchSelection() {
         return subject;
     }
+
+
 }

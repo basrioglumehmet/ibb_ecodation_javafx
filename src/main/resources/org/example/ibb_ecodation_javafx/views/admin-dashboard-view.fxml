@@ -10,10 +10,10 @@
 <?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
 <?import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"  fx:id="rootPane"
+            stylesheets="@../css/style.css"
             fx:controller="org.example.ibb_ecodation_javafx.controller.AdminDashboardController"
-            prefWidth="Infinity" prefHeight="Infinity"
-            maxWidth="Infinity" maxHeight="Infinity">
+           >
 
     <!-- Navbar (Sabit Üst Menü) -->
     <top>
@@ -41,7 +41,7 @@
 
             <!-- Sidebar Alt Kısmı -->
             <VBox fx:id="sidebarBottom"  alignment="CENTER">
-                <HBox spacing="5" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <HBox fx:id="sidebarBottomInsideContainer" spacing="5" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                     <ShadcnAvatar fx:id="shadcnAvatar" />
 
                     <VBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
@@ -49,7 +49,7 @@
                         <Label text="Admin" style="-fx-text-fill:#7f7f86;" />
                     </VBox>
 
-                    <ShadcnButton glyphIconName="EXIT" type="DESTRUCTIVE"/>
+                    <ShadcnButton glyphIconName="EXIT" type="GHOST"/>
                 </HBox>
 
             </VBox>
@@ -59,10 +59,8 @@
     <!-- Ana İçerik Alanı (Responsive center) -->
     <center>
         <StackPane fx:id="mainContentArea"
-                   style="-fx-background-color:black;"
                    BorderPane.alignment="CENTER"
-                   maxWidth="Infinity" maxHeight="Infinity"
-                   prefWidth="Infinity" prefHeight="Infinity">
+                   >
             <fx:include fx:id="contentArea" source="admin-home-view.fxml" />
         </StackPane>
     </center>

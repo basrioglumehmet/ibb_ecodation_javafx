@@ -21,6 +21,8 @@ import javafx.application.Platform;
 import org.example.ibb_ecodation_javafx.ui.spinner.LoadingSpinner;
 import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
 
+import java.util.Objects;
+
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimationForNode;
 
@@ -31,20 +33,21 @@ public class ShadcnButton extends Button {
 
     private final StringProperty type = new SimpleStringProperty("PRIMARY");
     private final BooleanProperty fullWidth = new SimpleBooleanProperty(false);
-    private final StringProperty glyphIconName = new SimpleStringProperty("USER");
+    private final StringProperty glyphIconName = new SimpleStringProperty("");
     private final BooleanProperty isIconOnly = new SimpleBooleanProperty(false);
     private final StringProperty align = new SimpleStringProperty("CENTER");
     private final Store store = Store.getInstance();
     private boolean isLightMode = false;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final BooleanProperty isLoading = new SimpleBooleanProperty(false);
-    private LoadingSpinner loadingSpinner; // Spinner instance
-    private String originalText; // To store original text
-    private FontAwesomeIconView originalIcon; // To store original icon
+    private LoadingSpinner loadingSpinner;
+    private String originalText;
+    private FontAwesomeIconView originalIcon;
 
     public ShadcnButton() {
         super();
         initializeLoadingBehavior();
+        initializeBindings();
     }
 
     public ShadcnButton(String text, ButtonType type, String glyphIconName, Boolean fullWidth, Boolean isIconOnly, String align) {
@@ -55,10 +58,16 @@ public class ShadcnButton extends Button {
         this.fullWidth.set(fullWidth);
         this.isIconOnly.set(isIconOnly);
         this.align.set(align.toUpperCase());
-        this.originalText = text; // Store original text
+        this.originalText = text;
         initializeStyle(type);
-        updateWidth();
         initializeLoadingBehavior();
+        initializeBindings();
+    }
+
+    private void initializeBindings() {
+        // Add listener for fullWidth property
+        fullWidth.addListener((obs, oldVal, newVal) -> updateWidth());
+        isIconOnly.addListener((obs, oldVal, newVal) -> updateWidth());
     }
 
     public void dispose() {
@@ -67,35 +76,17 @@ public class ShadcnButton extends Button {
         }
     }
 
-    // Property getters
-    public StringProperty typeProperty() {
-        return type;
-    }
-
-    public StringProperty glyphIconNameProperty() {
-        return glyphIconName;
-    }
-
-    public BooleanProperty fullWidthProperty() {
-        return fullWidth;
-    }
-
-    public BooleanProperty isIconOnlyProperty() {
-        return isIconOnly;
-    }
-
-    public StringProperty alignProperty() {
-        return align;
-    }
-
-    public BooleanProperty isLoadingProperty() {
-        return isLoading;
-    }
+    // Property getters and setters remain the same...
+    public StringProperty typeProperty() { return type; }
+    public StringProperty glyphIconNameProperty() { return glyphIconName; }
+    public BooleanProperty fullWidthProperty() { return fullWidth; }
+    public BooleanProperty isIconOnlyProperty() { return isIconOnly; }
+    public StringProperty alignProperty() { return align; }
+    public BooleanProperty isLoadingProperty() { return isLoading; }
 
     @FXML
     public void setFullWidth(boolean fullWidth) {
         this.fullWidth.set(fullWidth);
-        updateWidth();
     }
 
     @FXML
@@ -103,23 +94,15 @@ public class ShadcnButton extends Button {
         this.isLoading.set(loading);
     }
 
-    public boolean getIsLoading() {
-        return this.isLoading.get();
-    }
+    public boolean getIsLoading() { return this.isLoading.get(); }
 
     @FXML
     public void setIsIconOnly(boolean isIconOnly) {
         this.isIconOnly.set(isIconOnly);
-        updateWidth();
     }
 
-    public boolean isFullWidth() {
-        return fullWidth.get();
-    }
-
-    public boolean isIconOnly() {
-        return isIconOnly.get();
-    }
+    public boolean isFullWidth() { return fullWidth.get(); }
+    public boolean isIconOnly() { return isIconOnly.get(); }
 
     @FXML
     public void setType(String type) {
@@ -132,9 +115,7 @@ public class ShadcnButton extends Button {
         }
     }
 
-    public String getType() {
-        return type.get();
-    }
+    public String getType() { return type.get(); }
 
     @FXML
     public void setGlyphIconName(String glyphIconName) {
@@ -143,9 +124,7 @@ public class ShadcnButton extends Button {
         setGraphic(iconView);
     }
 
-    public String getGlyphIconName() {
-        return glyphIconName.get();
-    }
+    public String getGlyphIconName() { return glyphIconName.get(); }
 
     @FXML
     public void setAlign(String align) {
@@ -153,9 +132,7 @@ public class ShadcnButton extends Button {
         updateButtonStyle(ButtonType.valueOf(getType()));
     }
 
-    public String getAlign() {
-        return align.get();
-    }
+    public String getAlign() { return align.get(); }
 
     private void initializeStyle(ButtonType type) {
         Disposable stateSubscription = store.getState().subscribe(stateRegistry -> {
@@ -172,20 +149,16 @@ public class ShadcnButton extends Button {
     }
 
     private void initializeLoadingBehavior() {
-        loadingSpinner = new LoadingSpinner(20, Color.BLACK, Color.BLACK); // Customize size and colors as needed
+        loadingSpinner = new LoadingSpinner(20, Color.BLACK, Color.BLACK);
         isLoading.addListener((obs, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if (newValue) {
-                    // Save original content
                     originalText = getText();
                     originalIcon = (FontAwesomeIconView) getGraphic();
-
-                    // Show loading spinner
                     setText("");
                     setGraphic(loadingSpinner);
                     setDisable(true);
                 } else {
-                    // Restore original content
                     setText(originalText);
                     setGraphic(originalIcon);
                     setDisable(false);
@@ -200,37 +173,36 @@ public class ShadcnButton extends Button {
                 "-fx-focus-color: transparent; " +
                 "-fx-faint-focus-color: transparent; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold; ";
 
-        String backgroundColor;
-        String hoverColor;
-        String textColor, hoverTextColor = "white";
+        String backgroundColor, hoverColor, textColor, hoverTextColor = "white";
 
         switch (type) {
             case PRIMARY:
-                backgroundColor = "#3b82f6";
-                hoverColor = "#3576df";
+                backgroundColor = "#f27a1a";
+                hoverColor = "#ff8b39";
                 textColor = "white";
                 break;
             case GHOST:
                 backgroundColor = "transparent";
-                hoverColor = "#3b82f6";
-                textColor = isLightMode ? "black" : "white";
-                hoverTextColor = isLightMode ? "white" : "white";
+                hoverColor = "#2c2c30";
+                textColor = isLightMode ? "#82838b":"#fff";
+                hoverTextColor = "white";
                 break;
             case SECONDARY:
-                backgroundColor = "#27272a";
-                hoverColor = "#212124";
-                textColor = "white";
+                backgroundColor = "#ebf5ff";
+                hoverColor = "#4896e5";
+                textColor = "#4896e5";
+                hoverTextColor = "#fff";
                 break;
             case DESTRUCTIVE:
-                backgroundColor = "#D32F2F";
-                hoverColor = "#B71C1C";
+                backgroundColor = "#ed4245";
+                hoverColor = "#c03537";
                 textColor = "white";
                 break;
             case SUCCESS:
-                backgroundColor = "#c1e411";
-                hoverColor = "#8ba808";
-                textColor = isLightMode ? "black" : "black";
-                hoverTextColor = isLightMode ? "black" : "black";
+                backgroundColor = "#3ba55c";
+                hoverColor = "#2d7d46";
+                textColor = "white";
+                hoverTextColor = "white";
                 break;
             default:
                 backgroundColor = "#1E88E5";
@@ -239,42 +211,41 @@ public class ShadcnButton extends Button {
         }
 
         setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
+        setWrapText(true); // Enable text wrapping
 
-        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
-        iconView.setFill(Paint.valueOf(textColor));
+        FontAwesomeIconView iconView = !glyphIconName.get().isEmpty() ? getGlyphIcon(this.glyphIconName) : null;
+        if (iconView != null) {
+            iconView.setFill(Paint.valueOf(textColor));
+        }
 
         String finalHoverTextColor = hoverTextColor;
         setOnMouseEntered(e -> {
             runAnimationForNode(this, GuiAnimationUtil.HoverType.HOVERING);
             setStyle("-fx-background-color: " + hoverColor + "; " + "-fx-text-fill: " + finalHoverTextColor + "; " + baseStyle);
             setCursor(Cursor.HAND);
-            iconView.setFill(Paint.valueOf(finalHoverTextColor));
+            if (iconView != null) {
+                iconView.setFill(Paint.valueOf(finalHoverTextColor));
+            }
         });
 
         setOnMouseExited(e -> {
             setCursor(Cursor.DEFAULT);
             runAnimationForNode(this, GuiAnimationUtil.HoverType.EXIT);
             setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
-            iconView.setFill(Paint.valueOf(textColor));
+            if (iconView != null) {
+                iconView.setFill(Paint.valueOf(textColor));
+            }
         });
 
-        // Only set graphic if not loading
         if (!isLoading.get()) {
             setGraphic(iconView);
             setContentDisplay(ContentDisplay.LEFT);
         }
 
         switch (align.get().toUpperCase()) {
-            case "LEFT":
-                setAlignment(Pos.CENTER_LEFT);
-                break;
-            case "RIGHT":
-                setAlignment(Pos.CENTER_RIGHT);
-                break;
-            case "CENTER":
-            default:
-                setAlignment(Pos.CENTER);
-                break;
+            case "LEFT": setAlignment(Pos.CENTER_LEFT); break;
+            case "RIGHT": setAlignment(Pos.CENTER_RIGHT); break;
+            case "CENTER": default: setAlignment(Pos.CENTER); break;
         }
 
         setGraphicTextGap(10);
@@ -283,9 +254,13 @@ public class ShadcnButton extends Button {
 
     private void updateWidth() {
         if (fullWidth.get()) {
+            setMinWidth(0);
             setMaxWidth(Double.MAX_VALUE);
+            setPrefWidth(USE_COMPUTED_SIZE);
         } else {
-            setMaxWidth(isIconOnly.get() ? 30 : getPrefWidth());
+            setMinWidth(USE_COMPUTED_SIZE);
+            setMaxWidth(isIconOnly.get() ? 30 : Double.MAX_VALUE);
+            setPrefWidth(isIconOnly.get() ? 30 : USE_COMPUTED_SIZE);
         }
     }
 

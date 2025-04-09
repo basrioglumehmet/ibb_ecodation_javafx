@@ -7,4 +7,5 @@ import java.util.function.Consumer;
 
 public interface UserService extends Crud<User> {
     void readByEmail(String email,Consumer<User> callback);
+    boolean isEmailExists(String email);
 }

@@ -10,20 +10,23 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.model.Authentication;
+import org.example.ibb_ecodation_javafx.model.UserOtpCode;
+import org.example.ibb_ecodation_javafx.model.enums.AuthenticationResult;
 import org.example.ibb_ecodation_javafx.service.AuthenticationService;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
+import org.example.ibb_ecodation_javafx.utils.ValidationUtil;
 
 import java.io.IOException;
+import java.util.Map;
 
-import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runSceneSlideAnimation;
 
 public class SignInController {
 
     @FXML
-    private StackPane rootPane; // Add this to reference the parent StackPane from FXML
+    private StackPane rootPane;
     @FXML
     private ShadcnInput email;
 
@@ -32,6 +35,7 @@ public class SignInController {
 
     @FXML
     private ShadcnButton login;
+
 
 
 
@@ -44,41 +48,32 @@ public class SignInController {
 
     @FXML
     private void handleSignInProcess() throws IOException {
-        boolean hasError = false;
+        // Önce önceki hataları temizle
+        ValidationUtil.clearErrors(email, password);
 
-        String emailText = email.getText().trim();
-        String passwordText = password.getText().trim();
+        // Validator oluşturuluyor
+        var validator = ValidationUtil.createValidator(Map.of(
+                email, "Email boş bırakılamaz",
+                password, "Şifre boş olamaz"
+        ));
 
-        // E-posta kontrolü
-        if (emailText.length() < 5) {
-            email.setError("Email adresi 5 karakterden kısa olamaz.");
-            hasError = true;
-        } else {
-            email.clearError();
-        }
+        // Validasyon çalıştırılır
+        var errors = validator.runValidatorEngine();
 
-        // Şifre kontrolü
-        if (passwordText.length() < 5) {
-            password.setError("Şifre 5 karakterden kısa olamaz.");
-            hasError = true;
-        } else {
-            password.clearError();
-        }
-
-        // Hatalar yoksa giriş yap
-        if (!hasError) {
-            showLoadingDialogAndSignIn();
+        if (errors.isEmpty()) {
+            handleSignIn();
         }
     }
 
     private void handleSignIn() {
         var authenticationModel = new Authentication(email.getText(), password.getText());
         authenticationService.signin(authenticationModel, callback -> {
-            if (callback != null) {
-                System.out.println("Ok");
-            } else {
-                email.setError("Email adresinizi kontrol edin.");
-                password.setError("Şifrenizi kontrol edin.");
+            if(callback.equals(AuthenticationResult.OTP_REQUIRED)){
+                try {
+                    SceneUtil.loadSlidingContent(rootPane,"otp-verification");
+                } catch (IOException e) {
+                    System.out.println("Giriş sayfasında otp ekranı yüklenirken sorun oluştu:" +e.getMessage());
+                }
             }
         });
     }

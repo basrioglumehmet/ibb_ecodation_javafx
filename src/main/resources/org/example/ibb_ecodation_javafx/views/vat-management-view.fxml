@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.example.ibb_ecodation_javafx.ui.chart.ShadcnPieChart?>
+<?import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart?>
+<?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+<?import org.example.ibb_ecodation_javafx.ui.table.DynamicTable?>
+<VBox fx:id="vatPane"
+      xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/8"
+      HBox.hgrow="ALWAYS" fx:controller="org.example.ibb_ecodation_javafx.controller.VatManagementController"
+      spacing="15" >
+    <HBox spacing="20" style="-fx-background-color:#202024; -fx-background-radius:20px; -fx-padding:20px;"  alignment="CENTER_LEFT" >
+        <ShadcnInput VBox.vgrow="ALWAYS"  HBox.hgrow="ALWAYS" fx:id="vatNumber"  header="Fiş numarasına göre ara..." />
+    </HBox>
+    <DynamicTable fx:id="vatTable" VBox.vgrow="ALWAYS" maxHeight="Infinity" />
+    <HBox maxHeight="200" alignment="CENTER" style="-fx-background-color: #202024; -fx-background-radius: 20px;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <children>
+            <ShadcnBarChart fx:id="barChart" HBox.hgrow="ALWAYS"/>
+        </children>
+    </HBox>
+</VBox>

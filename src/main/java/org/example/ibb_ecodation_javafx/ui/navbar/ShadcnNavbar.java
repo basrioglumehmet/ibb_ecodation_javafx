@@ -24,7 +24,6 @@ public class ShadcnNavbar extends HBox {
     public ShadcnNavbar() {
         super(20);
 
-        setStyle("-fx-background-color: black; -fx-padding: 10px; -fx-border-width: 0 0 1px; -fx-border-color:#27272a;");
         setAlignment(Pos.CENTER_LEFT);
         setPrefHeight(60);
 
@@ -54,7 +53,7 @@ public class ShadcnNavbar extends HBox {
 
     private void updateUI() {
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                String.format("/org/example/ibb_ecodation_javafx/assets/%s.png", isDarkMode ? "logo_dark":"logo")
+                String.format("/org/example/ibb_ecodation_javafx/assets/%s.png", !isDarkMode ? "logo_dark":"logo")
         )));;
         this.logoView.setImage(image);
     }

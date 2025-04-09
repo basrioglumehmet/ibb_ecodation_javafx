@@ -22,19 +22,39 @@ public class BaseRepository<T> implements GenericRepository<T> {
 
     @Override
     public T create(T entity, String query, List<Object> params) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             setParameters(preparedStatement, params);
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows > 0) {
-                System.out.println("Kayıt başarıyla eklendi.");
-                return entity;
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        T createdEntity = entity;
+                        try {
+                            Field idField = entity.getClass().getDeclaredField("id");
+                            if (idField != null) {
+                                idField.setAccessible(true);
+                                idField.setInt(createdEntity, generatedKeys.getInt(1));
+                                System.out.println("Kayıt başarıyla eklendi. Generated ID: " + generatedKeys.getInt(1));
+                            }
+                        } catch (NoSuchFieldException e) {
+                            // id alanı yoksa devam et
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+
+                        return createdEntity;
+                    }
+                    else {
+                        System.out.println("Kayıt eklendi ancak generated keys alınamadı.");
+                        return entity;
+                    }
+                }
             } else {
                 throw new RuntimeException("Kayıt eklenemedi.");
             }
         } catch (SQLException e) {
             if (e.getMessage().contains("PRIMARY KEY constraint")) {
                 throw new RuntimeException("Create hatası (Duplicate veri): " + e.getMessage());
-                // Gerekirse özel bir işlem yapılabilir
             } else {
                 throw new RuntimeException("Create hatası: " + e.getMessage(), e);
             }
@@ -45,27 +65,25 @@ public class BaseRepository<T> implements GenericRepository<T> {
     public T read(Class<T> entityClass, String query, List<Object> params) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, params);
-            System.out.println("PreparedStatement: " + preparedStatement);  // Sorguyu logla
+            System.out.println("PreparedStatement: " + preparedStatement);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapToEntity(entityClass, resultSet);
                 } else {
-                    System.out.println("Verilen ID ile ilgili entity bulunamadı." + params.get(0));  // ID'yi logla
+                    System.out.println("Verilen ID ile ilgili entity bulunamadı." + params.get(0));
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException("Read hatası: " + e.getMessage(), e);
         }
-        return null;  // Veri bulunmazsa null döner
+        return null;
     }
 
     @Override
     public T update(T entity, String query, List<Object> params) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, params);
-
             int affectedRows = preparedStatement.executeUpdate();
-
             if (affectedRows > 0) {
                 System.out.println("Kayıt başarıyla güncellendi.");
                 return entity;
@@ -77,8 +95,6 @@ public class BaseRepository<T> implements GenericRepository<T> {
             throw new RuntimeException("Update hatası: " + e.getMessage(), e);
         }
     }
-
-
 
     @Override
     public Boolean delete(String query, List<Object> params) {
@@ -105,25 +121,18 @@ public class BaseRepository<T> implements GenericRepository<T> {
             preparedStatement.setObject(i + 1, params.get(i));
         }
     }
+
     private T mapToEntity(Class<T> entityClass, ResultSet resultSet) throws SQLException {
         try {
             T entity = entityClass.getDeclaredConstructor().newInstance();
-
             for (Field field : entityClass.getDeclaredFields()) {
                 field.setAccessible(true);
-
-                // Varsayılan olarak field ismini al
                 String columnName = field.getName();
-
-                // Annotation varsa, kolon adını ondan al
-                //Şuanki yapıda Hibernate olmamasından kaynaklı jdbc için özel bir  annotation oluşturduk.
                 JdbcNamedField annotation = field.getAnnotation(JdbcNamedField.class);
                 if (annotation != null && !annotation.dbFieldName().isEmpty()) {
                     columnName = annotation.dbFieldName();
                 }
-
                 Object value = resultSet.getObject(columnName);
-
                 if (value != null) {
                     if (field.getType().isEnum()) {
                         field.set(entity, Enum.valueOf((Class<Enum>) field.getType(), value.toString()));
@@ -132,12 +141,9 @@ public class BaseRepository<T> implements GenericRepository<T> {
                     }
                 }
             }
-
             return entity;
-
         } catch (Exception e) {
             throw new SQLException("Result set verisini entity modeline çevirirken sorun oldu " + e.getMessage(), e);
         }
     }
-
 }

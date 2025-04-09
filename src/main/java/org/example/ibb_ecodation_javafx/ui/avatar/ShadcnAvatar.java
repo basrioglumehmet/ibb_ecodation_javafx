@@ -1,7 +1,5 @@
 package org.example.ibb_ecodation_javafx.ui.avatar;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -19,10 +17,10 @@ import java.net.URL;
 public class ShadcnAvatar extends Button {
 
     private Circle avatarCircle;
-    private Circle paddingCircle;
+    private Circle statusCircle;
     private double avatarSize = 24;
     private double padding = 5;
-
+    private DropShadow borderEffect;
 
     public ShadcnAvatar() {
         this(24);
@@ -34,25 +32,40 @@ public class ShadcnAvatar extends Button {
     }
 
     private void initialize() {
-        // Create the padding circle
-        paddingCircle = new Circle(avatarSize);
-        paddingCircle.setFill(Color.TRANSPARENT);
-        paddingCircle.setStrokeWidth(0);
-
-        // Create the avatar circle (this will be the circle with the image)
+        // Create the avatar circle
         avatarCircle = new Circle(avatarSize - padding);
-        avatarCircle.setFill(Color.LIGHTGRAY); // Default fill color before an image is set
-        avatarCircle.setEffect(new DropShadow(5, Color.BLACK)); // Add a shadow effect for the avatar
-        // Make the button transparent
+        avatarCircle.setFill(Color.LIGHTGRAY);
+
+        // Create the status circle for active status
+        double avatarRadius = avatarSize - padding;
+        double statusSize = avatarRadius / 3;
+        statusCircle = new Circle(statusSize);
+        statusCircle.setFill(Color.web("#3ba55c"));
+
+        double statusRadius = statusSize;
+
+        double translateX = avatarRadius - statusRadius;
+        double translateY = avatarRadius - statusRadius;
+        statusCircle.setTranslateX(translateX);
+        statusCircle.setTranslateY(translateY);
+
+        borderEffect = new DropShadow();
+        borderEffect.setColor(Color.web("#1a1a1e"));
+        borderEffect.setRadius(2);
+        borderEffect.setSpread(0.8);
+        statusCircle.setEffect(borderEffect);
+
+        // Make button transparent
         this.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
 
-        // Add both circles to the StackPane
+        // Add circles to StackPane
         StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(paddingCircle, avatarCircle);
+        stackPane.getChildren().addAll(avatarCircle, statusCircle);
 
-        // Set the stackPane as the button's graphic
+        // Set as button graphic
         this.setGraphic(stackPane);
     }
+
     public void setImage(Image image) {
         try {
             avatarCircle.setFill(new ImagePattern(image));
@@ -64,7 +77,7 @@ public class ShadcnAvatar extends Button {
     public void setImage(BufferedImage bufferedImage) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage,"png",byteArrayOutputStream);
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
             byte[] imageBytes = byteArrayOutputStream.toByteArray();
             Image image = new Image(new ByteArrayInputStream(imageBytes));
             avatarCircle.setFill(new ImagePattern(image));
@@ -72,11 +85,12 @@ public class ShadcnAvatar extends Button {
             System.out.println("Geçersiz Resim Adresi: " + ex.getMessage());
         }
     }
+
     public void setImage(URL imagePath) {
         try {
             if (imagePath != null) {
                 Image image = new Image(imagePath.toExternalForm(), false);
-                avatarCircle.setFill(new ImagePattern(image)); // Set image to avatar circle
+                avatarCircle.setFill(new ImagePattern(image));
             } else {
                 System.out.println("Resim Bulunamadı: " + imagePath);
             }
@@ -87,24 +101,47 @@ public class ShadcnAvatar extends Button {
 
     public void setAvatarSize(double size) {
         this.avatarSize = size;
-        paddingCircle.setRadius(size);
-        avatarCircle.setRadius(size - padding); // Adjust avatar circle radius accordingly
+        avatarCircle.setRadius(size - padding);
+        // Update status circle
+        double avatarRadius = size - padding;
+        double statusSize = avatarRadius / 3;
+        statusCircle.setRadius(statusSize);
+
+        double statusRadius = statusSize;
+        double translateX = avatarRadius - statusRadius;
+        double translateY = avatarRadius - statusRadius;
+        statusCircle.setTranslateX(translateX);
+        statusCircle.setTranslateY(translateY);
     }
 
     public void setAvatarBorder(Color color) {
-        avatarCircle.setStroke(color);
+        this.borderEffect.setColor(color);
     }
 
     public void setPadding(double padding) {
         this.padding = padding;
         avatarCircle.setRadius(avatarSize - padding);
+        // Update status circle
+        double avatarRadius = avatarSize - padding;
+        double statusSize = avatarRadius / 3;
+        statusCircle.setRadius(statusSize);
+
+        double statusRadius = statusSize;
+        double translateX = avatarRadius - statusRadius;
+        double translateY = avatarRadius - statusRadius;
+        statusCircle.setTranslateX(translateX);
+        statusCircle.setTranslateY(translateY);
     }
 
     public Circle getAvatarCircle() {
         return avatarCircle;
     }
 
-    public Circle getPaddingCircle() {
-        return paddingCircle;
+    public void setStatusActive(boolean isActive) {
+        statusCircle.setVisible(isActive);
+    }
+
+    public Circle getStatusCircle() {
+        return statusCircle;
     }
 }

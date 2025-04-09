@@ -13,7 +13,7 @@
 <?import javafx.scene.image.Image?>
 <StackPane fx:id="rootPane"
             fx:controller="org.example.ibb_ecodation_javafx.controller.SignUpController"
-           style="-fx-background-color: white; "
+           style="-fx-background-color: #fafafa; "
            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
 <VBox alignment="CENTER" spacing="20.0"
@@ -36,11 +36,11 @@
     <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
     <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
 
-    <ShadcnButton onAction="#handleSignUpProcess" fullWidth="true" text="Continue" type="PRIMARY" align="LEFT"
+    <ShadcnButton onAction="#handleSignUpProcess" fullWidth="true" fx:id="continueButton" text="Continue" type="PRIMARY" align="CENTER"
                   mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
 
 
-    <ShadcnButton onAction="#handleBack"  fullWidth="true"  fx:id="login"  text="Back" type="SECONDARY" align="LEFT"
+    <ShadcnButton onAction="#handleBack"  fullWidth="true"   text="Back" type="SECONDARY" align="CENTER"
                   mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
 
     <VBox alignment="CENTER">

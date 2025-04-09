@@ -33,22 +33,21 @@ public class ShadcnSwitchButton extends StackPane {
     }
 
     private void toggle() {
-        setValue(!value);  // Toggling the current value on click
+        setValue(!value);
     }
 
     private void updateSwitchState() {
         transition.setToX(value ? 12 : -12);
         transition.play();
-        button.setFill(value ? Color.web("black") : Color.web("#fff"));
-        background.setFill(value ? Color.web("#c1e411") : Color.web("#27272a"));
-        stateSubject.onNext(value);  // Emit the updated value
+        button.setFill(value ? Color.web("white") : Color.web("#fff"));
+        background.setFill(value ? Color.web("#f27a1a") : Color.web("#4d505b"));
+        stateSubject.onNext(value);
     }
 
     public void setValue(boolean value) {
-        if (this.value != value) {  // Only update if the value has changed
+        if (this.value != value) {
             this.value = value;
-            System.out.println("Value updated to: " + value);  // Debug statement
-            updateSwitchState();  // Update UI and emit the value
+            updateSwitchState();
         }
     }
 

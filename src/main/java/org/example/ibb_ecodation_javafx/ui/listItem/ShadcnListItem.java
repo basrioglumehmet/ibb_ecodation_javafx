@@ -1,6 +1,5 @@
 package org.example.ibb_ecodation_javafx.ui.listItem;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,6 +15,7 @@ import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnSwitchButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnComboBox;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 
@@ -45,6 +45,7 @@ public class ShadcnListItem extends HBox {
         this.headerText.set(headerText);
         this.descriptionText.set(descriptionText);
         this.glyphIconName.set(glyphIconName);
+        setContainerStyle();
         initializeStyle(type);
     }
 
@@ -100,12 +101,10 @@ public class ShadcnListItem extends HBox {
         return type.get();
     }
     private void setContainerStyle(){
-        this.setStyle(String.format("-fx-border-color: %s;",isLightMode ? "#f2f2f3":"#303030") +
-                " -fx-border-radius: 8px; -fx-padding: 10px;");
+        this.setStyle(String.format("-fx-background-color: %s;",isLightMode ? "#f2f2f3":"#202024") +
+                " -fx-background-radius: 8px; -fx-padding: 10px;");
     }
     private void initializeStyle(ListItemType type) {
-        // Default style for all types
-        //Store'a ait ilk değerini al
 
         Label header = new Label(headerText.get());
         Label detail = new Label(descriptionText.get());
@@ -144,30 +143,23 @@ public class ShadcnListItem extends HBox {
 
                 this.getChildren().addAll(spacer, rightContainer);
 
-                // Initialize subscription to the switch button's state changes
                 break;
 
             case WITH_ICON:
-                // Create a spacer to push elements to the right
                 Region spacer2 = new Region();
                 HBox.setHgrow(spacer2, Priority.ALWAYS);
 
-                // Get the icon using the glyph name
                 FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
                 iconView.setGlyphSize(40);
 
-                // Set icon color
                 iconView.setFill(Paint.valueOf("white"));
 
-                // Wrap the icon in a StackPane to ensure it's added as a valid child node
                 StackPane iconWrapper = new StackPane(iconView);
 
-                // Create a container for the switchButton
                 HBox rightContainer2 = new HBox(iconWrapper);
                 rightContainer2.setAlignment(Pos.CENTER_RIGHT);
                 rightContainer2.setSpacing(10);
 
-                // Add the elements to the parent node
                 this.getChildren().addAll(spacer2, rightContainer2);
 
                 break;
@@ -177,7 +169,7 @@ public class ShadcnListItem extends HBox {
                 Region spacer3 = new Region();
                 HBox.setHgrow(spacer3, Priority.ALWAYS);
 
-                ShadcnComboBox languageComboBox = new ShadcnComboBox();
+                ShadcnLanguageComboBox languageComboBox = new ShadcnLanguageComboBox();
 
                 HBox rightContainerLanguage = new HBox(languageComboBox);
                 rightContainerLanguage.setAlignment(Pos.CENTER_RIGHT);

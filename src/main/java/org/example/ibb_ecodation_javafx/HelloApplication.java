@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.controller.LoginController;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.utils.AlertSchedulerUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 
 import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotification;
@@ -19,9 +20,10 @@ public class HelloApplication extends Application {
             SceneUtil.loadScene(
                     LoginController.class,
                     stage,
-                    String.format(ViewPathConstant.FORMAT, "login"),
+                    String.format(ViewPathConstant.FORMAT, "admin-dashboard"),
                     "Login"
             );
+//            AlertSchedulerUtil.startMinuteAlert();
 
             showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
 

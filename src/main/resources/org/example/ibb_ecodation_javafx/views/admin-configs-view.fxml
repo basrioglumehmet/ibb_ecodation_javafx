@@ -19,7 +19,7 @@
         <ShadcnListItem fx:id="shadcnListItem2" headerText="Sistem Bildirimleri" descriptionText="İşletim sistemine ait bildirim altyapısını kullanır." type="WITH_SWITCH"/>
         <HBox spacing="10">
             <ShadcnButton glyphIconName="COG" fullWidth="false"  text="Ayarları kayıt et" type="SUCCESS"/>
-            <ShadcnButton glyphIconName="COG" fullWidth="false"  text="Ayarları resetle" type="DESTRUCTIVE"/>
+            <ShadcnButton  glyphIconName="COG" fullWidth="false"  text="Ayarları resetle" type="DESTRUCTIVE"/>
         </HBox>
     </VBox>
 </StackPane>

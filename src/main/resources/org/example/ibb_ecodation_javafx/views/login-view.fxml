@@ -25,31 +25,12 @@
             prefHeight="108.0" prefWidth="590.0"
             VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
          <children>
-            <VBox prefHeight="76.0" prefWidth="758.0" style="-fx-background-color: #18181b; -fx-padding: 30;">
-               <children>
-                  <ImageView fitHeight="62.0" fitWidth="248.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/logo.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </VBox>
-            <VBox prefHeight="108.0" prefWidth="590.0" style="-fx-background-color: #18181b;" VBox.vgrow="ALWAYS" />
-            <VBox alignment="BOTTOM_CENTER" prefHeight="261.0" prefWidth="590.0" style="-fx-background-color: #17171a; -fx-padding: 30;">
-               <children>
-                  <Label prefHeight="129.0" prefWidth="99999.0"
-                         text="“This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before.”"
-                         textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Poppins';">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="31.0" prefWidth="9999.0" text="Sofia Davis" textFill="WHITE" wrapText="true" style="-fx-font-family: 'Poppins';">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children>
+            <VBox prefHeight="108.0" prefWidth="590.0" style="-fx-background-color: #fff;" alignment="CENTER" VBox.vgrow="ALWAYS" >
+            <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/hero.png" />
+               </image>
+            </ImageView>
             </VBox>
          </children>
       </VBox>
@@ -59,8 +40,9 @@
          <content>
             <VBox alignment="CENTER"
                   prefHeight="108.0" prefWidth="590.0"
-                  VBox.vgrow="ALWAYS" style="-fx-padding: 30; -fx-background-color:white;" >
+                  VBox.vgrow="ALWAYS" style="-fx-padding: 30; -fx-background-color:#fafafa;" >
                <fx:include fx:id="loginContent" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" source="signin-view.fxml" />
+
             </VBox>
          </content>
       </ScrollPane>

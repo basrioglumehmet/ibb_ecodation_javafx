@@ -3,9 +3,8 @@ package org.example.ibb_ecodation_javafx.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.statemanagement.action.IncrementAction;
@@ -19,6 +18,7 @@ import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Stack;
 
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacityAnimation;
 import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
@@ -29,9 +29,14 @@ import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotificati
 public class AdminDashboardController {
 
     @FXML
+    private BorderPane rootPane;
+
+    @FXML
     private ShadcnAvatar shadcnAvatar;
     @FXML
     private StackPane contentArea; // StackPane olarak tanımlandığından emin olun
+    @FXML
+    private StackPane mainContentArea;
 
     private Store store;
 
@@ -44,6 +49,9 @@ public class AdminDashboardController {
     @FXML
     private VBox sidebarBottom;
 
+    @FXML
+    private HBox sidebarBottomInsideContainer;
+
     public void initialize(){
         store = Store.getInstance();
         store.getState().subscribe(stateRegistry -> {
@@ -52,38 +60,33 @@ public class AdminDashboardController {
             changeSidebarColor(darkModeValue);
             changeNavbarColor(darkModeValue);
             changeContentColor(darkModeValue);
-            String textColor = darkModeValue ? "black" : "white";
+            String textColor = darkModeValue ? "#121214" : "white";
             setAvatarImageSource();
         });
-//        //User Bilgisi dispatch edilmeli login olduğunda.
-//        store.dispatch(UserState.class, new UserState(new UserDetailDto(), true));
-//        store.dispatch(DarkModeState.class, new DarkModeState(true));
         setAvatarImageSource();
-//
-//        store.dispatch(TranslatorState.class, new TranslatorState(CountryCode.EN));
-//        store.dispatch(DarkModeState.class, new DarkModeState(false));
     }
 
     private void changeContentColor(boolean lightModeValue) {
-        this.contentArea.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "white":"black"));
+        this.contentArea.setStyle(String.format("-fx-background-radius: 10px 0px 0px 0px; -fx-background-color: %s;", lightModeValue ? "white":"#1a1a1e"));
+        this.mainContentArea.setStyle(String.format("-fx-background-radius: 10px 0px 0px 0px; -fx-background-color: %s;", lightModeValue ? "white":"#1a1a1e"));
+        this.rootPane.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "white":"#121214"));
+
     }
 
     private void changeNavbarColor(boolean lightModeValue) {
-        this.navbar.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "white":"black") +
-                " -fx-padding: 10px; -fx-border-width: 0 0 1px; " +
-                String.format("-fx-border-color:%s",!lightModeValue ? "#27272a": "#f2f2f3"));
+        this.navbar.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "white":"#121214") +
+                "-fx-padding: 10px 20px 10px 20px;");
     }
 
     private void changeSidebarColor(boolean value){
-        this.sidebar.setStyle(String.format("-fx-background-color: %s;", value ? "white":"black") +
-
-                "-fx-border-width: 0 1;" +
-                String.format("-fx-border-color:%s",!value ? "#27272a": "#f2f2f3"));
-        this.sidebarBottom.setStyle(
-                "-fx-border-width: 1 0; " +
-                        String.format("-fx-border-color:%s;",!value ? "#27272a": "#f2f2f3")+
-                "-fx-padding: 10;"
+        this.sidebar.setStyle(String.format("-fx-background-color: %s;", value ? "white":"#121214"));
+        this.sidebarBottom.setStyle( "-fx-padding: 10;"
         );
+        this.sidebarBottomInsideContainer.setStyle(
+                "-fx-background-radius: 14px; -fx-padding: 10; " +
+                        String.format("-fx-background-color:%s;",!value ? "#202024": "#f2f2f3")
+        );
+        this.shadcnAvatar.setAvatarBorder(Color.web(!value ? "#202024": "#f2f2f3"));
     }
 
     // Home butonuna tıklama işlemi

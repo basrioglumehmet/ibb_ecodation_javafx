@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.example.ibb_ecodation_javafx.ui.chart.ShadcnPieChart?>
+<?import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart?>
+<?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+<?import org.example.ibb_ecodation_javafx.ui.table.DynamicTable?>
+
+<VBox fx:id="userPane" fx:controller="org.example.ibb_ecodation_javafx.controller.UserManagementController"
+      xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/8"
+      VBox.vgrow="ALWAYS"
+        spacing="15">
+<HBox spacing="20"
+      style="-fx-background-color:#202024; -fx-background-radius:20px; -fx-padding:20px;"
+      alignment="CENTER_LEFT">
+<ShadcnInput HBox.hgrow="ALWAYS" fx:id="name" header="Kullanıcı adına göre ara..." />
+<ShadcnInput HBox.hgrow="ALWAYS" fx:id="role" header="Rol adına göre ara..." />
+</HBox>
+<DynamicTable fx:id="userTable" VBox.vgrow="ALWAYS" /> <!-- DynamicTable esnek bir şekilde büyüsün -->
+        </VBox>

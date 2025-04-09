@@ -13,18 +13,13 @@
 <?import javafx.scene.image.Image?>
 <StackPane fx:id="rootPane"
            fx:controller="org.example.ibb_ecodation_javafx.controller.SignInController"
-           style="-fx-background-color: white;"
+           style="-fx-background-color: #fafafa;"
            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
     <VBox alignment="CENTER" spacing="20.0"
           maxWidth="Infinity" maxHeight="Infinity"
           VBox.vgrow="ALWAYS" StackPane.alignment="CENTER">
         <children>
-            <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@../assets/login.png" />
-                </image>
-            </ImageView>
             <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
                    style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-font-size: 28px;"
                    text="Sign In" wrapText="true">
@@ -33,7 +28,7 @@
 
             <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
             <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
-            <ShadcnButton fullWidth="true"  fx:id="login" onAction="#handleSignInProcess" text="Continue" type="PRIMARY" align="LEFT"
+            <ShadcnButton fullWidth="true"  fx:id="login" onAction="#handleSignInProcess" text="Continue" type="PRIMARY" align="CENTER"
                           mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
 
             <HBox alignment="CENTER"  prefWidth="481.0" style="-fx-padding: 0;">
@@ -47,7 +42,7 @@
                 </children>
             </HBox>
 
-            <ShadcnButton onAction="#handleSignUp" fullWidth="true"  text="Sign Up" type="SECONDARY" align="LEFT"
+            <ShadcnButton onAction="#handleSignUp" fullWidth="true"  text="Sign Up" type="SECONDARY" align="CENTER"
                           mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
 
             <VBox alignment="CENTER">

@@ -13,6 +13,12 @@ public class FontAwesomeUtil {
         FontAwesomeIcon icon = FontAwesomeIcon.USER; // Default icon
 
         switch (iconName.toUpperCase()) {
+            case "CLOCK":
+                icon = FontAwesomeIcon.CLOCK_ALT;
+                break;
+            case "TRASH":
+                icon = FontAwesomeIcon.TRASH;
+                break;
             case "USER":
                 icon = FontAwesomeIcon.USER;
                 break;

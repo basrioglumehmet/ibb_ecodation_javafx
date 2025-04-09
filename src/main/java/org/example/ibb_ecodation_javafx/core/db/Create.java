@@ -1,5 +1,5 @@
 package org.example.ibb_ecodation_javafx.core.db;
 
 public interface Create<T> {
-    void create(T entity);
+    T create(T entity);
 }
