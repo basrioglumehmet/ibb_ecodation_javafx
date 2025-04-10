@@ -11,4 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class VatTableAction {
     private final List<Vat> vatList;
+    private final Vat selectedVatItem;
 }

@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  */
 public class PdfExportUtil {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private static final float PAGE_WIDTH = PageSize.A4.getWidth() - 72; // A4 width (595) minus default margins (36 each side)
     private static final float MIN_WIDTH = 20f; // Minimum width for any column
     private static final float ID_WIDTH_FACTOR = 0.5f; // Reduce ID column width by 50%
@@ -210,7 +210,7 @@ public class PdfExportUtil {
                     Object value = field.get(data);
                     String displayValue;
                     if (value instanceof Date) {
-                        displayValue = DATE_FORMAT.format((Date) value);
+                        displayValue = DATE_FORMAT.format((Date) value); // Direct formatting of Date object
                     } else {
                         displayValue = value != null ? value.toString() : "";
                     }

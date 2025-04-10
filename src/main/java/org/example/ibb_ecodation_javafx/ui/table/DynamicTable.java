@@ -29,6 +29,7 @@ public class DynamicTable<T> extends VBox {
     private List<String> headers = new ArrayList<>();
     private List<List<String>> data = new ArrayList<>();
     private List<Pair<CheckBox, List<String>>> selectedRows = new ArrayList<>();
+    private boolean singleSelection = false; // Flag to enforce single selection
 
     public DynamicTable() {
         this.setSpacing(20);
@@ -39,7 +40,7 @@ public class DynamicTable<T> extends VBox {
         HBox.setHgrow(this, Priority.ALWAYS);
 
         tableContent = new VBox();
-        tableContent.setStyle("-fx-background-color: #121214; -fx-background-radius: 20; -fx-border-radius: 20; ");
+        tableContent.setStyle("-fx-background-color: #121214; -fx-background-radius: 20; -fx-border-radius: 20;");
 
         scrollPane = new ScrollPane(tableContent);
         scrollPane.setFitToHeight(true);
@@ -84,10 +85,10 @@ public class DynamicTable<T> extends VBox {
 
         VBox titleSection = new VBox(5);
         Label titleLabel = new Label(headerText);
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
+        titleLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
 
         Label subtitleLabel = new Label(descriptionText);
-        subtitleLabel.setStyle("-fx-text-fill: #fff; -fx-font-size: 14px;");
+        subtitleLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: #fff; -fx-font-size: 14px;");
         titleSection.getChildren().addAll(titleLabel, subtitleLabel);
 
         Region spacer = new Region();
@@ -162,6 +163,11 @@ public class DynamicTable<T> extends VBox {
         refreshHeader();
     }
 
+    public void setSingleSelection(boolean single) {
+        this.singleSelection = single;
+        refreshTable();
+    }
+
     private void refreshHeader() {
         this.getChildren().remove(0);
         this.getChildren().add(0, createHeader());
@@ -172,7 +178,9 @@ public class DynamicTable<T> extends VBox {
         selectedRows.clear();
 
         if (headers.isEmpty()) {
-            tableContent.getChildren().add(new Label("No headers defined"));
+            Label noHeadersLabel = new Label("No headers defined");
+            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 10px;");
+            tableContent.getChildren().add(noHeadersLabel);
             return;
         }
 
@@ -187,7 +195,7 @@ public class DynamicTable<T> extends VBox {
 
         for (String header : headers) {
             Label headerLabel = new Label(header);
-            headerLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5px;");
+            headerLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5px;");
             headerLabel.setMinWidth(calculateCellWidth(header));
             headerLabel.setAlignment(Pos.CENTER);
             HBox.setHgrow(headerLabel, Priority.ALWAYS);
@@ -198,18 +206,24 @@ public class DynamicTable<T> extends VBox {
         // Add data rows with custom checkboxes
         if (data.isEmpty()) {
             Label noDataLabel = new Label("No data available");
-            noDataLabel.setStyle("-fx-text-fill: white; -fx-padding: 10px;");
+            noDataLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 10px;");
             tableContent.getChildren().add(noDataLabel);
         } else {
             for (int i = 0; i < data.size(); i++) {
                 List<String> row = data.get(i);
                 HBox dataRow = new HBox();
-
                 dataRow.setStyle("-fx-padding: 10px;");
 
                 CheckBox checkBox = new CheckBox();
-
                 checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (singleSelection && newVal) {
+                        // Deselect all other checkboxes
+                        selectedRows.forEach(pair -> {
+                            if (pair.getKey() != checkBox) {
+                                pair.getKey().setSelected(false);
+                            }
+                        });
+                    }
                     updateRowStyle(dataRow, newVal);
                 });
 
@@ -220,7 +234,12 @@ public class DynamicTable<T> extends VBox {
                 selectedRows.add(new Pair<>(checkBox, row));
 
                 dataRow.setOnMouseClicked((MouseEvent event) -> {
-                    checkBox.setSelected(!checkBox.isSelected());
+                    if (singleSelection) {
+                        // Toggle only this checkbox and deselect others
+                        checkBox.setSelected(!checkBox.isSelected());
+                    } else {
+                        checkBox.setSelected(!checkBox.isSelected());
+                    }
                 });
 
                 dataRow.getChildren().add(checkBox);
@@ -228,7 +247,7 @@ public class DynamicTable<T> extends VBox {
                 for (int j = 0; j < headers.size(); j++) {
                     String cellText = j < row.size() ? row.get(j) : "";
                     Label cellLabel = new Label(cellText);
-                    cellLabel.setStyle("-fx-text-fill: white; -fx-padding: 5px;");
+                    cellLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 5px;");
                     cellLabel.setMinWidth(calculateCellWidth(headers.get(j)));
                     cellLabel.setAlignment(Pos.CENTER);
                     HBox.setHgrow(cellLabel, Priority.ALWAYS);
@@ -263,12 +282,10 @@ public class DynamicTable<T> extends VBox {
 
     public void setTableData(List<T> items, Function<T, List<String>> mapper) {
         data.clear();
-
         for (T item : items) {
             List<String> row = mapper.apply(item);
             data.add(new ArrayList<>(row));
         }
-
         refreshTable();
     }
 }

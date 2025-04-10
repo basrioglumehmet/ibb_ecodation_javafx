@@ -17,7 +17,8 @@ public class VatQuery {
     public static String READ_ALL_VATS_BY_USER_ID = "SELECT * FROM vat WHERE user_id=?";
 
     public static String UPDATE_VAT_BY_ID = "UPDATE vat SET " +
-            "user_id=?, base_amount=?, rate=?, amount=?, total_amount=?, receipt_number=?, transaction_date=?, description=?, exportFormat=?, is_deleted=?, version=version+1 " +
+            "user_id=?, base_amount=?, rate=?, amount=?," +
+            " total_amount=?, receipt_number=?, transaction_date=?, description=?, exportFormat=?, is_deleted=?, version=version+1 " +
             "WHERE id=? AND version=?";
 
     public static String DELETE_VAT_BY_ID = "DELETE FROM vat WHERE id=?";

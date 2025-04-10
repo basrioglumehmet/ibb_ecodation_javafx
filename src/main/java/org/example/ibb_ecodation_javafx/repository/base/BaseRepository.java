@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,7 +154,9 @@ public class BaseRepository<T> implements GenericRepository<T> {
                 }
                 Object value = resultSet.getObject(columnName);
                 if (value != null) {
-                    if (field.getType().isEnum()) {
+                    if (field.getType().equals(LocalDateTime.class) && value instanceof Timestamp) {
+                        field.set(entity, ((Timestamp) value).toLocalDateTime());
+                    } else if (field.getType().isEnum()) {
                         field.set(entity, Enum.valueOf((Class<Enum>) field.getType(), value.toString()));
                     } else {
                         field.set(entity, value);
@@ -165,4 +168,5 @@ public class BaseRepository<T> implements GenericRepository<T> {
             throw new SQLException("Result set verisini entity modeline çevirirken sorun oldu " + e.getMessage(), e);
         }
     }
+
 }

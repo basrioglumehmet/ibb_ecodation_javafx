@@ -13,6 +13,7 @@ import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
@@ -69,17 +70,16 @@ public class VatDialogController {
             double amountValue = Double.parseDouble(amountText);
             double rateValue = Double.parseDouble(rateText);
 
-            // Create the Vat entity
             Vat vat = new Vat(
                     0,
                     1,
-                    BigDecimal.valueOf(1000),
-                    BigDecimal.valueOf(18),
+                    BigDecimal.valueOf(amountValue),
+                    BigDecimal.valueOf(rateValue),
                     BigDecimal.valueOf(vatAmount),
                     BigDecimal.valueOf(totalAmount),
-                    "F145",
-                    new Date(),
-                    "Araç Kiralama",
+                    this.receipt.getText(),
+                    LocalDateTime.now(),
+                    this.description.getText(),
                     "VARSAYILAN",
                     false,
                     1

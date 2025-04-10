@@ -15,10 +15,12 @@ import org.example.ibb_ecodation_javafx.utils.ExcelUtil;
 import org.example.ibb_ecodation_javafx.utils.PdfExportUtil;
 import org.example.ibb_ecodation_javafx.model.Vat;
 import org.example.ibb_ecodation_javafx.utils.TxtUtil;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,11 +40,10 @@ public class VatManagementController {
     private List<Vat> originalTableData;
     private String vatNumberFilter = "";
     private MailService mailService = SpringContext.getContext().getBean(MailService.class);
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    static {
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Europe/Istanbul")); // TRT (UTC+03:00)
-    }
+
+
 
     public void initialize() {
         // FXML elemanlarının null kontrolü
@@ -56,9 +57,12 @@ public class VatManagementController {
         vatTable.setHeaderText("KDV Yönetimi");
         vatTable.setDescriptionText("Kdv ile ilgili tüm işlemleri yapabilirsiniz.");
 
+        // Enforce single selection
+        vatTable.setSingleSelection(true);
+
         comboItems = new HashMap<>() {{
             put("add", "KDV Girişi Ekle");
-            put("remove", "KDV Girişi Sil");
+            put("delete", "KDV Girişi Sil"); // Changed "remove" to "delete" for clarity
             put("update", "KDV Girişi Güncelle");
             put("print", "Yazıcıya Yazdır");
             put("export_txt", "TXT Olarak Dışa Aktar");
@@ -91,10 +95,14 @@ public class VatManagementController {
         vatTable.watchComboBox().subscribe(pair -> {
             switch (pair.getKey()) {
                 case "add" -> DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-create-dialog-view.fxml", "Vat Dialog");
-                case "remove" -> removeSelectedRows();
-                case "update" -> DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-update-dialog-view.fxml", "Vat Dialog");
+                case "delete" -> deleteSelectedRow(); // New delete action
+                case "update" -> {
+                    updateSelectedRow();
+                    ///DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-update-dialog-view.fxml", "Vat Dialog");
+                }
                 case "sendMail" -> {
-                    store.dispatch(VatTableState.class, new VatTableState(originalTableData));
+                    store.dispatch(VatTableState.class, new VatTableState(originalTableData,
+                            store.getCurrentState(VatTableState.class).getSelectedVatItem()));
                     DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-mail-dialog-view.fxml", "Vat Dialog");
                 }
                 case "print" -> {
@@ -139,27 +147,42 @@ public class VatManagementController {
                 "Versiyon"
         );
 
-
-
         vatService.readAll(1).stream().forEach(vat -> {
             originalTableData.add(vat);
             addTableData(vat);
-
         });
         updateBarChartFromTableData();
     }
-
-    private void removeSelectedRows() {
+    private void updateSelectedRow() {
         List<List<String>> selectedData = vatTable.getSelectedData();
         if (selectedData.isEmpty()) {
             return;
         }
 
-        List<String> selectedIds = selectedData.stream()
-                .map(row -> row.get(0))
-                .collect(Collectors.toList());
+        String selectedId = selectedData.get(0).get(0);
 
-        originalTableData.removeIf(vat -> selectedIds.contains(String.valueOf(vat.getId())));
+        Optional<Vat> selectedVat = originalTableData.stream()
+                .filter(vat -> String.valueOf(vat.getId()).equals(selectedId))
+                .findFirst();
+
+        selectedVat.ifPresent(vat -> {
+            store.dispatch(VatTableState.class,new VatTableState(
+                    store.getCurrentState(VatTableState.class).vatList(),
+                    vat
+            ));
+           DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-update-dialog-view.fxml", "Vat Dialog");
+        });
+    }
+    private void deleteSelectedRow() {
+        List<List<String>> selectedData = vatTable.getSelectedData();
+        if (selectedData.isEmpty()) {
+            return;
+        }
+
+        // Since single selection is enforced, there will be at most one selected row
+        String selectedId = selectedData.get(0).get(0); // Get ID from the first column
+
+        originalTableData.removeIf(vat -> String.valueOf(vat.getId()).equals(selectedId));
 
         vatTable.clearData();
         originalTableData.forEach(this::addTableData);
@@ -168,31 +191,7 @@ public class VatManagementController {
         applyFilters();
     }
 
-    private Vat createVat(int id, BigDecimal baseAmount, BigDecimal rate, BigDecimal amount,
-                          BigDecimal totalAmount, String receiptNumber, Date transactionDate,
-                          String description, String exportFormat) {
-        Vat vat = new Vat();
-        vat.setId(id);
-        vat.setUserId(id + 1); // Mock user ID
-        vat.setBaseAmount(baseAmount);
-        vat.setRate(rate);
-        vat.setAmount(amount);
-        vat.setTotalAmount(totalAmount);
-        vat.setReceiptNumber(receiptNumber);
-        vat.setTransactionDate(transactionDate);
-        vat.setDescription(description);
-        vat.setExportFormat(exportFormat);
-        return vat;
-    }
 
-    private Date parseDate(String dateStr) {
-        try {
-            return DATE_FORMAT.parse(dateStr);
-        } catch (Exception e) {
-            System.err.println("Tarih ayrıştırma hatası: " + e.getMessage());
-            return new Date(); // Varsayılan olarak şu anki tarih
-        }
-    }
 
     private void applyFilters() {
         List<Vat> filteredData = originalTableData.stream()
@@ -235,7 +234,7 @@ public class VatManagementController {
                 vat.getAmount().toString(),
                 vat.getTotalAmount().toString(),
                 vat.getReceiptNumber(),
-                DATE_FORMAT.format(vat.getTransactionDate()),
+                vat.getTransactionDate().format(DATE_FORMAT),
                 vat.getDescription(),
                 vat.getExportFormat(),
                 String.valueOf(vat.isDeleted()),
