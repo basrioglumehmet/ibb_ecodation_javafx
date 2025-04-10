@@ -10,11 +10,14 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="rootPane" fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogController">
 <ShadcnNavbar hideButtons="true" fx:id="navbar" />
-<VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;">
+<VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10">
     <ShadcnInput fx:id="amount" prefHeight="43.0" prefWidth="387.0" header="Tutar" />
     <ShadcnInput fx:id="rate" prefHeight="43.0" prefWidth="387.0" header="Kdv Oranı" />
     <ShadcnInput fx:id="receipt" prefHeight="43.0" prefWidth="387.0" header="Fiş Numarası" />
     <ShadcnInput fx:id="description" prefHeight="43.0" prefWidth="387.0" header="Açıklama" />
+    <Label text="Result" fx:id="resultLabel"
+           style="-fx-font-size: 22px; -fx-text-fill: #fff; -fx-font-family:'Poppins';"
+           alignment="CENTER"/>
 <!--    date picker eklenecek-->
 </VBox>
     <HBox style="-fx-padding:20;" >
