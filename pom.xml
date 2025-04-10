@@ -33,10 +33,11 @@
     </properties>
 
     <dependencies>
-        <!-- DATABASE -->
-        <!-- RDBMS H2DB-->
-        <!-- https://mvnrepository.com/artifact/h2db/h2db -->
-        <!-- H2 Database -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>17.0.6</version> <!-- veya JavaFX sürümüne göre değiştir -->
+        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

@@ -56,6 +56,11 @@ public class UserOtpCodeServiceImpl implements UserOtpCodeService {
     }
 
     @Override
+    public List<UserOtpCode> readAll(int id) {
+        return List.of();
+    }
+
+    @Override
     public void update(UserOtpCode entity, Consumer<UserOtpCode> callback) {
         callback.accept(userOtpCodeRepository.update(entity,UserOtpCodeQuery.UPDATE_USER_OTP_CODE_BY_USER_ID, List.of(
                 entity.getOtpCode(),

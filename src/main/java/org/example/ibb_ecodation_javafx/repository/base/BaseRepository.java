@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotification;
@@ -78,6 +79,25 @@ public class BaseRepository<T> implements GenericRepository<T> {
         }
         return null;
     }
+
+    @Override
+    public List<T> readAll(Class<T> entityClass, String query, List<Object> params) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            setParameters(preparedStatement, params);
+            System.out.println("PreparedStatement: " + preparedStatement);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<T> entities = new ArrayList<>();
+                while (resultSet.next()) {
+                    T entity = mapToEntity(entityClass, resultSet);
+                    entities.add(entity);
+                }
+                return entities;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("ReadAll hatası: " + e.getMessage(), e);
+        }
+    }
+
 
     @Override
     public T update(T entity, String query, List<Object> params) {

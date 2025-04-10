@@ -1,10 +1,14 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.statemanagement.action.IncrementAction;
@@ -15,9 +19,12 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
+import org.example.ibb_ecodation_javafx.utils.WebViewUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Stack;
 
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacityAnimation;
@@ -89,11 +96,15 @@ public class AdminDashboardController {
         this.shadcnAvatar.setAvatarBorder(Color.web(!value ? "#202024": "#f2f2f3"));
     }
 
+    @FXML
+    private void openDocument(){
+        WebViewUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/html/uidoc.html", "Yardım Kılavuzu", 800, 600);
+    }
+
     // Home butonuna tıklama işlemi
     @FXML
     private void handleHomeButton() throws IOException {
         loadContent("/org/example/ibb_ecodation_javafx/views/admin-home-view.fxml",contentArea);
-        showTrayNotification("Anasayfada kullanıcı ve kdv yönetimi yapabilirsiniz.", "IBB ve Ecodation Bootcamp Projesi");
     }
 
     // About butonuna tıklama işlemi
@@ -118,14 +129,12 @@ public class AdminDashboardController {
     @FXML
     private void handleBackupButton() throws IOException {
         loadContent("/org/example/ibb_ecodation_javafx/views/admin-backup-view.fxml",contentArea);
-        showTrayNotification("Yedeklerinizi kayıt etmeyi unutmayın.", "IBB ve Ecodation Bootcamp Projesi");
     }
 
     // Contact butonuna tıklama işlemi
     @FXML
     private void handleConfigButton() throws IOException {
         loadContent("/org/example/ibb_ecodation_javafx/views/admin-configs-view.fxml",contentArea);
-        showTrayNotification("Ayarları kayıt etmeyi unutmayın.", "IBB ve Ecodation Bootcamp Projesi");
     }
 
 

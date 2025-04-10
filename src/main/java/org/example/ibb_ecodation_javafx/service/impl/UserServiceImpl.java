@@ -39,7 +39,10 @@ public class UserServiceImpl implements UserService {
         callback.accept(dbResponse);
     }
 
-
+    @Override
+    public List<User> readAll(int id) {
+        return List.of();
+    }
 
 
     @Override

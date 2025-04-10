@@ -37,6 +37,8 @@
                 <ShadcnButton align="LEFT" glyphIconName="NOTE" fullWidth="true" onAction="#handleNotesButton" text="Notlar" type="GHOST"/>
                 <ShadcnButton align="LEFT" glyphIconName="CLOUD_UPLOAD" fullWidth="true" onAction="#handleBackupButton" text="Yedekler" type="GHOST"/>
                 <ShadcnButton align="LEFT" glyphIconName="COG" fullWidth="true" onAction="#handleConfigButton" text="Arayüz Ayarları" type="GHOST"/>
+
+                <ShadcnButton align="LEFT" glyphIconName="INFO" fullWidth="true" onAction="#openDocument" text="Arayüz Dokümanı" type="GHOST"/>
             </VBox>
 
             <!-- Sidebar Alt Kısmı -->

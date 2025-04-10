@@ -9,6 +9,7 @@ module org.example.ibb_ecodation_javafx {
     requires java.sql;
     requires com.h2database;
     requires org.mapstruct;
+    requires javafx.web;
 
     requires sendgrid.java;
 

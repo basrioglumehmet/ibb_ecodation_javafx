@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.model.UserNotification;
+import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.ui.splitpane.ShadcnSplitPane;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
@@ -13,6 +16,13 @@ import java.io.IOException;
 public class AdminHomeController {
     @FXML
     private ShadcnSplitPane splitPane;
+
+    @FXML
+    private UserNotificationService userNotificationService;
+
+    public AdminHomeController(){
+        userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
+    }
 
     public void initialize() {
         try {

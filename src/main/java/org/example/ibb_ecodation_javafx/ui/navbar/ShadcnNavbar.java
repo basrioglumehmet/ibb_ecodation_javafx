@@ -1,6 +1,9 @@
 package org.example.ibb_ecodation_javafx.ui.navbar;
 
 import io.reactivex.rxjava3.disposables.Disposable;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -8,10 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.util.Duration;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class ShadcnNavbar extends HBox {
@@ -20,6 +26,7 @@ public class ShadcnNavbar extends HBox {
     private final ImageView logoView;
     private Disposable disposable;
     private boolean isDarkMode;
+    private final String VERSION_TEXT_CONSTANT = "v1.0.0 - IBB Bootcamp";
 
     public ShadcnNavbar() {
         super(20);
@@ -31,7 +38,7 @@ public class ShadcnNavbar extends HBox {
         logoView = new ImageView(logoImage);
         logoView.setFitHeight(28);
         logoView.setPreserveRatio(true);
-        Label version = new Label("v1.0.0 - IBB Bootcamp");
+        Label version = new Label(VERSION_TEXT_CONSTANT);
         version.setStyle("-fx-font-size: 16px; -fx-text-fill:#7f7f86;");
         ShadcnButton helpButton = new ShadcnButton("Yardım", ShadcnButton.ButtonType.SECONDARY, "QUESTION", true,false,"LEFT");
         ShadcnButton exitButton = new ShadcnButton("Çıkış Yap", ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", true,false,"LEFT");
@@ -41,6 +48,17 @@ public class ShadcnNavbar extends HBox {
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        // Zaman
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    LocalDateTime now = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy  HH:mm:ss");
+                    version.setText(VERSION_TEXT_CONSTANT.concat(" - ").concat(now.format(formatter)));
+                })
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
         getChildren().addAll(logoView,  version,spacer, helpButton,exitButton,fullWindow,minimizeButton,close);
 

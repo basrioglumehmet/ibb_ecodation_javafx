@@ -10,6 +10,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.model.UserNotification;
+import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
 
 import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
@@ -19,18 +22,26 @@ public class NotificationController {
     @FXML
     private ListView<ShadcnListItem> notificationList;
 
+    private UserNotificationService userNotificationService;
+
+    public NotificationController(){
+        userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
+    }
+
 
     public void initialize() {
-        // Dummy veriler
-        for (int i = 0; i < 20; i++) {
+        //State Store'dan id bilgisi dönmeli
+        var data = userNotificationService.readAll(1);
+        for (UserNotification notification: data){
             ShadcnListItem item = new ShadcnListItem(
                     ShadcnListItem.ListItemType.WITH_ICON,
-                    "Lütfen Başlık Giriniz",
-                    "Lütfen açıklama Giriniz",
-                    "SUCCESS"
+                    notification.getHeader(),
+                    notification.getDescription(),
+                    notification.getType()
             );
-            notificationList.getItems().add(item);
+            notificationList.getItems().addAll(item);
         }
+
 
         // Hücreleri render et
         notificationList.setCellFactory(lv -> {
