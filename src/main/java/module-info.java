@@ -9,8 +9,6 @@ module org.example.ibb_ecodation_javafx {
     requires com.h2database;
     requires org.mapstruct;
     requires javafx.web;
-    requires java.sql;
-requires org.apache.pdfbox;
     requires sendgrid.java;
 
     opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok, org.mapstruct, javafx.base;
@@ -37,16 +35,19 @@ requires org.apache.pdfbox;
     requires jaxb.api;
     requires io.reactivex.rxjava3;
     requires de.jensd.fx.glyphs.fontawesome;
-    requires java.desktop;
     requires com.fasterxml.jackson.databind;
     requires spring.context;
     requires spring.beans;
     requires java.net.http;
-    requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires layout;
     requires io;
     requires kernel;
+    requires org.apache.poi.ooxml;
+    requires org.apache.pdfbox;
+    requires java.desktop;
+    requires org.apache.logging.log4j;
+    requires java.sql;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;

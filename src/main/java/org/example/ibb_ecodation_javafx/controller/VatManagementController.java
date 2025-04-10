@@ -6,6 +6,7 @@ import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
+import org.example.ibb_ecodation_javafx.utils.ExcelUtil;
 import org.example.ibb_ecodation_javafx.utils.PdfExportUtil;
 import org.example.ibb_ecodation_javafx.model.Vat;
 
@@ -62,6 +63,12 @@ public class VatManagementController {
                 case "print" -> {
                     File pdf = PdfExportUtil.exportVatInvoiceFromDynamicTable(vatTable.getScene().getWindow(), vatTable);
                     PdfExportUtil.printPdfFromFile(pdf);
+                }
+                case "export_pdf" -> {
+                    File pdf = PdfExportUtil.exportVatInvoiceFromDynamicTable(vatTable.getScene().getWindow(), vatTable);
+                }
+                case "export_excel" -> {
+                    ExcelUtil.exportToExcel(vatTable);
                 }
             }
         });
