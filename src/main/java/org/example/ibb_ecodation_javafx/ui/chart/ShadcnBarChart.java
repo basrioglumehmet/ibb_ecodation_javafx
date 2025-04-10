@@ -15,6 +15,7 @@ import javafx.util.Duration;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ShadcnBarChart extends BarChart<String, Number> {
     private final ObservableList<XYChart.Data<String, Number>> chartData;
@@ -59,12 +60,17 @@ public class ShadcnBarChart extends BarChart<String, Number> {
         ((CategoryAxis) getXAxis()).setLabel("Categories");
         ((NumberAxis) getYAxis()).setLabel("Values");
 
-        getYAxis().setStyle("-fx-tick-label-fill:white;");
-        getXAxis().setStyle("-fx-tick-label-fill:white;");
+
+        getYAxis().setStyle("-fx-tick-label-fill: white; -fx-font-family: 'Poppins';");
+        getXAxis().setStyle("-fx-tick-label-fill: white; -fx-font-family: 'Poppins';");
 
         setHorizontalGridLinesVisible(false);
         setVerticalGridLinesVisible(false);
         setHorizontalZeroLineVisible(false);
+
+
+        setBarGap(5);
+        setCategoryGap(20);
 
         setStyle("-fx-background-color: transparent;");
         lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
@@ -74,17 +80,17 @@ public class ShadcnBarChart extends BarChart<String, Number> {
         Platform.runLater(() -> {
             Node title = lookup(".chart-title");
             if (title != null) {
-                title.setStyle("-fx-text-fill: white; -fx-font-size: 18px;");
+                title.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: 'Poppins';");
             }
 
             Node xAxisLabel = lookup(".x-axis .axis-label");
             if (xAxisLabel != null) {
-                xAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+                xAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Poppins';");
             }
 
             Node yAxisLabel = lookup(".y-axis .axis-label");
             if (yAxisLabel != null) {
-                yAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+                yAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Poppins';");
             }
 
             chartData.forEach(data -> {
@@ -130,10 +136,12 @@ public class ShadcnBarChart extends BarChart<String, Number> {
         });
     }
 
-    // New method for external data with custom header
     public void setData(String title, String xAxisLabel, String yAxisLabel, Map<String, Number> data) {
         chartData.clear();
-        data.forEach((category, value) -> chartData.add(new XYChart.Data<>(category, value)));
+        data.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> chartData.add(new XYChart.Data<>(entry.getKey(), entry.getValue())));
+
         series.setData(chartData);
 
         setTitle(title);
@@ -142,15 +150,27 @@ public class ShadcnBarChart extends BarChart<String, Number> {
 
         applyCustomColors();
         updateTotal();
+
+
+        setBarGap(5);
+        setCategoryGap(20);
+        Platform.runLater(this::layout);
     }
 
-    // Existing method renamed for consistency
     public void setMonthlyData(Map<String, BigDecimal> newData) {
         chartData.clear();
-        newData.forEach((month, value) -> chartData.add(new XYChart.Data<>(month, value)));
+        newData.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> chartData.add(new XYChart.Data<>(entry.getKey(), entry.getValue())));
+
         series.setData(chartData);
         applyCustomColors();
         updateTotal();
+
+
+        setBarGap(5);
+        setCategoryGap(20);
+        Platform.runLater(this::layout);
     }
 
     public ObservableList<XYChart.Data<String, Number>> getChartData() {
@@ -163,6 +183,10 @@ public class ShadcnBarChart extends BarChart<String, Number> {
                 .findFirst()
                 .ifPresent(data -> data.setYValue(value));
         updateTotal();
+
+        setBarGap(5);
+        setCategoryGap(20);
+        Platform.runLater(this::layout);
     }
 
     private void updateTotal() {

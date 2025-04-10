@@ -63,9 +63,6 @@ public class VatDialogController {
     private void insert() {
         String amountText = amount.getText();
         String rateText = rate.getText();
-        String receiptText = receipt.getText();
-        String descriptionText = description.getText();
-
         if (isValidNumber(amountText) && isValidNumber(rateText)) {
             double amountValue = Double.parseDouble(amountText);
             double rateValue = Double.parseDouble(rateText);
@@ -86,6 +83,7 @@ public class VatDialogController {
             );
 
             vatService.create(vat);
+            resultLabel.setText("Vat Added! Click to refresh button");
         } else {
             resultLabel.setText("Invalid input. Please check the values.");
         }

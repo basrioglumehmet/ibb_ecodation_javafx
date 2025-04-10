@@ -46,7 +46,7 @@ public class VatUpdateDialogController {
         });
 
         selectedItemData = store.getCurrentState(VatTableState.class).getSelectedVatItem();
-        amount.setText(selectedItemData.getAmount().toPlainString());
+        amount.setText(selectedItemData.getBaseAmount().toPlainString());
         rate.setText(selectedItemData.getRate().toPlainString());
         receipt.setText(selectedItemData.getReceiptNumber());
         description.setText(selectedItemData.getDescription());
