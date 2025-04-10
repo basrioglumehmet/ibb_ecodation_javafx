@@ -10,7 +10,7 @@ module org.example.ibb_ecodation_javafx {
     requires org.mapstruct;
     requires javafx.web;
     requires java.sql;
-
+requires org.apache.pdfbox;
     requires sendgrid.java;
 
     opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok, org.mapstruct, javafx.base;
@@ -44,6 +44,9 @@ module org.example.ibb_ecodation_javafx {
     requires java.net.http;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
+    requires layout;
+    requires io;
+    requires kernel;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;

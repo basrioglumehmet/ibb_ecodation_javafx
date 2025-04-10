@@ -12,11 +12,11 @@ import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
 
-public class VatDialogController {
+public class VatUpdateDialogController {
     @FXML
     private ShadcnNavbar navbar;
     @FXML
-    private VBox rootPane;
+    private VBox rootPaneUpdate;
     @FXML
     private ShadcnInput amount;
     @FXML
@@ -35,7 +35,7 @@ public class VatDialogController {
         store.getState().subscribe(stateRegistry -> {
             var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue,navbar);
-            changeRootPaneColor(darkModeValue,rootPane);
+            changeRootPaneColor(darkModeValue,rootPaneUpdate);
         });
 
         amount.setTextChangeListener((newValue) -> calculateVat());

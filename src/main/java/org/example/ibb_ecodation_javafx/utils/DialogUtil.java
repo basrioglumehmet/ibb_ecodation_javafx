@@ -20,8 +20,8 @@ import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimati
 public class DialogUtil {
 
     private static final double MIN_WIDTH = 250;
-    private static final double MIN_HEIGHT = 100;
-    private static final double MAX_SCREEN_USAGE = 0.6;
+    private static final double MIN_HEIGHT = 50;
+    private static final double MAX_SCREEN_USAGE = 0.55;
 
     private static double xOffset = 0;
     private static double yOffset = 0;

@@ -10,8 +10,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import org.example.ibb_ecodation_javafx.model.Vat;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnComboBox;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -256,4 +258,35 @@ public class DynamicTable<T> extends VBox {
     public void requestLayout() {
         super.requestLayout();
     }
+
+    public List<String> getHeaders() {
+        return headers;
+    }
+
+    public void setTableData(List<Vat> filteredData) {
+        // Clear the previous data in the table
+        data.clear();
+
+        // Map each Vat object to a list of strings representing the row data
+        for (Vat vat : filteredData) {
+            List<String> row = new ArrayList<>();
+
+            // Add the properties of Vat to the row
+            row.add(String.valueOf(vat.getId()));  // ID
+            row.add(vat.getBaseAmount().toString());  // Base amount
+            row.add(vat.getRate().toString());  // Rate
+            row.add(vat.getAmount().toString());  // VAT amount
+            row.add(vat.getTotalAmount().toString());  // Total amount
+            row.add(vat.getReceiptNumber());  // Receipt number
+            row.add(new SimpleDateFormat("yyyy-MM-dd").format(vat.getTransactionDate()));  // Transaction date
+            row.add(vat.getDescription());  // Description
+
+            // Add the row to the data list
+            data.add(row);
+        }
+
+        // Refresh the table to reflect the new data
+        refreshTable();
+    }
+
 }

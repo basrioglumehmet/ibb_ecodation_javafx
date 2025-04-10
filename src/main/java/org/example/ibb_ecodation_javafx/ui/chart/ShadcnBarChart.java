@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class ShadcnBarChart extends BarChart<String, Number> {
@@ -144,7 +145,7 @@ public class ShadcnBarChart extends BarChart<String, Number> {
     }
 
     // Existing method renamed for consistency
-    public void setMonthlyData(Map<String, Double> newData) {
+    public void setMonthlyData(Map<String, BigDecimal> newData) {
         chartData.clear();
         newData.forEach((month, value) -> chartData.add(new XYChart.Data<>(month, value)));
         series.setData(chartData);
