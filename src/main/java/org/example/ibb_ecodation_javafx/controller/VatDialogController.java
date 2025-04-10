@@ -66,7 +66,7 @@ public class VatDialogController {
                 double vatAmount = amountValue * (rateValue / 100);
                 double totalAmount = amountValue + vatAmount;
 
-                resultLabel.setText(String.format("Result: KDV: %.2f TL Toplam: %.2f TL", vatAmount, totalAmount));
+                resultLabel.setText(String.format("Result: %.2f TL(KDV) ile %.2f TL", vatAmount, totalAmount));
             } else {
                 resultLabel.setText("Result:");
             }

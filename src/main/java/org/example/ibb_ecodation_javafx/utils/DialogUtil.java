@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -20,42 +19,40 @@ import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimati
 @UtilityClass
 public class DialogUtil {
 
-    private static final double ASPECT_RATIO = 16.0 / 9.0;
-    private static final double MIN_WIDTH = 200;
-    private static final double MIN_HEIGHT = 225;
-    private static final double MAX_SCREEN_USAGE = 0.5;
+    private static final double MIN_WIDTH = 250;
+    private static final double MIN_HEIGHT = 100;
+    private static final double MAX_SCREEN_USAGE = 0.6;
 
     private static double xOffset = 0;
     private static double yOffset = 0;
     private static boolean isDragging = false;
-    private static Stage currentDialogStage = null; // Track the current dialog stage
+    private static Stage currentDialogStage = null;
 
     public static void showHelpPopup(String fxmlResourcePath, String title) {
         try {
-            // FXML dosyasını yükle
+            // Load FXML file
             FXMLLoader loader = new FXMLLoader(DialogUtil.class.getResource(fxmlResourcePath));
             VBox contentPane = loader.load();
 
-            // Ana container
+            // Main container
             StackPane root = new StackPane(contentPane);
             root.setStyle("-fx-background-color: transparent; -fx-border-width:1; -fx-border-color:#222225;");
             root.setAlignment(javafx.geometry.Pos.CENTER);
 
-            // Scene ayarları
+            // Scene settings
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
 
-            // Stage ayarları
+            // Stage settings
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.TRANSPARENT);
 
-            // Store the stage as the current dialog
             currentDialogStage = stage;
 
-            // Ekran ve boyut ayarları
+            // Screen and size settings
             Stage parentStage = getParentStage();
             Screen targetScreen = determineTargetScreen(parentStage);
             double[] dimensions = initializeStageSize(stage, root, contentPane, targetScreen);
@@ -63,19 +60,12 @@ public class DialogUtil {
             stage.setWidth(dimensions[0]);
             stage.setHeight(dimensions[1]);
             contentPane.setPrefSize(dimensions[0], dimensions[1]);
-//
-//            Rectangle clip = new Rectangle(0, 0, dimensions[0], dimensions[1]);
-//            clip.setArcWidth(20);
-//            clip.setArcHeight(20);
-//            root.setClip(clip);
 
-
-
+            // Center the stage
             centerStage(stage, targetScreen.getVisualBounds(), dimensions[0], dimensions[1]);
             makeDraggable(stage, root, contentPane);
             addResponsiveListeners(stage, root, contentPane);
 
-            // Clear the reference when the stage is closed
             stage.setOnCloseRequest(event -> currentDialogStage = null);
 
             root.requestLayout();
@@ -88,11 +78,10 @@ public class DialogUtil {
         }
     }
 
-    // Static method to close the current dialog
     public static void closeDialog() {
         if (currentDialogStage != null && currentDialogStage.isShowing()) {
             currentDialogStage.close();
-            currentDialogStage = null; // Clear the reference after closing
+            currentDialogStage = null;
         }
     }
 
@@ -115,22 +104,17 @@ public class DialogUtil {
     private static double[] initializeStageSize(Stage stage, StackPane root, VBox contentPane, Screen screen) {
         Rectangle2D screenBounds = screen.getVisualBounds();
 
+        // Force layout calculation to get accurate content size
+        contentPane.applyCss();
+        contentPane.layout();
+
+        // Get content's preferred height only
+        double contentHeight = contentPane.prefHeight(-1);
+
+        // Calculate width based on screen size
         double optimalWidth = screenBounds.getWidth() * MAX_SCREEN_USAGE;
-        double optimalHeight = optimalWidth / ASPECT_RATIO;
-
-        if (optimalHeight > screenBounds.getHeight() * MAX_SCREEN_USAGE) {
-            optimalHeight = screenBounds.getHeight() * MAX_SCREEN_USAGE;
-            optimalWidth = optimalHeight * ASPECT_RATIO;
-        }
-
         double finalWidth = Math.max(MIN_WIDTH, Math.min(optimalWidth, screenBounds.getWidth()));
-        double finalHeight = Math.max(MIN_HEIGHT, Math.min(optimalHeight, screenBounds.getHeight()));
-
-        if (finalHeight < finalWidth / ASPECT_RATIO) {
-            finalHeight = finalWidth / ASPECT_RATIO;
-        } else if (finalWidth < finalHeight * ASPECT_RATIO) {
-            finalWidth = finalHeight * ASPECT_RATIO;
-        }
+        double finalHeight = Math.max(MIN_HEIGHT, Math.min(contentHeight, screenBounds.getHeight() * MAX_SCREEN_USAGE));
 
         return new double[]{finalWidth, finalHeight};
     }
@@ -172,26 +156,18 @@ public class DialogUtil {
     private static void resizeForNewScreen(Stage stage, StackPane root, VBox contentPane, Screen newScreen) {
         Rectangle2D screenBounds = newScreen.getVisualBounds();
 
+        contentPane.applyCss();
+        contentPane.layout();
+
+        double contentHeight = contentPane.prefHeight(-1);
         double optimalWidth = screenBounds.getWidth() * MAX_SCREEN_USAGE;
-        double optimalHeight = optimalWidth / ASPECT_RATIO;
-
-        if (optimalHeight > screenBounds.getHeight() * MAX_SCREEN_USAGE) {
-            optimalHeight = screenBounds.getHeight() * MAX_SCREEN_USAGE;
-            optimalWidth = optimalHeight * ASPECT_RATIO;
-        }
-
         double newWidth = Math.max(MIN_WIDTH, Math.min(optimalWidth, screenBounds.getWidth()));
-        double newHeight = Math.max(MIN_HEIGHT, Math.min(optimalHeight, screenBounds.getHeight()));
-
-        if (newHeight < newWidth / ASPECT_RATIO) {
-            newHeight = newWidth / ASPECT_RATIO;
-        } else if (newWidth < newHeight * ASPECT_RATIO) {
-            newWidth = newHeight * ASPECT_RATIO;
-        }
+        double newHeight = Math.max(MIN_HEIGHT, Math.min(contentHeight, screenBounds.getHeight() * MAX_SCREEN_USAGE));
 
         stage.setWidth(newWidth);
         stage.setHeight(newHeight);
 
+        // Ensure stage stays within screen bounds
         if (stage.getX() + newWidth > screenBounds.getMaxX()) {
             stage.setX(screenBounds.getMaxX() - newWidth);
         }
@@ -206,7 +182,6 @@ public class DialogUtil {
         }
 
         contentPane.setPrefSize(newWidth, newHeight);
-
         root.requestLayout();
         root.layout();
     }
@@ -214,20 +189,11 @@ public class DialogUtil {
     private static void addResponsiveListeners(Stage stage, StackPane root, VBox contentPane) {
         stage.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (!isDragging) {
+                contentPane.applyCss();
+                contentPane.layout();
                 double newWidth = newVal.doubleValue();
-                double newHeight = Math.max(MIN_HEIGHT, newWidth / ASPECT_RATIO);
+                double newHeight = Math.max(MIN_HEIGHT, contentPane.prefHeight(newWidth));
                 stage.setHeight(newHeight);
-                contentPane.setPrefSize(newWidth, newHeight);
-                root.requestLayout();
-                root.layout();
-            }
-        });
-
-        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (!isDragging) {
-                double newHeight = newVal.doubleValue();
-                double newWidth = Math.max(MIN_WIDTH, newHeight * ASPECT_RATIO);
-                stage.setWidth(newWidth);
                 contentPane.setPrefSize(newWidth, newHeight);
                 root.requestLayout();
                 root.layout();

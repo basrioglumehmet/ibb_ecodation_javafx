@@ -20,8 +20,10 @@
            alignment="CENTER"/>
 <!--    date picker eklenecek-->
 </VBox>
-    <HBox style="-fx-padding:20;" >
+    <HBox style="-fx-padding:20;"  spacing="20">
         <ShadcnButton onAction="#closeVatDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+                      mnemonicParsing="false"  />
+        <ShadcnButton onAction="#closeVatDialog" fullWidth="true" text="Insert" type="PRIMARY" align="CENTER"
                       mnemonicParsing="false"  />
     </HBox>
 </VBox>
