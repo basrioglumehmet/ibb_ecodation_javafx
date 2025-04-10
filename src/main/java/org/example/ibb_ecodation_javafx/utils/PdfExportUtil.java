@@ -1,42 +1,123 @@
 package org.example.ibb_ecodation_javafx.utils;
 
-import com.itextpdf.io.exceptions.IOException;
-import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
+import org.example.ibb_ecodation_javafx.annotation.PdfDefinition;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
-import java.awt.*;
-import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.TimeZone;
 
+/**
+ * PDF belgelerini dışa aktarma ve yazdırma için yardımcı sınıf
+ */
 public class PdfExportUtil {
 
-    public static File exportVatInvoiceFromDynamicTable(Window ownerWindow, DynamicTable<?> table) {
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final float PAGE_WIDTH = PageSize.A4.getWidth() - 72; // A4 width (595) minus default margins (36 each side)
+    private static final float MIN_WIDTH = 20f; // Minimum width for any column
+    private static final float ID_WIDTH_FACTOR = 0.5f; // Reduce ID column width by 50%
+
+    static {
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Europe/Istanbul")); // TRT (UTC+03:00)
+    }
+
+    /**
+     * PDF dosyasını varsayılan sistem yazıcısından yazdırır
+     * @param pdfFile Yazdırılacak PDF dosyası
+     */
+    public static void printPdfFromFile(File pdfFile) {
+        Objects.requireNonNull(pdfFile, "PDF dosyası null olamaz");
+
+        try (PDDocument document = PDDocument.load(pdfFile)) {
+            PrinterJob printJob = PrinterJob.getPrinterJob();
+            PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
+
+            if (printService == null) {
+                System.out.println("Yazıcı bulunamadı. Lütfen bir yazıcının bağlı olduğundan emin olun.");
+                return;
+            }
+
+            printJob.setPrintService(printService);
+            printJob.setPageable(new PDFPageable(document));
+            printJob.print();
+
+            System.out.println("PDF yazıcıya gönderildi: " + printService.getName());
+
+        } catch (IOException e) {
+            System.err.println("PDF dosyası yüklenirken hata: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Yazdırma hatası: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    private static <T> void addTable(Document doc, DynamicTable<T> table, Class<T> clazz) {
+        List<String> headers = table.getHeaders();
+        List<List<String>> data = table.getData();
+
+        if (headers.isEmpty()) {
+            doc.add(new Paragraph("Tabloda başlık bulunamadı."));
+            return;
+        }
+
+        float[] columnWidths = new float[headers.size()];
+        Arrays.fill(columnWidths, 100f);
+        Table pdfTable = new Table(columnWidths);
+
+        headers.forEach(header -> pdfTable.addHeaderCell(
+                new Cell().add(new Paragraph(getFieldNameFromAnnotation(clazz, header)).setBold())
+        ));
+        data.forEach(row -> row.forEach(cellValue -> {
+            pdfTable.addCell(new Cell().add(new Paragraph(cellValue)));
+            System.out.println(cellValue);
+        }));
+
+        doc.add(pdfTable);
+    }
+
+    /**
+     * Genel listeden KDV faturasını dışa aktarır
+     */
+    public static <T> File exportVatInvoiceFromList(Window ownerWindow, List<T> dataList, List<String> headers) {
+        Objects.requireNonNull(dataList, "Veri listesi null olamaz");
+        Objects.requireNonNull(headers, "Başlıklar null olamaz");
+
         File outputFile = showSaveDialog(ownerWindow);
         if (outputFile == null) {
-            System.out.println("File save cancelled.");
-            return null;  // Eğer dosya kaydetme işlemi iptal edilirse null döndür
+            System.out.println("Dosya kaydetme iptal edildi.");
+            return null;
         }
 
         try (PdfWriter writer = new PdfWriter(outputFile);
@@ -47,129 +128,211 @@ public class PdfExportUtil {
             doc.setFont(font).setFontSize(10);
 
             addHeader(doc);
-            addCustomerInfo(doc);
-            addTable(doc, table);
-            addTotals(doc, table);
+            addGenericTable(doc, dataList, headers);
+            addGenericTotals(doc, dataList);
             addFooter(doc);
 
-            System.out.println("Invoice exported to: " + outputFile.getAbsolutePath());
-
-            return outputFile;  // Dosya başarılı bir şekilde oluşturulmuşsa döndürüyoruz
+            System.out.println("Fatura şu konuma aktarıldı: " + outputFile.getAbsolutePath());
+            return outputFile;
 
         } catch (Exception e) {
+            System.err.println("Fatura dışa aktarılırken hata: " + e.getMessage());
             e.printStackTrace();
-        }
-
-        return null;  // Hata durumunda null döndürüyoruz
-    }
-
-
-    private static File showSaveDialog(Window ownerWindow) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Invoice PDF");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-        fileChooser.setInitialFileName("invoice.pdf");
-        return fileChooser.showSaveDialog(ownerWindow);
-    }
-
-    private static PdfFont loadCustomFont() throws URISyntaxException {
-        File fontFile = new File(PdfExportUtil.class.getResource("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf").toURI());
-        try {
-            return PdfFontFactory.createFont(fontFile.getAbsolutePath(), PdfEncodings.IDENTITY_H);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException("Font yüklenemedi.", e);
+            return null;
         }
     }
 
-
-    private static void addHeader(Document doc) {
-        doc.add(new Paragraph("ECODATION LTD. ŞTİ.").setFontSize(14).setBold());
-        doc.add(new Paragraph("İstanbul Teknopark\n+90 555 555 55 55\ninfo@ecodation.com").setFontSize(10));
-        doc.add(new Paragraph("FATURA / VAT INVOICE").setFontSize(16).setBold().setMarginTop(20));
-        doc.add(new Paragraph("Fatura No: 2024-001\nTarih: 10/04/2025").setFontSize(10).setMarginBottom(10));
-    }
-
-    private static void addCustomerInfo(Document doc) {
-        doc.add(new Paragraph("Müşteri:\nAli Yılmaz\nKaraköy Mahallesi No:5\nİstanbul, Türkiye")
-                .setFontSize(10).setMarginBottom(20));
-    }
-
-    private static void addTable(Document doc, DynamicTable<?> table) {
-        List<String> headers = table.getHeaders();
-        List<List<String>> data = table.getData();
-
+    private static <T> void addGenericTable(Document doc, List<T> dataList, List<String> headers) {
         if (headers.isEmpty()) {
             doc.add(new Paragraph("Tablo başlıkları bulunamadı."));
             return;
         }
 
+        // Dinamik sütun genişliklerini hesapla
         float[] columnWidths = new float[headers.size()];
-        Arrays.fill(columnWidths, 100f);
-        Table pdfTable = new Table(columnWidths);
+        Class<?> clazz = dataList.isEmpty() ? Object.class : dataList.get(0).getClass();
+        float totalCharLength = 0f;
 
-        for (String header : headers) {
-            pdfTable.addHeaderCell(new Cell().add(new Paragraph(header).setBold()));
+        for (int i = 0; i < headers.size(); i++) {
+            String headerText = getFieldNameFromAnnotation(clazz, headers.get(i));
+            float charLength = headerText.length();
+            if ("ID".equals(headerText)) {
+                charLength *= ID_WIDTH_FACTOR; // ID sütununu küçült
+            }
+            columnWidths[i] = charLength;
+            totalCharLength += charLength;
         }
 
-        for (List<String> row : data) {
-            for (int i = 0; i < headers.size(); i++) {
-                String cellValue = (i < row.size()) ? row.get(i) : "";
-                pdfTable.addCell(new Cell().add(new Paragraph(cellValue)));
+        float scaleFactor = totalCharLength > 0 ? (PAGE_WIDTH - headers.size() * MIN_WIDTH) / totalCharLength : 1f;
+        for (int i = 0; i < columnWidths.length; i++) {
+            columnWidths[i] = Math.max(MIN_WIDTH, columnWidths[i] * scaleFactor + MIN_WIDTH);
+        }
+
+        Table pdfTable = new Table(columnWidths);
+
+        headers.forEach(header -> pdfTable.addHeaderCell(
+                new Cell().add(new Paragraph(getFieldNameFromAnnotation(clazz, header)).setBold())
+        ));
+
+        for (T data : dataList) {
+            for (String header : headers) {
+                try {
+                    Field field = clazz.getDeclaredField(header);
+                    field.setAccessible(true);
+                    Object value = field.get(data);
+                    String displayValue;
+                    if (value instanceof Date) {
+                        displayValue = DATE_FORMAT.format((Date) value);
+                    } else {
+                        displayValue = value != null ? value.toString() : "";
+                    }
+                    System.out.println(displayValue);
+                    pdfTable.addCell(new Cell().add(new Paragraph(displayValue)));
+                } catch (Exception e) {
+                    pdfTable.addCell(new Cell().add(new Paragraph("N/A")));
+                }
             }
         }
 
         doc.add(pdfTable);
-    }private static void addTotals(Document doc, DynamicTable<?> table) {
-        // Headers listesini alıyoruz.
-        List<String> headers = table.getHeaders();
-        List<List<String>> data = table.getData(); // Verileri alıyoruz.
+    }
 
-        // "Toplam" ve "%" kolonlarının index'lerini buluyoruz.
-        int amountIndex = headers.indexOf("Toplam");
-        int vatRateIndex = headers.indexOf("%");
+    private static String getFieldNameFromAnnotation(Class<?> clazz, String header) {
+        try {
+            Field field = clazz.getDeclaredField(header);
+            PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
+            return annotation != null ? annotation.fieldName() : header;
+        } catch (NoSuchFieldException e) {
+            return header;
+        }
+    }
 
-        if (amountIndex == -1 || vatRateIndex == -1) {
-            // Eğer "Toplam" veya "%" kolonu yoksa, kullanıcıya bir hata mesajı gösterelim.
-            doc.add(new Paragraph("Toplam veya KDV Oranı kolonu bulunamadı!"));
+    private static <T> void addGenericTotals(Document doc, List<T> dataList) {
+        BigDecimal subtotal = BigDecimal.ZERO; // Temel Tutar toplamı
+        BigDecimal vatTotal = BigDecimal.ZERO; // KDV Tutarı toplamı
+        BigDecimal grandTotal = BigDecimal.ZERO; // Genel Toplam kontrolü
+
+        if (dataList.isEmpty()) {
+            doc.add(new Paragraph("Toplamlar için veri yok"));
             return;
         }
 
-        double subtotal = 0.0;
-        double vatTotal = 0.0;
+        Class<?> clazz = dataList.get(0).getClass();
+        Field baseAmountField = null;
+        Field vatRateField = null;
+        Field vatAmountField = null;
+        Field totalAmountField = null;
 
-        // Veriler üzerinden her satırdaki "Toplam" ve "%" kolonlarını alıp hesaplamalara ekliyoruz.
-        for (List<String> row : data) {
-            String rawAmount = row.get(amountIndex);  // "Toplam" kolonunun değeri.
-            String rawVatRate = row.get(vatRateIndex); // "%" kolonunun değeri.
-
-            try {
-                // Sayı formatlarını parse ediyoruz.
-                NumberFormat format = NumberFormat.getInstance(new Locale("tr", "TR"));
-                Number amountNumber = format.parse(rawAmount.trim());
-                double amount = amountNumber.doubleValue();
-
-                // KDV oranını alıyoruz (örneğin %18, %20 gibi).
-                double vatRate = Double.parseDouble(rawVatRate.trim()) / 100.0;
-
-                // Toplam tutarı ve KDV'yi hesaplıyoruz.
-                double vatAmount = amount * vatRate;
-                double totalAmount = amount + vatAmount;
-
-                subtotal += amount;
-                vatTotal += vatAmount;
-
-            } catch (ParseException e) {
-                System.out.println("Sayı formatı çözümlenemedi: " + rawAmount);
-            } catch (NumberFormatException e) {
-                System.out.println("KDV oranı çözümlenemedi: " + rawVatRate);
+        // Gerekli alanları bul
+        for (Field field : clazz.getDeclaredFields()) {
+            PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
+            if (annotation != null) {
+                field.setAccessible(true);
+                switch (annotation.fieldName()) {
+                    case "Tutar":
+                        baseAmountField = field;
+                        break;
+                    case "%":
+                        vatRateField = field;
+                        break;
+                    case "Toplam":
+                        vatAmountField = field;
+                        break;
+                    case "Genel Toplam":
+                        totalAmountField = field;
+                        break;
+                }
             }
         }
 
-        // Genel toplamları PDF'ye ekliyoruz.
-        doc.add(new Paragraph(String.format("\nAra Toplam: %.2f TL", subtotal)));
-        doc.add(new Paragraph(String.format("KDV Toplamı: %.2f TL", vatTotal)));
-        doc.add(new Paragraph(String.format("GENEL TOPLAM: %.2f TL", subtotal + vatTotal)).setBold());
+        if (baseAmountField == null || vatRateField == null || vatAmountField == null || totalAmountField == null) {
+            doc.add(new Paragraph("Gerekli alanlar (Temel Tutar, %, Toplam veya Genel Toplam) bulunamadı"));
+            return;
+        }
+
+        for (T data : dataList) {
+            try {
+                // Alan değerlerini al
+                BigDecimal baseAmount = new BigDecimal(baseAmountField.get(data).toString());
+                BigDecimal vatRate = new BigDecimal(vatRateField.get(data).toString())
+                        .divide(BigDecimal.valueOf(100), 4, BigDecimal.ROUND_HALF_UP);
+                BigDecimal vatAmount = baseAmount.multiply(vatRate);
+                BigDecimal totalAmount = baseAmount.add(vatAmount);
+
+                // Verideki değerlerle kontrol et
+                BigDecimal actualVatAmount = new BigDecimal(vatAmountField.get(data).toString());
+                BigDecimal actualTotalAmount = new BigDecimal(totalAmountField.get(data).toString());
+
+                if (vatAmount.compareTo(actualVatAmount) != 0) {
+                    System.err.println("Hesaplanan KDV (" + vatAmount + ") ile verideki KDV (" + actualVatAmount + ") eşleşmiyor!");
+                }
+                if (totalAmount.compareTo(actualTotalAmount) != 0) {
+                    System.err.println("Hesaplanan Genel Toplam (" + totalAmount + ") ile verideki Genel Toplam (" + actualTotalAmount + ") eşleşmiyor!");
+                }
+
+                subtotal = subtotal.add(baseAmount);
+                vatTotal = vatTotal.add(vatAmount);
+                grandTotal = grandTotal.add(totalAmount);
+
+            } catch (Exception e) {
+                System.err.println("Toplamlar işlenirken hata: " + e.getMessage());
+            }
+        }
+
+        // Toplamları PDF'ye ekle
+        addTotalParagraphs(doc, subtotal.doubleValue(), vatTotal.doubleValue(), grandTotal.doubleValue());
     }
+
+    private static File showSaveDialog(Window ownerWindow) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Fatura PDF'sini Kaydet");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Dosyaları", "*.pdf"));
+        fileChooser.setInitialFileName("fatura.pdf");
+        return fileChooser.showSaveDialog(ownerWindow);
+    }
+
+    private static PdfFont loadCustomFont() throws IOException {
+        File fontFile = new File(PdfExportUtil.class.getResource("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf").getFile());
+        return PdfFontFactory.createFont(fontFile.getAbsolutePath());
+    }
+    // Resim yükleme ve boyut ayarlama fonksiyonu
+    public static Image createImageFromClasspath(String imagePath, float width, float height) {
+        try {
+            // Classpath'teki resim yolunu kullanarak ImageData oluşturuyoruz
+            ImageData imageData = ImageDataFactory.create(Objects.requireNonNull(PdfExportUtil.class.getResource(imagePath)));
+
+            // Image nesnesi oluşturuyoruz
+            Image image = new Image(imageData);
+
+            // Boyut ayarlamaları
+            image.setWidth(width);
+            image.setHeight(height);
+
+            return image;
+        } catch (NullPointerException e) {
+            System.out.println("Resim dosyası bulunamadı: " + imagePath);
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private static void addHeader(Document doc) {
+        String ibbLogo = "/org/example/ibb_ecodation_javafx/assets/Ibb_amblem.png";
+
+        // PdfPTable ile bir tablo oluşturuyoruz
+        Table table = new Table(3); // 3 sütunlu bir tablo
+        table.setBorder(Border.NO_BORDER);
+        table.setMarginBottom(10f);
+        Cell imageCell = new Cell().add(createImageFromClasspath(ibbLogo, 60, 60));
+        imageCell.setBorder(Border.NO_BORDER);
+        table.addCell(imageCell);
+
+        // Tabloyu belgeye ekleyelim
+        doc.add(table);
+    }
+
+
     private static void addFooter(Document doc) {
         doc.add(new Paragraph("\nBu fatura elektronik ortamda oluşturulmuştur.")
                 .setFontSize(9)
@@ -177,36 +340,9 @@ public class PdfExportUtil {
                 .setMarginTop(20));
     }
 
-    public static void printPdfFromFile(File pdfFile) {
-        try {
-            PDDocument document = PDDocument.load(pdfFile);
-
-            PrinterJob printJob = PrinterJob.getPrinterJob();
-
-            PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
-            if (printService == null) {
-                System.out.println("No printer found. Please ensure a printer is connected.");
-                document.close();
-                return;
-            }
-
-            printJob.setPrintService(printService);
-
-            printJob.setPageable(new PDFPageable(document));
-
-            printJob.print();
-
-            document.close();
-
-            System.out.println("PDF sent to printer: " + printService.getName());
-
-        } catch (IOException e) {
-            System.err.println("Error loading PDF file: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Printing error: " + e.getMessage());
-            e.printStackTrace();
-        }
+    private static void addTotalParagraphs(Document doc, double subtotal, double vatTotal, double grandTotal) {
+        doc.add(new Paragraph(String.format("\nAra Toplam: %.2f TL", subtotal)));
+        doc.add(new Paragraph(String.format("KDV Toplamı: %.2f TL", vatTotal)));
+        doc.add(new Paragraph(String.format("GENEL TOPLAM: %.2f TL", grandTotal)).setBold());
     }
-
 }

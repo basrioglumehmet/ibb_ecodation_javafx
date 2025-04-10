@@ -2,6 +2,10 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.service.MailService;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
 import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
@@ -9,6 +13,7 @@ import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 import org.example.ibb_ecodation_javafx.utils.ExcelUtil;
 import org.example.ibb_ecodation_javafx.utils.PdfExportUtil;
 import org.example.ibb_ecodation_javafx.model.Vat;
+import org.example.ibb_ecodation_javafx.utils.TxtUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -16,19 +21,33 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * KDV yönetim işlemlerini kontrol eden sınıf
+ */
 public class VatManagementController {
 
-    @FXML private DynamicTable<String> vatTable;
+    @FXML private DynamicTable<Vat> vatTable;
     @FXML private ShadcnInput vatNumber;
     @FXML private ShadcnBarChart barChart;
     @FXML private VBox vatPane;
 
+    private Store store = Store.getInstance();
     private Map<String, String> comboItems;
     private List<Vat> originalTableData;
     private String vatNumberFilter = "";
+    private MailService mailService = SpringContext.getContext().getBean(MailService.class);
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    static {
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Europe/Istanbul")); // TRT (UTC+03:00)
+    }
 
     public void initialize() {
-        if (vatTable == null) return;
+        // Tüm FXML elemanlarının null kontrolü
+        if (vatTable == null || vatNumber == null || barChart == null || vatPane == null) {
+            System.err.println("FXML elemanları düzgün yüklenmedi!");
+            return;
+        }
 
         originalTableData = new ArrayList<>();
 
@@ -46,6 +65,18 @@ public class VatManagementController {
             put("sendMail", "E-posta Gönder");
         }};
 
+        // Vat sınıfındaki @PdfDefinition ile uyumlu başlıklar (field isimleri)
+        List<String> headers = List.of(
+                "id",           // "ID"
+                "baseAmount",   // "Temel Tutar"
+                "rate",         // "%"
+                "amount",       // "Toplam"
+                "totalAmount",  // "Genel Toplam"
+                "receiptNumber", // "Fiş Numarası"
+                "transactionDate", // "İşlem Tarihi"
+                "description"   // "Açıklama"
+        );
+
         vatTable.setComboBoxTitle("Eylemler");
         vatTable.setComboBoxItems(comboItems);
 
@@ -57,36 +88,76 @@ public class VatManagementController {
         vatTable.watchComboBox().subscribe(pair -> {
             switch (pair.getKey()) {
                 case "add" -> DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-create-dialog-view.fxml", "Vat Dialog");
-                case "remove" -> DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-remove-dialog-view.fxml", "Vat Dialog");
+                case "remove" -> removeSelectedRows();
                 case "update" -> DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-update-dialog-view.fxml", "Vat Dialog");
-                case "sendMail" -> DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-mail-dialog-view.fxml", "Vat Dialog");
+                case "sendMail" -> {
+                    store.dispatch(VatTableState.class, new VatTableState(originalTableData));
+                    DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-mail-dialog-view.fxml", "Vat Dialog");
+                }
                 case "print" -> {
-                    File pdf = PdfExportUtil.exportVatInvoiceFromDynamicTable(vatTable.getScene().getWindow(), vatTable);
-                    PdfExportUtil.printPdfFromFile(pdf);
+                    File pdf = PdfExportUtil.exportVatInvoiceFromList(
+                            vatTable.getScene().getWindow(),
+                            originalTableData,
+                            headers
+                    );
+                    if (pdf != null && pdf.exists()) {
+                        PdfExportUtil.printPdfFromFile(pdf);
+                    } else {
+                        System.err.println("PDF dosyası oluşturulamadı!");
+                    }
                 }
                 case "export_pdf" -> {
-                    File pdf = PdfExportUtil.exportVatInvoiceFromDynamicTable(vatTable.getScene().getWindow(), vatTable);
+                    File pdf = PdfExportUtil.exportVatInvoiceFromList(
+                            vatTable.getScene().getWindow(),
+                            originalTableData,
+                            headers
+                    );
+                    if (pdf == null || !pdf.exists()) {
+                        System.err.println("PDF dışa aktarma başarısız!");
+                    }
                 }
-                case "export_excel" -> {
-                    ExcelUtil.exportToExcel(vatTable);
-                }
+                case "export_excel" -> ExcelUtil.exportToExcel(vatTable);
+                case "export_txt" -> TxtUtil.exportToTxt(vatTable);
             }
         });
 
         vatTable.addHeaders("ID", "N. Tutar", "%", "KDV Tutarı", "Toplam", "Fiş No", "Tarih", "Açıklama");
 
-        // Replace mock data with correct Vat objects
         List<Vat> mockData = Arrays.asList(
-                createVat(1, new BigDecimal("1000"), new BigDecimal("18"), new BigDecimal("180"), new BigDecimal("1180"), "F123", parseDate("2025-01-05"), "Mal Alımı", "PDF"),
-                createVat(2, new BigDecimal("2500"), new BigDecimal("20"), new BigDecimal("500"), new BigDecimal("3000"), "F124", parseDate("2025-01-15"), "Hizmet Bedeli", "EXCEL"),
-                createVat(3, new BigDecimal("800"), new BigDecimal("10"), new BigDecimal("80"), new BigDecimal("880"), "F125", parseDate("2025-01-25"), "Ofis Malzemesi", "PDF")
+                createVat(1, new BigDecimal("1000"), new BigDecimal("18"), new BigDecimal("180"), new BigDecimal("1180"), "F123",new Date(), "Mal Alımı", "PDF"),
+                createVat(2, new BigDecimal("2500"), new BigDecimal("20"), new BigDecimal("500"), new BigDecimal("3000"), "F124", new Date(), "Hizmet Bedeli", "EXCEL"),
+                createVat(3, new BigDecimal("800"), new BigDecimal("10"), new BigDecimal("80"), new BigDecimal("880"), "F125", new Date(), "Ofis Malzemesi", "PDF")
         );
 
-        mockData.forEach(this::addTableData);
+        mockData.forEach(vat -> {
+            originalTableData.add(vat);
+            addTableData(vat);
+        });
         updateBarChartFromTableData();
     }
 
-    private Vat createVat(int id, BigDecimal baseAmount, BigDecimal rate, BigDecimal amount, BigDecimal totalAmount, String receiptNumber, Date transactionDate, String description, String exportFormat) {
+    private void removeSelectedRows() {
+        List<List<String>> selectedData = vatTable.getSelectedData();
+        if (selectedData.isEmpty()) {
+            return;
+        }
+
+        List<String> selectedIds = selectedData.stream()
+                .map(row -> row.get(0))
+                .collect(Collectors.toList());
+
+        originalTableData.removeIf(vat -> selectedIds.contains(String.valueOf(vat.getId())));
+
+        vatTable.clearData();
+        originalTableData.forEach(this::addTableData);
+
+        updateBarChartFromTableData();
+        applyFilters();
+    }
+
+    private Vat createVat(int id, BigDecimal baseAmount, BigDecimal rate, BigDecimal amount,
+                          BigDecimal totalAmount, String receiptNumber, Date transactionDate,
+                          String description, String exportFormat) {
         Vat vat = new Vat();
         vat.setId(id);
         vat.setBaseAmount(baseAmount);
@@ -102,10 +173,10 @@ public class VatManagementController {
 
     private Date parseDate(String dateStr) {
         try {
-            return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+            return DATE_FORMAT.parse(dateStr);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            System.err.println("Tarih ayrıştırma hatası: " + e.getMessage());
+            return new Date(); // Varsayılan olarak şu anki tarih
         }
     }
 
@@ -113,15 +184,23 @@ public class VatManagementController {
         List<Vat> filteredData = originalTableData.stream()
                 .filter(vat -> vat.getReceiptNumber().contains(vatNumberFilter))
                 .collect(Collectors.toList());
-        vatTable.setTableData(filteredData);
+        vatTable.setTableData(filteredData, vat -> Arrays.asList(
+                String.valueOf(vat.getId()),
+                vat.getBaseAmount().toString(),
+                vat.getRate().toString(),
+                vat.getAmount().toString(),
+                vat.getTotalAmount().toString(),
+                vat.getReceiptNumber(),
+                DATE_FORMAT.format(vat.getTransactionDate()),
+                vat.getDescription()
+        ));
     }
 
     private void updateBarChartFromTableData() {
-        // Use BigDecimal to avoid precision issues
         Map<String, BigDecimal> chartData = new LinkedHashMap<>();
 
         for (Vat vat : originalTableData) {
-            String date = new SimpleDateFormat("yyyy-MM-dd").format(vat.getTransactionDate());
+            String date = DATE_FORMAT.format(vat.getTransactionDate());
             BigDecimal total = vat.getTotalAmount();
             chartData.put(date, chartData.getOrDefault(date, BigDecimal.ZERO).add(total));
         }
@@ -137,9 +216,8 @@ public class VatManagementController {
                 vat.getAmount().toString(),
                 vat.getTotalAmount().toString(),
                 vat.getReceiptNumber(),
-                new SimpleDateFormat("yyyy-MM-dd").format(vat.getTransactionDate()),
+                DATE_FORMAT.format(vat.getTransactionDate()),
                 vat.getDescription()
         );
-        originalTableData.add(vat);
     }
 }

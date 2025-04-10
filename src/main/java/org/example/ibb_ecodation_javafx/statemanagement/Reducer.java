@@ -1,10 +1,7 @@
 package org.example.ibb_ecodation_javafx.statemanagement;
 
 import org.example.ibb_ecodation_javafx.statemanagement.action.*;
-import org.example.ibb_ecodation_javafx.statemanagement.state.CounterState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.*;
 
 public class Reducer {
     public static RootState reduce(RootState currentState, Object action) {
@@ -28,6 +25,10 @@ public class Reducer {
         else if (action instanceof TranslatorAction) {
             TranslatorState newTranslatorState = currentState.getTranslatorState();
             return currentState.updateTranslator(newTranslatorState);
+        }
+        else if (action instanceof VatTableAction) {
+            VatTableState newVatTableState = currentState.getVatTableState();
+            return currentState.updateVat(newVatTableState);
         }
         return currentState;
     }

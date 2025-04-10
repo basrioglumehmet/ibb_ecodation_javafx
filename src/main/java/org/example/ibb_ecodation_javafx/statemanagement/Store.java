@@ -3,10 +3,9 @@ package org.example.ibb_ecodation_javafx.statemanagement;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.statemanagement.enums.CountryCode;
-import org.example.ibb_ecodation_javafx.statemanagement.state.CounterState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.*;
+
+import java.util.ArrayList;
 
 public class Store {
     private static Store instance;
@@ -23,6 +22,7 @@ public class Store {
             initialRegistry.registerState(UserState.class, new UserState(new UserDetailDto(), false));
             initialRegistry.registerState(DarkModeState.class, new DarkModeState(false));
             initialRegistry.registerState(TranslatorState.class, new TranslatorState(CountryCode.TR));
+            initialRegistry.registerState(VatTableState.class, new VatTableState(new ArrayList<>()));
             instance = new Store(initialRegistry);
         }
         return instance;

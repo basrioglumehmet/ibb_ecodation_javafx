@@ -10,13 +10,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
-import org.example.ibb_ecodation_javafx.model.Vat;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnComboBox;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DynamicTable<T> extends VBox {
@@ -206,12 +205,11 @@ public class DynamicTable<T> extends VBox {
                 List<String> row = data.get(i);
                 HBox dataRow = new HBox();
 
-                dataRow.setStyle("-fx-padding: 10px;  " );
+                dataRow.setStyle("-fx-padding: 10px;");
 
                 CheckBox checkBox = new CheckBox();
 
                 checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
-
                     updateRowStyle(dataRow, newVal);
                 });
 
@@ -263,30 +261,14 @@ public class DynamicTable<T> extends VBox {
         return headers;
     }
 
-    public void setTableData(List<Vat> filteredData) {
-        // Clear the previous data in the table
+    public void setTableData(List<T> items, Function<T, List<String>> mapper) {
         data.clear();
 
-        // Map each Vat object to a list of strings representing the row data
-        for (Vat vat : filteredData) {
-            List<String> row = new ArrayList<>();
-
-            // Add the properties of Vat to the row
-            row.add(String.valueOf(vat.getId()));  // ID
-            row.add(vat.getBaseAmount().toString());  // Base amount
-            row.add(vat.getRate().toString());  // Rate
-            row.add(vat.getAmount().toString());  // VAT amount
-            row.add(vat.getTotalAmount().toString());  // Total amount
-            row.add(vat.getReceiptNumber());  // Receipt number
-            row.add(new SimpleDateFormat("yyyy-MM-dd").format(vat.getTransactionDate()));  // Transaction date
-            row.add(vat.getDescription());  // Description
-
-            // Add the row to the data list
-            data.add(row);
+        for (T item : items) {
+            List<String> row = mapper.apply(item);
+            data.add(new ArrayList<>(row));
         }
 
-        // Refresh the table to reflect the new data
         refreshTable();
     }
-
 }
