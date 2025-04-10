@@ -4,9 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.exception.OptimisticLockException;
 import org.example.ibb_ecodation_javafx.model.UserPicture;
 import org.example.ibb_ecodation_javafx.model.dto.UserPictureDto;
+import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.service.UserPictureService;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -40,6 +42,7 @@ public class AdminProfileController {
     private final UserPictureService userPictureService;
 
     private final Store store = Store.getInstance();
+    private final SecurityLogger securityLogger;
 
     @FXML
     private Upload upload;
@@ -47,6 +50,8 @@ public class AdminProfileController {
     public AdminProfileController() {
         this.userPictureService = SpringContext.getContext().getBean(UserPictureService.class);
         this.userService = SpringContext.getContext().getBean(UserService.class);
+        this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
+        securityLogger.logOperation("Profil açıldı");
     }
 
     public void initialize() {

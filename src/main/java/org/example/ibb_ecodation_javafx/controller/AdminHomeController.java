@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.ui.splitpane.ShadcnSplitPane;
@@ -19,9 +20,12 @@ public class AdminHomeController {
 
     @FXML
     private UserNotificationService userNotificationService;
+    private final SecurityLogger securityLogger;
 
     public AdminHomeController(){
         userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
+        this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
+        securityLogger.logOperation("Anasayfa açıldı");
     }
 
     public void initialize() {

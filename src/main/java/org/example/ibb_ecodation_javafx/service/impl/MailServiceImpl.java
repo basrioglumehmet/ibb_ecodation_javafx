@@ -1,5 +1,7 @@
 package org.example.ibb_ecodation_javafx.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.utils.OtpUtil;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.io.IOException;
 
+@RequiredArgsConstructor
 @Service
 public class MailServiceImpl implements MailService {
     private final String SENDGRID_API_KEY = "";
     private final String SENDGRID_API_URL = "https://api.sendgrid.com/v3/mail/send";
     private final String TEMPLATE_ID = "d-03558ef2da8a41c4891e895128b8748e";
+    private final SecurityLogger securityLogger;
 
     @Override
     public void sendMail(String to,String otpCode) {
@@ -43,6 +47,7 @@ public class MailServiceImpl implements MailService {
             String responseBody = response.body();
             System.out.println("Status Code: " + statusCode);
             System.out.println("Response Body: " + (responseBody.isEmpty() ? "Empty" : responseBody));
+            securityLogger.logUserOperation(to,"otp mail gönderme");
 
             if (statusCode != 202) {
                 throw new RuntimeException("Failed to send email: HTTP " + statusCode + " - " + responseBody);

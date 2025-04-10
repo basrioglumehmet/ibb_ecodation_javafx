@@ -3,12 +3,17 @@ package org.example.ibb_ecodation_javafx.controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.statemanagement.action.IncrementAction;
@@ -59,6 +64,12 @@ public class AdminDashboardController {
     @FXML
     private HBox sidebarBottomInsideContainer;
 
+    private final SecurityLogger securityLogger;
+
+    public AdminDashboardController() {
+        this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
+    }
+
     public void initialize(){
         store = Store.getInstance();
         store.getState().subscribe(stateRegistry -> {
@@ -97,10 +108,18 @@ public class AdminDashboardController {
     }
 
     @FXML
-    private void openDocument(){
-        WebViewUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/html/uidoc.html", "Yardım Kılavuzu", 800, 600);
-    }
+    private void openDocument(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Bounds bounds = source.localToScreen(source.getBoundsInLocal());
+        double x = bounds.getMinX();
+        double y = bounds.getMinY();
 
+        WebViewUtil.showHelpPopup(
+                "/org/example/ibb_ecodation_javafx/html/uidoc.html",
+                "Yardım Kılavuzu"
+        );
+        securityLogger.logOperation("Kılavuz okuma");
+    }
     // Home butonuna tıklama işlemi
     @FXML
     private void handleHomeButton() throws IOException {

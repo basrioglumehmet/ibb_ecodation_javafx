@@ -1,6 +1,7 @@
 package org.example.ibb_ecodation_javafx.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.mapper.UserMapper;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.repository.UserRepository;
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final SecurityLogger securityLogger;
 
     @Override
     public User create(User entity) {
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
         // var entity = new User(1,"Mehmet Basrioğlu","admin@admin.com","123456", Role.ADMIN,true,false,0);
         var created = userRepository.create(entity, UserQuery.CREATE_USER,
                 List.of(entity.getUsername(),entity.getEmail(),entity.getPassword(),entity.getRole().toString(),entity.isVerified(),entity.isLocked()));
-        System.out.println(created.toString());
+        securityLogger.logUserOperation(entity.toString(), "kullanıcı oluşturma");
         return created;
     }
 
@@ -36,6 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void read(int id, Consumer<User> callback) {
         var dbResponse = userRepository.read(User.class, UserQuery.READ_USER_BY_ID, List.of(id));
+        securityLogger.logUserOperation(dbResponse.getUsername(), "kullanıcı okuma");
         callback.accept(dbResponse);
     }
 
@@ -47,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User entity, Consumer<User> callback) {
-        System.out.println(entity);
+
         var user = userRepository.update(entity,
                 UserQuery.UPDATE_USER_BY_ID,
                 List.of(entity.getUsername(),
@@ -57,12 +60,14 @@ public class UserServiceImpl implements UserService {
                         entity.isLocked(),
                         entity.getId(),
                         entity.getVersion()));
+        securityLogger.logUserOperation(entity.toString(), "kullanıcı güncelleme");
     }
 
     @Override
     public void readByEmail(String email, Consumer<User> callback) {
         var dbResponse = userRepository.read(User.class, UserQuery.READ_USER_BY_EMAIL, List.of(email));
         callback.accept(dbResponse);
+        securityLogger.logUserOperation(email, "kullanıcı email adresine göre okuma");
     }
 
     @Override

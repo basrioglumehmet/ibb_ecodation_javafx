@@ -2,6 +2,8 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
@@ -24,6 +26,12 @@ public class AdminConfigController {
     private ShadcnListItem shadcnListItem2;
 
     private Map<String, Disposable> switchButtonSubscriptions = new HashMap<>();
+    private final SecurityLogger securityLogger;
+
+    public AdminConfigController() {
+        this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
+        securityLogger.logOperation("Ayarlar açıldı");
+    }
 
     public void initialize() {
         dispose();

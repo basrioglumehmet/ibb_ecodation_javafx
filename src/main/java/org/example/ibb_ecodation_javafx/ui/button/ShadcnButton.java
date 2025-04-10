@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.paint.Color;
@@ -20,6 +21,7 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import javafx.application.Platform;
 import org.example.ibb_ecodation_javafx.ui.spinner.LoadingSpinner;
 import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
+import javafx.scene.layout.Region;
 
 import java.util.Objects;
 
@@ -65,9 +67,20 @@ public class ShadcnButton extends Button {
     }
 
     private void initializeBindings() {
-        // Add listener for fullWidth property
+        // Add listener for fullWidth and isIconOnly properties
         fullWidth.addListener((obs, oldVal, newVal) -> updateWidth());
         isIconOnly.addListener((obs, oldVal, newVal) -> updateWidth());
+
+        // Bind width to parent when fullWidth is true, once parent is available
+        parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent != null) {
+                updateWidth(); // Reapply width settings when parent changes
+            } else {
+                // Unbind if parent is removed
+                prefWidthProperty().unbind();
+                updateWidth();
+            }
+        });
     }
 
     public void dispose() {
@@ -184,7 +197,7 @@ public class ShadcnButton extends Button {
             case GHOST:
                 backgroundColor = "transparent";
                 hoverColor = "#2c2c30";
-                textColor = isLightMode ? "#82838b":"#fff";
+                textColor = isLightMode ? "#82838b" : "#fff";
                 hoverTextColor = "white";
                 break;
             case SECONDARY:
@@ -254,10 +267,20 @@ public class ShadcnButton extends Button {
 
     private void updateWidth() {
         if (fullWidth.get()) {
-            setMinWidth(0);
-            setMaxWidth(Double.MAX_VALUE);
-            setPrefWidth(USE_COMPUTED_SIZE);
+            setMinWidth(0); // Allow shrinking if needed
+            setMaxWidth(Double.MAX_VALUE); // Allow growing to fill container
+            Parent parent = getParent();
+            if (parent instanceof Region) {
+                Region regionParent = (Region) parent;
+                // Bind prefWidth to parent's width
+                prefWidthProperty().bind(regionParent.widthProperty());
+            } else {
+                // Fallback if parent isn’t a Region or isn’t set yet
+                setPrefWidth(USE_COMPUTED_SIZE);
+            }
         } else {
+            // Unbind and reset to default behavior
+            prefWidthProperty().unbind();
             setMinWidth(USE_COMPUTED_SIZE);
             setMaxWidth(isIconOnly.get() ? 30 : Double.MAX_VALUE);
             setPrefWidth(isIconOnly.get() ? 30 : USE_COMPUTED_SIZE);

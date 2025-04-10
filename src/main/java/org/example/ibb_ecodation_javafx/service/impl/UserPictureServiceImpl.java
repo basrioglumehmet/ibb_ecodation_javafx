@@ -1,6 +1,7 @@
 package org.example.ibb_ecodation_javafx.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.model.UserPicture;
 import org.example.ibb_ecodation_javafx.repository.UserPictureRepository;
@@ -17,6 +18,7 @@ import java.util.function.Consumer;
 public class UserPictureServiceImpl implements UserPictureService {
     private final UserPictureRepository userPictureRepository;
     private final UserNotificationService userNotificationService;
+    private final SecurityLogger securityLogger;
 
     @Override
     public UserPicture create(UserPicture entity) {
@@ -51,5 +53,6 @@ public class UserPictureServiceImpl implements UserPictureService {
         var notifier = new UserNotification(0, entity.getUserId(), "Profil İşlemleri","Başarıyla profil değiştirildi",
                 "SUCCESS",1);
         userNotificationService.create(notifier);
+        securityLogger.logUserOperation(entity.getUserId()+ "(USER ID)", "profil fotoğrafı güncelleme");
     }
 }

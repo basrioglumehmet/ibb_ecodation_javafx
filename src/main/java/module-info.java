@@ -6,10 +6,10 @@ module org.example.ibb_ecodation_javafx {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires static lombok;
-    requires java.sql;
     requires com.h2database;
     requires org.mapstruct;
     requires javafx.web;
+    requires java.sql;
 
     requires sendgrid.java;
 
@@ -30,6 +30,7 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.service.impl to spring.beans, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.mapper to spring.beans;
     opens org.example.ibb_ecodation_javafx.repository to spring.beans;
+    opens org.example.ibb_ecodation_javafx.core.logger to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
 
     requires java.compiler;
     requires jbcrypt;
@@ -41,6 +42,8 @@ module org.example.ibb_ecodation_javafx {
     requires spring.context;
     requires spring.beans;
     requires java.net.http;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;

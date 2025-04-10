@@ -1,6 +1,7 @@
 package org.example.ibb_ecodation_javafx.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.model.UserOtpCode;
 import org.example.ibb_ecodation_javafx.repository.UserNotificationRepository;
@@ -19,11 +20,13 @@ import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotificati
 public class UserNotificationServiceImpl implements UserNotificationService {
 
     private final UserNotificationRepository userNotificationRepository;
+    private final SecurityLogger securityLogger;
 
     @Override
     public UserNotification create(UserNotification entity) {
         //user_id, header, description, type, version
         showTrayNotification(entity.getDescription(), entity.getHeader());
+        securityLogger.logUserOperation(entity.getUserId()+"(USER ID)", "bildirim oluşturma");
         return userNotificationRepository.create(entity, UserNotificationQuery.CREATE, List.of(entity.getUserId(), entity.getHeader(),
                 entity.getDescription(),entity.getType(),entity.getVersion()));
     }
@@ -40,6 +43,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public List<UserNotification> readAll(int id) {
+        securityLogger.logUserOperation(id+"(USER ID)", "bildirim okuma");
         return userNotificationRepository.readAll(UserNotification.class,UserNotificationQuery.READ_ALL_BY_USER_ID,List.of(id));
     }
 

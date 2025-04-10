@@ -17,7 +17,7 @@
 
     <!-- Navbar (Sabit Üst Menü) -->
     <top>
-        <ShadcnNavbar fx:id="navbar" />
+        <ShadcnNavbar   fx:id="navbar" />
     </top>
 
     <!-- Sol Sidebar (Sabit Genişlik) -->

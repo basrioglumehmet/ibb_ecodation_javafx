@@ -5,6 +5,7 @@ import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
+import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +64,7 @@ public class VatManagementController {
                 switch (key) {
                     case "add":
                         // KDV girişi ekleme işlemini gerçekleştir
+                        DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-dialog-view.fxml","Vat Dialog");
                         break;
                     case "remove":
                         // KDV girişi silme işlemini gerçekleştir

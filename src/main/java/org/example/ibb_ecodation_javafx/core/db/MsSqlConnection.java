@@ -1,5 +1,8 @@
 package org.example.ibb_ecodation_javafx.core.db;
 
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,7 +11,10 @@ public class MsSqlConnection extends DbConnection {
 
     private static MsSqlConnection instance;
 
-    private MsSqlConnection() {}
+
+    private MsSqlConnection() {
+        super();
+    }
 
     /**
      * Dikkat!
@@ -38,7 +44,6 @@ public class MsSqlConnection extends DbConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(getConnectionString());
-                System.out.println("MsSql bağlandı.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -17,6 +17,7 @@ public class BaseRepository<T> implements GenericRepository<T> {
 
     protected final Connection connection;
 
+
     public BaseRepository(Connection connection) {
         this.connection = connection;
     }
@@ -66,7 +67,6 @@ public class BaseRepository<T> implements GenericRepository<T> {
     public T read(Class<T> entityClass, String query, List<Object> params) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, params);
-            System.out.println("PreparedStatement: " + preparedStatement);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapToEntity(entityClass, resultSet);
@@ -84,7 +84,6 @@ public class BaseRepository<T> implements GenericRepository<T> {
     public List<T> readAll(Class<T> entityClass, String query, List<Object> params) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, params);
-            System.out.println("PreparedStatement: " + preparedStatement);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<T> entities = new ArrayList<>();
                 while (resultSet.next()) {
