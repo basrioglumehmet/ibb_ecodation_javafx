@@ -41,6 +41,7 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 34. **Spring Framework**
 
 ### Mail Sending
+![img_2.png](img_2.png)
 ![img_1.png](img_1.png)
 ### Printer Feature
 ![img.png](img.png)
