@@ -38,6 +38,7 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 31. **Responsive Layouts**
 32. **Custom Movable Scenes**
 33. **Custom GUI Animations**
+34. **Spring Framework**
 
 ### Printer Feature
 ![img.png](img.png)
