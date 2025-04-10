@@ -3,9 +3,12 @@ package org.example.ibb_ecodation_javafx.controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
+import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 import org.example.ibb_ecodation_javafx.utils.PdfExportUtil;
@@ -24,6 +27,11 @@ public class VatDialogMailController {
 
     private Store store;
 
+    @FXML
+    private ShadcnInput input;
+
+    private final MailService mailService = SpringContext.getContext().getBean(MailService.class);
+
     public void initialize() {
         store = Store.getInstance();
 
@@ -34,8 +42,6 @@ public class VatDialogMailController {
             changeRootPaneColor(darkModeValue, rootPaneMail);
         });
 
-        // PDF export işlemini sahne hazır olduğunda çalıştır
-        Platform.runLater(this::exportVatDataToPdf);
     }
 
     private void exportVatDataToPdf() {
@@ -64,14 +70,20 @@ public class VatDialogMailController {
         // PDF'i dışa aktar
         File pdf = PdfExportUtil.exportVatInvoiceFromList(rootPaneMail.getScene().getWindow(), vatTableState.vatList(), headers);
 
-        if (pdf != null) {
+        if (pdf != null && !input.getText().isEmpty()) {
             System.out.println("PDF exported successfully: " + pdf.getAbsolutePath());
             // E-posta gönderme (yorumdan çıkarılacaksa)
-            // mailService.sendMailWithAttachment("basrioglumehmet@gmail.com", "Mail DENEME", pdf.toPath(), "PDF Dosyası");
+             mailService.sendMailWithAttachment(input.getText(), "Mail DENEME", pdf.toPath(), "PDF Dosyası");
         } else {
             System.err.println("PDF export failed.");
 
         }
+    }
+
+    @FXML
+    private void send(){
+        // PDF export işlemini sahne hazır olduğunda çalıştır
+        Platform.runLater(this::exportVatDataToPdf);
     }
 
     @FXML

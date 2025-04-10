@@ -18,7 +18,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 @Service
 public class MailServiceImpl implements MailService {
-    private final String SENDGRID_API_KEY = " ";
+    private final String SENDGRID_API_KEY = "";
     private final String SENDGRID_API_URL = "https://api.sendgrid.com/v3/mail/send";
     private final String TEMPLATE_ID = "d-03558ef2da8a41c4891e895128b8748e";
     private final SecurityLogger securityLogger;
@@ -48,8 +48,6 @@ public class MailServiceImpl implements MailService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             int statusCode = response.statusCode();
             String responseBody = response.body();
-            System.out.println("Status Code: " + statusCode);
-            System.out.println("Response Body: " + (responseBody.isEmpty() ? "Empty" : responseBody));
             securityLogger.logUserOperation(to,"otp mail gönderme");
 
             if (statusCode != 202) {
@@ -70,13 +68,12 @@ public class MailServiceImpl implements MailService {
                     "{\"personalizations\": [{\"to\": [{\"email\": \"%s\"}]}], " +
                             "\"from\": {\"email\": \"basrioglumehmet@gmail.com\"}, " +
                             "\"subject\": \"%s\", " +
-                            "\"content\": [{\"type\": \"text/plain\", \"value\": \"This is an email with attachment\"}], " +
+                            "\"content\": [{\"type\": \"text/plain\", \"value\": \"Ek gönderildi.\"}], " +
                             "\"attachments\": [{\"content\": \"%s\", \"type\": \"%s\", \"filename\": \"%s\"}]}",
                     to, subject,
                     base64Content, contentType != null ? contentType : "application/octet-stream", attachmentName
             );
 
-            System.out.println("Sending payload with attachment: " + jsonPayload);
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -89,8 +86,6 @@ public class MailServiceImpl implements MailService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             int statusCode = response.statusCode();
             String responseBody = response.body();
-            System.out.println("Status Code: " + statusCode);
-            System.out.println("Response Body: " + (responseBody.isEmpty() ? "Empty" : responseBody));
             securityLogger.logUserOperation(to, "mail with attachment gönderme");
 
             if (statusCode != 202) {

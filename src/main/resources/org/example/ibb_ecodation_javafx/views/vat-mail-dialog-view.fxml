@@ -11,13 +11,13 @@
       xmlns:fx="http://javafx.com/fxml" fx:id="rootPaneMail" fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogMailController">
     <ShadcnNavbar hideButtons="true" fx:id="navbar" />
     <VBox  style="-fx-padding:20;" spacing="10">
-        <ShadcnInput fx:id="mail" prefHeight="43.0" prefWidth="387.0" header="E-mail" />
+        <ShadcnInput fx:id="input" prefHeight="43.0" prefWidth="387.0" header="E-mail" />
         <!--    date picker eklenecek-->
     </VBox>
     <HBox style="-fx-padding:20;"  spacing="20">
         <ShadcnButton onAction="#closeVatDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
                       mnemonicParsing="false"  />
-        <ShadcnButton onAction="#closeVatDialog" fullWidth="true" text="Send to mail" type="SUCCESS" align="CENTER"
+        <ShadcnButton onAction="#send" fullWidth="true" text="Send to mail" type="SUCCESS" align="CENTER"
                       mnemonicParsing="false"  />
     </HBox>
 </VBox>

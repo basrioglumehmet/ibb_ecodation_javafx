@@ -5,11 +5,15 @@ import javafx.stage.Stage;
 import lombok.experimental.UtilityClass;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.ibb_ecodation_javafx.annotation.PdfDefinition;
+import org.example.ibb_ecodation_javafx.model.Vat;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
@@ -31,12 +35,10 @@ public class ExcelUtil {
             return;
         }
 
-        // Create a new workbook
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
-            // Create a sheet
             Sheet sheet = workbook.createSheet("Table Data");
 
-            List<String> headers = table.getHeaders();
+            List<String> headers = getPdfDefinitionHeaders();
             List<List<String>> data = table.getData();
 
             Row headerRow = sheet.createRow(0);
@@ -57,7 +59,6 @@ public class ExcelUtil {
                 Row row = sheet.createRow(i + 1);
                 List<String> rowData = data.get(i);
 
-
                 for (int j = 0; j < headers.size(); j++) {
                     Cell cell = row.createCell(j + 1);
                     String cellValue = j < rowData.size() ? rowData.get(j) : "";
@@ -73,9 +74,23 @@ public class ExcelUtil {
             try (FileOutputStream fileOut = new FileOutputStream(file)) {
                 workbook.write(fileOut);
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
         }
+    }
+
+    private static List<String> getPdfDefinitionHeaders() {
+        List<String> headers = new ArrayList<>();
+        Field[] fields = Vat.class.getDeclaredFields();
+
+        // Vat sınıfındaki tüm alanları tara
+        for (Field field : fields) {
+            PdfDefinition pdfDefinition = field.getAnnotation(PdfDefinition.class);
+            if (pdfDefinition != null) {
+                headers.add(pdfDefinition.fieldName()); // fieldName değerini başlık olarak ekle
+            }
+        }
+        return headers;
     }
 
     private static CellStyle createHeaderStyle(Workbook workbook) {
