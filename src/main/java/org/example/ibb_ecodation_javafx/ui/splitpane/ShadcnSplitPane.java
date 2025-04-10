@@ -16,6 +16,7 @@ public class ShadcnSplitPane extends HBox {
         rightPane = new VBox();
         this.setStyle("-fx-padding:20;");
         leftPane.setPrefWidth(900);
+        rightPane.setMaxWidth(900);
         this.setSpacing(20);
 
         // Set grow properties (Burası önemli)

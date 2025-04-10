@@ -3,11 +3,17 @@ package org.example.ibb_ecodation_javafx.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.model.Vat;
+import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
@@ -30,12 +36,17 @@ public class VatDialogController {
 
     private Store store;
 
-    public void initialize(){
+    private double totalAmount;
+    private double vatAmount;
+
+    private final VatService vatService = SpringContext.getContext().getBean(VatService.class);
+
+    public void initialize() {
         store = Store.getInstance();
         store.getState().subscribe(stateRegistry -> {
             var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeNavbarColor(darkModeValue,navbar);
-            changeRootPaneColor(darkModeValue,rootPane);
+            changeNavbarColor(darkModeValue, navbar);
+            changeRootPaneColor(darkModeValue, rootPane);
         });
 
         amount.setTextChangeListener((newValue) -> calculateVat());
@@ -43,14 +54,45 @@ public class VatDialogController {
     }
 
     @FXML
-    private void closeVatDialog(){
+    private void closeVatDialog() {
         DialogUtil.closeDialog();
     }
 
+    @FXML
+    private void insert() {
+        String amountText = amount.getText();
+        String rateText = rate.getText();
+        String receiptText = receipt.getText();
+        String descriptionText = description.getText();
+
+        if (isValidNumber(amountText) && isValidNumber(rateText)) {
+            double amountValue = Double.parseDouble(amountText);
+            double rateValue = Double.parseDouble(rateText);
+
+            // Create the Vat entity
+            Vat vat = new Vat(
+                    0,
+                    1,
+                    BigDecimal.valueOf(1000),
+                    BigDecimal.valueOf(18),
+                    BigDecimal.valueOf(vatAmount),
+                    BigDecimal.valueOf(totalAmount),
+                    "F145",
+                    new Date(),
+                    "Araç Kiralama",
+                    "VARSAYILAN",
+                    false,
+                    1
+            );
+
+            vatService.create(vat);
+        } else {
+            resultLabel.setText("Invalid input. Please check the values.");
+        }
+    }
 
     private void calculateVat() {
         try {
-            // Get the amount and rate from the inputs
             String amountText = amount.getText();
             String rateText = rate.getText();
 
@@ -58,8 +100,8 @@ public class VatDialogController {
                 double amountValue = Double.parseDouble(amountText);
                 double rateValue = Double.parseDouble(rateText);
 
-                double vatAmount = amountValue * (rateValue / 100);
-                double totalAmount = amountValue + vatAmount;
+                vatAmount = amountValue * (rateValue / 100);
+                totalAmount = amountValue + vatAmount;
 
                 resultLabel.setText(String.format("Result: %.2f TL(KDV) ile %.2f TL", vatAmount, totalAmount));
             } else {
@@ -71,7 +113,6 @@ public class VatDialogController {
     }
 
     private boolean isValidNumber(String text) {
-        // Check if the text is not null and is a valid number (it can be empty or zero)
         return text != null && !text.trim().isEmpty() && text.matches("\\d+(\\.\\d+)?");
     }
 }

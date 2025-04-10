@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.service.MailService;
+import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
 import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
@@ -30,6 +31,7 @@ public class VatManagementController {
     @FXML private ShadcnInput vatNumber;
     @FXML private ShadcnBarChart barChart;
     @FXML private VBox vatPane;
+    private final VatService vatService = SpringContext.getContext().getBean(VatService.class);
 
     private Store store = Store.getInstance();
     private Map<String, String> comboItems;
@@ -43,7 +45,7 @@ public class VatManagementController {
     }
 
     public void initialize() {
-        // Tüm FXML elemanlarının null kontrolü
+        // FXML elemanlarının null kontrolü
         if (vatTable == null || vatNumber == null || barChart == null || vatPane == null) {
             System.err.println("FXML elemanları düzgün yüklenmedi!");
             return;
@@ -65,16 +67,17 @@ public class VatManagementController {
             put("sendMail", "E-posta Gönder");
         }};
 
-        // Vat sınıfındaki @PdfDefinition ile uyumlu başlıklar (field isimleri)
+        // Vat sınıfındaki tüm alanlara uygun başlıklar
         List<String> headers = List.of(
-                "id",           // "ID"
-                "baseAmount",   // "Temel Tutar"
-                "rate",         // "%"
-                "amount",       // "Toplam"
-                "totalAmount",  // "Genel Toplam"
-                "receiptNumber", // "Fiş Numarası"
-                "transactionDate", // "İşlem Tarihi"
-                "description"   // "Açıklama"
+                "ID",
+                "Kullanıcı ID",
+                "Tutar",
+                "%",
+                "Toplam",
+                "Genel Toplam",
+                "Fiş Numarası",
+                "İşlem Tarihi",
+                "Açıklama"
         );
 
         vatTable.setComboBoxTitle("Eylemler");
@@ -116,22 +119,32 @@ public class VatManagementController {
                         System.err.println("PDF dışa aktarma başarısız!");
                     }
                 }
-                case "export_excel" -> ExcelUtil.exportToExcel(vatTable);
-                case "export_txt" -> TxtUtil.exportToTxt(vatTable);
+                case "export_excel" -> ExcelUtil.exportToExcel(originalTableData, Vat.class);
+                case "export_txt" -> TxtUtil.exportToTxt(vatTable, Vat.class);
             }
         });
 
-        vatTable.addHeaders("ID", "N. Tutar", "%", "KDV Tutarı", "Toplam", "Fiş No", "Tarih", "Açıklama");
-
-        List<Vat> mockData = Arrays.asList(
-                createVat(1, new BigDecimal("1000"), new BigDecimal("18"), new BigDecimal("180"), new BigDecimal("1180"), "F123",new Date(), "Mal Alımı", "PDF"),
-                createVat(2, new BigDecimal("2500"), new BigDecimal("20"), new BigDecimal("500"), new BigDecimal("3000"), "F124", new Date(), "Hizmet Bedeli", "EXCEL"),
-                createVat(3, new BigDecimal("800"), new BigDecimal("10"), new BigDecimal("80"), new BigDecimal("880"), "F125", new Date(), "Ofis Malzemesi", "PDF")
+        vatTable.addHeaders(
+                "ID",
+                "Kullanıcı ID",
+                "Tutar",
+                "%",
+                "Toplam",
+                "Genel Toplam",
+                "Fiş Numarası",
+                "İşlem Tarihi",
+                "Açıklama",
+                "Dışa Aktarma Formatı",
+                "Silindi mi",
+                "Versiyon"
         );
 
-        mockData.forEach(vat -> {
+
+
+        vatService.readAll(1).stream().forEach(vat -> {
             originalTableData.add(vat);
             addTableData(vat);
+
         });
         updateBarChartFromTableData();
     }
@@ -160,6 +173,7 @@ public class VatManagementController {
                           String description, String exportFormat) {
         Vat vat = new Vat();
         vat.setId(id);
+        vat.setUserId(id + 1); // Mock user ID
         vat.setBaseAmount(baseAmount);
         vat.setRate(rate);
         vat.setAmount(amount);
@@ -186,13 +200,17 @@ public class VatManagementController {
                 .collect(Collectors.toList());
         vatTable.setTableData(filteredData, vat -> Arrays.asList(
                 String.valueOf(vat.getId()),
+                String.valueOf(vat.getUserId()),
                 vat.getBaseAmount().toString(),
                 vat.getRate().toString(),
                 vat.getAmount().toString(),
                 vat.getTotalAmount().toString(),
                 vat.getReceiptNumber(),
                 DATE_FORMAT.format(vat.getTransactionDate()),
-                vat.getDescription()
+                vat.getDescription(),
+                vat.getExportFormat(),
+                String.valueOf(vat.isDeleted()),
+                String.valueOf(vat.getVersion())
         ));
     }
 
@@ -211,13 +229,17 @@ public class VatManagementController {
     private void addTableData(Vat vat) {
         vatTable.addData(
                 String.valueOf(vat.getId()),
+                String.valueOf(vat.getUserId()),
                 vat.getBaseAmount().toString(),
                 vat.getRate().toString(),
                 vat.getAmount().toString(),
                 vat.getTotalAmount().toString(),
                 vat.getReceiptNumber(),
                 DATE_FORMAT.format(vat.getTransactionDate()),
-                vat.getDescription()
+                vat.getDescription(),
+                vat.getExportFormat(),
+                String.valueOf(vat.isDeleted()),
+                String.valueOf(vat.getVersion())
         );
     }
 }

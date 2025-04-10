@@ -30,20 +30,17 @@ public class DialogUtil {
 
     public static void showHelpPopup(String fxmlResourcePath, String title) {
         try {
-            // Load FXML file
+
             FXMLLoader loader = new FXMLLoader(DialogUtil.class.getResource(fxmlResourcePath));
             VBox contentPane = loader.load();
 
-            // Main container
             StackPane root = new StackPane(contentPane);
             root.setStyle("-fx-background-color: transparent; -fx-border-width:1; -fx-border-color:#222225;");
             root.setAlignment(javafx.geometry.Pos.CENTER);
 
-            // Scene settings
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
 
-            // Stage settings
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(scene);
@@ -52,7 +49,6 @@ public class DialogUtil {
 
             currentDialogStage = stage;
 
-            // Screen and size settings
             Stage parentStage = getParentStage();
             Screen targetScreen = determineTargetScreen(parentStage);
             double[] dimensions = initializeStageSize(stage, root, contentPane, targetScreen);
@@ -61,7 +57,6 @@ public class DialogUtil {
             stage.setHeight(dimensions[1]);
             contentPane.setPrefSize(dimensions[0], dimensions[1]);
 
-            // Center the stage
             centerStage(stage, targetScreen.getVisualBounds(), dimensions[0], dimensions[1]);
             makeDraggable(stage, root, contentPane);
             addResponsiveListeners(stage, root, contentPane);
@@ -104,14 +99,11 @@ public class DialogUtil {
     private static double[] initializeStageSize(Stage stage, StackPane root, VBox contentPane, Screen screen) {
         Rectangle2D screenBounds = screen.getVisualBounds();
 
-        // Force layout calculation to get accurate content size
         contentPane.applyCss();
         contentPane.layout();
 
-        // Get content's preferred height only
         double contentHeight = contentPane.prefHeight(-1);
 
-        // Calculate width based on screen size
         double optimalWidth = screenBounds.getWidth() * MAX_SCREEN_USAGE;
         double finalWidth = Math.max(MIN_WIDTH, Math.min(optimalWidth, screenBounds.getWidth()));
         double finalHeight = Math.max(MIN_HEIGHT, Math.min(contentHeight, screenBounds.getHeight() * MAX_SCREEN_USAGE));
@@ -167,7 +159,6 @@ public class DialogUtil {
         stage.setWidth(newWidth);
         stage.setHeight(newHeight);
 
-        // Ensure stage stays within screen bounds
         if (stage.getX() + newWidth > screenBounds.getMaxX()) {
             stage.setX(screenBounds.getMaxX() - newWidth);
         }

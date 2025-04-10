@@ -2,14 +2,61 @@
 GO
 
 CREATE TABLE vat (
-    id INT NOT NULL PRIMARY KEY,
-    baseAmount DECIMAL,           -- KDV'siz tutar
-    rate DECIMAL NOT NULL,         -- KDV oranı (%18 gibi)
-    amount DECIMAL NOT NULL,      -- KDV tutarı
-    totalAmount DECIMAL NOT NULL, -- KDV dahil toplam tutar
-    receiptNumber VARCHAR(100) NOT NULL,
-    transactionDate DATE NOT NULL,
+    id INT  IDENTITY(1,1) PRIMARY KEY,
+	user_id INT NOT NULL,                -- users tablosuna dış anahtar
+    base_amount DECIMAL(18, 2),           -- KDV'siz tutar
+    rate DECIMAL(5, 2) NOT NULL,          -- KDV oranı (%18 gibi)
+    amount DECIMAL(18, 2) NOT NULL,       -- KDV tutarı
+    total_amount DECIMAL(18, 2) NOT NULL, -- KDV dahil toplam tutar
+    receipt_number VARCHAR(100) NOT NULL,
+    transaction_date DATE NOT NULL,
     description VARCHAR(255),
     exportFormat VARCHAR(50),
-    is_deleted BIT DEFAULT 0            -- Soft delete için bayrak (0: aktif, 1: silinmiş)
+    is_deleted BIT DEFAULT 0,             -- Soft delete için bayrak (0: aktif, 1: silinmiş)
+	version int null DEFAULT 1
+    CONSTRAINT FK_VatFK FOREIGN KEY (user_id)
+        REFERENCES users(id)
 );
+
+SELECT * from vat;
+
+USE ibb_java_se;
+GO
+
+USE ibb_java_se;
+GO
+-- 20 adet araç kiralama işlemi için kısa açıklamalı mock veri ekle
+INSERT INTO vat (
+    user_id, 
+    base_amount, 
+    rate, 
+    amount, 
+    total_amount, 
+    receipt_number, 
+    transaction_date, 
+    description, 
+    exportFormat, 
+    is_deleted, 
+    version
+)
+VALUES 
+(1, CAST(250.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(45.00 AS DECIMAL(18, 2)), CAST(295.00 AS DECIMAL(18, 2)), 'ARAC001', '2025-04-01', 'Kısa Süreli', 'VARSAYILAN', 0, 1),
+(1, CAST(500.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(90.00 AS DECIMAL(18, 2)), CAST(590.00 AS DECIMAL(18, 2)), 'ARAC002', '2025-04-02', '1 Günlük', 'VARSAYILAN', 0, 1),
+(1, CAST(1500.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(270.00 AS DECIMAL(18, 2)), CAST(1770.00 AS DECIMAL(18, 2)), 'ARAC003', '2025-04-03', 'Haftalık', 'VARSAYILAN', 0, 1),
+(1, CAST(600.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(108.00 AS DECIMAL(18, 2)), CAST(708.00 AS DECIMAL(18, 2)), 'ARAC004', '2025-04-04', 'Uzun Süreli', 'VARSAYILAN', 0, 1),
+(1, CAST(450.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(81.00 AS DECIMAL(18, 2)), CAST(531.00 AS DECIMAL(18, 2)), 'ARAC005', '2025-04-05', 'İş Gezisi', 'VARSAYILAN', 0, 1),
+(1, CAST(200.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(36.00 AS DECIMAL(18, 2)), CAST(236.00 AS DECIMAL(18, 2)), 'ARAC006', '2025-04-06', 'Kısa Süreli', 'VARSAYILAN', 0, 1),
+(1, CAST(1300.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(234.00 AS DECIMAL(18, 2)), CAST(1534.00 AS DECIMAL(18, 2)), 'ARAC007', '2025-04-07', 'Lüks Araç', 'VARSAYILAN', 0, 1),
+(1, CAST(950.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(171.00 AS DECIMAL(18, 2)), CAST(1121.00 AS DECIMAL(18, 2)), 'ARAC008', '2025-04-08', '3 Günlük', 'VARSAYILAN', 0, 1),
+(1, CAST(1000.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(180.00 AS DECIMAL(18, 2)), CAST(1180.00 AS DECIMAL(18, 2)), 'ARAC009', '2025-04-09', 'Yüksek Sezon', 'VARSAYILAN', 0, 1),
+(1, CAST(320.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(57.60 AS DECIMAL(18, 2)), CAST(377.60 AS DECIMAL(18, 2)), 'ARAC010', '2025-04-10', 'Normal', 'VARSAYILAN', 0, 1),
+(1, CAST(700.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(126.00 AS DECIMAL(18, 2)), CAST(826.00 AS DECIMAL(18, 2)), 'ARAC011', '2025-04-11', 'Uzun Süreli', 'VARSAYILAN', 0, 1),
+(1, CAST(1100.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(198.00 AS DECIMAL(18, 2)), CAST(1298.00 AS DECIMAL(18, 2)), 'ARAC012', '2025-04-12', 'Lüks Araç', 'VARSAYILAN', 0, 1),
+(1, CAST(450.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(81.00 AS DECIMAL(18, 2)), CAST(531.00 AS DECIMAL(18, 2)), 'ARAC013', '2025-04-13', 'Kısa İş Gezisi', 'VARSAYILAN', 0, 1),
+(1, CAST(2000.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(360.00 AS DECIMAL(18, 2)), CAST(2360.00 AS DECIMAL(18, 2)), 'ARAC014', '2025-04-14', '2 Haftalık', 'VARSAYILAN', 0, 1),
+(1, CAST(750.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(135.00 AS DECIMAL(18, 2)), CAST(885.00 AS DECIMAL(18, 2)), 'ARAC015', '2025-04-15', 'Lüks SUV', 'VARSAYILAN', 0, 1),
+(1, CAST(1200.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(216.00 AS DECIMAL(18, 2)), CAST(1416.00 AS DECIMAL(18, 2)), 'ARAC016', '2025-04-16', 'Aylık', 'VARSAYILAN', 0, 1),
+(1, CAST(800.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(144.00 AS DECIMAL(18, 2)), CAST(944.00 AS DECIMAL(18, 2)), 'ARAC017', '2025-04-17', 'Haftalık', 'VARSAYILAN', 0, 1),
+(1, CAST(600.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(108.00 AS DECIMAL(18, 2)), CAST(708.00 AS DECIMAL(18, 2)), 'ARAC018', '2025-04-18', 'Yedek Araç', 'VARSAYILAN', 0, 1),
+(1, CAST(300.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(54.00 AS DECIMAL(18, 2)), CAST(354.00 AS DECIMAL(18, 2)), 'ARAC019', '2025-04-19', 'Kısa Süreli', 'VARSAYILAN', 0, 1),
+(1, CAST(400.00 AS DECIMAL(18, 2)), CAST(18.00 AS DECIMAL(5, 2)), CAST(72.00 AS DECIMAL(18, 2)), CAST(472.00 AS DECIMAL(18, 2)), 'ARAC020', '2025-04-20', 'Normal', 'VARSAYILAN', 0, 1);

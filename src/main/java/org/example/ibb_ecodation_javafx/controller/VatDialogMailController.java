@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.service.MailService;
+import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
@@ -26,6 +27,7 @@ public class VatDialogMailController {
     private VBox rootPaneMail;
 
     private Store store;
+
 
     @FXML
     private ShadcnInput input;

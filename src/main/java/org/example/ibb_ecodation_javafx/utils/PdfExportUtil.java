@@ -18,6 +18,7 @@ import javafx.stage.Window;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.example.ibb_ecodation_javafx.annotation.PdfDefinition;
+import org.example.ibb_ecodation_javafx.annotation.PdfIgnore;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 
 import javax.print.PrintService;
@@ -27,15 +28,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 /**
  * PDF belgelerini dışa aktarma ve yazdırma için yardımcı sınıf
@@ -53,7 +52,6 @@ public class PdfExportUtil {
 
     /**
      * PDF dosyasını varsayılan sistem yazıcısından yazdırır
-     * @param pdfFile Yazdırılacak PDF dosyası
      */
     public static void printPdfFromFile(File pdfFile) {
         Objects.requireNonNull(pdfFile, "PDF dosyası null olamaz");
@@ -81,7 +79,6 @@ public class PdfExportUtil {
             e.printStackTrace();
         }
     }
-
 
     private static <T> void addTable(Document doc, DynamicTable<T> table, Class<T> clazz) {
         List<String> headers = table.getHeaders();
@@ -142,19 +139,49 @@ public class PdfExportUtil {
         }
     }
 
+    private static String mapFieldNameToField(Class<?> clazz, String header) {
+        for (Field field : clazz.getDeclaredFields()) {
+            PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
+            if (annotation != null && annotation.fieldName().equals(header)) {
+                if (field.getAnnotation(PdfIgnore.class) == null) { // PdfIgnore yoksa eşleştir
+                    return field.getName();
+                }
+            }
+        }
+        return header; // Eşleşme yoksa veya PdfIgnore varsa header'ı döndür
+    }
+
     private static <T> void addGenericTable(Document doc, List<T> dataList, List<String> headers) {
         if (headers.isEmpty()) {
             doc.add(new Paragraph("Tablo başlıkları bulunamadı."));
             return;
         }
 
+        // @PdfIgnore ile işaretlenmiş başlıkları filtrele
+        List<String> filteredHeaders = headers.stream()
+                .filter(header -> {
+                    String fieldName = mapFieldNameToField(dataList.isEmpty() ? Object.class : dataList.get(0).getClass(), header);
+                    try {
+                        Field field = dataList.get(0).getClass().getDeclaredField(fieldName);
+                        return field.getAnnotation(PdfIgnore.class) == null;
+                    } catch (NoSuchFieldException e) {
+                        return true; // Alan bulunamazsa varsayılan olarak dahil et
+                    }
+                })
+                .collect(Collectors.toList());
+
+        if (filteredHeaders.isEmpty()) {
+            doc.add(new Paragraph("Gösterilecek başlık bulunamadı."));
+            return;
+        }
+
         // Dinamik sütun genişliklerini hesapla
-        float[] columnWidths = new float[headers.size()];
+        float[] columnWidths = new float[filteredHeaders.size()];
         Class<?> clazz = dataList.isEmpty() ? Object.class : dataList.get(0).getClass();
         float totalCharLength = 0f;
 
-        for (int i = 0; i < headers.size(); i++) {
-            String headerText = getFieldNameFromAnnotation(clazz, headers.get(i));
+        for (int i = 0; i < filteredHeaders.size(); i++) {
+            String headerText = filteredHeaders.get(i);
             float charLength = headerText.length();
             if ("ID".equals(headerText)) {
                 charLength *= ID_WIDTH_FACTOR; // ID sütununu küçült
@@ -163,21 +190,22 @@ public class PdfExportUtil {
             totalCharLength += charLength;
         }
 
-        float scaleFactor = totalCharLength > 0 ? (PAGE_WIDTH - headers.size() * MIN_WIDTH) / totalCharLength : 1f;
+        float scaleFactor = totalCharLength > 0 ? (PAGE_WIDTH - filteredHeaders.size() * MIN_WIDTH) / totalCharLength : 1f;
         for (int i = 0; i < columnWidths.length; i++) {
             columnWidths[i] = Math.max(MIN_WIDTH, columnWidths[i] * scaleFactor + MIN_WIDTH);
         }
 
         Table pdfTable = new Table(columnWidths);
 
-        headers.forEach(header -> pdfTable.addHeaderCell(
-                new Cell().add(new Paragraph(getFieldNameFromAnnotation(clazz, header)).setBold())
+        filteredHeaders.forEach(header -> pdfTable.addHeaderCell(
+                new Cell().add(new Paragraph(header).setBold())
         ));
 
         for (T data : dataList) {
-            for (String header : headers) {
+            for (String header : filteredHeaders) {
                 try {
-                    Field field = clazz.getDeclaredField(header);
+                    String fieldName = mapFieldNameToField(clazz, header);
+                    Field field = clazz.getDeclaredField(fieldName);
                     field.setAccessible(true);
                     Object value = field.get(data);
                     String displayValue;
@@ -186,10 +214,10 @@ public class PdfExportUtil {
                     } else {
                         displayValue = value != null ? value.toString() : "";
                     }
-                    System.out.println(displayValue);
                     pdfTable.addCell(new Cell().add(new Paragraph(displayValue)));
                 } catch (Exception e) {
                     pdfTable.addCell(new Cell().add(new Paragraph("N/A")));
+                    System.err.println("Hata - Header: " + header + ", Mesaj: " + e.getMessage());
                 }
             }
         }
@@ -223,10 +251,10 @@ public class PdfExportUtil {
         Field vatAmountField = null;
         Field totalAmountField = null;
 
-        // Gerekli alanları bul
+        // Gerekli alanları bul, @PdfIgnore ile işaretlenmişleri atla
         for (Field field : clazz.getDeclaredFields()) {
             PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
-            if (annotation != null) {
+            if (annotation != null && field.getAnnotation(PdfIgnore.class) == null) {
                 field.setAccessible(true);
                 switch (annotation.fieldName()) {
                     case "Tutar":
@@ -252,14 +280,12 @@ public class PdfExportUtil {
 
         for (T data : dataList) {
             try {
-                // Alan değerlerini al
                 BigDecimal baseAmount = new BigDecimal(baseAmountField.get(data).toString());
                 BigDecimal vatRate = new BigDecimal(vatRateField.get(data).toString())
                         .divide(BigDecimal.valueOf(100), 4, BigDecimal.ROUND_HALF_UP);
                 BigDecimal vatAmount = baseAmount.multiply(vatRate);
                 BigDecimal totalAmount = baseAmount.add(vatAmount);
 
-                // Verideki değerlerle kontrol et
                 BigDecimal actualVatAmount = new BigDecimal(vatAmountField.get(data).toString());
                 BigDecimal actualTotalAmount = new BigDecimal(totalAmountField.get(data).toString());
 
@@ -279,7 +305,6 @@ public class PdfExportUtil {
             }
         }
 
-        // Toplamları PDF'ye ekle
         addTotalParagraphs(doc, subtotal.doubleValue(), vatTotal.doubleValue(), grandTotal.doubleValue());
     }
 
@@ -295,19 +320,13 @@ public class PdfExportUtil {
         File fontFile = new File(PdfExportUtil.class.getResource("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf").getFile());
         return PdfFontFactory.createFont(fontFile.getAbsolutePath());
     }
-    // Resim yükleme ve boyut ayarlama fonksiyonu
+
     public static Image createImageFromClasspath(String imagePath, float width, float height) {
         try {
-            // Classpath'teki resim yolunu kullanarak ImageData oluşturuyoruz
             ImageData imageData = ImageDataFactory.create(Objects.requireNonNull(PdfExportUtil.class.getResource(imagePath)));
-
-            // Image nesnesi oluşturuyoruz
             Image image = new Image(imageData);
-
-            // Boyut ayarlamaları
             image.setWidth(width);
             image.setHeight(height);
-
             return image;
         } catch (NullPointerException e) {
             System.out.println("Resim dosyası bulunamadı: " + imagePath);
@@ -317,21 +336,17 @@ public class PdfExportUtil {
             return null;
         }
     }
+
     private static void addHeader(Document doc) {
         String ibbLogo = "/org/example/ibb_ecodation_javafx/assets/Ibb_amblem.png";
-
-        // PdfPTable ile bir tablo oluşturuyoruz
-        Table table = new Table(3); // 3 sütunlu bir tablo
+        Table table = new Table(3);
         table.setBorder(Border.NO_BORDER);
         table.setMarginBottom(10f);
         Cell imageCell = new Cell().add(createImageFromClasspath(ibbLogo, 60, 60));
         imageCell.setBorder(Border.NO_BORDER);
         table.addCell(imageCell);
-
-        // Tabloyu belgeye ekleyelim
         doc.add(table);
     }
-
 
     private static void addFooter(Document doc) {
         doc.add(new Paragraph("\nBu fatura elektronik ortamda oluşturulmuştur.")

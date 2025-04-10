@@ -19,14 +19,13 @@ import java.util.List;
 @UtilityClass
 public class ExcelUtil {
 
-    public static <T> void exportToExcel(DynamicTable<T> table) throws IOException {
-
+    public static <T> void exportToExcel(List<T> dataList, Class<T> clazz) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Excel File");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Excel Files", "*.xlsx")
         );
-        fileChooser.setInitialFileName("table_data.xlsx");
+        fileChooser.setInitialFileName("data_export.xlsx");
 
         Stage stage = new Stage();
         File file = fileChooser.showSaveDialog(stage);
@@ -36,45 +35,58 @@ public class ExcelUtil {
         }
 
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Table Data");
+            Sheet sheet = workbook.createSheet("Export Data");
 
-            List<String> headers = getPdfDefinitionHeaders();
-            List<List<String>> data = table.getData();
+            List<Field> pdfFields = new ArrayList<>();
+            List<String> headers = new ArrayList<>();
 
+            // Belirtilen sınıftan @PdfDefinition anotasyonuna sahip alanları al
+            for (Field field : clazz.getDeclaredFields()) {
+                PdfDefinition pdfDef = field.getAnnotation(PdfDefinition.class);
+                if (pdfDef != null) {
+                    field.setAccessible(true);
+                    pdfFields.add(field);
+                    headers.add(pdfDef.fieldName());
+                }
+            }
+
+            // Başlık satırı
             Row headerRow = sheet.createRow(0);
             CellStyle headerStyle = createHeaderStyle(workbook);
 
-            Cell emptyHeaderCell = headerRow.createCell(0);
-            emptyHeaderCell.setCellValue("");
-            emptyHeaderCell.setCellStyle(headerStyle);
-
             for (int i = 0; i < headers.size(); i++) {
-                Cell cell = headerRow.createCell(i + 1);
+                Cell cell = headerRow.createCell(i);
                 cell.setCellValue(headers.get(i));
                 cell.setCellStyle(headerStyle);
             }
 
+            // Veri satırları
             CellStyle dataStyle = createDataStyle(workbook);
-            for (int i = 0; i < data.size(); i++) {
-                Row row = sheet.createRow(i + 1);
-                List<String> rowData = data.get(i);
 
-                for (int j = 0; j < headers.size(); j++) {
-                    Cell cell = row.createCell(j + 1);
-                    String cellValue = j < rowData.size() ? rowData.get(j) : "";
-                    cell.setCellValue(cellValue);
-                    cell.setCellStyle(dataStyle);
+            for (int i = 0; i < dataList.size(); i++) {
+                Row row = sheet.createRow(i + 1);
+                T item = dataList.get(i);
+
+                for (int j = 0; j < pdfFields.size(); j++) {
+                    Field field = pdfFields.get(j);
+                    try {
+                        Object value = field.get(item);
+                        String cellValue = (value != null) ? value.toString() : "";
+                        row.createCell(j).setCellValue(cellValue);
+                        row.getCell(j).setCellStyle(dataStyle);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
-            for (int i = 0; i <= headers.size(); i++) {
+            // Otomatik sütun genişliği
+            for (int i = 0; i < headers.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
             try (FileOutputStream fileOut = new FileOutputStream(file)) {
                 workbook.write(fileOut);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
