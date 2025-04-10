@@ -64,7 +64,7 @@ public class VatManagementController {
                 switch (key) {
                     case "add":
                         // KDV girişi ekleme işlemini gerçekleştir
-                        DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-dialog-view.fxml","Vat Dialog");
+                        DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/vat-create-dialog-view.fxml","Vat Dialog");
                         break;
                     case "remove":
                         // KDV girişi silme işlemini gerçekleştir

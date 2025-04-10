@@ -70,7 +70,7 @@ public class WebViewUtil {
         logoView.setPreserveRatio(true);
 
         // Kapatma butonu
-        ShadcnButton closeButton = new ShadcnButton("Pencereyi Kapat", ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", true, false, "LEFT");
+        ShadcnButton closeButton = new ShadcnButton("Pencereyi Kapat", ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", false, false, "LEFT");
         closeButton.setOnAction(event -> {
             Stage stage = (Stage) closeButton.getScene().getWindow();
             stage.close();
