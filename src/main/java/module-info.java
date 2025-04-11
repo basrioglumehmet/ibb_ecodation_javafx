@@ -69,4 +69,6 @@ module org.example.ibb_ecodation_javafx {
     exports org.example.ibb_ecodation_javafx.core.i18n;
     exports org.example.ibb_ecodation_javafx.model.enums;
     exports org.example.ibb_ecodation_javafx.model.dto;
+    exports org.example.ibb_ecodation_javafx.model.event;
+    opens org.example.ibb_ecodation_javafx.model.event to org.mapstruct, spring.beans;
 }

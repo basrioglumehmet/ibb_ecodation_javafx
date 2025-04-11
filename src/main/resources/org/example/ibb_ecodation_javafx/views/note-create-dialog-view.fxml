@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+
+<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
+<?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+      fx:controller="org.example.ibb_ecodation_javafx.controller.NoteDialogController">
+<ShadcnNavbar hideButtons="true" fx:id="navbar" />
+<VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10" fx:id="container">
+    <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />
+    <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
+    <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
+    <ShadcnInput fx:id="role" prefHeight="43.0" prefWidth="387.0" header="Role" />
+
+<!--    date picker eklenecek-->
+</VBox>
+    <HBox style="-fx-padding:20;"  spacing="20">
+        <ShadcnButton onAction="#closeDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+                      mnemonicParsing="false"  />
+        <ShadcnButton onAction="#insert" fullWidth="true" text="Insert" type="PRIMARY" align="CENTER"
+                      mnemonicParsing="false"  />
+    </HBox>
+</VBox>
