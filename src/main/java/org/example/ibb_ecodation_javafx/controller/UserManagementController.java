@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.model.User;
+import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
@@ -57,6 +58,8 @@ public class UserManagementController {
         comboItems.put("update", "Update User");
         comboItems.put("print", "Print User to Printer");
         comboItems.put("refresh", "Refresh");
+        comboItems.put("export_backup", "Export Backup");
+        comboItems.put("import_backup", "Import Backup");
 
         userTable.setComboBoxTitle("Actions");
         userTable.setComboBoxItems(comboItems);
@@ -89,7 +92,43 @@ public class UserManagementController {
                 case "refresh":
                     refreshData();
                     break;
+                case "export_backup":
+                    userService.createBackup(userList,userPane.getScene().getWindow());
+                    break;
+                case "import_backup":
+                    List<User> userBackup = userService.loadBackup(userPane.getScene().getWindow());
+                    if (userBackup != null && !userBackup.isEmpty()) {
+                        try {
+                            for (User user : userBackup) {
+                                if (user.getUsername() == null || user.getEmail() == null) {
+                                    //    DialogUtil.showErrorPopup("Backup Import", "Invalid user data detected in backup.");
+                                    return;
+                                }
+                                if (user.getRole() == null) {
+                                    user.setRole(Role.USER);
+                                }
+                            }
+                            // userService.saveAll(userBackup);
+                            // userList.clear();
+                            //  userList.addAll(userBackup);
+                            for (User user : userBackup) {
+                                System.out.println(user.toString());
+                            }
+                            refreshData();
+                            System.out.println("YÜklendi");
+                            //DialogUtil.showInfoPopup("Backup Import", "Successfully imported " + userBackup.size() + " users.");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println("Failed "+e.getMessage());
+                            // DialogUtil.showErrorPopup("Backup Import", "Failed to import backup: " + e.getMessage());
+                        }
+                    } else {
+                        // DialogUtil.showErrorPopup("Backup Import", "No users found in the backup or import was cancelled.");
+                    }
+                    break;
+
             }
+
         });
 
         refreshData();

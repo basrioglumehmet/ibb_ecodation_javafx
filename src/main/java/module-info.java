@@ -11,7 +11,7 @@ module org.example.ibb_ecodation_javafx {
     requires javafx.web;
     requires sendgrid.java;
 
-    opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok, org.mapstruct, javafx.base;
+    opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok, org.mapstruct, javafx.base,com.fasterxml.jackson.databind;
     opens org.example.ibb_ecodation_javafx.controller to javafx.fxml, lombok, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.ui.button to javafx.fxml, lombok, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.ui.navbar to javafx.fxml, lombok, org.mapstruct;
@@ -29,6 +29,11 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.mapper to spring.beans;
     opens org.example.ibb_ecodation_javafx.repository to spring.beans;
     opens org.example.ibb_ecodation_javafx.core.logger to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.backup to javafx.fxml, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.core.backup to javafx.fxml, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.model to com.fasterxml.jackson.databind;
+    opens org.example.ibb_ecodation_javafx.model.dto to com.fasterxml.jackson.databind;
+    opens org.example.ibb_ecodation_javafx.model.enums to com.fasterxml.jackson.databind;
 
     requires java.compiler;
     requires jbcrypt;
@@ -48,10 +53,12 @@ module org.example.ibb_ecodation_javafx {
     requires java.desktop;
     requires org.apache.logging.log4j;
     requires java.sql;
+    requires org.apache.commons.io;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;
     exports org.example.ibb_ecodation_javafx.mapper;
     exports org.example.ibb_ecodation_javafx.model;
+    exports org.example.ibb_ecodation_javafx.model.enums;
     exports org.example.ibb_ecodation_javafx.model.dto;
 }

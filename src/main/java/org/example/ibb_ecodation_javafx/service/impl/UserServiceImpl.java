@@ -1,6 +1,8 @@
 package org.example.ibb_ecodation_javafx.service.impl;
 
+import javafx.stage.Window;
 import lombok.AllArgsConstructor;
+import org.example.ibb_ecodation_javafx.backup.UserBackup;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.mapper.UserMapper;
 import org.example.ibb_ecodation_javafx.model.User;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final SecurityLogger securityLogger;
+    private final UserBackup userBackup;
 
     @Override
     public User create(User entity) {
@@ -47,6 +50,16 @@ public class UserServiceImpl implements UserService {
 
     public List<User> readAll(){
         return userRepository.readAll(User.class,UserQuery.READ_USERS, List.of());
+    }
+
+    @Override
+    public void createBackup(List<User> users, Window window) {
+        userBackup.export(users, window);
+    }
+
+    @Override
+    public List<User> loadBackup(Window window) {
+        return userBackup.importBackup(window);
     }
 
     @Deprecated
