@@ -21,12 +21,12 @@ import java.util.List;
 public class AdminNoteController {
     private final SecurityLogger securityLogger;
     private final UserNoteService userNoteService;
-    private Disposable noteEventSubscription; // RxJava aboneliği için
+    private Disposable noteEventSubscription;
 
     @FXML
     private StackPane rootPane;
 
-    private ShadcnNoteList noteList; // Not listesi bileşeni
+    private ShadcnNoteList noteList;
 
     /**
      * AdminNoteController yapıcısı.
@@ -55,8 +55,8 @@ public class AdminNoteController {
         // Not olaylarına abone ol
         subscribeToNoteEvents();
 
-        // Artı kartına tıklama olayı
-        noteList.getPlusCard().setOnAction(actionEvent -> {
+        // Artı kartına dialog açma olayını bağla
+        noteList.setPlusCardAction(event -> {
             DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/note-create-dialog-view.fxml",
                     "Not Oluştur");
         });
@@ -75,13 +75,16 @@ public class AdminNoteController {
 
         // Her bir notu ShadcnNoteList'e ekle
         for (UserNote note : data) {
-            String date = note.getReportAt().toString(); // Formatlama yapılabilir
+            String date = note.getReportAt().toString();
             String title = note.getHeader();
             String content = note.getDescription();
             noteList.addNote(date, title, content);
         }
     }
 
+    /**
+     * Not olaylarına abone olur ve değişikliklerde listeyi yeniler.
+     */
     private void subscribeToNoteEvents() {
         noteEventSubscription = userNoteService.getNoteObservable()
                 .observeOn(io.reactivex.rxjava3.schedulers.Schedulers.from(Platform::runLater))

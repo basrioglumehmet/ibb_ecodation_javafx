@@ -3,22 +3,26 @@ package org.example.ibb_ecodation_javafx.ui.listItem;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.paint.Paint;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import javafx.animation.ScaleTransition;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 
+/**
+ * Not kartlarını görüntüleyen ve yöneten ScrollPane bileşeni.
+ */
 public class ShadcnNoteList extends ScrollPane {
     private GridPane gridPane;
     private List<Note> notes;
@@ -27,7 +31,11 @@ public class ShadcnNoteList extends ScrollPane {
     private final LanguageService languageService;
     private final String languageCode;
     private Button plusCard;
+    private javafx.event.EventHandler<javafx.event.ActionEvent> plusCardAction;
 
+    /**
+     * İç not veri yapısı.
+     */
     private static class Note {
         String date;
         String title;
@@ -40,6 +48,12 @@ public class ShadcnNoteList extends ScrollPane {
         }
     }
 
+    /**
+     * ShadcnNoteList yapıcısı.
+     *
+     * @param languageService Dil servis bağımlılığı.
+     * @param languageCode    Mevcut dil kodu.
+     */
     public ShadcnNoteList(LanguageService languageService, String languageCode) {
         this.languageService = languageService;
         this.languageCode = languageCode;
@@ -66,7 +80,7 @@ public class ShadcnNoteList extends ScrollPane {
         this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
 
-        // Translate initial notes
+        // Varsayılan notlar
         notes.add(new Note(
                 languageService.translate("note.date.1"),
                 languageService.translate("note.title.song"),
@@ -83,21 +97,36 @@ public class ShadcnNoteList extends ScrollPane {
                 languageService.translate("note.content.timer")
         ));
 
-        glyphIconName.set(languageService.translate("icon.clock")); // Translate glyph icon name
+        glyphIconName.set(languageService.translate("icon.clock"));
         updateGrid(false);
     }
 
+    /**
+     * Yeni bir not ekler.
+     *
+     * @param date    Notun tarihi.
+     * @param title   Notun başlığı.
+     * @param content Notun içeriği.
+     */
     public void addNote(String date, String title, String content) {
-        Note newNote = new Note(date, title, content); // Assume inputs are pre-translated; if keys, translate here
+        Note newNote = new Note(date, title, content);
         notes.add(newNote);
         addNewCardWithAnimation(newNote);
     }
 
+    /**
+     * Tüm notları temizler.
+     */
     public void clearNotes() {
         notes.clear();
         updateGrid(false);
     }
 
+    /**
+     * Not kartlarını günceller ve ızgarayı yeniden çizer.
+     *
+     * @param animateAll Tüm kartların animasyonlu olup olmayacağı.
+     */
     private void updateGrid(boolean animateAll) {
         gridPane.getChildren().clear();
 
@@ -120,6 +149,11 @@ public class ShadcnNoteList extends ScrollPane {
         addPlusButton(false);
     }
 
+    /**
+     * Yeni bir not kartı ekler ve animasyon uygular.
+     *
+     * @param newNote Eklenecek not.
+     */
     private void addNewCardWithAnimation(Note newNote) {
         VBox card = createNoteCard(newNote);
         int totalItems = notes.size() - 1;
@@ -137,6 +171,12 @@ public class ShadcnNoteList extends ScrollPane {
         updatePlusButtonPosition();
     }
 
+    /**
+     * Not kartı oluşturur.
+     *
+     * @param note Kartın verileri.
+     * @return Oluşturulan kart.
+     */
     private VBox createNoteCard(Note note) {
         VBox card = new VBox(5);
         card.setStyle("-fx-background-color: #202024; -fx-background-radius: 8px; -fx-padding: 20px;");
@@ -168,7 +208,7 @@ public class ShadcnNoteList extends ScrollPane {
         HBox actionSection = new HBox(10);
         actionSection.setAlignment(Pos.CENTER_LEFT);
         ShadcnButton removeButton = new ShadcnButton(
-                languageService.translate("button.remove"), // Translated "Remove"
+                languageService.translate("button.remove"),
                 ShadcnButton.ButtonType.DESTRUCTIVE,
                 "TRASH",
                 true,
@@ -187,6 +227,11 @@ public class ShadcnNoteList extends ScrollPane {
         return card;
     }
 
+    /**
+     * Kart için ölçek animasyonu oluşturur.
+     *
+     * @param card Animasyon uygulanacak kart.
+     */
     private void animateCard(Pane card) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), card);
         scaleTransition.setFromX(0);
@@ -198,6 +243,11 @@ public class ShadcnNoteList extends ScrollPane {
         scaleTransition.play();
     }
 
+    /**
+     * Artı butonunu ekler.
+     *
+     * @param animate Animasyon uygulanıp uygulanmayacağı.
+     */
     private void addPlusButton(boolean animate) {
         plusCard = new Button(languageService.translate("label.newnote"));
         plusCard.setPadding(new Insets(10));
@@ -206,6 +256,7 @@ public class ShadcnNoteList extends ScrollPane {
         plusCard.setPrefHeight(200);
         plusCard.setAlignment(Pos.CENTER);
 
+        // Varsayılan davranış (yerel ekleme, kaldırılabilir)
         plusCard.setOnAction(e -> {
             addNote(
                     languageService.translate("note.date.new"),
@@ -214,6 +265,11 @@ public class ShadcnNoteList extends ScrollPane {
             );
         });
 
+        // Dışarıdan ayarlanan özel aksiyonu uygula
+        if (plusCardAction != null) {
+            plusCard.setOnAction(plusCardAction);
+        }
+
         int totalItems = notes.size();
         int row = totalItems / COLUMNS;
         int col = totalItems % COLUMNS;
@@ -221,14 +277,36 @@ public class ShadcnNoteList extends ScrollPane {
         gridPane.add(plusCard, col, row);
         GridPane.setHgrow(plusCard, Priority.ALWAYS);
         GridPane.setFillWidth(plusCard, true);
+
     }
 
+    /**
+     * Artı butonunun pozisyonunu günceller.
+     */
     private void updatePlusButtonPosition() {
-        gridPane.getChildren().removeIf(node -> node instanceof Button && languageService.translate("label.newnote").equals(((Button)node).getText()));
+        gridPane.getChildren().removeIf(node -> node instanceof Button
+                && languageService.translate("label.newnote").equals(((Button) node).getText()));
         addPlusButton(false);
     }
 
+    /**
+     * Artı butonunu döndürür.
+     *
+     * @return Artı butonu.
+     */
     public Button getPlusCard() {
         return plusCard;
+    }
+
+    /**
+     * Artı butonu için özel bir aksiyon ayarlar.
+     *
+     * @param action Aksiyon işleyici.
+     */
+    public void setPlusCardAction(javafx.event.EventHandler<javafx.event.ActionEvent> action) {
+        this.plusCardAction = action;
+        if (plusCard != null) {
+            plusCard.setOnAction(action);
+        }
     }
 }
