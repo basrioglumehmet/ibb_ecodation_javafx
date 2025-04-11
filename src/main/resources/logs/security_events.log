@@ -594,3 +594,10 @@
 [2025-04-11 12:15:57] [INFO] User(id=17, username=Mehmet Basrioglu, email=user@user.com, password=$2a$12$T/RxIhZEVM6ipdOPfN90ce4NW3AfQX8oecLkKRe2EOGt/V.juRh62, role=USER, isVerified=false, isLocked=false, version=9) performed operation on Kullanıcı oluşturuldu
 [2025-04-11 12:15:57] [INFO] User(id=18, username=Duru Basrioglu, email=user2@user.com, password=$2a$12$qYqiMuTm.Ybvbz3gB3iq.OxGbNy7byDg022W7dcILR1vwh4kvU9nu, role=USER, isVerified=false, isLocked=false, version=1) performed operation on Kullanıcı oluşturuldu
 [2025-04-11 12:15:57] [INFO] User(id=1, username=Mehmet Basrioglu, email=admin@admin.com, password=$2a$12$qzC.4.ChANHNNSs3mqsdGe.DK9y/Rzj1mvO9ktljI3iHrN5ZnnvTO, role=ADMIN, isVerified=true, isLocked=false, version=48) performed operation on Kullanıcı güncellendi
+[2025-04-11 13:11:48] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-11 13:13:03] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-11 13:14:27] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-11 13:14:27] [INFO] User(id=23, username=Mehmet Basrioğlu, email=basrioglumehmet@gmail.com, password=$2a$12$nujigpfFwdiNEJPS1uKV7.qDs2Fv1B87JfvxCWKUBr8MawjVhqG12, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-11 13:14:28] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-11 13:16:17] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-11 13:18:29] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma

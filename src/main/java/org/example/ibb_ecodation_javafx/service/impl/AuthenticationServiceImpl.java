@@ -10,6 +10,7 @@ import org.example.ibb_ecodation_javafx.model.UserOtpCode;
 import org.example.ibb_ecodation_javafx.model.dto.RegisterDto;
 import org.example.ibb_ecodation_javafx.model.dto.UserDto;
 import org.example.ibb_ecodation_javafx.model.enums.AuthenticationResult;
+import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.AuthenticationService;
 import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.service.UserOtpCodeService;
@@ -54,8 +55,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         else{
             var convertedUser = userMapper.toEntity(registerDto);
+            convertedUser.setUsername(registerDto.getUsername());
             convertedUser.setEmail(registerDto.getEmail());
             convertedUser.setPassword(registerDto.getPassword());
+            convertedUser.setLocked(false);
+            convertedUser.setVerified(false);
+            convertedUser.setRole(Role.USER);
+            convertedUser.setVersion(0);
+            System.out.println(convertedUser);
            var createdUser = userService.create(convertedUser);
             var otpCode = OtpUtil.random(5);
             var otpEntity = new UserOtpCode(createdUser.getId(),otpCode,1);

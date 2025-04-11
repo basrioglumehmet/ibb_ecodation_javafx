@@ -14,7 +14,7 @@
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnOtpInput?>
 <StackPane fx:id="rootPane"
            fx:controller="org.example.ibb_ecodation_javafx.controller.OtpController"
-           style="-fx-background-color: #fafafa; "
+           style="-fx-background-color: #1a1a1e; -fx-padding:20; "
            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
 <VBox alignment="CENTER" spacing="40.0"
@@ -27,11 +27,11 @@
         </image>
     </ImageView>
     <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
-           style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-font-size: 28px;"
+           style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-text-fill:white; -fx-font-size: 28px;"
            text="One-Time Password Required" wrapText="true">
     </Label>
     <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
-           style="-fx-font-family: 'Poppins'; -fx-font-size: 16px;"
+           style="-fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-text-fill:white;"
            text="Your account is not verified. Please enter the OTP code sent to you." wrapText="true">
     </Label>
 

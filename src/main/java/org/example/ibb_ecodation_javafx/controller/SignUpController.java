@@ -76,7 +76,7 @@ public class SignUpController {
         if (errors.isEmpty()) {
             signUp();
             var otp = new UserOtpCode();
-           // mailService.sendMail("basrioglumehmet@gmail.com", OtpUtil.random(6));
+           mailService.sendMail("basrioglumehmet@gmail.com", OtpUtil.random(6));
         }
     }
 
@@ -111,7 +111,7 @@ public class SignUpController {
         continueButton.setIsLoading(true);
         new Thread(() -> {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(500);
                 Platform.runLater(() -> {
                     continueButton.setIsLoading(false);
                     authenticationService.signup(new RegisterDto(username.getText(),email.getText(),password.getText()), cb ->{
