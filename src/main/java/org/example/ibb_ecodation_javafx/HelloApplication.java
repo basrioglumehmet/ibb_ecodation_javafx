@@ -23,7 +23,9 @@ public class HelloApplication extends Application {
                     String.format(ViewPathConstant.FORMAT, "admin-dashboard"),
                     "Login"
             );
-//            AlertSchedulerUtil.startMinuteAlert();
+
+            AlertSchedulerUtil.start();
+
 
             showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
 
