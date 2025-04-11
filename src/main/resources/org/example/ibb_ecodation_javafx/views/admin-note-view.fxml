@@ -5,6 +5,8 @@
 
 <?import javafx.scene.control.Label?>
 <?import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnNoteList?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.AdminNoteController">
-    <ShadcnNoteList/>
+<StackPane
+        fx:id="rootPane"
+        xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.AdminNoteController">
+
 </StackPane>
