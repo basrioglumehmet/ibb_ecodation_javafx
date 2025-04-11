@@ -15,4 +15,5 @@ public interface UserService extends Crud<User> {
     void createBackup(List<User> users, Window window);
 
     List<User> loadBackup(Window window);
+    List<User> saveAll(List<User> users);
 }

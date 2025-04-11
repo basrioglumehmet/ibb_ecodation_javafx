@@ -160,15 +160,18 @@ public class AdminDashboardController {
 
     private void setAvatarImageSource() {
         try {
-            byte[] imageBytes = store.getCurrentState(UserState.class).getUserDetail().getProfilePicture();
+            if(store.getCurrentState(UserState.class).getUserDetail() != null){
 
-            if(imageBytes != null && imageBytes.length > 0){
+                byte[] imageBytes = store.getCurrentState(UserState.class).getUserDetail().getProfilePicture();
 
-                Image image = new Image(new ByteArrayInputStream(imageBytes));
-                shadcnAvatar.setImage(image);
-            }
-            else{
-                shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
+                if(imageBytes != null && imageBytes.length > 0){
+
+                    Image image = new Image(new ByteArrayInputStream(imageBytes));
+                    shadcnAvatar.setImage(image);
+                }
+                else{
+                    shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
+                }
             }
             //shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
         } catch (NullPointerException e) {

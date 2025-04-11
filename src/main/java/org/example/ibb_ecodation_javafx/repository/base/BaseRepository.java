@@ -22,6 +22,19 @@ public class BaseRepository<T> implements GenericRepository<T> {
     public BaseRepository(Connection connection) {
         this.connection = connection;
     }
+    public void saveAll(String query,List<List<Object>> paramsList) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            for (List<Object> params : paramsList) {
+                for (int i = 0; i < params.size(); i++) {
+                    preparedStatement.setObject(i + 1, params.get(i));
+                }
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();  // Veritabanına toplu ekleme yapıyoruz
+        } catch (SQLException e) {
+            throw new RuntimeException("SaveAll hatası: " + e.getMessage(), e);
+        }
+    }
 
     @Override
     public T create(T entity, String query, List<Object> params) {

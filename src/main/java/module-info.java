@@ -54,6 +54,7 @@ module org.example.ibb_ecodation_javafx {
     requires org.apache.logging.log4j;
     requires java.sql;
     requires org.apache.commons.io;
+    requires spring.tx;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;

@@ -101,29 +101,29 @@ public class UserManagementController {
                         try {
                             for (User user : userBackup) {
                                 if (user.getUsername() == null || user.getEmail() == null) {
-                                    //    DialogUtil.showErrorPopup("Backup Import", "Invalid user data detected in backup.");
+                                    System.out.println("Invalid user data detected in backup.");
                                     return;
                                 }
                                 if (user.getRole() == null) {
                                     user.setRole(Role.USER);
                                 }
                             }
-                            // userService.saveAll(userBackup);
-                            // userList.clear();
-                            //  userList.addAll(userBackup);
+                            userService.saveAll(userBackup);
+                            userList.clear();
+                            userList.addAll(userBackup);
                             for (User user : userBackup) {
                                 System.out.println(user.toString());
                             }
                             refreshData();
-                            System.out.println("YÜklendi");
-                            //DialogUtil.showInfoPopup("Backup Import", "Successfully imported " + userBackup.size() + " users.");
+                            System.out.println("Loaded");
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             System.out.println("Failed "+e.getMessage());
-                            // DialogUtil.showErrorPopup("Backup Import", "Failed to import backup: " + e.getMessage());
+
                         }
                     } else {
-                        // DialogUtil.showErrorPopup("Backup Import", "No users found in the backup or import was cancelled.");
+                        System.out.println("No users found in the backup or import was cancelled.");
                     }
                     break;
 
