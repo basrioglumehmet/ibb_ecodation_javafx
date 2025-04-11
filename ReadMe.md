@@ -39,6 +39,11 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 32. **Custom Movable Scenes**
 33. **Custom GUI Animations**
 34. **Spring Framework**
+35. **Factory Pattern**
+36. **Singleton Pattern**
+37. **Application Constants for Reusable Infrastructure**
+38. **Apache POI**
+39. **Jackson Serialization**
 
 # UI Introduction
 

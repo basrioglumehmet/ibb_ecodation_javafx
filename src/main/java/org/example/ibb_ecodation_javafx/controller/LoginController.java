@@ -30,6 +30,9 @@ public class LoginController {
         });
 
         ShadcnLanguageComboBox languageComboBox = new ShadcnLanguageComboBox();
+        ShadcnLanguageComboBox.watchLanguageValue().subscribe(stringStringPair -> {
+
+        });
         this.languageArea.getChildren().add(languageComboBox);
         // Make ScrollPane completely transparent and invisible
         scrollPane.setStyle(
