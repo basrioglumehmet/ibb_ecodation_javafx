@@ -55,8 +55,9 @@ public class VatManagementController {
             return;
         }
         String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
-        updateUIText(languageCode);
 
+
+        updateUIText(languageCode);
         // Subscribe to language changes
         languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
             String newLanguageCode = pair.getKey();
@@ -67,18 +68,7 @@ public class VatManagementController {
 
         vatTable.setSingleSelection(true);
 
-        comboItems = new HashMap<>() {{
-            put("add", "KDV Girişi Ekle");
-            put("add", "KDV Girişi Ekle");
-            put("delete", "KDV Girişi Sil");
-            put("update", "KDV Girişi Güncelle");
-            put("print", "Yazıcıya Yazdır");
-            put("export_txt", "TXT Olarak Dışa Aktar");
-            put("export_pdf", "PDF Olarak Dışa Aktar");
-            put("export_excel", "EXCEL Olarak Dışa Aktar");
-            put("sendMail", "E-posta Gönder");
-            put("refresh", "Yenile");
-        }};
+
 
         // Vat sınıfındaki tüm alanlara uygun başlıklar
         List<String> headers = List.of(
@@ -94,7 +84,6 @@ public class VatManagementController {
         );
 
         vatTable.setComboBoxTitle("Eylemler");
-        vatTable.setComboBoxItems(comboItems);
 
         vatNumber.setTextChangeListener(newValue -> {
             vatNumberFilter = (newValue != null) ? newValue.trim() : "";
@@ -167,6 +156,7 @@ public class VatManagementController {
             addTableData(vat);
         });
         updateBarChartFromTableData();
+
     }
 
     private void updateUIText(String languageCode) {
@@ -175,6 +165,19 @@ public class VatManagementController {
             vatNumber.setHeader(bundle.getString("vat.receipt"));
             vatTable.setHeaderText(bundle.getString("vat.header"));
             vatTable.setDescriptionText(bundle.getString("vat.description"));
+
+            comboItems = new HashMap<>() {{
+                put("add", bundle.getString("vat.add"));
+                put("delete", bundle.getString("vat.delete"));
+                put("update", bundle.getString("vat.update"));
+                put("print", bundle.getString("vat.print"));
+                put("export_txt", bundle.getString("vat.export_txt"));
+                put("export_pdf", bundle.getString("vat.export_pdf"));
+                put("export_excel", bundle.getString("vat.export_excel"));
+                put("sendMail", bundle.getString("vat.sendMail"));
+                put("refresh", bundle.getString("vat.refresh"));
+            }};
+            vatTable.setComboBoxItems(comboItems);
 //            username.setHeader(bundle.getString("auth.username"));
 //            email.setHeader(bundle.getString("auth.email"));
 //            password.setHeader(bundle.getString("auth.password"));
