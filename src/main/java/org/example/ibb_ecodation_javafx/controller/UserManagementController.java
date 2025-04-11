@@ -1,6 +1,7 @@
 package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
@@ -8,6 +9,7 @@ import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
@@ -20,6 +22,9 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeFilterColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeSecondaryBackground;
+
 public class UserManagementController {
 
     @FXML
@@ -27,6 +32,9 @@ public class UserManagementController {
 
     @FXML
     private VBox userPane;
+
+    @FXML
+    private HBox filters;
 
     @FXML
     private ShadcnInput name;
@@ -67,6 +75,12 @@ public class UserManagementController {
                 bundle.getString("user.locked"),
                 bundle.getString("user.version")
         );
+
+        store.getState().subscribe(stateRegistry -> {
+            var state = stateRegistry.getState(DarkModeState.class).isEnabled();
+            changeFilterColor(state,filters);
+        });
+
 
         comboItems = new HashMap<>();
         comboItems.put("add", bundle.getString("user.add"));

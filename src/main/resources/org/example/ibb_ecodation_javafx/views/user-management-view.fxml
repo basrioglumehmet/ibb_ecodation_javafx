@@ -12,7 +12,8 @@
       VBox.vgrow="ALWAYS"
         spacing="15">
 <HBox spacing="20"
-      style="-fx-background-color:#202024; -fx-background-radius:20px; -fx-padding:20px;"
+      fx:id="filters"
+
       alignment="CENTER_LEFT">
 <ShadcnInput HBox.hgrow="ALWAYS" fx:id="name" header="Kullanıcı adına göre ara..." />
 <ShadcnInput HBox.hgrow="ALWAYS" fx:id="role" header="Rol adına göre ara..." />

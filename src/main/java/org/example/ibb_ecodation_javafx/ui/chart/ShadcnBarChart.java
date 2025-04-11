@@ -12,15 +12,20 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
+
 public class ShadcnBarChart extends BarChart<String, Number> {
     private final ObservableList<XYChart.Data<String, Number>> chartData;
     private Label totalLabel;
     private XYChart.Series<String, Number> series;
+    private Store store = Store.getInstance();
 
     public ShadcnBarChart() {
         this(true);
@@ -61,8 +66,8 @@ public class ShadcnBarChart extends BarChart<String, Number> {
 //        ((NumberAxis) getYAxis()).setLabel("");
 
 
-        getYAxis().setStyle("-fx-tick-label-fill: white; -fx-font-family: 'Poppins';");
-        getXAxis().setStyle("-fx-tick-label-fill: white; -fx-font-family: 'Poppins';");
+        getYAxis().setStyle(" -fx-font-family: 'Poppins';");
+        getXAxis().setStyle(" -fx-font-family: 'Poppins';");
 
         setHorizontalGridLinesVisible(false);
         setVerticalGridLinesVisible(false);
@@ -76,22 +81,33 @@ public class ShadcnBarChart extends BarChart<String, Number> {
         lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         lookup(".chart-legend").setStyle("-fx-background-color: transparent;");
         lookup(".chart").setStyle("-fx-background-color: transparent;");
+        // Dark mode subscription
 
         Platform.runLater(() -> {
-            Node title = lookup(".chart-title");
-            if (title != null) {
-                title.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: 'Poppins';");
-            }
+            store.getState().subscribe(stateRegistry -> {
+                boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+                changeTextColor(darkModeValue,getYAxis());
+                changeTextColor(darkModeValue,getXAxis());
+                Node title = lookup(".chart-title");
+                if (title != null) {
+                    title.setStyle("-fx-font-size: 18px; -fx-font-family: 'Poppins';");
+                    changeTextColor(darkModeValue,title);
+                }
 
-            Node xAxisLabel = lookup(".x-axis .axis-label");
-            if (xAxisLabel != null) {
-                xAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Poppins';");
-            }
+                Node xAxisLabel = lookup(".x-axis .axis-label");
+                if (xAxisLabel != null) {
+                    xAxisLabel.setStyle(" -fx-font-size: 14px; -fx-font-family: 'Poppins';");
+                    changeTextColor(darkModeValue,xAxisLabel);
+                }
 
-            Node yAxisLabel = lookup(".y-axis .axis-label");
-            if (yAxisLabel != null) {
-                yAxisLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Poppins';");
-            }
+                Node yAxisLabel = lookup(".y-axis .axis-label");
+                if (yAxisLabel != null) {
+                    yAxisLabel.setStyle(" -fx-font-size: 14px; -fx-font-family: 'Poppins';");
+                    changeTextColor(darkModeValue,yAxisLabel);
+                }
+            });
+
+
 
             chartData.forEach(data -> {
                 Node node = data.getNode();

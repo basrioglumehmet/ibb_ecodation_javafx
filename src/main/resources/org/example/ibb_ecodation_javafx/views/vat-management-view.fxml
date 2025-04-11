@@ -14,7 +14,7 @@
         <ShadcnInput fx:id="vatNumberInput" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" header="Fiş numarasına göre ara..." />
     </HBox>
     <DynamicTable fx:id="vatTable" prefHeight="600" VBox.vgrow="ALWAYS" />
-    <HBox fx:id="chartContainer" alignment="CENTER" style="-fx-background-color: #202024; -fx-background-radius: 20px;">
+    <HBox fx:id="chartContainer" alignment="CENTER" style=" -fx-background-radius: 20px;">
         <children>
             <ShadcnBarChart fx:id="barChart" HBox.hgrow="ALWAYS" />
         </children>

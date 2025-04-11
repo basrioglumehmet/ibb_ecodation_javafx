@@ -3,7 +3,7 @@
 /* Scrollbar styling (both vertical and horizontal) */
 .scroll-bar:vertical,
 .scroll-bar:horizontal {
-    -fx-background-color: #121214; /* Match the dark background */
+    -fx-background-color: #00000050; /* Match the dark background */
     -fx-opacity: 0.7;
     -fx-pref-width: 8;
     -fx-pref-height: 8;
@@ -14,7 +14,7 @@
 .scroll-bar:horizontal .thumb {
     -fx-background-color: #f27a1a; /* Orange color to match the theme */
     -fx-background-radius: 5;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
     -fx-transition: -fx-background-color 0.3s ease;
 }
 
@@ -28,13 +28,13 @@
 /* Scrollbar track (background of the scrollbar) */
 .scroll-bar:vertical .track,
 .scroll-bar:horizontal .track {
-    -fx-background-color: #2a2a2e; /* Slightly lighter gray for contrast */
+    -fx-background-color: #00000050; /* Slightly lighter gray for contrast */
     -fx-background-radius: 5;
 }
 
 /* Explicitly style the horizontal scrollbar track to remove white background */
 .scroll-bar:horizontal .track {
-    -fx-background-color: #2a2a2e; /* Ensure no white background */
+    -fx-background-color: #00000050; /* Ensure no white background */
 }
 
 /* Scrollbar buttons (increment/decrement arrows) */
@@ -64,7 +64,7 @@
 
 /* Corner of the scroll pane (where vertical and horizontal scrollbars meet) */
 .scroll-pane .corner {
-    -fx-background-color: #121214; /* Match the dark background */
+    -fx-background-color: #00000050; /* Match the dark background */
 }
 .scroll-pane  {
     -fx-background-color: transparent;

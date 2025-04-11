@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnComboBox;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class DynamicTable<T> extends VBox {
 
@@ -31,27 +35,32 @@ public class DynamicTable<T> extends VBox {
     private List<List<String>> data = new ArrayList<>();
     private List<Pair<CheckBox, List<String>>> selectedRows = new ArrayList<>();
     private boolean singleSelection = false;
+    private Label titleLabel;
+    private Label subtitleLabel;
+    private HBox headerRow;
+    private Store store = Store.getInstance();
 
     public DynamicTable() {
         this.setSpacing(20);
         this.setPadding(new Insets(20));
         this.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
 
+
         VBox.setVgrow(this, Priority.ALWAYS);
         HBox.setHgrow(this, Priority.ALWAYS);
 
         tableContent = new VBox();
-        tableContent.setStyle("-fx-background-color: #121214; -fx-background-radius: 20; -fx-border-radius: 20;");
+        tableContent.setStyle(" -fx-background-radius: 20; ");
 
         scrollPane = new ScrollPane(tableContent);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setStyle("-fx-background: #121214; -fx-background-color: #121214; -fx-background-radius: 20;");
+        scrollPane.setStyle(" -fx-background-radius: 20;");
 
         tableWrapper = new StackPane(scrollPane);
-        tableWrapper.setStyle("-fx-background-color:#121214; -fx-padding:20px;");
+        tableWrapper.setStyle("-fx-padding:20px;");
         applyRoundedClipping(tableWrapper, 20);
 
         VBox.setVgrow(tableWrapper, Priority.ALWAYS);
@@ -61,9 +70,12 @@ public class DynamicTable<T> extends VBox {
         tableContent.setMaxWidth(Double.MAX_VALUE);
         tableContent.setMaxHeight(Double.MAX_VALUE);
 
+
+
         StackPane.setMargin(scrollPane, new Insets(0));
         applyRoundedClipping(scrollPane, 20);
         this.getChildren().addAll(createHeader(), tableWrapper);
+
     }
 
     private void applyRoundedClipping(Region region, double radius) {
@@ -85,11 +97,11 @@ public class DynamicTable<T> extends VBox {
         header.setMaxHeight(Region.USE_PREF_SIZE);
 
         VBox titleSection = new VBox(5);
-        Label titleLabel = new Label(headerText);
-        titleLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
+        titleLabel = new Label(headerText);
+        titleLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 24px; -fx-font-weight: bold;");
 
-        Label subtitleLabel = new Label(descriptionText);
-        subtitleLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: #fff; -fx-font-size: 14px;");
+        subtitleLabel = new Label(descriptionText);
+        subtitleLabel.setStyle("-fx-font-family: 'Poppins';  -fx-font-size: 14px;");
         titleSection.getChildren().addAll(titleLabel, subtitleLabel);
 
         Region spacer = new Region();
@@ -206,14 +218,16 @@ public class DynamicTable<T> extends VBox {
 
         if (headers.isEmpty()) {
             Label noHeadersLabel = new Label("No headers defined");
-            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 10px;");
+            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: #f27a1a; -fx-padding: 10px;");
             tableContent.getChildren().add(noHeadersLabel);
             return;
         }
 
+
+
         // Add header row with an empty space for checkbox column
-        HBox headerRow = new HBox();
-        headerRow.setStyle("-fx-background-color: #1a1a1d; -fx-padding: 10px; -fx-border-color: #303034; -fx-border-width: 0 0 1 0; -fx-background-radius: 10 10 0 0;");
+        headerRow = new HBox();
+        headerRow.setStyle(" -fx-padding: 10px;  -fx-background-radius: 10 10 0 0;");
         headerRow.setSpacing(5); // Add spacing between header cells
 
         Label emptyLabel = new Label("");
@@ -225,7 +239,8 @@ public class DynamicTable<T> extends VBox {
 
         for (int i = 0; i < headers.size(); i++) {
             Label headerLabel = new Label(headers.get(i));
-            headerLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5px;");
+            headerLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-padding: 5px;");
+            changeTextColor(store.getCurrentState(DarkModeState.class).isEnabled(), headerLabel);
             headerLabel.setMinWidth(headerWidths.get(i));
             headerLabel.setMaxWidth(headerWidths.get(i));
             headerLabel.setAlignment(Pos.CENTER);
@@ -237,7 +252,7 @@ public class DynamicTable<T> extends VBox {
         // Add data rows with custom checkboxes
         if (data.isEmpty()) {
             Label noDataLabel = new Label("No data available");
-            noDataLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 10px;");
+            noDataLabel.setStyle("-fx-font-family: 'Poppins'; #f27a1a; -fx-padding: 10px;");
             tableContent.getChildren().add(noDataLabel);
         } else {
             for (int i = 0; i < data.size(); i++) {
@@ -278,7 +293,8 @@ public class DynamicTable<T> extends VBox {
                 for (int j = 0; j < headers.size(); j++) {
                     String cellText = j < row.size() ? row.get(j) : "";
                     Label cellLabel = new Label(cellText);
-                    cellLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 5px;");
+                    cellLabel.setStyle("-fx-font-family: 'Poppins';  -fx-padding: 5px;");
+                    changeTextColor(store.getCurrentState(DarkModeState.class).isEnabled(), cellLabel);
                     cellLabel.setMinWidth(headerWidths.get(j));
                     cellLabel.setMaxWidth(headerWidths.get(j));
                     cellLabel.setAlignment(Pos.CENTER);
@@ -288,10 +304,21 @@ public class DynamicTable<T> extends VBox {
                 tableContent.getChildren().add(dataRow);
             }
         }
+
+        store.getState().subscribe(stateRegistry -> {
+            var state = stateRegistry.getState(DarkModeState.class).isEnabled();
+            changeSecondaryBackground(state,tableContent);
+            changeSecondaryBackground(state,scrollPane);
+            changeSecondaryBackground(state,tableWrapper);
+            changeThirdBackground(state,headerRow);
+            changeBackground(state,this);
+            changeTextColor(store.getCurrentState(DarkModeState.class).isEnabled(), titleLabel);
+            changeTextColor(store.getCurrentState(DarkModeState.class).isEnabled(), subtitleLabel);
+        });
     }
 
     private void updateRowStyle(HBox row, boolean isSelected) {
-        String baseStyle = "-fx-padding: 10px; -fx-border-color: #303034; -fx-border-width: 0 0 1 0;";
+        String baseStyle = "-fx-padding: 10px; ";
         String radiusStyle = (data.indexOf(selectedRows.get(tableContent.getChildren().indexOf(row) - 1).getValue()) == data.size() - 1 && data.size() > 1) ? "-fx-background-radius: 0 0 10 10;" : "";
         row.setStyle(baseStyle + (isSelected ? " -fx-background-color: #2a2a2e;" : " -fx-background-color: transparent;") + radiusStyle);
     }

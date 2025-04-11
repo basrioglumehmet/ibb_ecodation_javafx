@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.controller;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
@@ -10,6 +11,7 @@ import org.example.ibb_ecodation_javafx.model.Vat;
 import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
 import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
@@ -26,6 +28,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeTextColor;
+
 /**
  * Controller for managing VAT-related operations
  */
@@ -35,6 +40,8 @@ public class VatManagementController {
     @FXML private ShadcnInput vatNumberInput;
     @FXML private ShadcnBarChart barChart;
     @FXML private VBox vatPane;
+    @FXML private HBox chartContainer;
+    @FXML private HBox searchBar;
 
     private final VatService vatService = SpringContext.getContext().getBean(VatService.class);
     private final MailService mailService = SpringContext.getContext().getBean(MailService.class);
@@ -62,6 +69,12 @@ public class VatManagementController {
         setupVatNumberFilter();
         setupComboBoxActions();
         loadInitialData();
+
+        store.getState().subscribe(stateRegistry -> {
+            var state = stateRegistry.getState(DarkModeState.class).isEnabled();
+            changeBackground(state,chartContainer);
+            changeBackground(state,searchBar);
+        });
     }
 
     private boolean validateFxmlElements() {

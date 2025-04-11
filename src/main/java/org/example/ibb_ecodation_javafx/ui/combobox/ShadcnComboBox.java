@@ -2,46 +2,40 @@ package org.example.ibb_ecodation_javafx.ui.combobox;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
 import javafx.util.Pair;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
+
 public class ShadcnComboBox<T> extends Button {
 
-    private  final PublishSubject<Pair<String,T>> subject = PublishSubject.create();
+    private final PublishSubject<Pair<String, T>> subject = PublishSubject.create();
     private final Map<String, T> itemMap = new HashMap<>();
     private String selectedKey = "";
     private T selectedValue = null;
     private final Function<T, String> displayConverter;
     private String title = "OPERATIONS";
     private Label titleLabel;
+    private final Store store = Store.getInstance();
+    private final ContextMenu menu;
+
     public ShadcnComboBox(Function<T, String> displayConverter) {
         this.displayConverter = displayConverter;
-        setStyle("-fx-background-color: #222225;" +
-                "-fx-background-radius: 6px;" +
-                "-fx-border-radius: 6px;   " +
-                "-fx-border-color: #2e2e2e; " +
-                "-fx-border-width:1px;   " +
-                "-fx-text-fill: #fff;");
+        this.menu = new ContextMenu();
 
-        ContextMenu menu = new ContextMenu();
-
-        menu.setStyle("-fx-background-color: #222225;" +
-                "-fx-background-radius: 6px;" +
-                "-fx-border-radius: 6px;   " +
-                "-fx-border-color: #2e2e2e; " +
-                "-fx-border-width:1px;   " +
-                "-fx-padding:5;"+
-                "-fx-text-fill: #fff;");
+        // Initial button styling
+        setStyle("-fx-background-radius: 6px;");
         setContextMenu(menu);
         loadLabel();
+
+        // Button click to show menu
         setOnMouseClicked(event -> {
             if (event.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
                 double screenX = this.localToScreen(this.getLayoutX(), this.getLayoutY()).getX();
@@ -49,6 +43,15 @@ public class ShadcnComboBox<T> extends Button {
                 menu.show(this, screenX, screenY + getHeight());
             }
         });
+
+        // Subscribe to dark mode changes
+        store.getState().subscribe(stateRegistry -> {
+            boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            updateDarkModeStyles(isDarkMode);
+        });
+
+        // Apply initial dark mode styles
+        updateDarkModeStyles(store.getCurrentState(DarkModeState.class).isEnabled());
     }
 
     public void addItem(String key, T value) {
@@ -60,11 +63,11 @@ public class ShadcnComboBox<T> extends Button {
         this.title = newTitle;
         if (titleLabel != null) {
             titleLabel.setText(newTitle);
-            loadLabel();
         } else {
             loadLabel();
         }
     }
+
     public void setItems(Map<String, T> items) {
         this.itemMap.clear();
         this.itemMap.putAll(items);
@@ -80,57 +83,66 @@ public class ShadcnComboBox<T> extends Button {
         }
         refreshMenuItems();
     }
-    private void refreshMenuItems() {
-        ContextMenu menu = getContextMenu();
-        menu.getItems().clear();
-        itemMap.forEach((key, value) -> {
-            menu.getItems().add(createMenuItem(key, value));
-        });
-    }
 
+    private void refreshMenuItems() {
+        menu.getItems().clear();
+        boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        itemMap.forEach((key, value) -> menu.getItems().add(createMenuItem(key, value, isDarkMode)));
+    }
 
     private void loadLabel() {
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
 
         titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-text-fill:white; -fx-font-weight:bold;");
+        titleLabel.setStyle("-fx-font-weight: bold;");
+        boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        // Use primary text color (always white) to match the image
+        changeTextColorPrimary(isDarkMode, titleLabel);
 
-
-        header.getChildren().addAll(titleLabel);
+        header.getChildren().add(titleLabel);
         setGraphic(header);
-
     }
 
-
-    private MenuItem createMenuItem(String key, T value) {
+    private MenuItem createMenuItem(String key, T value, boolean isDarkMode) {
         HBox content = new HBox(10);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setStyle("-fx-padding: 5; -fx-background-radius: 3px;");
-
-        // Sabit genişlik ver (örneğin 160 piksel)
         content.setPrefWidth(160);
 
         Label label = new Label(displayConverter.apply(value));
-        label.setStyle("-fx-text-fill:white;");
-        content.getChildren().addAll(label);
+        changeTextColor(isDarkMode, label); // #fff (dark) or #000 (light) by default
+
+        content.getChildren().add(label);
 
         CustomMenuItem item = new CustomMenuItem(content);
         item.setHideOnClick(true);
         item.getStyleClass().clear();
-        item.setStyle("-fx-background-color: transparent;");
 
-        // Hover efekti
-        content.setOnMouseEntered(e -> content.setStyle("-fx-background-color: #f27a1a; -fx-padding: 5; -fx-background-radius: 3px;"));
-        content.setOnMouseExited(e -> content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;"));
+        // Hover effects
+        content.setOnMouseEntered(e -> {
+            content.setStyle("-fx-background-color: #f27a1a; -fx-padding: 5; -fx-background-radius: 3px;");
+            label.setStyle("-fx-text-fill: #fff;"); // White text on hover
+        });
+        content.setOnMouseExited(e -> {
+            content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;");
+            changeTextColor(isDarkMode, label); // Revert to default (#000 light, #fff dark)
+        });
 
-        item.setOnAction(event -> publish(key,value));
+        // Action
+        item.setOnAction(event -> publish(key, value));
+
+        // Subscribe to dark mode changes
+        store.getState().subscribe(stateRegistry -> {
+            boolean darkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            changeTextColor(darkMode, label); // Update text color on mode change
+            content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;"); // Reset base style
+        });
+
         return item;
     }
 
-
     public void publish(String key, T value) {
-
         subject.onNext(new Pair<>(key, value));
     }
 
@@ -138,5 +150,17 @@ public class ShadcnComboBox<T> extends Button {
         return subject;
     }
 
+    private void updateDarkModeStyles(boolean isDarkMode) {
+        // Button styling with primary background
+        changeBackgroundPrimary(isDarkMode, this); // #f27a1a (light) or #2c2c30 (dark)
+        if (titleLabel != null) {
+            changeTextColorPrimary(isDarkMode, titleLabel); // Always #fff
+        }
 
+        // ContextMenu styling
+        changeContextMenuBackground(isDarkMode, menu); // #fbfbfb (light) or #121214 (dark) with border and text adjustments
+
+        // Refresh menu items to apply new dark mode state
+        refreshMenuItems();
+    }
 }
