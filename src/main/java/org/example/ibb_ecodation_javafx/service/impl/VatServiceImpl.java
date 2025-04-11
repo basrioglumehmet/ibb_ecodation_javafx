@@ -20,9 +20,6 @@ public class VatServiceImpl implements VatService {
 
     @Override
     public Vat create(Vat entity) {
-        // Saat, dakika ve saniye ile birlikte güncel zamanı al
-        LocalDateTime now = LocalDateTime.now();
-        entity.setTransactionDate(now);
         return vatRepository.create(entity, VatQuery.CREATE_VAT, List.of(
                 entity.getUserId(),
                 entity.getBaseAmount(),

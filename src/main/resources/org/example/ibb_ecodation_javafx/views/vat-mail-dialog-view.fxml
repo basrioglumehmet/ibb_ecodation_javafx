@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
-
-<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
 <?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+
 <VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:id="rootPaneMail" fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogMailController">
+      xmlns:fx="http://javafx.com/fxml" fx:id="rootPaneMail"
+      fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogMailController">
     <ShadcnNavbar hideButtons="true" fx:id="navbar" />
-    <VBox  style="-fx-padding:20;" spacing="10">
+    <VBox style="-fx-padding:20;" spacing="10">
         <ShadcnInput fx:id="input" prefHeight="43.0" prefWidth="387.0" header="E-mail" />
-        <!--    date picker eklenecek-->
     </VBox>
-    <HBox style="-fx-padding:20;"  spacing="20">
-        <ShadcnButton onAction="#closeVatDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
-                      mnemonicParsing="false"  />
-        <ShadcnButton onAction="#send" fullWidth="true" text="Send to mail" type="SUCCESS" align="CENTER"
-                      mnemonicParsing="false"  />
+    <HBox style="-fx-padding:20;" spacing="20" alignment="CENTER">
+        <ShadcnButton fx:id="closeButton" onAction="#closeVatDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+                      mnemonicParsing="false" />
+        <ShadcnButton fx:id="sendButton" onAction="#send" fullWidth="true" text="Send to mail" type="SUCCESS" align="CENTER"
+                      mnemonicParsing="false" />
     </HBox>
 </VBox>

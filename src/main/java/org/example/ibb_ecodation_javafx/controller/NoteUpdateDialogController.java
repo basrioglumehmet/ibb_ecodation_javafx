@@ -5,11 +5,15 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNote;
 import org.example.ibb_ecodation_javafx.service.UserNoteService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
+import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
+import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 
 import java.time.LocalDate;
@@ -24,28 +28,47 @@ import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneCol
  */
 public class NoteUpdateDialogController {
     @FXML
-    private DatePicker dateField; // Changed to DatePicker
+    private DatePicker dateField;
     @FXML
-    private ShadcnNavbar navbar; // Changed to DatePicker
+    private ShadcnNavbar navbar;
     @FXML
-    private VBox rootPane; // Changed to DatePicker
+    private VBox rootPane;
     @FXML
-    private org.example.ibb_ecodation_javafx.ui.input.ShadcnInput titleField; // Assuming ShadcnInput has a TextField internally
+    private ShadcnButton close;
     @FXML
-    private TextArea contentField;
+    private ShadcnButton update;
+    @FXML
+    private org.example.ibb_ecodation_javafx.ui.input.ShadcnInput titleField; // Assuming ShadcnInput has a TextField
+    @FXML
+    private ShadcnInput contentField;
 
     private final UserNoteService userNoteService = SpringContext.getContext().getBean(UserNoteService.class);
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final Store store = Store.getInstance();
+    private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
     @FXML
     public void initialize() {
+        // Load language resources
+        languageService.loadAll(languageCode);
+
+        // Set button texts with translations
+        update.setText(languageService.translate("button.update"));
+        close.setText(languageService.translate("button.close"));
+        titleField.setHeader(languageService.translate("input.header"));
+        contentField.setHeader(languageService.translate("input.description"));
+        // Load selected note from store
         UserState userState = store.getCurrentState(UserState.class);
         UserNote selectedNote = userState.getSelectedUserNote();
+
+        // Subscribe to dark mode changes
         store.getState().subscribe(stateRegistry -> {
-            var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
             changeRootPaneColor(darkModeValue, rootPane);
         });
+
+        // Populate fields if note exists
         if (selectedNote != null) {
             dateField.setValue(selectedNote.getReportAt().toLocalDate());
             titleField.getTextField().setText(selectedNote.getHeader());

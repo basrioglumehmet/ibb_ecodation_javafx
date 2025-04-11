@@ -5,13 +5,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
+import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnSwitchButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
@@ -24,10 +27,8 @@ public class UserUpdateDialogController {
     private ShadcnNavbar navbar;
     @FXML
     private VBox rootPane;
-    private Store store;
-
     @FXML
-    private VBox container; // Ensure this is defined in your FXML file
+    private VBox container;
     @FXML
     private ShadcnInput email;
     @FXML
@@ -37,83 +38,104 @@ public class UserUpdateDialogController {
     @FXML
     private ShadcnInput role;
 
+    @FXML
+    private ShadcnButton close;
+
+    @FXML
+    private ShadcnButton update;
+
+
     private ShadcnSwitchButton isVerified;
-
     private ShadcnSwitchButton isLocked;
-
     private User selectedUser;
 
-
-    private final UserService userService  = SpringContext.getContext().getBean(UserService.class);
+    private final UserService userService = SpringContext.getContext().getBean(UserService.class);
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
+    private final Store store = Store.getInstance();
+    private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
     public UserUpdateDialogController() {
-        store = Store.getInstance();
+        // Constructor remains empty as dependencies are initialized as fields
     }
 
+    @FXML
     public void initialize() {
+        // Load language resources
+        languageService.loadAll(languageCode);
+
+        // Apply translations to ShadcnInput headers
+        username.setHeader(languageService.translate("input.username"));
+        email.setHeader(languageService.translate("input.email"));
+        password.setHeader(languageService.translate("input.password"));
+        role.setHeader(languageService.translate("input.role"));
+        update.setText(languageService.translate("button.update"));
+        close.setText(languageService.translate("button.close"));
+
+        // Dark mode subscription
         store.getState().subscribe(stateRegistry -> {
-            var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
             changeRootPaneColor(darkModeValue, rootPane);
         });
 
-        Label label = new Label("Is Verified");
-        label.setStyle("-fx-text-fill:white; -font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+        // Initialize switch buttons and labels with translations
+        Label isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
+        isVerifiedLabel.setStyle("-fx-text-fill:white; -fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
         isVerified = new ShadcnSwitchButton();
 
-        Label label2 = new Label("Is Locked");
-        label2.setStyle("-fx-text-fill:white; -font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+        Label isLockedLabel = new Label(languageService.translate("label.isLocked"));
+        isLockedLabel.setStyle("-fx-text-fill:white; -fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
         isLocked = new ShadcnSwitchButton();
+
+        // Load selected user from store
         selectedUser = store.getCurrentState(UserState.class).getSelectedUser();
-        email.setText(selectedUser.getEmail());
-        username.setText(selectedUser.getUsername());
-        role.setText(selectedUser.getRole().toString());
-        isVerified.setValue(selectedUser.isVerified());
-        isLocked.setValue(selectedUser.isLocked());
+        if (selectedUser != null) {
+            email.setText(selectedUser.getEmail());
+            username.setText(selectedUser.getUsername());
+            role.setText(selectedUser.getRole().toString());
+            isVerified.setValue(selectedUser.isVerified());
+            isLocked.setValue(selectedUser.isLocked());
+        } else {
+            System.err.println("Seçili kullanıcı bulunamadı.");
+        }
 
-        System.out.println(selectedUser.isVerified());
+        // Create switch containers
+        HBox switchContainer = new HBox(20, isVerifiedLabel, isVerified);
+        HBox switchContainer2 = new HBox(20, isLockedLabel, isLocked);
 
-        HBox switchContainer = new HBox();
-        switchContainer.setSpacing(20);
-        switchContainer.getChildren().add(label); // Fixed: Use add() for a single node
-        switchContainer.getChildren().add(isVerified); // Add the switch button as well
-
-        HBox switchContainer2 = new HBox();
-        switchContainer2.setSpacing(20);
-        switchContainer2.getChildren().add(label2); // Fixed: Use add() for a single node
-        switchContainer2.getChildren().add(isLocked); // Add the switch button as well
-
-        // Ensure container is not null before adding to it
+        // Add switch containers to VBox
         if (container != null) {
-            container.getChildren().addAll(switchContainer,switchContainer2);
+            container.getChildren().addAll(switchContainer, switchContainer2);
         } else {
             System.err.println("Error: 'container' VBox is not initialized. Ensure it is defined in the FXML file.");
         }
 
+        // Set up listeners
         isVerified.watchIsActive().subscribe(aBoolean -> {
-            selectedUser.setVerified(aBoolean);
+            if (selectedUser != null) {
+                selectedUser.setVerified(aBoolean);
+            }
         });
         isLocked.watchIsActive().subscribe(aBoolean -> {
-            selectedUser.setLocked(aBoolean);
+            if (selectedUser != null) {
+                selectedUser.setLocked(aBoolean);
+            }
         });
         username.setTextChangeListener(newValue -> {
             if (selectedUser != null) {
                 selectedUser.setUsername(newValue != null ? newValue.trim() : "");
             }
         });
-
         email.setTextChangeListener(newValue -> {
             if (selectedUser != null) {
                 selectedUser.setEmail(newValue != null ? newValue.trim() : "");
             }
         });
-
         password.setTextChangeListener(newValue -> {
             if (selectedUser != null) {
                 selectedUser.setPassword(newValue != null ? newValue.trim() : "");
             }
         });
-
         role.setTextChangeListener(newValue -> {
             if (selectedUser != null && newValue != null) {
                 try {
@@ -123,7 +145,6 @@ public class UserUpdateDialogController {
                 }
             }
         });
-
     }
 
     @FXML
@@ -132,10 +153,13 @@ public class UserUpdateDialogController {
     }
 
     @FXML
-    private void update() {
-
-        userService.update(selectedUser, user -> {
-            closeDialog();
-        });
+    private void updateHandler() {
+        if (selectedUser != null) {
+            userService.update(selectedUser, user -> {
+                closeDialog();
+            });
+        } else {
+            System.err.println("Güncellenecek kullanıcı yok.");
+        }
     }
 }

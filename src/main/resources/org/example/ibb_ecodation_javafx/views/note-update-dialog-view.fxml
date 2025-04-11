@@ -18,14 +18,16 @@
 
         <!-- Input for header (title) -->
         <ShadcnInput fx:id="titleField" prefHeight="43.0" prefWidth="387.0" header="Title" />
-
-        <!-- TextArea for description (content) -->
-        <TextArea fx:id="contentField" promptText="Enter note content" prefWidth="387.0" prefHeight="100.0" wrapText="true" />
+        <ShadcnInput fx:id="contentField" prefHeight="43.0" prefWidth="387.0" header="Description" />
     </VBox>
     <HBox style="-fx-padding: 20;" spacing="20" alignment="CENTER">
-        <ShadcnButton onAction="#handleCancel" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+        <ShadcnButton onAction="#handleCancel"
+                      fx:id="close"
+                      fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
                       mnemonicParsing="false" />
-        <ShadcnButton onAction="#handleUpdate" fullWidth="true" text="Update" type="PRIMARY" align="CENTER"
+        <ShadcnButton onAction="#handleUpdate"
+                      fx:id="update"
+                      fullWidth="true" text="Update" type="PRIMARY" align="CENTER"
                       mnemonicParsing="false" />
     </HBox>
 </VBox>

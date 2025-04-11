@@ -9,6 +9,7 @@ import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
+import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
@@ -25,21 +26,33 @@ public class VatDialogMailController {
     @FXML private ShadcnNavbar navbar;
     @FXML private VBox rootPaneMail;
     @FXML private ShadcnInput input;
+    @FXML private ShadcnButton closeButton; // For close button
+    @FXML private ShadcnButton sendButton;  // For send button
 
     private Store store;
     private final MailService mailService = SpringContext.getContext().getBean(MailService.class);
     private final PdfExportUtil pdfExportUtil = SpringContext.getContext().getBean(PdfExportUtil.class);
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
+    private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
     public void initialize() {
         store = Store.getInstance();
 
-
-        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+        // Load language resources
         languageService.loadAll(languageCode);
 
+        // Apply translations to UI elements
+        input.setHeader(languageService.translate("input.email"));
+        if (closeButton != null) {
+            closeButton.setText(languageService.translate("button.close"));
+        }
+        if (sendButton != null) {
+            sendButton.setText(languageService.translate("button.send"));
+        }
+
+        // Dark mode subscription
         store.getState().subscribe(stateRegistry -> {
-            var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
             changeRootPaneColor(darkModeValue, rootPaneMail);
         });
@@ -60,7 +73,6 @@ public class VatDialogMailController {
                 "vat.receiptNumber", "vat.transactionDate", "description"
         );
 
-        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
         File pdf = pdfExportUtil.exportToPdf(
                 rootPaneMail.getScene().getWindow(),
                 vatTableState.vatList(),

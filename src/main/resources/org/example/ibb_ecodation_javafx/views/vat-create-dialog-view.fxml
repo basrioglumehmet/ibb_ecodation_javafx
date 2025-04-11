@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
-
-<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
 <?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+
 <VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:id="rootPane" fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogController">
-<ShadcnNavbar hideButtons="true" fx:id="navbar" />
-<VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10">
-    <ShadcnInput fx:id="amount" prefHeight="43.0" prefWidth="387.0" header="Tutar" />
-    <ShadcnInput fx:id="rate" prefHeight="43.0" prefWidth="387.0" header="Kdv Oranı" />
-    <ShadcnInput fx:id="receipt" prefHeight="43.0" prefWidth="387.0" header="Fiş Numarası" />
-    <ShadcnInput fx:id="description" prefHeight="43.0" prefWidth="387.0" header="Açıklama" />
-    <Label text="Result" fx:id="resultLabel"
-           style="-fx-font-size: 22px; -fx-text-fill: #fff; -fx-font-family:'Poppins';"
-           alignment="CENTER"/>
-<!--    date picker eklenecek-->
-</VBox>
-    <HBox style="-fx-padding:20;"  spacing="20">
-        <ShadcnButton onAction="#closeVatDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
-                      mnemonicParsing="false"  />
-        <ShadcnButton onAction="#insert" fullWidth="true" text="Insert" type="PRIMARY" align="CENTER"
-                      mnemonicParsing="false"  />
+      xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+      fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogController">
+    <ShadcnNavbar hideButtons="true" fx:id="navbar" />
+    <VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10">
+        <ShadcnInput fx:id="amount" prefHeight="43.0" prefWidth="387.0" header="Tutar" />
+        <ShadcnInput fx:id="rate" prefHeight="43.0" prefWidth="387.0" header="Kdv Oranı" />
+        <ShadcnInput fx:id="receipt" prefHeight="43.0" prefWidth="387.0" header="Fiş Numarası" />
+        <ShadcnInput fx:id="description" prefHeight="43.0" prefWidth="387.0" header="Açıklama" />
+        <DatePicker fx:id="transactionDateField" promptText="Transaction Date" prefWidth="387.0" />
+        <Label text="Result" fx:id="resultLabel"
+               style="-fx-font-size: 22px; -fx-text-fill: #fff; -fx-font-family:'Poppins';"
+               alignment="CENTER"/>
+    </VBox>
+    <HBox style="-fx-padding:20;" spacing="20" alignment="CENTER">
+        <ShadcnButton fx:id="closeButton" onAction="#closeVatDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+                      mnemonicParsing="false" />
+        <ShadcnButton fx:id="insertButton" onAction="#insert" fullWidth="true" text="Insert" type="PRIMARY" align="CENTER"
+                      mnemonicParsing="false" />
     </HBox>
 </VBox>

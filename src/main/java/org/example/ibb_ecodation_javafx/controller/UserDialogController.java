@@ -5,12 +5,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnSwitchButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
@@ -23,10 +26,8 @@ public class UserDialogController {
     private ShadcnNavbar navbar;
     @FXML
     private VBox rootPane;
-    private Store store;
-
     @FXML
-    private VBox container; // Ensure this is defined in your FXML file
+    private VBox container;
     @FXML
     private ShadcnInput email;
     @FXML
@@ -35,33 +36,56 @@ public class UserDialogController {
     private ShadcnInput password;
     @FXML
     private ShadcnInput role;
+    @FXML
+    private ShadcnButton closeButton; // For close button
+    @FXML
+    private ShadcnButton insertButton; // For insert button
 
-    private ShadcnSwitchButton button;
+    private ShadcnSwitchButton isVerifiedSwitch;
 
-
-    private final UserService userService  = SpringContext.getContext().getBean(UserService.class);
+    private final UserService userService = SpringContext.getContext().getBean(UserService.class);
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
+    private final Store store = Store.getInstance();
+    private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
     public UserDialogController() {
-        store = Store.getInstance();
+        // Constructor remains empty as dependencies are initialized as fields
     }
 
+    @FXML
     public void initialize() {
+        // Load language resources
+        languageService.loadAll(languageCode);
+
+        // Apply translations to ShadcnInput headers
+        username.setHeader(languageService.translate("input.username"));
+        email.setHeader(languageService.translate("input.email"));
+        password.setHeader(languageService.translate("input.password"));
+        role.setHeader(languageService.translate("input.role"));
+
+        // Apply translations to buttons
+        if (closeButton != null) {
+            closeButton.setText(languageService.translate("button.close"));
+        }
+        if (insertButton != null) {
+            insertButton.setText(languageService.translate("button.insert"));
+        }
+
+        // Dark mode subscription
         store.getState().subscribe(stateRegistry -> {
-            var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
             changeRootPaneColor(darkModeValue, rootPane);
         });
 
-        Label label = new Label("Is Verified");
-        label.setStyle("-fx-text-fill:white; -font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
-        button = new ShadcnSwitchButton();
+        // Initialize switch button and label with translation
+        Label isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
+        isVerifiedLabel.setStyle("-fx-text-fill:white; -fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+        isVerifiedSwitch = new ShadcnSwitchButton();
 
-        HBox switchContainer = new HBox();
-        switchContainer.setSpacing(20);
-        switchContainer.getChildren().add(label); // Fixed: Use add() for a single node
-        switchContainer.getChildren().add(button); // Add the switch button as well
+        HBox switchContainer = new HBox(20, isVerifiedLabel, isVerifiedSwitch);
 
-        // Ensure container is not null before adding to it
+        // Add switch container to VBox
         if (container != null) {
             container.getChildren().add(switchContainer);
         } else {
@@ -76,15 +100,21 @@ public class UserDialogController {
 
     @FXML
     private void insert() {
-        var entity = new User(0,
-                username.getText(),
-                email.getText(),
-                password.getText(),
-                Role.valueOf(role.getText()),
-                button.getValue(),
-                false,
-                0
-                );
-        userService.create(entity);
+        try {
+            User entity = new User(
+                    0, // ID is auto-generated
+                    username.getText(),
+                    email.getText(),
+                    password.getText(),
+                    Role.valueOf(role.getText().trim().toUpperCase()),
+                    isVerifiedSwitch.getValue(),
+                    false, // isLocked defaults to false for new user
+                    0 // Version defaults to 0
+            );
+            userService.create(entity);
+            closeVatDialog();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid role: " + role.getText());
+        }
     }
 }

@@ -82,7 +82,7 @@ public class AdminNoteController {
                 DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/note-create-dialog-view.fxml", "Not Oluştur"));
 
         noteList.setUpdateNoteAction(note -> {
-            if (note.getId() != -1) {
+            if (note.getId() != -1) { 
                 UserState currentState = store.getCurrentState(UserState.class);
                 store.dispatch(UserState.class, new UserState(
                         currentState.getUserDetail(),
