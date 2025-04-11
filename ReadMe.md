@@ -46,7 +46,8 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 39. **Jackson Serialization**
 
 # UI Introduction
-
+## Dark / Light Mode
+![img_12.png](img_12.png)
 ## Authentication Page
 ![img_10.png](img_10.png)
 ![img_11.png](img_11.png)
