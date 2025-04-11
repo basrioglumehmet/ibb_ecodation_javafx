@@ -116,4 +116,4 @@ Displays the current user's information and provides profile management features
 ### Mail Sending
 ![img_2.png](img_2.png)
 ### Printer Feature
-![img.png](img.png)
+![img_13.png](img_13.png)
