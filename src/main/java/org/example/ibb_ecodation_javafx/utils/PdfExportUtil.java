@@ -19,7 +19,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.example.ibb_ecodation_javafx.annotation.PdfDefinition;
 import org.example.ibb_ecodation_javafx.annotation.PdfIgnore;
-import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.springframework.stereotype.Component;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -29,39 +30,45 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * PDF belgelerini dışa aktarma ve yazdırma için yardımcı sınıf
+ * Generic PDF export and printing utility class
  */
+@Component
 public class PdfExportUtil {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    private static final float PAGE_WIDTH = PageSize.A4.getWidth() - 72; // A4 width (595) minus default margins (36 each side)
-    private static final float MIN_WIDTH = 20f; // Minimum width for any column
-    private static final float ID_WIDTH_FACTOR = 0.5f; // Reduce ID column width by 50%
+    private static final float PAGE_WIDTH = PageSize.A4.getWidth() - 72; // A4 width minus margins
+    private static final float MIN_WIDTH = 20f; // Minimum column width
+    private static final float ID_WIDTH_FACTOR = 0.5f; // Reduce ID column width
+
+    private final LanguageService languageService;
 
     static {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Europe/Istanbul")); // TRT (UTC+03:00)
     }
 
+    public PdfExportUtil(LanguageService languageService) {
+        this.languageService = languageService;
+    }
+
     /**
-     * PDF dosyasını varsayılan sistem yazıcısından yazdırır
+     * Prints a PDF file using the default system printer
      */
-    public static void printPdfFromFile(File pdfFile) {
-        Objects.requireNonNull(pdfFile, "PDF dosyası null olamaz");
+    public void printPdfFromFile(File pdfFile, String languageCode) {
+        Objects.requireNonNull(pdfFile, languageService.translate("error.pdf.file.null"));
+
+        languageService.loadAll(languageCode);
 
         try (PDDocument document = PDDocument.load(pdfFile)) {
             PrinterJob printJob = PrinterJob.getPrinterJob();
             PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
 
             if (printService == null) {
-                System.out.println("Yazıcı bulunamadı. Lütfen bir yazıcının bağlı olduğundan emin olun.");
+                System.out.println(languageService.translate("error.no.printer"));
                 return;
             }
 
@@ -69,28 +76,35 @@ public class PdfExportUtil {
             printJob.setPageable(new PDFPageable(document));
             printJob.print();
 
-            System.out.println("PDF yazıcıya gönderildi: " + printService.getName());
+            System.out.println(languageService.translate("info.pdf.sent.to.printer") + ": " + printService.getName());
 
         } catch (IOException e) {
-            System.err.println("PDF dosyası yüklenirken hata: " + e.getMessage());
+            System.err.println(languageService.translate("error.pdf.load") + ": " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Yazdırma hatası: " + e.getMessage());
+            System.err.println(languageService.translate("error.printing") + ": " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-
     /**
-     * Genel listeden KDV faturasını dışa aktarır
+     * Exports a list of any objects to a PDF with dynamic headers and optional totals
      */
-    public static <T> File exportVatInvoiceFromList(Window ownerWindow, List<T> dataList, List<String> headers, String bottomMessage) {
-        Objects.requireNonNull(dataList, "Veri listesi null olamaz");
-        Objects.requireNonNull(headers, "Başlıklar null olamaz");
+    public <T> File exportToPdf(Window ownerWindow, List<T> dataList, List<String> headerKeys, String bottomMessageKey, String languageCode) {
+        if (dataList == null) {
+            System.err.println("Data list is null; cannot proceed with PDF export.");
+            return null;
+        }
+        if (headerKeys == null) {
+            System.err.println("Header keys are null; cannot proceed with PDF export.");
+            return null;
+        }
 
-        File outputFile = showSaveDialog(ownerWindow);
+        languageService.loadAll(languageCode);
+
+        File outputFile = showSaveDialog(ownerWindow, languageCode);
         if (outputFile == null) {
-            System.out.println("Dosya kaydetme iptal edildi.");
+            System.out.println(languageService.translate("info.file.save.cancelled"));
             return null;
         }
 
@@ -102,67 +116,74 @@ public class PdfExportUtil {
             doc.setFont(font).setFontSize(10);
 
             addHeader(doc);
-            addGenericTable(doc, dataList, headers);
-//            addGenericTotals(doc, dataList);
+            addDynamicTable(doc, dataList, headerKeys, languageCode);
+            addDynamicTotals(doc, dataList, languageCode);
 
-            addFooter(doc,bottomMessage);
+            String footerMessage = languageService.translate(bottomMessageKey); // bottomMessageKey typo fixed
+            addFooter(doc, footerMessage);
 
-            System.out.println("Fatura şu konuma aktarıldı: " + outputFile.getAbsolutePath());
+            System.out.println(languageService.translate("info.invoice.exported") + ": " + outputFile.getAbsolutePath());
             return outputFile;
 
         } catch (Exception e) {
-            System.err.println("Fatura dışa aktarılırken hata: " + e.getMessage());
+            System.err.println(languageService.translate("error.invoice.export") + ": " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 
-    private static String mapFieldNameToField(Class<?> clazz, String header) {
+    /**
+     * Maps an i18n key to the corresponding field name using @PdfDefinition annotations
+     */
+    private <T> String mapI18nKeyToFieldName(Class<T> clazz, String i18nKey) {
         for (Field field : clazz.getDeclaredFields()) {
             PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
-            if (annotation != null && annotation.fieldName().equals(header)) {
-                if (field.getAnnotation(PdfIgnore.class) == null) { // PdfIgnore yoksa eşleştir
-                    return field.getName();
-                }
+            if (annotation != null && annotation.fieldName().equals(i18nKey)) {
+                return field.getName();
             }
         }
-        return header; // Eşleşme yoksa veya PdfIgnore varsa header'ı döndür
+        return i18nKey; // Fallback to the key itself if no mapping found
     }
 
-    private static <T> void addGenericTable(Document doc, List<T> dataList, List<String> headers) {
-        if (headers.isEmpty()) {
-            doc.add(new Paragraph("Tablo başlıkları bulunamadı."));
+    /**
+     * Adds a dynamic table with headers translated from i18n keys and data from mapped fields
+     */
+    private <T> void addDynamicTable(Document doc, List<T> dataList, List<String> headerKeys, String languageCode) {
+        if (headerKeys.isEmpty()) {
+            doc.add(new Paragraph(languageService.translate("error.no.table.headers")));
             return;
         }
 
-        // @PdfIgnore ile işaretlenmiş başlıkları filtrele
-        List<String> filteredHeaders = headers.stream()
-                .filter(header -> {
-                    String fieldName = mapFieldNameToField(dataList.isEmpty() ? Object.class : dataList.get(0).getClass(), header);
+        Class<?> clazz = dataList.isEmpty() ? Object.class : dataList.get(0).getClass();
+
+        // Filter out headers marked with @PdfIgnore
+        List<String> filteredHeaders = headerKeys.stream()
+                .filter(i18nKey -> {
+                    String fieldName = mapI18nKeyToFieldName(clazz, i18nKey);
                     try {
-                        Field field = dataList.get(0).getClass().getDeclaredField(fieldName);
+                        Field field = clazz.getDeclaredField(fieldName);
                         return field.getAnnotation(PdfIgnore.class) == null;
                     } catch (NoSuchFieldException e) {
-                        return true; // Alan bulunamazsa varsayılan olarak dahil et
+                        return true; // Include by default if field not found
                     }
                 })
                 .collect(Collectors.toList());
 
         if (filteredHeaders.isEmpty()) {
-            doc.add(new Paragraph("Gösterilecek başlık bulunamadı."));
+            doc.add(new Paragraph(languageService.translate("error.no.visible.headers")));
             return;
         }
 
-        // Dinamik sütun genişliklerini hesapla
+        // Calculate dynamic column widths based on translated headers
         float[] columnWidths = new float[filteredHeaders.size()];
-        Class<?> clazz = dataList.isEmpty() ? Object.class : dataList.get(0).getClass();
         float totalCharLength = 0f;
 
         for (int i = 0; i < filteredHeaders.size(); i++) {
-            String headerText = filteredHeaders.get(i);
-            float charLength = headerText.length();
-            if ("ID".equals(headerText)) {
-                charLength *= ID_WIDTH_FACTOR; // ID sütununu küçült
+            String i18nKey = filteredHeaders.get(i);
+            String translatedHeader = languageService.translate(i18nKey);
+            float charLength = translatedHeader.length();
+            if (i18nKey.endsWith(".id")) { // Reduce width for ID-like fields
+                charLength *= ID_WIDTH_FACTOR;
             }
             columnWidths[i] = charLength;
             totalCharLength += charLength;
@@ -175,28 +196,25 @@ public class PdfExportUtil {
 
         Table pdfTable = new Table(columnWidths);
 
-        filteredHeaders.forEach(header -> pdfTable.addHeaderCell(
-                new Cell().add(new Paragraph(header).setBold())
+        // Add translated headers
+        filteredHeaders.forEach(i18nKey -> pdfTable.addHeaderCell(
+                new Cell().add(new Paragraph(languageService.translate(i18nKey)).setBold())
         ));
 
+        // Add data rows
         for (T data : dataList) {
-            for (String header : filteredHeaders) {
+            for (String i18nKey : filteredHeaders) {
                 try {
-                    String fieldName = mapFieldNameToField(clazz, header);
+                    String fieldName = mapI18nKeyToFieldName(clazz, i18nKey);
                     Field field = clazz.getDeclaredField(fieldName);
                     field.setAccessible(true);
                     Object value = field.get(data);
-                    String displayValue;
-                    if (value instanceof Date) {
-                        displayValue = DATE_FORMAT.format((Date) value); // Direct formatting of Date object
-                    } else {
-                        displayValue = value != null ? value.toString() : "";
-                    }
+                    String displayValue = formatFieldValue(value);
                     pdfTable.addCell(new Cell().add(new Paragraph(displayValue)));
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    pdfTable.addCell(new Cell().add(new Paragraph("N/A")));
-                    System.err.println("Hata - Header: " + header + ", Mesaj: " + e.getMessage());
+                    pdfTable.addCell(new Cell().add(new Paragraph(languageService.translate("value.na"))));
+                    System.err.println(languageService.translate("error.header") + ": " + i18nKey + ", " +
+                            languageService.translate("error.message") + ": " + e.getMessage());
                 }
             }
         }
@@ -204,103 +222,96 @@ public class PdfExportUtil {
         doc.add(pdfTable);
     }
 
-    private static String getFieldNameFromAnnotation(Class<?> clazz, String header) {
-        try {
-            Field field = clazz.getDeclaredField(header);
-            PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
-            return annotation != null ? annotation.fieldName() : header;
-        } catch (NoSuchFieldException e) {
-            return header;
+    /**
+     * Formats field values based on their type
+     */
+    private String formatFieldValue(Object value) {
+        if (value == null) return "";
+        if (value instanceof LocalDateTime localDateTime) {
+            return DATE_FORMAT.format(Date.from(localDateTime.atZone(TimeZone.getTimeZone("Europe/Istanbul").toZoneId()).toInstant()));
         }
+        if (value instanceof Date date) {
+            return DATE_FORMAT.format(date);
+        }
+        return value.toString();
     }
 
-    private static <T> void addGenericTotals(Document doc, List<T> dataList) {
-        BigDecimal subtotal = BigDecimal.ZERO; // Temel Tutar toplamı
-        BigDecimal vatTotal = BigDecimal.ZERO; // KDV Tutarı toplamı
-        BigDecimal grandTotal = BigDecimal.ZERO; // Genel Toplam kontrolü
-
+    /**
+     * Adds totals for numeric fields if applicable (e.g., "amount", "total")
+     */
+    private <T> void addDynamicTotals(Document doc, List<T> dataList, String languageCode) {
         if (dataList.isEmpty()) {
-            doc.add(new Paragraph("Toplamlar için veri yok"));
             return;
         }
 
         Class<?> clazz = dataList.get(0).getClass();
-        Field baseAmountField = null;
-        Field vatRateField = null;
-        Field vatAmountField = null;
-        Field totalAmountField = null;
+        Map<String, BigDecimal> totals = new LinkedHashMap<>();
 
-        // Gerekli alanları bul, @PdfIgnore ile işaretlenmişleri atla
+        // Identify numeric fields
         for (Field field : clazz.getDeclaredFields()) {
             PdfDefinition annotation = field.getAnnotation(PdfDefinition.class);
             if (annotation != null && field.getAnnotation(PdfIgnore.class) == null) {
-                field.setAccessible(true);
-                switch (annotation.fieldName()) {
-                    case "Tutar":
-                        baseAmountField = field;
-                        break;
-                    case "%":
-                        vatRateField = field;
-                        break;
-                    case "Toplam":
-                        vatAmountField = field;
-                        break;
-                    case "Genel Toplam":
-                        totalAmountField = field;
-                        break;
+                String i18nKey = annotation.fieldName();
+                if (field.getType().equals(BigDecimal.class) || field.getType().equals(double.class) || field.getType().equals(Double.class)) {
+                    totals.put(i18nKey, BigDecimal.ZERO);
                 }
             }
         }
 
-        if (baseAmountField == null || vatRateField == null || vatAmountField == null || totalAmountField == null) {
-            doc.add(new Paragraph("Gerekli alanlar (Temel Tutar, %, Toplam veya Genel Toplam) bulunamadı"));
+        if (totals.isEmpty()) {
             return;
         }
 
+        // Calculate totals
         for (T data : dataList) {
-            try {
-                BigDecimal baseAmount = new BigDecimal(baseAmountField.get(data).toString());
-                BigDecimal vatRate = new BigDecimal(vatRateField.get(data).toString())
-                        .divide(BigDecimal.valueOf(100), 4, BigDecimal.ROUND_HALF_UP);
-                BigDecimal vatAmount = baseAmount.multiply(vatRate);
-                BigDecimal totalAmount = baseAmount.add(vatAmount);
-
-                BigDecimal actualVatAmount = new BigDecimal(vatAmountField.get(data).toString());
-                BigDecimal actualTotalAmount = new BigDecimal(totalAmountField.get(data).toString());
-
-                if (vatAmount.compareTo(actualVatAmount) != 0) {
-                    System.err.println("Hesaplanan KDV (" + vatAmount + ") ile verideki KDV (" + actualVatAmount + ") eşleşmiyor!");
+            for (Map.Entry<String, BigDecimal> entry : totals.entrySet()) {
+                String i18nKey = entry.getKey();
+                try {
+                    String fieldName = mapI18nKeyToFieldName(clazz, i18nKey);
+                    Field field = clazz.getDeclaredField(fieldName);
+                    field.setAccessible(true);
+                    Object value = field.get(data);
+                    if (value instanceof BigDecimal bd) {
+                        totals.put(i18nKey, entry.getValue().add(bd));
+                    } else if (value instanceof Double d) {
+                        totals.put(i18nKey, entry.getValue().add(BigDecimal.valueOf(d)));
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error calculating total for " + i18nKey + ": " + e.getMessage());
                 }
-                if (totalAmount.compareTo(actualTotalAmount) != 0) {
-                    System.err.println("Hesaplanan Genel Toplam (" + totalAmount + ") ile verideki Genel Toplam (" + actualTotalAmount + ") eşleşmiyor!");
-                }
-
-                subtotal = subtotal.add(baseAmount);
-                vatTotal = vatTotal.add(vatAmount);
-                grandTotal = grandTotal.add(totalAmount);
-
-            } catch (Exception e) {
-                System.err.println("Toplamlar işlenirken hata: " + e.getMessage());
             }
         }
 
-        addTotalParagraphs(doc, subtotal.doubleValue(), vatTotal.doubleValue(), grandTotal.doubleValue());
+        // Add total paragraphs with smarter label handling
+        String totalSuffix = languageService.translate("label.total");
+        for (Map.Entry<String, BigDecimal> entry : totals.entrySet()) {
+            String fieldLabel = languageService.translate(entry.getKey());
+            String label;
+            // Avoid repeating "Total" if the field name already contains it
+            if (fieldLabel.toLowerCase().contains("total")) {
+                label = fieldLabel; // Use field name alone (e.g., "Grand Total")
+            } else {
+                label = fieldLabel + " " + totalSuffix; // Append "Total" (e.g., "Amount Total")
+            }
+            doc.add(new Paragraph(String.format("%s: %.2f", label, entry.getValue().doubleValue())));
+        }
     }
 
-    private static File showSaveDialog(Window ownerWindow) {
+    private File showSaveDialog(Window ownerWindow, String languageCode) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Fatura PDF'sini Kaydet");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Dosyaları", "*.pdf"));
-        fileChooser.setInitialFileName("fatura.pdf");
+        fileChooser.setTitle(languageService.translate("dialog.save.invoice.title"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                languageService.translate("filter.pdf.files"), "*.pdf"));
+        fileChooser.setInitialFileName(languageService.translate("default.invoice.filename"));
         return fileChooser.showSaveDialog(ownerWindow);
     }
 
-    private static PdfFont loadCustomFont() throws IOException {
+    private PdfFont loadCustomFont() throws IOException {
         File fontFile = new File(PdfExportUtil.class.getResource("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf").getFile());
         return PdfFontFactory.createFont(fontFile.getAbsolutePath());
     }
 
-    public static Image createImageFromClasspath(String imagePath, float width, float height) {
+    public Image createImageFromClasspath(String imagePath, float width, float height, String languageCode) {
         try {
             ImageData imageData = ImageDataFactory.create(Objects.requireNonNull(PdfExportUtil.class.getResource(imagePath)));
             Image image = new Image(imageData);
@@ -308,7 +319,7 @@ public class PdfExportUtil {
             image.setHeight(height);
             return image;
         } catch (NullPointerException e) {
-            System.out.println("Resim dosyası bulunamadı: " + imagePath);
+            System.out.println(languageService.translate("error.image.not.found") + ": " + imagePath);
             return null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -316,27 +327,21 @@ public class PdfExportUtil {
         }
     }
 
-    private static void addHeader(Document doc) {
+    private void addHeader(Document doc) {
         String ibbLogo = "/org/example/ibb_ecodation_javafx/assets/Ibb_amblem.png";
         Table table = new Table(3);
         table.setBorder(Border.NO_BORDER);
         table.setMarginBottom(10f);
-        Cell imageCell = new Cell().add(createImageFromClasspath(ibbLogo, 60, 60));
+        Cell imageCell = new Cell().add(createImageFromClasspath(ibbLogo, 60, 60, "en"));
         imageCell.setBorder(Border.NO_BORDER);
         table.addCell(imageCell);
         doc.add(table);
     }
 
-    private static void addFooter(Document doc, String message) {
-        doc.add(new Paragraph(String.format("\n%s",message))
+    private void addFooter(Document doc, String message) {
+        doc.add(new Paragraph(message)
                 .setFontSize(9)
                 .setItalic()
                 .setMarginTop(20));
-    }
-
-    private static void addTotalParagraphs(Document doc, double subtotal, double vatTotal, double grandTotal) {
-        doc.add(new Paragraph(String.format("\nAra Toplam: %.2f TL", subtotal)));
-        doc.add(new Paragraph(String.format("KDV Toplamı: %.2f TL", vatTotal)));
-        doc.add(new Paragraph(String.format("GENEL TOPLAM: %.2f TL", grandTotal)).setBold());
     }
 }

@@ -13,32 +13,39 @@ import org.example.ibb_ecodation_javafx.model.enums.Role;
 @NoArgsConstructor
 @ToString
 public class User implements Entity {
-    @PdfDefinition(fieldName = "ID")
+    @PdfDefinition(fieldName = "user.id")
     @JdbcNamedField(dbFieldName = "id")
     private int id;
+
+    @PdfDefinition(fieldName = "user.username")
     @JdbcNamedField(dbFieldName = "username")
-    @PdfDefinition(fieldName = "Kullanıcı Adı")
     private String username;
+
+    @PdfDefinition(fieldName = "user.email")
     @JdbcNamedField(dbFieldName = "email")
-    @PdfDefinition(fieldName = "Email")
     private String email;
+
+    @PdfDefinition(fieldName = "user.password")
+    @PdfIgnore
     @JdbcNamedField(dbFieldName = "password")
-    @PdfIgnore
-    @PdfDefinition(fieldName = "password")
     private String password;
+
+    @PdfDefinition(fieldName = "user.role")
     @JdbcNamedField(dbFieldName = "role")
-    @PdfDefinition(fieldName = "Rol")
     private Role role = Role.USER;
+
+    @PdfDefinition(fieldName = "user.is_verified")
+    @PdfIgnore
     @JdbcNamedField(dbFieldName = "is_verified")
-    @PdfDefinition(fieldName = "is_verified")
-    @PdfIgnore
     private boolean isVerified;
+
+    @PdfDefinition(fieldName = "user.is_locked")
+    @PdfIgnore
     @JdbcNamedField(dbFieldName = "is_locked")
-    @PdfIgnore
-    @PdfDefinition(fieldName = "is_locked")
     private boolean isLocked;
-    @JdbcNamedField(dbFieldName = "version")
-    @PdfDefinition(fieldName = "version")
+
+    @PdfDefinition(fieldName = "user.version")
     @PdfIgnore
+    @JdbcNamedField(dbFieldName = "version")
     private int version = 1;
 }

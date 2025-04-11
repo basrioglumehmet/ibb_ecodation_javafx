@@ -1,13 +1,12 @@
 package org.example.ibb_ecodation_javafx.utils;
 
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import lombok.experimental.UtilityClass;
+import javafx.stage.Window;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.ibb_ecodation_javafx.annotation.PdfDefinition;
-import org.example.ibb_ecodation_javafx.model.Vat;
-import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,41 +15,57 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-@UtilityClass
+@Component
 public class ExcelUtil {
 
-    public static <T> void exportToExcel(List<T> dataList, Class<T> clazz) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Excel File");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Excel Files", "*.xlsx")
-        );
-        fileChooser.setInitialFileName("data_export.xlsx");
+    private final LanguageService languageService;
 
-        Stage stage = new Stage();
-        File file = fileChooser.showSaveDialog(stage);
+    public ExcelUtil(LanguageService languageService) {
+        this.languageService = languageService;
+    }
+
+    public <T> void exportToExcel(List<T> dataList, Class<T> clazz, String languageCode, Window ownerWindow) throws IOException {
+        if (dataList == null) {
+            System.err.println("Data list is null; cannot proceed with Excel export.");
+            return;
+        }
+
+        languageService.loadAll(languageCode);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(languageService.translate("dialog.save.excel.title"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        languageService.translate("filter.excel.files"),
+                        "*.xlsx"
+                )
+        );
+        fileChooser.setInitialFileName(languageService.translate("default.excel.filename"));
+
+        File file = fileChooser.showSaveDialog(ownerWindow);
 
         if (file == null) {
+            System.out.println(languageService.translate("info.file.save.cancelled"));
             return;
         }
 
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Export Data");
+            Sheet sheet = workbook.createSheet(languageService.translate("sheet.name"));
 
             List<Field> pdfFields = new ArrayList<>();
             List<String> headers = new ArrayList<>();
 
-            // Belirtilen sınıftan @PdfDefinition anotasyonuna sahip alanları al
+            // Get fields with @PdfDefinition and translate headers
             for (Field field : clazz.getDeclaredFields()) {
                 PdfDefinition pdfDef = field.getAnnotation(PdfDefinition.class);
                 if (pdfDef != null) {
                     field.setAccessible(true);
                     pdfFields.add(field);
-                    headers.add(pdfDef.fieldName());
+                    headers.add(languageService.translate(pdfDef.fieldName()));
                 }
             }
 
-            // Başlık satırı
+            // Header row
             Row headerRow = sheet.createRow(0);
             CellStyle headerStyle = createHeaderStyle(workbook);
 
@@ -60,7 +75,7 @@ public class ExcelUtil {
                 cell.setCellStyle(headerStyle);
             }
 
-            // Veri satırları
+            // Data rows
             CellStyle dataStyle = createDataStyle(workbook);
 
             for (int i = 0; i < dataList.size(); i++) {
@@ -75,37 +90,27 @@ public class ExcelUtil {
                         row.createCell(j).setCellValue(cellValue);
                         row.getCell(j).setCellStyle(dataStyle);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        System.err.println("Error accessing field " + field.getName() + ": " + e.getMessage());
                     }
                 }
             }
 
-            // Otomatik sütun genişliği
+            // Auto-size columns
             for (int i = 0; i < headers.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
             try (FileOutputStream fileOut = new FileOutputStream(file)) {
                 workbook.write(fileOut);
+                System.out.println(languageService.translate("info.excel.exported") + ": " + file.getAbsolutePath());
             }
+        } catch (IOException e) {
+            System.err.println(languageService.translate("error.excel.export") + ": " + e.getMessage());
+            throw e;
         }
     }
 
-    private static List<String> getPdfDefinitionHeaders() {
-        List<String> headers = new ArrayList<>();
-        Field[] fields = Vat.class.getDeclaredFields();
-
-        // Vat sınıfındaki tüm alanları tara
-        for (Field field : fields) {
-            PdfDefinition pdfDefinition = field.getAnnotation(PdfDefinition.class);
-            if (pdfDefinition != null) {
-                headers.add(pdfDefinition.fieldName()); // fieldName değerini başlık olarak ekle
-            }
-        }
-        return headers;
-    }
-
-    private static CellStyle createHeaderStyle(Workbook workbook) {
+    private CellStyle createHeaderStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setBold(true);
@@ -122,7 +127,7 @@ public class ExcelUtil {
         return style;
     }
 
-    private static CellStyle createDataStyle(Workbook workbook) {
+    private CellStyle createDataStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setColor(IndexedColors.BLACK.getIndex());

@@ -11,7 +11,7 @@
       HBox.hgrow="ALWAYS" fx:controller="org.example.ibb_ecodation_javafx.controller.VatManagementController"
       spacing="15">
     <HBox fx:id="searchBar" spacing="20" style="-fx-background-color:#202024; -fx-background-radius:20px; -fx-padding:20px;" alignment="CENTER_LEFT">
-        <ShadcnInput fx:id="vatNumber" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" header="Fiş numarasına göre ara..." />
+        <ShadcnInput fx:id="vatNumberInput" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" header="Fiş numarasına göre ara..." />
     </HBox>
     <DynamicTable fx:id="vatTable" prefHeight="600" VBox.vgrow="ALWAYS" />
     <HBox fx:id="chartContainer" alignment="CENTER" style="-fx-background-color: #202024; -fx-background-radius: 20px;">

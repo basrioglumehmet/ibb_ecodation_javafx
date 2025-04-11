@@ -4,8 +4,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.service.MailService;
-import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
@@ -21,29 +21,28 @@ import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
 
 public class VatDialogMailController {
-    @FXML
-    private ShadcnNavbar navbar;
-    @FXML
-    private VBox rootPaneMail;
+    @FXML private ShadcnNavbar navbar;
+    @FXML private VBox rootPaneMail;
+    @FXML private ShadcnInput input;
 
     private Store store;
-
-
-    @FXML
-    private ShadcnInput input;
-
     private final MailService mailService = SpringContext.getContext().getBean(MailService.class);
+    private final PdfExportUtil pdfExportUtil = SpringContext.getContext().getBean(PdfExportUtil.class);
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
 
     public void initialize() {
         store = Store.getInstance();
 
-        // Karanlık mod değişikliklerini dinle
+        // Load language resources (adjust languageCode as needed)
+        String languageCode = "tr"; // Should be configurable or match app settings
+        languageService.loadAll(languageCode);
+
+        // Listen for dark mode changes
         store.getState().subscribe(stateRegistry -> {
             var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
             changeRootPaneColor(darkModeValue, rootPaneMail);
         });
-
     }
 
     private void exportVatDataToPdf() {
@@ -51,41 +50,44 @@ public class VatDialogMailController {
 
         if (vatTableState == null || vatTableState.vatList() == null || vatTableState.vatList().isEmpty()) {
             System.err.println("VatTableState is not properly initialized or vatList is empty.");
-
             return;
         }
 
         System.out.println("Vat list size: " + vatTableState.vatList().size());
 
-        // Vat sınıfındaki @PdfDefinition ile uyumlu başlıklar
         List<String> headers = List.of(
-                "id",           // "ID"
-                "baseAmount",   // "Temel Tutar"
-                "rate",         // "%"
-                "amount",       // "Toplam"
-                "totalAmount",  // "Genel Toplam"
-                "receiptNumber", // "Fiş Numarası"
-                "transactionDate", // "İşlem Tarihi"
-                "description"   // "Açıklama"
+                "vat.id", "vat.amount", "%", "vat.total", "vat.generalTotal",
+                "vat.receiptNumber", "vat.transactionDate", "description"
         );
 
-        // PDF'i dışa aktar
-        File pdf = PdfExportUtil.exportVatInvoiceFromList(rootPaneMail.getScene().getWindow(), vatTableState.vatList(), headers,
-                "Bu fatura elektronik ortamda oluşturulmuştur.");
+        String languageCode = "en"; // Should be configurable
+        File pdf = pdfExportUtil.exportToPdf(
+                rootPaneMail.getScene().getWindow(),
+                vatTableState.vatList(),
+                headers,
+                "footer.message",
+                languageCode
+        );
 
         if (pdf != null && !input.getText().isEmpty()) {
             System.out.println("PDF exported successfully: " + pdf.getAbsolutePath());
-            // E-posta gönderme (yorumdan çıkarılacaksa)
-             mailService.sendMailWithAttachment(input.getText(), "Mail DENEME", pdf.toPath(), "PDF Dosyası");
+            String emailSubject = languageService.translate("invoice.email.subject");
+            String attachmentName = languageService.translate("invoice.attachment.name");
+            System.out.println("Translated subject: " + emailSubject); // Debug
+            System.out.println("Translated attachment: " + attachmentName); // Debug
+            mailService.sendMailWithAttachment(
+                    input.getText(),
+                    emailSubject,
+                    pdf.toPath(),
+                    attachmentName
+            );
         } else {
-            System.err.println("PDF export failed.");
-
+            System.err.println("PDF export failed or email input is empty.");
         }
     }
 
     @FXML
-    private void send(){
-        // PDF export işlemini sahne hazır olduğunda çalıştır
+    private void send() {
         Platform.runLater(this::exportVatDataToPdf);
     }
 

@@ -36,6 +36,7 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.model to com.fasterxml.jackson.databind;
     opens org.example.ibb_ecodation_javafx.model.dto to com.fasterxml.jackson.databind;
     opens org.example.ibb_ecodation_javafx.model.enums to com.fasterxml.jackson.databind;
+    opens org.example.ibb_ecodation_javafx.utils to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
 
     requires java.compiler;
     requires jbcrypt;
@@ -64,6 +65,7 @@ module org.example.ibb_ecodation_javafx {
     exports org.example.ibb_ecodation_javafx.model;
     exports org.example.ibb_ecodation_javafx.core.service;
     exports org.example.ibb_ecodation_javafx.core.service.impl;
+    exports org.example.ibb_ecodation_javafx.utils;
     exports org.example.ibb_ecodation_javafx.core.i18n;
     exports org.example.ibb_ecodation_javafx.model.enums;
     exports org.example.ibb_ecodation_javafx.model.dto;

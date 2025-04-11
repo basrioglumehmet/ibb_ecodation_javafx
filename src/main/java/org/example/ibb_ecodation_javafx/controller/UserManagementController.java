@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
@@ -37,32 +38,48 @@ public class UserManagementController {
 
     private final Store store = Store.getInstance();
     private final UserService userService = SpringContext.getContext().getBean(UserService.class);
+    private final PdfExportUtil pdfExportUtil = SpringContext.getContext().getBean(PdfExportUtil.class);
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
 
     private Map<String, String> comboItems;
     private List<User> userList = new ArrayList<>();
-
     private String nameFilter = "";
     private String roleFilter = "";
 
     public void initialize() {
         if (userTable == null) return;
 
-        userTable.setHeaderText("User Management");
-        userTable.setDescriptionText("Manage all user accounts and permissions");
+        String languageCode = "en"; // Fallback; replace with ShadcnLanguageComboBox.getCurrentLanguageCode() if available
+        ResourceBundle bundle = languageService.loadAll(languageCode);
 
-        userTable.addHeaders("ID", "Username", "Email", "Password", "Role", "Verified", "Locked", "Version");
+        userTable.setHeaderText(bundle.getString("user.header"));
+        userTable.setDescriptionText(bundle.getString("user.description"));
+
+        userTable.addHeaders(
+                bundle.getString("user.id"),
+                bundle.getString("user.username"),
+                bundle.getString("user.email"),
+                bundle.getString("user.password"),
+                bundle.getString("user.role"),
+                bundle.getString("user.verified"),
+                bundle.getString("user.locked"),
+                bundle.getString("user.version")
+        );
 
         comboItems = new HashMap<>();
-        comboItems.put("add", "Add User");
-        comboItems.put("remove", "Remove User");
-        comboItems.put("update", "Update User");
-        comboItems.put("print", "Print User to Printer");
-        comboItems.put("refresh", "Refresh");
-        comboItems.put("export_backup", "Export Backup");
-        comboItems.put("import_backup", "Import Backup");
+        comboItems.put("add", bundle.getString("user.add"));
+        comboItems.put("remove", bundle.getString("user.remove"));
+        comboItems.put("update", bundle.getString("user.update"));
+        comboItems.put("print", bundle.getString("user.print"));
+        comboItems.put("refresh", bundle.getString("user.refresh"));
+        comboItems.put("export_backup", bundle.getString("user.export_backup"));
+        comboItems.put("import_backup", bundle.getString("user.import_backup"));
 
-        userTable.setComboBoxTitle("Actions");
+        userTable.setComboBoxTitle(bundle.getString("user.actions"));
         userTable.setComboBoxItems(comboItems);
+
+        name.setHeader(bundle.getString("user.name.filter"));
+        role.setHeader(bundle.getString("user.role.filter"));
 
         name.setTextChangeListener(newValue -> {
             nameFilter = newValue != null ? newValue.trim() : "";
@@ -76,6 +93,7 @@ public class UserManagementController {
 
         userTable.setSingleSelection(true);
         userTable.watchComboBox().subscribe(pair -> {
+            String actionLanguageCode = "en"; // Replace with ShadcnLanguageComboBox.getCurrentLanguageCode() if available
             switch (pair.getKey()) {
                 case "add":
                     DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-create-dialog-view.fxml", "User Create");
@@ -87,13 +105,13 @@ public class UserManagementController {
                     updateSelectedUser();
                     break;
                 case "print":
-                    exportToPdf();
+                    exportToPdf(actionLanguageCode);
                     break;
                 case "refresh":
                     refreshData();
                     break;
                 case "export_backup":
-                    userService.createBackup(userList,userPane.getScene().getWindow());
+                    userService.createBackup(userList, userPane.getScene().getWindow());
                     break;
                 case "import_backup":
                     List<User> userBackup = userService.loadBackup(userPane.getScene().getWindow());
@@ -101,7 +119,7 @@ public class UserManagementController {
                         try {
                             for (User user : userBackup) {
                                 if (user.getUsername() == null || user.getEmail() == null) {
-                                    System.out.println("Invalid user data detected in backup.");
+                                    System.out.println(languageService.translate("error.invalid.user.data"));
                                     return;
                                 }
                                 if (user.getRole() == null) {
@@ -115,20 +133,17 @@ public class UserManagementController {
                                 System.out.println(user.toString());
                             }
                             refreshData();
-                            System.out.println("Loaded");
+                            System.out.println(languageService.translate("info.backup.loaded"));
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                            System.out.println("Failed "+e.getMessage());
-
+                            System.out.println(languageService.translate("error.backup.failed") + ": " + e.getMessage());
                         }
                     } else {
-                        System.out.println("No users found in the backup or import was cancelled.");
+                        System.out.println(languageService.translate("error.no.users.in.backup"));
                     }
                     break;
-
             }
-
         });
 
         refreshData();
@@ -187,25 +202,28 @@ public class UserManagementController {
             refreshData();
         });
     }
-    private void exportToPdf() {
-        List<User> dataToExport = new ArrayList<>(userList); // Kullanıcı listesini olduğu gibi al
+
+    private void exportToPdf(String languageCode) {
+        List<User> dataToExport = new ArrayList<>(userList);
 
         List<String> headers = List.of(
-                "ID", "Kullanıcı Adı", "Email",
-                "Rol"
+                "user.id",
+                "user.username",
+                "user.email",
+                "user.role"
         );
 
-        File pdf = PdfExportUtil.exportVatInvoiceFromList(
+        File pdf = pdfExportUtil.exportToPdf(
                 userPane.getScene().getWindow(),
                 dataToExport,
                 headers,
-                "Bu belge elektronik ortamda oluşturulmuştur."
+                "footer.message",
+                languageCode
         );
         if (pdf != null && pdf.exists()) {
-            PdfExportUtil.printPdfFromFile(pdf);
+            pdfExportUtil.printPdfFromFile(pdf, languageCode);
         } else {
-            System.err.println("PDF dosyası oluşturulamadı!");
+            System.err.println(languageService.translate("error.pdf.creation.failed"));
         }
     }
-
 }

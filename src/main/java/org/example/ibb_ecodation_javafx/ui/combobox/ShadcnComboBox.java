@@ -60,6 +60,7 @@ public class ShadcnComboBox<T> extends Button {
         this.title = newTitle;
         if (titleLabel != null) {
             titleLabel.setText(newTitle);
+            loadLabel();
         } else {
             loadLabel();
         }
@@ -95,10 +96,8 @@ public class ShadcnComboBox<T> extends Button {
         titleLabel = new Label(title);
         titleLabel.setStyle("-fx-text-fill:white; -fx-font-weight:bold;");
 
-        Label selectionLabel = new Label(selectedValue != null ? displayConverter.apply(selectedValue) : "Select an option");
-        selectionLabel.setStyle("-fx-text-fill:white;");
 
-        header.getChildren().addAll(titleLabel, selectionLabel);
+        header.getChildren().addAll(titleLabel);
         setGraphic(header);
 
     }

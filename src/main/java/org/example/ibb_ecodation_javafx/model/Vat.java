@@ -18,15 +18,15 @@ import java.util.Date;
 @ToString
 public class Vat implements Entity {
 
-    @PdfDefinition(fieldName = "ID")
+    @PdfDefinition(fieldName = "vat.id")
     @JdbcNamedField(dbFieldName = "id")
     private int id;
 
-    @PdfDefinition(fieldName = "Kullanıcı ID")
+    @PdfDefinition(fieldName = "vat.userId")
     @JdbcNamedField(dbFieldName = "user_id")
     private int userId;
 
-    @PdfDefinition(fieldName = "Tutar")
+    @PdfDefinition(fieldName = "vat.amount")
     @JdbcNamedField(dbFieldName = "base_amount")
     private BigDecimal baseAmount;
 
@@ -34,37 +34,37 @@ public class Vat implements Entity {
     @JdbcNamedField(dbFieldName = "rate")
     private BigDecimal rate;
 
-    @PdfDefinition(fieldName = "Toplam")
+    @PdfDefinition(fieldName = "vat.total")
     @JdbcNamedField(dbFieldName = "amount")
     private BigDecimal amount;
 
-    @PdfDefinition(fieldName = "Genel Toplam")
+    @PdfDefinition(fieldName = "vat.generalTotal")
     @JdbcNamedField(dbFieldName = "total_amount")
     private BigDecimal totalAmount;
 
-    @PdfDefinition(fieldName = "Fiş Numarası")
+    @PdfDefinition(fieldName = "vat.receiptNumber")
     @JdbcNamedField(dbFieldName = "receipt_number")
     private String receiptNumber;
 
-    @PdfDefinition(fieldName = "İşlem Tarihi")
+    @PdfDefinition(fieldName = "vat.transactionDate")
     @JdbcNamedField(dbFieldName = "transaction_date")
     private LocalDateTime transactionDate;
 
-    @PdfDefinition(fieldName = "Açıklama")
+    @PdfDefinition(fieldName = "description")
     @JdbcNamedField(dbFieldName = "description")
     private String description;
 
-    @PdfDefinition(fieldName = "Dışa Aktarma Formatı")
+    @PdfDefinition(fieldName = "vat.exportFormat")
     @JdbcNamedField(dbFieldName = "exportFormat")
     @PdfIgnore
     private String exportFormat = "VARSAYILAN";
 
-    @PdfDefinition(fieldName = "Silindi mi")
+    @PdfDefinition(fieldName = "vat.isDeleted")
     @JdbcNamedField(dbFieldName = "is_deleted")
     @PdfIgnore
     private boolean isDeleted = false;
 
-    @PdfDefinition(fieldName = "Versiyon")
+    @PdfDefinition(fieldName = "vat.version")
     @JdbcNamedField(dbFieldName = "version")
     @PdfIgnore
     private int version = 1;

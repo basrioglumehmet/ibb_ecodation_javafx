@@ -57,8 +57,8 @@ public class ShadcnBarChart extends BarChart<String, Number> {
 
     private void configureChart() {
         setLegendVisible(false);
-        ((CategoryAxis) getXAxis()).setLabel("Categories");
-        ((NumberAxis) getYAxis()).setLabel("Values");
+//        ((CategoryAxis) getXAxis()).setLabel("");
+//        ((NumberAxis) getYAxis()).setLabel("");
 
 
         getYAxis().setStyle("-fx-tick-label-fill: white; -fx-font-family: 'Poppins';");
