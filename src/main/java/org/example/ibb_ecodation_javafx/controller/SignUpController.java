@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.constants.FieldRuleConstant;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
@@ -19,6 +20,7 @@ import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.service.UserOtpCodeService;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.utils.OtpUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
@@ -34,6 +36,7 @@ public class SignUpController {
 
     @FXML
     private StackPane rootPane;
+
     @FXML
     private ShadcnInput email;
     @FXML
@@ -55,7 +58,9 @@ public class SignUpController {
         this.authenticationService = SpringContext.getContext().getBean(AuthenticationService.class);
         this.userService = SpringContext.getContext().getBean(UserService.class);
         this.mailService = SpringContext.getContext().getBean(MailService.class);
+
     }
+
 
 
     @FXML

@@ -41,6 +41,11 @@
             <VBox alignment="CENTER"
                   prefHeight="108.0" prefWidth="590.0"
                   VBox.vgrow="ALWAYS" style="-fx-padding: 30; -fx-background-color:#1a1a1e;" >
+
+               <VBox alignment="CENTER" spacing="20.0" fx:id="languageArea"
+                     maxWidth="Infinity" maxHeight="Infinity"
+                    StackPane.alignment="TOP_CENTER" >
+               </VBox>
                <fx:include fx:id="loginContent" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" source="signin-view.fxml" />
 
             </VBox>
