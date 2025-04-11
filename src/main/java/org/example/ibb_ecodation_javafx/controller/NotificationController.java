@@ -11,21 +11,24 @@ import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.service.UserNotificationService;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
+import io.reactivex.rxjava3.disposables.Disposable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
 
 public class NotificationController {
 
-    @FXML
-    private ListView<ShadcnListItem> notificationList;
-    @FXML
-    private Label notificationsLabel;
+    @FXML private ListView<ShadcnListItem> notificationList;
+    @FXML private Label notificationsLabel;
 
     private final UserNotificationService userNotificationService;
     private final LanguageService languageService;
+    private String languageCode;
+    private List<Disposable> subscriptions = new ArrayList<>();
 
     public NotificationController() {
         userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
@@ -33,27 +36,16 @@ public class NotificationController {
     }
 
     public void initialize() {
-        // Load language resources (e.g., "tr" for Turkish, "en" for English)
-        String languageCode = "en";
-        languageService.loadAll(languageCode);
 
-        // Set translated label text
-        notificationsLabel.setText(languageService.translate("label.notifications"));
-        updateLabelStyles(notificationsLabel, languageCode); // Assuming LabelUtil supports language-specific styles
+       languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
-        // Fetch notifications (assuming user ID 1 for now)
-        List<UserNotification> data = userNotificationService.readAll(1);
-        for (UserNotification notification : data) {
-            ShadcnListItem item = new ShadcnListItem(
-                    ShadcnListItem.ListItemType.WITH_ICON,
-                    notification.getHeader(),
-                    notification.getDescription(),
-                    notification.getType()
-            );
-            notificationList.getItems().add(item);
-        }
 
-        // Cell factory for rendering list items
+        updateUIWithLanguage();
+
+
+        loadNotifications();
+
+
         notificationList.setCellFactory(lv -> {
             ListCell<ShadcnListItem> cell = new ListCell<>() {
                 @Override
@@ -85,5 +77,41 @@ public class NotificationController {
                 }
             }
         });
+
+
+    }
+
+    private void loadNotifications() {
+        notificationList.getItems().clear();
+        List<UserNotification> data = userNotificationService.readAll(1);
+        for (UserNotification notification : data) {
+
+            ShadcnListItem item = new ShadcnListItem(
+                    languageService,
+                    languageCode,
+                    ShadcnListItem.ListItemType.WITH_ICON,
+                    notification.getHeader(),
+                    notification.getDescription(),
+                    notification.getType()
+            );
+            notificationList.getItems().add(item);
+        }
+    }
+
+    private void updateUIWithLanguage() {
+        notificationsLabel.setText(languageService.translate("label.notifications"));
+        updateLabelStyles(notificationsLabel, languageCode);
+    }
+
+    public void dispose() {
+        subscriptions.forEach(sub -> {
+            if (!sub.isDisposed()) sub.dispose();
+        });
+        subscriptions.clear();
+    }
+
+    @FXML
+    public void onDestroy() {
+        dispose();
     }
 }

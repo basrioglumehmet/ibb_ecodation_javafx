@@ -9,6 +9,7 @@ import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
@@ -33,11 +34,10 @@ public class VatDialogMailController {
     public void initialize() {
         store = Store.getInstance();
 
-        // Load language resources (adjust languageCode as needed)
-        String languageCode = "tr"; // Should be configurable or match app settings
+
+        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
         languageService.loadAll(languageCode);
 
-        // Listen for dark mode changes
         store.getState().subscribe(stateRegistry -> {
             var darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
@@ -60,7 +60,7 @@ public class VatDialogMailController {
                 "vat.receiptNumber", "vat.transactionDate", "description"
         );
 
-        String languageCode = "en"; // Should be configurable
+        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
         File pdf = pdfExportUtil.exportToPdf(
                 rootPaneMail.getScene().getWindow(),
                 vatTableState.vatList(),

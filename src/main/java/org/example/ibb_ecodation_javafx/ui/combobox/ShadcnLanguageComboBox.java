@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class ShadcnLanguageComboBox extends Button {
 
-    private static final PublishSubject<Pair<String,String>> subject = PublishSubject.create();
-    private static String currentLanguageCode = "en"; // Shared with controllers
+    private static final PublishSubject<Pair<String, String>> subject = PublishSubject.create();
+    private static String currentLanguageCode = "en"; // Default to "en" instead of recursive call
     private static final Map<String, String[]> languages = Map.of(
             "Türkçe", new String[]{"tr", "tr.png"},
             "English", new String[]{"en", "en.png"}
@@ -52,9 +52,9 @@ public class ShadcnLanguageComboBox extends Button {
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
 
-        // Determine initial language from currentLanguageCode
+
         String initialLanguage = languages.entrySet().stream()
-                .filter(entry -> entry.getValue()[0].equals(currentLanguageCode))
+                .filter(entry -> entry.getValue()[0].equals(currentLanguageCode != null ? currentLanguageCode : "en"))
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse("English"); // Default to English if not found
@@ -70,7 +70,7 @@ public class ShadcnLanguageComboBox extends Button {
             if (newFlag != null) {
                 flag.setImage(newFlag);
                 label.setText(pair.getValue());
-                currentLanguageCode = pair.getKey(); // Update shared language code
+                currentLanguageCode = pair.getKey();
             }
         });
     }
@@ -123,11 +123,11 @@ public class ShadcnLanguageComboBox extends Button {
         subject.onNext(new Pair<>(code, value));
     }
 
-    public static synchronized PublishSubject<Pair<String,String>> watchLanguageValue() {
+    public static synchronized PublishSubject<Pair<String, String>> watchLanguageValue() {
         return subject;
     }
 
-    public static String getCurrentLanguageCode() {
-        return currentLanguageCode;
+    public static synchronized String getCurrentLanguageCode() {
+        return currentLanguageCode != null ? currentLanguageCode : "en"; // Fallback to "en" if null
     }
 }

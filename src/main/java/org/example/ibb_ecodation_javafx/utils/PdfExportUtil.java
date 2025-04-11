@@ -20,6 +20,7 @@ import org.apache.pdfbox.printing.PDFPageable;
 import org.example.ibb_ecodation_javafx.annotation.PdfDefinition;
 import org.example.ibb_ecodation_javafx.annotation.PdfIgnore;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.springframework.stereotype.Component;
 
 import javax.print.PrintService;
@@ -332,7 +333,7 @@ public class PdfExportUtil {
         Table table = new Table(3);
         table.setBorder(Border.NO_BORDER);
         table.setMarginBottom(10f);
-        Cell imageCell = new Cell().add(createImageFromClasspath(ibbLogo, 60, 60, "en"));
+        Cell imageCell = new Cell().add(createImageFromClasspath(ibbLogo, 60, 60, ShadcnLanguageComboBox.getCurrentLanguageCode()));
         imageCell.setBorder(Border.NO_BORDER);
         table.addCell(imageCell);
         doc.add(table);

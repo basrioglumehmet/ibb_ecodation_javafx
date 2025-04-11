@@ -58,6 +58,7 @@ public class AdminDashboardController {
 
     @FXML
     public void initialize() {
+
         store.getState().subscribe(stateRegistry -> {
             boolean darkModeEnabled = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeSidebarColor(darkModeEnabled);
@@ -67,25 +68,26 @@ public class AdminDashboardController {
         });
 
         setAvatarImageSource();
-        updateUIText(ShadcnLanguageComboBox.getCurrentLanguageCode());
+        updateUIText();
 
         languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
             String newLangCode = pair.getKey();
-            Platform.runLater(() -> updateUIText(newLangCode));
+            Platform.runLater(() -> updateUIText());
         });
     }
 
-    private void updateUIText(String languageCode) {
-        ResourceBundle bundle = languageService.loadAll(languageCode);
+    private void updateUIText() {
+       var bundle=  languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
+        System.out.println(bundle.getString("dashboard.home"));
         try {
-            btnHome.setText(bundle.getString("dashboard.home"));
-            btnNotifications.setText(bundle.getString("dashboard.notifications"));
-            btnProfile.setText(bundle.getString("dashboard.profile"));
-            btnNotes.setText(bundle.getString("dashboard.notes"));
-            btnBackup.setText(bundle.getString("dashboard.backup"));
-            btnSettings.setText(bundle.getString("dashboard.config"));
-            btnDocumentation.setText(bundle.getString("dashboard.docs"));
-            labelUserRole.setText(bundle.getString("dashboard.role.admin"));
+            btnHome.setText(languageService.translate("dashboard.home"));
+            btnNotifications.setText(languageService.translate("dashboard.notifications"));
+            btnProfile.setText(languageService.translate("dashboard.profile"));
+            btnNotes.setText(languageService.translate("dashboard.notes"));
+            btnBackup.setText(languageService.translate("dashboard.backup"));
+            btnSettings.setText(languageService.translate("dashboard.config"));
+            btnDocumentation.setText(languageService.translate("dashboard.docs"));
+            labelUserRole.setText(languageService.translate("dashboard.role.admin"));
         } catch (Exception e) {
             btnHome.setText("Home");
             btnNotifications.setText("Notifications");

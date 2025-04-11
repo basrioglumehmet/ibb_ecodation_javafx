@@ -9,6 +9,7 @@ import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.splitpane.ShadcnSplitPane;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
@@ -49,8 +50,9 @@ public class UserManagementController {
     public void initialize() {
         if (userTable == null) return;
 
-        String languageCode = "en"; // Fallback; replace with ShadcnLanguageComboBox.getCurrentLanguageCode() if available
-        ResourceBundle bundle = languageService.loadAll(languageCode);
+
+
+        ResourceBundle bundle = languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
 
         userTable.setHeaderText(bundle.getString("user.header"));
         userTable.setDescriptionText(bundle.getString("user.description"));
@@ -93,7 +95,7 @@ public class UserManagementController {
 
         userTable.setSingleSelection(true);
         userTable.watchComboBox().subscribe(pair -> {
-            String actionLanguageCode = "en"; // Replace with ShadcnLanguageComboBox.getCurrentLanguageCode() if available
+            String actionLanguageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
             switch (pair.getKey()) {
                 case "add":
                     DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-create-dialog-view.fxml", "User Create");

@@ -11,6 +11,7 @@ import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.dragndrop.Upload;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 
@@ -45,14 +46,13 @@ public class AdminProfileController {
     }
 
     public void initialize() {
-        // Load language resources
-        String languageCode = "en"; // Make this configurable (e.g., from user settings)
-        languageService.loadAll(languageCode);
 
-        // Log profile opened
+        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+
+
         securityLogger.logOperation(languageService.translate("log.profile.opened"));
 
-        // Set input placeholders
+
         email.setHeader(languageService.translate("input.email.placeholder"));
         username.setHeader(languageService.translate("input.username.placeholder"));
         password.setHeader(languageService.translate("input.password.placeholder"));
@@ -62,12 +62,12 @@ public class AdminProfileController {
 
         setAvatarImageSource();
 
-        // Fetch and populate user data
+
         userService.read(1, user -> {
             username.setText(user.getUsername());
             email.setText(user.getEmail());
             role.setText(languageService.translate("role." + user.getRole().toString().toLowerCase()));
-            password.setText(""); // Typically, don't display password; use placeholder instead
+            password.setText("");
         });
     }
 

@@ -2,60 +2,96 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
 import io.reactivex.rxjava3.disposables.Disposable;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AdminConfigController {
     private Store store;
 
-    @FXML
-    private ShadcnListItem themeToggler;
-
-    @FXML
-    private Label header;
-
-    @FXML
-    private ShadcnListItem shadcnListItem2;
+    @FXML private ShadcnListItem themeToggler;
+    @FXML private ShadcnListItem shadcnListItem2;
+    @FXML private ShadcnListItem languageItem;
+    @FXML private Label header;
+    @FXML private HBox buttonBox;
+    @FXML private ShadcnButton saveButton;
+    @FXML private ShadcnButton resetButton;
 
     private Map<String, Disposable> switchButtonSubscriptions = new HashMap<>();
+    private Disposable languageSubscription;
     private final SecurityLogger securityLogger;
+    private final LanguageService languageService;
+    private String languageCode;
 
     public AdminConfigController() {
         this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
-        securityLogger.logOperation("Ayarlar açıldı");
+        this.languageService = SpringContext.getContext().getBean(LanguageService.class);
     }
 
     public void initialize() {
+
+        languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+        languageService.loadAll(languageCode);
+
+
+        securityLogger.logOperation(languageService.translate("log.settings.opened"));
+
         dispose();
         store = Store.getInstance();
 
-        // Add listeners for the switch buttons
+
+        languageItem.setHeaderText(languageService.translate("item.language.header"));
+        languageItem.setDescriptionText(languageService.translate("item.language.description"));
+        languageItem.setGlyphIconName("LANGUAGE");
+        themeToggler.setHeaderText(languageService.translate("item.theme.header"));
+        themeToggler.setDescriptionText(languageService.translate("item.theme.description"));
+        themeToggler.setGlyphIconName("MOON");
+        shadcnListItem2.setHeaderText(languageService.translate("item.system.notifications.header"));
+        shadcnListItem2.setDescriptionText(languageService.translate("item.system.notifications.description"));
+        shadcnListItem2.setGlyphIconName("BELL");
+
+
+        header.setText(languageService.translate("label.admin.settings"));
+        saveButton.setText(languageService.translate("button.save.settings"));
+        resetButton.setText(languageService.translate("button.reset.settings"));
+
+
         addSwitchButtonListener(themeToggler);
         addSwitchButtonListener(shadcnListItem2);
 
-        store.getState().subscribe(stateRegistry -> {
-            themeToggler.getSwitchButton().setValue(stateRegistry.getState(DarkModeState.class).isEnabled());
 
-            header.setStyle("-fx-font-size: 24px; " +
-                    String.format("-fx-text-fill:%s;",stateRegistry.getState(DarkModeState.class).isEnabled() ? "black":"white"));
+        store.getState().subscribe(stateRegistry -> {
+            boolean darkModeEnabled = stateRegistry.getState(DarkModeState.class).isEnabled();
+            themeToggler.getSwitchButton().setValue(darkModeEnabled);
+            header.setStyle("-fx-font-size: 24px; -fx-text-fill:" + (darkModeEnabled ? "black" : "white") + ";");
         });
+
+
+        if (languageItem.getChildren().size() > 1) {
+
+            languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
+                languageCode = pair.getKey();
+                languageService.loadAll(languageCode);
+                updateUIWithLanguage();
+            });
+        }
     }
 
     private void addSwitchButtonListener(ShadcnListItem listItem) {
         if (listItem.getSwitchButton() != null) {
             Disposable subscription = listItem.getSwitchButton().watchIsActive()
                     .subscribe(value -> {
-                        System.out.println("Switch state changed (" + listItem.getId() + "): " + value);
-
-                        // Avoid setting the same value that is already in the store
+                        System.out.println(languageService.translate("log.switch.state.changed") + " (" + listItem.getId() + "): " + value);
                         if ("themeToggler".equals(listItem.getId())) {
                             boolean currentState = store.getCurrentState(DarkModeState.class).isEnabled();
                             if (currentState != value) {
@@ -64,9 +100,20 @@ public class AdminConfigController {
                             }
                         }
                     });
-
             switchButtonSubscriptions.put(listItem.getId(), subscription);
         }
+    }
+
+    private void updateUIWithLanguage() {
+        header.setText(languageService.translate("label.admin.settings"));
+        languageItem.setHeaderText(languageService.translate("item.language.header"));
+        languageItem.setDescriptionText(languageService.translate("item.language.description"));
+        themeToggler.setHeaderText(languageService.translate("item.theme.header"));
+        themeToggler.setDescriptionText(languageService.translate("item.theme.description"));
+        shadcnListItem2.setHeaderText(languageService.translate("item.system.notifications.header"));
+        shadcnListItem2.setDescriptionText(languageService.translate("item.system.notifications.description"));
+        saveButton.setText(languageService.translate("button.save.settings"));
+        resetButton.setText(languageService.translate("button.reset.settings"));
     }
 
     public void dispose() {
@@ -76,6 +123,9 @@ public class AdminConfigController {
             }
         });
         switchButtonSubscriptions.clear();
+        if (languageSubscription != null && !languageSubscription.isDisposed()) {
+            languageSubscription.dispose();
+        }
     }
 
     @FXML

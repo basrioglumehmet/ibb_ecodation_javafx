@@ -111,14 +111,14 @@ public class VatManagementController {
     }
 
     private void updateUIText(String languageCode) {
-        ResourceBundle bundle = languageService.loadAll(languageCode);
+        ResourceBundle bundle = languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
         try {
             configureInputAndTableHeaders(bundle);
             configureComboBoxItems(bundle);
             configurePdfHeaders();
         } catch (Exception e) {
             System.err.println("Failed to load translations: " + e.getMessage());
-          //  DialogUtil.showErrorDialog("Translation load failed: " + e.getMessage());
+
         }
     }
 
