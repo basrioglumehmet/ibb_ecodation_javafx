@@ -19,8 +19,6 @@ public class LoginController {
     @FXML
     private ScrollPane scrollPane;
 
-    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
-
     @FXML
     private VBox languageArea;
 
@@ -34,8 +32,6 @@ public class LoginController {
             double deltaY = scrollEvent.getDeltaY() * SPEED;
             scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
         });
-        ResourceBundle bundle = languageService.loadAll("en");
-        System.out.println(bundle.getString("navbar.notification"));
         ShadcnLanguageComboBox languageComboBox = new ShadcnLanguageComboBox();
         ShadcnLanguageComboBox.watchLanguageValue().subscribe(stringStringPair -> {
 

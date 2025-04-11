@@ -7,16 +7,16 @@
 <?import org.example.ibb_ecodation_javafx.ui.table.DynamicTable?>
 <VBox fx:id="vatPane"
       xmlns:fx="http://javafx.com/fxml/1"
-      xmlns="http://javafx.com/javafx/8"   VBox.vgrow="ALWAYS"
+      xmlns="http://javafx.com/javafx/8" VBox.vgrow="ALWAYS"
       HBox.hgrow="ALWAYS" fx:controller="org.example.ibb_ecodation_javafx.controller.VatManagementController"
-      spacing="15" >
-    <HBox spacing="20" style="-fx-background-color:#202024; -fx-background-radius:20px; -fx-padding:20px;"  alignment="CENTER_LEFT" >
-        <ShadcnInput VBox.vgrow="ALWAYS"  HBox.hgrow="ALWAYS" fx:id="vatNumber"  header="Fiş numarasına göre ara..." />
+      spacing="15">
+    <HBox fx:id="searchBar" spacing="20" style="-fx-background-color:#202024; -fx-background-radius:20px; -fx-padding:20px;" alignment="CENTER_LEFT">
+        <ShadcnInput fx:id="vatNumber" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" header="Fiş numarasına göre ara..." />
     </HBox>
-    <DynamicTable prefHeight="600" fx:id="vatTable" VBox.vgrow="ALWAYS"  />
-    <HBox  alignment="CENTER" style="-fx-background-color: #202024; -fx-background-radius: 20px;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <DynamicTable fx:id="vatTable" prefHeight="600" VBox.vgrow="ALWAYS" />
+    <HBox fx:id="chartContainer" alignment="CENTER" style="-fx-background-color: #202024; -fx-background-radius: 20px;">
         <children>
-            <ShadcnBarChart fx:id="barChart" HBox.hgrow="ALWAYS"/>
+            <ShadcnBarChart fx:id="barChart" HBox.hgrow="ALWAYS" />
         </children>
     </HBox>
 </VBox>

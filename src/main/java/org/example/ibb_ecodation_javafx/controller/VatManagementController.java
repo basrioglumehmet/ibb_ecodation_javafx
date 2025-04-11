@@ -1,13 +1,17 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import io.reactivex.rxjava3.disposables.Disposable;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
 import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
@@ -41,6 +45,8 @@ public class VatManagementController {
     private String vatNumberFilter = "";
     private MailService mailService = SpringContext.getContext().getBean(MailService.class);
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
+    private Disposable languageSubscription;
 
     public void initialize() {
         // FXML elemanlarının null kontrolü
@@ -48,11 +54,16 @@ public class VatManagementController {
             System.err.println("FXML elemanları düzgün yüklenmedi!");
             return;
         }
+        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+        updateUIText(languageCode);
+
+        // Subscribe to language changes
+        languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
+            String newLanguageCode = pair.getKey();
+            Platform.runLater(() -> updateUIText(newLanguageCode));
+        });
 
         originalTableData = new ArrayList<>();
-
-        vatTable.setHeaderText("KDV Yönetimi");
-        vatTable.setDescriptionText("Kdv ile ilgili tüm işlemleri yapabilirsiniz.");
 
         vatTable.setSingleSelection(true);
 
@@ -158,6 +169,32 @@ public class VatManagementController {
         updateBarChartFromTableData();
     }
 
+    private void updateUIText(String languageCode) {
+        ResourceBundle bundle = languageService.loadAll(languageCode);
+        try {
+            vatNumber.setHeader(bundle.getString("vat.receipt"));
+            vatTable.setHeaderText(bundle.getString("vat.header"));
+            vatTable.setDescriptionText(bundle.getString("vat.description"));
+//            username.setHeader(bundle.getString("auth.username"));
+//            email.setHeader(bundle.getString("auth.email"));
+//            password.setHeader(bundle.getString("auth.password"));
+//            continueButton.setText(bundle.getString("register.button"));
+//            backButton.setText(bundle.getString("register.back"));
+//            termsLabel.setText(bundle.getString("gdpr.termsLabel"));
+//            policyLabel.setText(bundle.getString("gdpr.policyLabel"));
+        } catch (Exception e) {
+            // Fallback to English defaults if keys are missing
+//            signUpLabel.setText("Sign Up");
+//            username.setHeader("Username");
+//            email.setHeader("Email");
+//            password.setHeader("Password");
+//            continueButton.setText("Continue");
+//            backButton.setText("Back");
+//            termsLabel.setText("By clicking continue, you agree to our");
+//            policyLabel.setText("Terms of Service and Privacy Policy.");
+        }
+    }
+
     private void updateSelectedRow() {
         List<List<String>> selectedData = vatTable.getSelectedData();
         if (selectedData.isEmpty()) {
@@ -261,5 +298,12 @@ public class VatManagementController {
                 String.valueOf(vat.isDeleted()),
                 String.valueOf(vat.getVersion())
         );
+    }
+
+    // Clean up subscription on controller destruction
+    public void shutdown() {
+        if (languageSubscription != null && !languageSubscription.isDisposed()) {
+            languageSubscription.dispose();
+        }
     }
 }

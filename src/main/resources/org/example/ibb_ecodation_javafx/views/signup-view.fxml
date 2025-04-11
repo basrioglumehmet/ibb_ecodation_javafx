@@ -8,49 +8,41 @@
 <?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <StackPane fx:id="rootPane"
-            fx:controller="org.example.ibb_ecodation_javafx.controller.SignUpController"
-           style="-fx-background-color: #1a1a1e; "
+           fx:controller="org.example.ibb_ecodation_javafx.controller.SignUpController"
+           style="-fx-background-color: #1a1a1e;"
            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
-<VBox alignment="CENTER" spacing="20.0"
-      maxWidth="Infinity" maxHeight="Infinity"
-      VBox.vgrow="ALWAYS" StackPane.alignment="CENTER">
-<children>
-    <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
-           style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-text-fill:white; -fx-font-size: 28px;"
-           text="Sign Up" wrapText="true">
+    <VBox fx:id="mainVBox" alignment="CENTER" spacing="20.0"
+          maxWidth="Infinity" maxHeight="Infinity"
+          VBox.vgrow="ALWAYS" StackPane.alignment="CENTER">
+        <children>
 
-    </Label>
+            <Label fx:id="signUpLabel" alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
+                   style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-text-fill:white; -fx-font-size: 28px;"
+                   text="Sign Up" wrapText="true" />
 
+            <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />
+            <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
+            <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
 
-    <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />
-    <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
-    <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
+            <ShadcnButton fx:id="continueButton" onAction="#handleSignUpProcess" fullWidth="true" text="Continue" type="PRIMARY" align="CENTER"
+                          mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
 
-    <ShadcnButton onAction="#handleSignUpProcess" fullWidth="true" fx:id="continueButton" text="Continue" type="PRIMARY" align="CENTER"
-                  mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
+            <ShadcnButton fx:id="backButton" onAction="#handleBack" fullWidth="true" text="Back" type="SECONDARY" align="CENTER"
+                          mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
 
-
-    <ShadcnButton onAction="#handleBack"  fullWidth="true"   text="Back" type="SECONDARY" align="CENTER"
-                  mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
-
-    <VBox alignment="CENTER">
-        <Label text="By clicking continue, you agree to our"
-               alignment="CENTER" textAlignment="CENTER" wrapText="true" style="
-                       -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-text-fill:white;"
-               maxWidth="385.0">
-
-        </Label>
-        <Label text="Terms of Service and Privacy Policy."
-               alignment="CENTER" textAlignment="CENTER" wrapText="true"
-               maxWidth="385.0" style="-fx-text-fill:#3b82f6; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold;">
-
-        </Label>
+            <VBox fx:id="termsVBox" alignment="CENTER">
+                <Label fx:id="termsLabel" text="By clicking continue, you agree to our"
+                       alignment="CENTER" textAlignment="CENTER" wrapText="true"
+                       style="-fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-text-fill:white;"
+                       maxWidth="385.0" />
+                <Label fx:id="policyLabel" text="Terms of Service and Privacy Policy."
+                       alignment="CENTER" textAlignment="CENTER" wrapText="true"
+                       maxWidth="385.0" style="-fx-text-fill:#3b82f6; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold;" />
+            </VBox>
+        </children>
     </VBox>
-</children>
-</VBox>
-        </StackPane>
+</StackPane>

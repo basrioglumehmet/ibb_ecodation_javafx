@@ -1,27 +1,25 @@
 package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.util.Pair;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.Authentication;
-import org.example.ibb_ecodation_javafx.model.UserOtpCode;
 import org.example.ibb_ecodation_javafx.model.enums.AuthenticationResult;
 import org.example.ibb_ecodation_javafx.service.AuthenticationService;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
+import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
-import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.example.ibb_ecodation_javafx.utils.ValidationUtil;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 import java.io.IOException;
 import java.util.Map;
-
+import java.util.ResourceBundle;
 
 public class SignInController {
 
@@ -29,37 +27,75 @@ public class SignInController {
     private StackPane rootPane;
     @FXML
     private ShadcnInput email;
-
     @FXML
     private ShadcnInput password;
-
     @FXML
     private ShadcnButton login;
+    @FXML
+    private Label signInLabel;
+    @FXML
+    private ShadcnButton signUpButton;
+    @FXML
+    private Label orLabel;
+    @FXML
+    private Label termsLabel;
+    @FXML
+    private Label policyLabel;
+    @FXML
+    private ShadcnLanguageComboBox languageComboBox;
 
-
-
-
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final AuthenticationService authenticationService;
+    private Disposable languageSubscription;
 
     public SignInController() {
         this.authenticationService = SpringContext.getContext().getBean(AuthenticationService.class);
     }
 
+    @FXML
+    public void initialize() {
+        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+        updateUIText(languageCode);
+
+        languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
+            String newLanguageCode = pair.getKey();
+            Platform.runLater(() -> updateUIText(newLanguageCode));
+        });
+    }
+
+    private void updateUIText(String languageCode) {
+        ResourceBundle bundle = languageService.loadAll(languageCode);
+        try {
+            signInLabel.setText(bundle.getString("login.header"));
+            email.setHeader(bundle.getString("auth.email"));
+            password.setHeader(bundle.getString("auth.password"));
+            login.setText(bundle.getString("login.button"));
+            orLabel.setText(bundle.getString("auth.continue"));
+            signUpButton.setText(bundle.getString("register.header"));
+            termsLabel.setText(bundle.getString("gdpr.termsLabel"));
+            policyLabel.setText(bundle.getString("gdpr.policyLabel"));
+        } catch (Exception e) {
+            signInLabel.setText("Sign In");
+            email.setHeader("Email");
+            password.setHeader("Password");
+            login.setText("Continue");
+            orLabel.setText("OR CONTINUE WITH");
+            signUpButton.setText("Sign Up");
+            termsLabel.setText("By clicking continue, you agree to our");
+            policyLabel.setText("Terms of Service and Privacy Policy.");
+        }
+    }
 
     @FXML
     private void handleSignInProcess() throws IOException {
-        // Önce önceki hataları temizle
         ValidationUtil.clearErrors(email, password);
-
-        // Validator oluşturuluyor
+        String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+        ResourceBundle bundle = languageService.loadAll(languageCode);
         var validator = ValidationUtil.createValidator(Map.of(
-                email, "Email boş bırakılamaz",
-                password, "Şifre boş olamaz"
+                email, bundle.getString("auth.email.empty"),
+                password, bundle.getString("auth.password.empty")
         ));
-
-        // Validasyon çalıştırılır
         var errors = validator.runValidatorEngine();
-
         if (errors.isEmpty()) {
             handleSignIn();
         }
@@ -68,11 +104,11 @@ public class SignInController {
     private void handleSignIn() {
         var authenticationModel = new Authentication(email.getText(), password.getText());
         authenticationService.signin(authenticationModel, callback -> {
-            if(callback.equals(AuthenticationResult.OTP_REQUIRED)){
+            if (callback.equals(AuthenticationResult.OTP_REQUIRED)) {
                 try {
-                    SceneUtil.loadSlidingContent(rootPane,"otp-verification");
+                    SceneUtil.loadSlidingContent(rootPane, "otp-verification");
                 } catch (IOException e) {
-                    System.out.println("Giriş sayfasında otp ekranı yüklenirken sorun oluştu:" +e.getMessage());
+                    System.out.println("Error loading OTP screen: " + e.getMessage());
                 }
             }
         });
@@ -80,11 +116,10 @@ public class SignInController {
 
     @FXML
     public void handleSignUp() {
-        try{
-            SceneUtil.loadSlidingContent(rootPane,"signup");
-        }
-        catch (Exception ex){
-            System.out.println("Kayıt sayfası yüklenirken sorun oluştu.");
+        try {
+            SceneUtil.loadSlidingContent(rootPane, "signup");
+        } catch (Exception ex) {
+            System.out.println("Error loading signup page: " + ex.getMessage());
         }
     }
 
@@ -101,5 +136,11 @@ public class SignInController {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public void shutdown() {
+        if (languageSubscription != null && !languageSubscription.isDisposed()) {
+            languageSubscription.dispose();
+        }
     }
 }

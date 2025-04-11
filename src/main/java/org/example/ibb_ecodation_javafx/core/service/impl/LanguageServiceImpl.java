@@ -23,5 +23,12 @@ public class LanguageServiceImpl implements LanguageService {
         bundle = fileLanguageLoader.load(locale);
         return bundle;
     }
+
+    @Override
+    public String translate(String key) {
+        return bundle.getString(bundle.getString(key));
+    }
+
+
 }
 

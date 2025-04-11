@@ -4,4 +4,5 @@ import java.util.ResourceBundle;
 
 public interface LanguageService {
     ResourceBundle loadAll(String languageCode);
+    String translate(String key);
 }

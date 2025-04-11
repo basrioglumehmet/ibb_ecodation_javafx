@@ -10,14 +10,13 @@
 <?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
 <?import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"  fx:id="rootPane"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane"
             stylesheets="@../css/style.css"
-            fx:controller="org.example.ibb_ecodation_javafx.controller.AdminDashboardController"
-           >
+            fx:controller="org.example.ibb_ecodation_javafx.controller.AdminDashboardController">
 
     <!-- Navbar (Sabit Üst Menü) -->
     <top>
-        <ShadcnNavbar   fx:id="navbar" />
+        <ShadcnNavbar fx:id="navbar"/>
     </top>
 
     <!-- Sol Sidebar (Sabit Genişlik) -->
@@ -30,39 +29,35 @@
               prefWidth="300">
 
             <!-- Butonlar -->
-            <VBox VBox.vgrow="ALWAYS" spacing="10" style="-fx-padding: 15;">
-                <ShadcnButton glyphIconName="HOME" align="LEFT" fullWidth="true" onAction="#handleHomeButton" text="Anasayfa" type="GHOST"/>
-                <ShadcnButton align="LEFT" glyphIconName="NOTIFICATION" fullWidth="true" onAction="#handleNotificationsButton" text="Bildirimler" type="GHOST"/>
-                <ShadcnButton align="LEFT" glyphIconName="USER" fullWidth="true" onAction="#handleProfileButton" text="Profil" type="GHOST"/>
-                <ShadcnButton align="LEFT" glyphIconName="NOTE" fullWidth="true" onAction="#handleNotesButton" text="Notlar" type="GHOST"/>
-                <ShadcnButton align="LEFT" glyphIconName="CLOUD_UPLOAD" fullWidth="true" onAction="#handleBackupButton" text="Yedekler" type="GHOST"/>
-                <ShadcnButton align="LEFT" glyphIconName="COG" fullWidth="true" onAction="#handleConfigButton" text="Arayüz Ayarları" type="GHOST"/>
-
-                <ShadcnButton align="LEFT" glyphIconName="INFO" fullWidth="true" onAction="#openDocument" text="Arayüz Dokümanı" type="GHOST"/>
+            <VBox fx:id="sidebarButtons" VBox.vgrow="ALWAYS" spacing="10" style="-fx-padding: 15;">
+                <ShadcnButton fx:id="btnHome" glyphIconName="HOME" align="LEFT" fullWidth="true" onAction="#handleHomeButton" text="Anasayfa" type="GHOST"/>
+                <ShadcnButton fx:id="btnNotifications" align="LEFT" glyphIconName="NOTIFICATION" fullWidth="true" onAction="#handleNotificationsButton" text="Bildirimler" type="GHOST"/>
+                <ShadcnButton fx:id="btnProfile" align="LEFT" glyphIconName="USER" fullWidth="true" onAction="#handleProfileButton" text="Profil" type="GHOST"/>
+                <ShadcnButton fx:id="btnNotes" align="LEFT" glyphIconName="NOTE" fullWidth="true" onAction="#handleNotesButton" text="Notlar" type="GHOST"/>
+                <ShadcnButton fx:id="btnBackup" align="LEFT" glyphIconName="CLOUD_UPLOAD" fullWidth="true" onAction="#handleBackupButton" text="Yedekler" type="GHOST"/>
+                <ShadcnButton fx:id="btnSettings" align="LEFT" glyphIconName="COG" fullWidth="true" onAction="#handleConfigButton" text="Arayüz Ayarları" type="GHOST"/>
+                <ShadcnButton fx:id="btnDocumentation" align="LEFT" glyphIconName="INFO" fullWidth="true" onAction="#openDocument" text="Arayüz Dokümanı" type="GHOST"/>
             </VBox>
 
             <!-- Sidebar Alt Kısmı -->
-            <VBox fx:id="sidebarBottom"  alignment="CENTER">
+            <VBox fx:id="sidebarBottom" alignment="CENTER">
                 <HBox fx:id="sidebarBottomInsideContainer" spacing="5" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                    <ShadcnAvatar fx:id="shadcnAvatar" />
+                    <ShadcnAvatar fx:id="shadcnAvatar"/>
 
-                    <VBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-                        <Label text="Mehmet Basrioğlu" style="-fx-text-fill:white;" />
-                        <Label text="Admin" style="-fx-text-fill:#7f7f86;" />
+                    <VBox fx:id="userInfoBox" alignment="CENTER_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <Label fx:id="labelUserName" text="Mehmet Basrioğlu" style="-fx-text-fill:white;" />
+                        <Label fx:id="labelUserRole" text="Admin" style="-fx-text-fill:#7f7f86;" />
                     </VBox>
 
-                    <ShadcnButton glyphIconName="EXIT" type="GHOST"/>
+                    <ShadcnButton fx:id="btnLogout" glyphIconName="EXIT" type="GHOST"/>
                 </HBox>
-
             </VBox>
         </VBox>
     </left>
 
     <!-- Ana İçerik Alanı (Responsive center) -->
     <center>
-        <StackPane fx:id="mainContentArea"
-                   BorderPane.alignment="CENTER"
-                   >
+        <StackPane fx:id="mainContentArea" BorderPane.alignment="CENTER">
             <fx:include fx:id="contentArea" source="admin-home-view.fxml" />
         </StackPane>
     </center>
