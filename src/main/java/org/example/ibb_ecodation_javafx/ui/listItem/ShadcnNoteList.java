@@ -26,6 +26,7 @@ public class ShadcnNoteList extends ScrollPane {
     private final StringProperty glyphIconName = new SimpleStringProperty();
     private final LanguageService languageService;
     private final String languageCode;
+    private Button plusCard;
 
     private static class Note {
         String date;
@@ -198,7 +199,7 @@ public class ShadcnNoteList extends ScrollPane {
     }
 
     private void addPlusButton(boolean animate) {
-        Button plusCard = new Button(languageService.translate("label.newnote"));
+        plusCard = new Button(languageService.translate("label.newnote"));
         plusCard.setPadding(new Insets(10));
         plusCard.setStyle("-fx-background-color: #f27a1a; -fx-background-radius: 8px; -fx-padding: 20px; -fx-text-fill: #1a1a1e; -fx-font-size: 36px;");
         plusCard.setMaxWidth(Double.MAX_VALUE);
@@ -225,5 +226,9 @@ public class ShadcnNoteList extends ScrollPane {
     private void updatePlusButtonPosition() {
         gridPane.getChildren().removeIf(node -> node instanceof Button && languageService.translate("label.newnote").equals(((Button)node).getText()));
         addPlusButton(false);
+    }
+
+    public Button getPlusCard() {
+        return plusCard;
     }
 }
