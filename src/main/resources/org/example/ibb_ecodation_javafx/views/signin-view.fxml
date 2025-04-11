@@ -13,7 +13,7 @@
 <?import javafx.scene.image.Image?>
 <StackPane fx:id="rootPane"
            fx:controller="org.example.ibb_ecodation_javafx.controller.SignInController"
-           style="-fx-background-color: #fafafa;"
+           style="-fx-background-color: #1a1a1e;"
            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
     <VBox alignment="CENTER" spacing="20.0"
@@ -21,7 +21,7 @@
           VBox.vgrow="ALWAYS" StackPane.alignment="CENTER">
         <children>
             <Label alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
-                   style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-font-size: 28px;"
+                   style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-text-fill:white; -fx-font-size: 28px;"
                    text="Sign In" wrapText="true">
 
             </Label>
@@ -33,12 +33,12 @@
 
             <HBox alignment="CENTER"  prefWidth="481.0" style="-fx-padding: 0;">
                 <children>
-                    <Pane prefHeight="2.0" maxHeight="2" prefWidth="187.0" style="-fx-background-color: #e5e5e5; " />
+                    <Pane prefHeight="2.0" maxHeight="2" prefWidth="187.0" style="-fx-background-color: #121214; " />
                     <Label  text="OR CONTINUE WITH" alignment="CENTER" prefHeight="25.0" prefWidth="162.0"
-                            style="-fx-text-fill: black; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold;" wrapText="true">
+                            style="-fx-text-fill: white; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold;" wrapText="true">
 
                     </Label>
-                    <Pane prefHeight="2.0" maxHeight="2"  prefWidth="187.0" style="-fx-background-color: #e5e5e5;" />
+                    <Pane prefHeight="2.0" maxHeight="2"  prefWidth="187.0" style="-fx-background-color: #121214;" />
                 </children>
             </HBox>
 
@@ -47,7 +47,8 @@
 
             <VBox alignment="CENTER">
                 <Label text="By clicking continue, you agree to our"
-                       alignment="CENTER" textAlignment="CENTER" wrapText="true" style="-fx-font-family: 'Poppins'; -fx-font-size: 16px;"
+                       alignment="CENTER" textAlignment="CENTER" wrapText="true" style="
+                       -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-text-fill:white;"
                        maxWidth="385.0">
 
                 </Label>

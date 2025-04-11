@@ -26,8 +26,8 @@ public class LoginController {
 
         // Make ScrollPane completely transparent and invisible
         scrollPane.setStyle(
-                "-fx-background-color: transparent;" +
-                        "-fx-border-color: transparent;"
+                "-fx-background-color: #1a1a1e;" +
+                        "-fx-border-color: #1a1a1e;"
         );
 
         // Remove scrollbar visibility while keeping functionality
