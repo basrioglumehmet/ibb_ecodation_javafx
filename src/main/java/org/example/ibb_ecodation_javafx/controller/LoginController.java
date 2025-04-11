@@ -5,8 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
+
+import java.util.ResourceBundle;
 
 public class LoginController {
     @FXML
@@ -14,6 +18,8 @@ public class LoginController {
 
     @FXML
     private ScrollPane scrollPane;
+
+    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
 
     @FXML
     private VBox languageArea;
@@ -28,7 +34,8 @@ public class LoginController {
             double deltaY = scrollEvent.getDeltaY() * SPEED;
             scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
         });
-
+        ResourceBundle bundle = languageService.loadAll("en");
+        System.out.println(bundle.getString("navbar.notification"));
         ShadcnLanguageComboBox languageComboBox = new ShadcnLanguageComboBox();
         ShadcnLanguageComboBox.watchLanguageValue().subscribe(stringStringPair -> {
 

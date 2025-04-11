@@ -29,6 +29,8 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.mapper to spring.beans;
     opens org.example.ibb_ecodation_javafx.repository to spring.beans;
     opens org.example.ibb_ecodation_javafx.core.logger to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.core.i18n to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.core.service to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.backup to javafx.fxml, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.core.backup to javafx.fxml, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.model to com.fasterxml.jackson.databind;
@@ -60,6 +62,9 @@ module org.example.ibb_ecodation_javafx {
     exports org.example.ibb_ecodation_javafx;
     exports org.example.ibb_ecodation_javafx.mapper;
     exports org.example.ibb_ecodation_javafx.model;
+    exports org.example.ibb_ecodation_javafx.core.service;
+    exports org.example.ibb_ecodation_javafx.core.service.impl;
+    exports org.example.ibb_ecodation_javafx.core.i18n;
     exports org.example.ibb_ecodation_javafx.model.enums;
     exports org.example.ibb_ecodation_javafx.model.dto;
 }
