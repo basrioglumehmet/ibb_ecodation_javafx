@@ -1,0 +1,7 @@
+ALTER TABLE user_otp_codes
+DROP CONSTRAINT FK_OtpCodes;
+
+
+ALTER TABLE user_otp_codes
+ADD CONSTRAINT FK_OtpCodes
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;

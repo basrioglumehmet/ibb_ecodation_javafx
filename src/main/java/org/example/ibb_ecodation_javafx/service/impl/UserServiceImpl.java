@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.mapper.UserMapper;
 import org.example.ibb_ecodation_javafx.model.User;
+import org.example.ibb_ecodation_javafx.model.Vat;
 import org.example.ibb_ecodation_javafx.repository.UserRepository;
 import org.example.ibb_ecodation_javafx.repository.query.UserQuery;
+import org.example.ibb_ecodation_javafx.repository.query.VatQuery;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(int id) {
+        userRepository.delete(UserQuery.DELETE_BY_ID,List.of(id));
     }
 
     @Override
@@ -42,9 +45,14 @@ public class UserServiceImpl implements UserService {
         callback.accept(dbResponse);
     }
 
+    public List<User> readAll(){
+        return userRepository.readAll(User.class,UserQuery.READ_USERS, List.of());
+    }
+
+    @Deprecated
     @Override
     public List<User> readAll(int id) {
-        return List.of();
+        throw new RuntimeException("readAll Disabled:"+getClass().getName());
     }
 
 
@@ -60,6 +68,7 @@ public class UserServiceImpl implements UserService {
                         entity.isLocked(),
                         entity.getId(),
                         entity.getVersion()));
+        callback.accept(user);
         securityLogger.logUserOperation(entity.toString(), "kullanıcı güncelleme");
     }
 

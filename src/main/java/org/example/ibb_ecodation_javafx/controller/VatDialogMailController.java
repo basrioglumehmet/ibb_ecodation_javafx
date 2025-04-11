@@ -70,7 +70,8 @@ public class VatDialogMailController {
         );
 
         // PDF'i dışa aktar
-        File pdf = PdfExportUtil.exportVatInvoiceFromList(rootPaneMail.getScene().getWindow(), vatTableState.vatList(), headers);
+        File pdf = PdfExportUtil.exportVatInvoiceFromList(rootPaneMail.getScene().getWindow(), vatTableState.vatList(), headers,
+                "Bu fatura elektronik ortamda oluşturulmuştur.");
 
         if (pdf != null && !input.getText().isEmpty()) {
             System.out.println("PDF exported successfully: " + pdf.getAbsolutePath());

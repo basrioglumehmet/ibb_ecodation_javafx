@@ -80,34 +80,11 @@ public class PdfExportUtil {
         }
     }
 
-    private static <T> void addTable(Document doc, DynamicTable<T> table, Class<T> clazz) {
-        List<String> headers = table.getHeaders();
-        List<List<String>> data = table.getData();
-
-        if (headers.isEmpty()) {
-            doc.add(new Paragraph("Tabloda başlık bulunamadı."));
-            return;
-        }
-
-        float[] columnWidths = new float[headers.size()];
-        Arrays.fill(columnWidths, 100f);
-        Table pdfTable = new Table(columnWidths);
-
-        headers.forEach(header -> pdfTable.addHeaderCell(
-                new Cell().add(new Paragraph(getFieldNameFromAnnotation(clazz, header)).setBold())
-        ));
-        data.forEach(row -> row.forEach(cellValue -> {
-            pdfTable.addCell(new Cell().add(new Paragraph(cellValue)));
-            System.out.println(cellValue);
-        }));
-
-        doc.add(pdfTable);
-    }
 
     /**
      * Genel listeden KDV faturasını dışa aktarır
      */
-    public static <T> File exportVatInvoiceFromList(Window ownerWindow, List<T> dataList, List<String> headers) {
+    public static <T> File exportVatInvoiceFromList(Window ownerWindow, List<T> dataList, List<String> headers, String bottomMessage) {
         Objects.requireNonNull(dataList, "Veri listesi null olamaz");
         Objects.requireNonNull(headers, "Başlıklar null olamaz");
 
@@ -126,8 +103,9 @@ public class PdfExportUtil {
 
             addHeader(doc);
             addGenericTable(doc, dataList, headers);
-            addGenericTotals(doc, dataList);
-            addFooter(doc);
+//            addGenericTotals(doc, dataList);
+
+            addFooter(doc,bottomMessage);
 
             System.out.println("Fatura şu konuma aktarıldı: " + outputFile.getAbsolutePath());
             return outputFile;
@@ -216,6 +194,7 @@ public class PdfExportUtil {
                     }
                     pdfTable.addCell(new Cell().add(new Paragraph(displayValue)));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     pdfTable.addCell(new Cell().add(new Paragraph("N/A")));
                     System.err.println("Hata - Header: " + header + ", Mesaj: " + e.getMessage());
                 }
@@ -348,8 +327,8 @@ public class PdfExportUtil {
         doc.add(table);
     }
 
-    private static void addFooter(Document doc) {
-        doc.add(new Paragraph("\nBu fatura elektronik ortamda oluşturulmuştur.")
+    private static void addFooter(Document doc, String message) {
+        doc.add(new Paragraph(String.format("\n%s",message))
                 .setFontSize(9)
                 .setItalic()
                 .setMarginTop(20));

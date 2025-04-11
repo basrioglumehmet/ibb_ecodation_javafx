@@ -27,9 +27,10 @@ public class DynamicTable<T> extends VBox {
     private String descriptionText = "Description";
     private ShadcnComboBox comboBox;
     private List<String> headers = new ArrayList<>();
+    private List<Double> headerWidths = new ArrayList<>(); // Store header widths
     private List<List<String>> data = new ArrayList<>();
     private List<Pair<CheckBox, List<String>>> selectedRows = new ArrayList<>();
-    private boolean singleSelection = false; // Flag to enforce single selection
+    private boolean singleSelection = false;
 
     public DynamicTable() {
         this.setSpacing(20);
@@ -119,18 +120,23 @@ public class DynamicTable<T> extends VBox {
 
     public void addHeaders(String... headers) {
         this.headers.clear();
+        this.headerWidths.clear();
         this.headers.addAll(List.of(headers));
+        // Calculate widths based on headers and data
+        calculateHeaderWidths();
         refreshTable();
     }
 
     public void addData(String... rowData) {
         data.add(new ArrayList<>(List.of(rowData)));
+        calculateHeaderWidths(); // Recalculate widths to account for new data
         refreshTable();
     }
 
     public void clearData() {
         data.clear();
         selectedRows.clear();
+        calculateHeaderWidths();
         refreshTable();
     }
 
@@ -173,6 +179,27 @@ public class DynamicTable<T> extends VBox {
         this.getChildren().add(0, createHeader());
     }
 
+    private void calculateHeaderWidths() {
+        headerWidths.clear();
+        if (headers.isEmpty()) return;
+
+        // For each column, find the maximum width between header and data
+        for (int i = 0; i < headers.size(); i++) {
+            String header = headers.get(i);
+            double headerWidth = calculateCellWidth(header);
+            double maxDataWidth = headerWidth;
+
+            // Check all data entries in this column
+            for (List<String> row : data) {
+                if (i < row.size()) {
+                    double dataWidth = calculateCellWidth(row.get(i));
+                    maxDataWidth = Math.max(maxDataWidth, dataWidth);
+                }
+            }
+            headerWidths.add(maxDataWidth);
+        }
+    }
+
     private void refreshTable() {
         tableContent.getChildren().clear();
         selectedRows.clear();
@@ -187,18 +214,22 @@ public class DynamicTable<T> extends VBox {
         // Add header row with an empty space for checkbox column
         HBox headerRow = new HBox();
         headerRow.setStyle("-fx-background-color: #1a1a1d; -fx-padding: 10px; -fx-border-color: #303034; -fx-border-width: 0 0 1 0; -fx-background-radius: 10 10 0 0;");
+        headerRow.setSpacing(5); // Add spacing between header cells
+
         Label emptyLabel = new Label("");
         emptyLabel.setMinWidth(40);
+        emptyLabel.setMaxWidth(40);
         emptyLabel.setAlignment(Pos.CENTER);
-        HBox.setHgrow(emptyLabel, Priority.ALWAYS);
+        HBox.setHgrow(emptyLabel, Priority.NEVER);
         headerRow.getChildren().add(emptyLabel);
 
-        for (String header : headers) {
-            Label headerLabel = new Label(header);
+        for (int i = 0; i < headers.size(); i++) {
+            Label headerLabel = new Label(headers.get(i));
             headerLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5px;");
-            headerLabel.setMinWidth(calculateCellWidth(header));
+            headerLabel.setMinWidth(headerWidths.get(i));
+            headerLabel.setMaxWidth(headerWidths.get(i));
             headerLabel.setAlignment(Pos.CENTER);
-            HBox.setHgrow(headerLabel, Priority.ALWAYS);
+            HBox.setHgrow(headerLabel, Priority.NEVER);
             headerRow.getChildren().add(headerLabel);
         }
         tableContent.getChildren().add(headerRow);
@@ -213,11 +244,11 @@ public class DynamicTable<T> extends VBox {
                 List<String> row = data.get(i);
                 HBox dataRow = new HBox();
                 dataRow.setStyle("-fx-padding: 10px;");
+                dataRow.setSpacing(5); // Add spacing between data cells
 
                 CheckBox checkBox = new CheckBox();
                 checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
                     if (singleSelection && newVal) {
-                        // Deselect all other checkboxes
                         selectedRows.forEach(pair -> {
                             if (pair.getKey() != checkBox) {
                                 pair.getKey().setSelected(false);
@@ -228,14 +259,14 @@ public class DynamicTable<T> extends VBox {
                 });
 
                 checkBox.setMinWidth(40);
+                checkBox.setMaxWidth(40);
                 checkBox.setAlignment(Pos.CENTER);
-                HBox.setHgrow(checkBox, Priority.ALWAYS);
+                HBox.setHgrow(checkBox, Priority.NEVER);
 
                 selectedRows.add(new Pair<>(checkBox, row));
 
                 dataRow.setOnMouseClicked((MouseEvent event) -> {
                     if (singleSelection) {
-                        // Toggle only this checkbox and deselect others
                         checkBox.setSelected(!checkBox.isSelected());
                     } else {
                         checkBox.setSelected(!checkBox.isSelected());
@@ -248,9 +279,10 @@ public class DynamicTable<T> extends VBox {
                     String cellText = j < row.size() ? row.get(j) : "";
                     Label cellLabel = new Label(cellText);
                     cellLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: white; -fx-padding: 5px;");
-                    cellLabel.setMinWidth(calculateCellWidth(headers.get(j)));
+                    cellLabel.setMinWidth(headerWidths.get(j));
+                    cellLabel.setMaxWidth(headerWidths.get(j));
                     cellLabel.setAlignment(Pos.CENTER);
-                    HBox.setHgrow(cellLabel, Priority.ALWAYS);
+                    HBox.setHgrow(cellLabel, Priority.NEVER);
                     dataRow.getChildren().add(cellLabel);
                 }
                 tableContent.getChildren().add(dataRow);
@@ -265,8 +297,8 @@ public class DynamicTable<T> extends VBox {
     }
 
     private double calculateCellWidth(String text) {
-        double baseWidthPerChar = 20.0;
-        double minWidth = 80;
+        double baseWidthPerChar = 10.0; // Reduced for better fit
+        double minWidth = 60; // Reduced minimum width for smaller columns like "Version"
         double calculatedWidth = text.length() * baseWidthPerChar;
         return Math.max(minWidth, calculatedWidth);
     }
@@ -286,6 +318,7 @@ public class DynamicTable<T> extends VBox {
             List<String> row = mapper.apply(item);
             data.add(new ArrayList<>(row));
         }
+        calculateHeaderWidths();
         refreshTable();
     }
 }

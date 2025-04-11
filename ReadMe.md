@@ -40,8 +40,70 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 33. **Custom GUI Animations**
 34. **Spring Framework**
 
+# UI Introduction
+
+## Home Page
+1. ![img_3.png](img_3.png)
+
+2. In the Home section:
+
+    - The **left side** is for user management operations such as:
+        - **Filter by**
+        - **Refresh**
+        - **Print**
+        - **Update**
+        - **Delete**
+        - **Create**
+
+    - The **right side** is for VAT management operations such as:
+        - **Filter by VAT number**
+        - **Refresh**
+        - **Print**
+        - **Export** (as PDF, TXT, or Excel)
+        - **Update**
+        - **Delete**
+        - **Send mail to a target email**
+        - **Create**
+
+3. At the bottom, there is a **bar chart** displaying a **graphical analysis**.
+
+## User Notifications (Native and DB)
+
+![img_4.png](img_4.png)
+
+1. Users can view **error**, **information**, and other types of notifications.
+2. **Success**: Displays a tick icon to the user.
+3. **Info**: Displays an "i" icon.
+4. **Error**: Displays an "X" icon.
+5. **Real-time native notifications** are sent and also saved to the **database**.
+
+## User Profile
+
+![img_5.png](img_5.png)
+
+Displays the current user's information and provides profile management features.
+
+## User Notes
+
+![img_6.png](img_6.png)
+
+1. Users can set a timer for a specific time.
+2. Users can create and remove notes.
+
+
+## Application Configs
+
+![img_7.png](img_7.png)
+
+1. Users can change the UI language.
+2. Users can change the UI theme.
+3. Users can disable native notifications.
+4. **Important**: Users must save the current configurations.
+
+## User Guide
+![img_8.png](img_8.png)
+
 ### Mail Sending
 ![img_2.png](img_2.png)
-![img_1.png](img_1.png)
 ### Printer Feature
 ![img.png](img.png)

@@ -111,7 +111,8 @@ public class VatManagementController {
                     File pdf = PdfExportUtil.exportVatInvoiceFromList(
                             vatTable.getScene().getWindow(),
                             originalTableData,
-                            headers
+                            headers,
+                            "Bu fatura elektronik ortamda oluşturulmuştur."
                     );
                     if (pdf != null && pdf.exists()) {
                         PdfExportUtil.printPdfFromFile(pdf);
@@ -123,7 +124,8 @@ public class VatManagementController {
                     File pdf = PdfExportUtil.exportVatInvoiceFromList(
                             vatTable.getScene().getWindow(),
                             originalTableData,
-                            headers
+                            headers,
+                            "Bu fatura elektronik ortamda oluşturulmuştur."
                     );
                     if (pdf == null || !pdf.exists()) {
                         System.err.println("PDF dışa aktarma başarısız!");

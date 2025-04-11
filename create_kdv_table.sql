@@ -9,7 +9,7 @@ CREATE TABLE vat (
     amount DECIMAL(18, 2) NOT NULL,       -- KDV tutarı
     total_amount DECIMAL(18, 2) NOT NULL, -- KDV dahil toplam tutar
     receipt_number VARCHAR(100) NOT NULL,
-    transaction_date DATE NOT NULL,
+    transaction_date DATETIME  NOT NULL,
     description VARCHAR(255),
     exportFormat VARCHAR(50),
     is_deleted BIT DEFAULT 0,             -- Soft delete için bayrak (0: aktif, 1: silinmiş)

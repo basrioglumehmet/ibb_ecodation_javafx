@@ -2,13 +2,8 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
-import org.example.ibb_ecodation_javafx.exception.OptimisticLockException;
-import org.example.ibb_ecodation_javafx.model.UserPicture;
-import org.example.ibb_ecodation_javafx.model.dto.UserPictureDto;
-import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.service.UserPictureService;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -16,7 +11,6 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.dragndrop.Upload;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
-import org.example.ibb_ecodation_javafx.utils.ImageUtil;
 
 
 import javax.imageio.ImageIO;
@@ -88,7 +82,8 @@ public class AdminProfileController {
                                 userState.setProfilePicture(convertImageToByteArray(ImageIO.read(file)));
                                 store.dispatch(UserState.class, new UserState(
                                         userState,
-                                        store.getCurrentState(UserState.class).isLoggedIn()
+                                        store.getCurrentState(UserState.class).isLoggedIn(),
+                                        null
                                 ));
                             } catch (IOException e) {
                                 throw new RuntimeException("Hata: UserDetail güncellerken picture update operasyonunda sorun oluştu. " +  e.getMessage());
