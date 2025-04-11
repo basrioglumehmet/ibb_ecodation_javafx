@@ -19,7 +19,8 @@ public class Store {
         if (instance == null) {
             StateRegistry initialRegistry = new StateRegistry();
             initialRegistry.registerState(CounterState.class, new CounterState(0));
-            initialRegistry.registerState(UserState.class, new UserState(new UserDetailDto(), false, null));
+            initialRegistry.registerState(UserState.class, new UserState(new UserDetailDto(), false, null,
+                    null));
             initialRegistry.registerState(DarkModeState.class, new DarkModeState(false));
             initialRegistry.registerState(TranslatorState.class, new TranslatorState(CountryCode.TR));
             initialRegistry.registerState(VatTableState.class, new VatTableState(new ArrayList<>(),null));

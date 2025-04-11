@@ -9,6 +9,8 @@ import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNote;
 import org.example.ibb_ecodation_javafx.service.UserNoteService;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnNoteList;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
@@ -28,63 +30,38 @@ public class AdminNoteController {
 
     private ShadcnNoteList noteList;
 
-    /**
-     * AdminNoteController yapıcısı.
-     * Spring bağlamından gerekli bağımlılıkları alır.
-     */
+    private final Store store = Store.getInstance();
+
     public AdminNoteController() {
         this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
         this.userNoteService = SpringContext.getContext().getBean(UserNoteService.class);
         securityLogger.logOperation("Notlar açıldı");
     }
 
-    /**
-     * JavaFX bileşenlerini başlatır ve not listesini doldurur.
-     */
     public void initialize() {
-        // ShadcnNoteList bileşenini oluşturuyoruz
+        initializeNoteList();
+        refreshNoteList();
+        subscribeToNoteEvents();
+        setupActions();
+    }
+
+    private void initializeNoteList() {
         noteList = new ShadcnNoteList(
                 SpringContext.getContext().getBean(LanguageService.class),
                 ShadcnLanguageComboBox.getCurrentLanguageCode()
         );
         rootPane.getChildren().add(noteList);
-
-        // Not listesini başlangıçta doldur
-        refreshNoteList();
-
-        // Not olaylarına abone ol
-        subscribeToNoteEvents();
-
-        // Artı kartına dialog açma olayını bağla
-        noteList.setPlusCardAction(event -> {
-            DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/note-create-dialog-view.fxml",
-                    "Not Oluştur");
-        });
     }
 
-    /**
-     * Not listesini veritabanından alınan en son verilerle yeniler.
-     */
     private void refreshNoteList() {
-        // Mevcut notları temizle
         noteList.clearNotes();
-
-        // Veritabanından notları al (Örnek kullanıcı ID: 1)
-        List<UserNote> data = userNoteService.readAll(1);
+        List<UserNote> data = userNoteService.readAll(1); // Assuming userId = 1 for now
         System.out.println("Not sayısı: " + data.size());
-
-        // Her bir notu ShadcnNoteList'e ekle
-        for (UserNote note : data) {
-            String date = note.getReportAt().toString();
-            String title = note.getHeader();
-            String content = note.getDescription();
-            noteList.addNote(date, title, content);
+        for (UserNote userNote : data) {
+            noteList.addNote(userNote);
         }
     }
 
-    /**
-     * Not olaylarına abone olur ve değişikliklerde listeyi yeniler.
-     */
     private void subscribeToNoteEvents() {
         noteEventSubscription = userNoteService.getNoteObservable()
                 .observeOn(io.reactivex.rxjava3.schedulers.Schedulers.from(Platform::runLater))
@@ -100,9 +77,34 @@ public class AdminNoteController {
                 );
     }
 
-    /**
-     * Kontrolör kapatıldığında kaynakları temizler.
-     */
+    private void setupActions() {
+        noteList.setPlusCardAction(event ->
+                DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/note-create-dialog-view.fxml", "Not Oluştur"));
+
+        noteList.setUpdateNoteAction(note -> {
+            if (note.getId() != -1) {
+                UserState currentState = store.getCurrentState(UserState.class);
+                store.dispatch(UserState.class, new UserState(
+                        currentState.getUserDetail(),
+                        currentState.isLoggedIn(),
+                        currentState.getSelectedUser(),
+                        note
+                ));
+                DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/note-update-dialog-view.fxml", "Not Güncelle");
+            } else {
+                System.out.println("Notun ID'si yok, güncelleme yapılamaz.");
+            }
+        });
+
+        noteList.setRemoveNoteAction(note -> {
+            if (note.getId() != -1) { // Check note ID, not userId
+                userNoteService.delete(note.getId());
+            } else {
+                System.out.println("Notun ID'si yok, silme yapılamaz.");
+            }
+        });
+    }
+
     public void cleanup() {
         if (noteEventSubscription != null && !noteEventSubscription.isDisposed()) {
             noteEventSubscription.dispose();

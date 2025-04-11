@@ -86,7 +86,8 @@ public class AdminProfileController {
                                 store.dispatch(UserState.class, new UserState(
                                         userState,
                                         store.getCurrentState(UserState.class).isLoggedIn(),
-                                        null
+                                        null,
+                                        store.getCurrentState(UserState.class).getSelectedUserNote()
                                 ));
                                 securityLogger.logOperation(languageService.translate("log.profile.updated"));
                             } catch (IOException e) {

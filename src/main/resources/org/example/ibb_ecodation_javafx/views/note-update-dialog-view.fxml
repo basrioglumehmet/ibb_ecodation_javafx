@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextArea?>
+<?import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar?>
+<?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
+<?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+      fx:controller="org.example.ibb_ecodation_javafx.controller.NoteUpdateDialogController">
+    <ShadcnNavbar hideButtons="true" fx:id="navbar" />
+    <VBox VBox.vgrow="ALWAYS" style="-fx-padding: 20;" spacing="15" fx:id="container">
+        <!-- DatePicker for reportAt -->
+        <DatePicker fx:id="dateField" promptText="Select Date" prefWidth="387.0" />
+
+        <!-- Input for header (title) -->
+        <ShadcnInput fx:id="titleField" prefHeight="43.0" prefWidth="387.0" header="Title" />
+
+        <!-- TextArea for description (content) -->
+        <TextArea fx:id="contentField" promptText="Enter note content" prefWidth="387.0" prefHeight="100.0" wrapText="true" />
+    </VBox>
+    <HBox style="-fx-padding: 20;" spacing="20" alignment="CENTER">
+        <ShadcnButton onAction="#handleCancel" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+                      mnemonicParsing="false" />
+        <ShadcnButton onAction="#handleUpdate" fullWidth="true" text="Update" type="PRIMARY" align="CENTER"
+                      mnemonicParsing="false" />
+    </HBox>
+</VBox>

@@ -185,7 +185,7 @@ public class UserManagementController {
 
         String selectedId = selectedData.get(0).get(0);
         userService.delete(Integer.parseInt(selectedId));
-        store.dispatch(UserState.class, new UserState(null, store.getCurrentState(UserState.class).isLoggedIn(), null));
+        store.dispatch(UserState.class, new UserState(null, store.getCurrentState(UserState.class).isLoggedIn(), null,store.getCurrentState(UserState.class).getSelectedUserNote()));
         refreshData();
     }
 
@@ -199,7 +199,7 @@ public class UserManagementController {
                 .findFirst();
 
         selectedUser.ifPresent(user -> {
-            store.dispatch(UserState.class, new UserState(store.getCurrentState(UserState.class).getUserDetail(), true, user));
+            store.dispatch(UserState.class, new UserState(store.getCurrentState(UserState.class).getUserDetail(), true, user,store.getCurrentState(UserState.class).getSelectedUserNote()));
             DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-update-dialog-view.fxml", "User Update");
             refreshData();
         });
