@@ -20,9 +20,9 @@
 <!--    date picker eklenecek-->
 </VBox>
     <HBox style="-fx-padding:20;"  spacing="20">
-        <ShadcnButton onAction="#closeDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
+        <ShadcnButton onAction="#closeDialog" fx:id="close" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"
                       mnemonicParsing="false"  />
-        <ShadcnButton onAction="#update" fullWidth="true" text="Update" type="PRIMARY" align="CENTER"
+        <ShadcnButton onAction="#updateHandler" fx:id="update" fullWidth="true" text="Update" type="PRIMARY" align="CENTER"
                       mnemonicParsing="false"  />
     </HBox>
 </VBox>

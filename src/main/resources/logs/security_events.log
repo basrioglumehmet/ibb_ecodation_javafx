@@ -1563,3 +1563,56 @@
 [2025-04-11 23:25:31] [INFO] Notlar açıldı
 [2025-04-11 23:25:33] [INFO] Settings opened
 [2025-04-11 23:25:34] [INFO] Kılavuz okuma
+[2025-04-11 23:42:45] [INFO] Anasayfa açıldı
+[2025-04-11 23:42:54] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:42:55] [INFO] Profile opened
+[2025-04-11 23:42:55] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:42:56] [INFO] Notlar açıldı
+[2025-04-11 23:42:58] [INFO] Settings opened
+[2025-04-11 23:43:00] [INFO] Anasayfa açıldı
+[2025-04-11 23:43:11] [INFO] Settings opened
+[2025-04-11 23:43:13] [INFO] Anasayfa açıldı
+[2025-04-11 23:43:39] [INFO] Notlar açıldı
+[2025-04-11 23:43:44] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:44:28] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:44:29] [INFO] Profil açıldı
+[2025-04-11 23:44:29] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:44:30] [INFO] Notlar açıldı
+[2025-04-11 23:44:39] [INFO] Ayarlar açıldı
+[2025-04-11 23:44:45] [INFO] Anasayfa açıldı
+[2025-04-11 23:44:46] [INFO] Notlar açıldı
+[2025-04-11 23:44:52] [INFO] Anasayfa açıldı
+[2025-04-11 23:44:56] [INFO] Settings opened
+[2025-04-11 23:57:18] [INFO] Anasayfa açıldı
+[2025-04-11 23:57:24] [INFO] Settings opened
+[2025-04-11 23:57:26] [INFO] Anasayfa açıldı
+[2025-04-11 23:57:28] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:57:29] [INFO] Profil açıldı
+[2025-04-11 23:57:29] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:57:29] [INFO] Notlar açıldı
+[2025-04-11 23:57:33] [INFO] Ayarlar açıldı
+[2025-04-11 23:57:34] [INFO] Anasayfa açıldı
+[2025-04-11 23:58:26] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:58:26] [INFO] Profil açıldı
+[2025-04-11 23:58:26] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:58:26] [INFO] Notlar açıldı
+[2025-04-11 23:58:41] [INFO] Profil açıldı
+[2025-04-11 23:58:41] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:58:42] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:58:42] [INFO] Anasayfa açıldı
+[2025-04-11 23:58:52] [INFO] User(id=25, username=ads, email=ads, password=$2a$12$nzO5uEhGKgcpKP1lRe.AUu5JyCljOv0L0q7R49/zZ0LI0ryVIQkCa, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-11 23:59:18] [INFO] User(id=1, username=Mehmet Basrioglu, email=admin@admin.com, password=$2a$12$.PYGWxEaRZAtK.vSnTMVUuWkurdLkD8wBr2CLM6ZVN5gHVJ68NGt6, role=ADMIN, isVerified=true, isLocked=false, version=50) performed operation on Kullanıcı güncellendi
+[2025-04-11 23:59:18] [INFO] User(id=21, username=Mehmet Basrioglu, email=user@user.com, password=$2a$12$07njW1Alrxv7cNbBfS4BguDzdP6x2w/HEle6edem1c6AoN7T5I.6y, role=USER, isVerified=false, isLocked=false, version=3) performed operation on Kullanıcı güncellendi
+[2025-04-11 23:59:18] [INFO] User(id=23, username=Mehmet Basrioglu, email=basrioglumehmet@gmail.com, password=$2a$12$R6b2DYyCNK72k6pE6dAmEe7oskhDMuOJM1AYWvvQg1ub/3DbTVK9y, role=USER, isVerified=false, isLocked=false, version=2) performed operation on Kullanıcı güncellendi
+[2025-04-11 23:59:18] [INFO] User(id=25, username=ads, email=ads, password=$2a$12$xtyT40cJeLcQcEXVcw1IXe3Hr7fn0g/CfZPhUDAGeXUAW3NbWmCTq, role=USER, isVerified=false, isLocked=false, version=1) performed operation on Kullanıcı güncellendi
+[2025-04-12 00:00:04] [INFO] Anasayfa açıldı
+[2025-04-12 00:00:33] [INFO] Anasayfa açıldı
+[2025-04-12 00:00:44] [INFO] User(id=25, username=adsa, email=ads, password=$2a$12$xtyT40cJeLcQcEXVcw1IXe3Hr7fn0g/CfZPhUDAGeXUAW3NbWmCTq, role=USER, isVerified=false, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-12 00:00:47] [INFO] Settings opened
+[2025-04-12 00:00:50] [INFO] Anasayfa açıldı
+[2025-04-12 00:03:00] [INFO] basrioglumehmet@gmail.com performed operation on mail with attachment gönderme
+[2025-04-12 00:03:20] [INFO] Anasayfa açıldı
+[2025-04-12 00:03:30] [INFO] basrioglumehmet@gmail.com performed operation on mail with attachment gönderme
+[2025-04-12 00:03:32] [INFO] Settings opened
+[2025-04-12 00:03:35] [INFO] Anasayfa açıldı
+[2025-04-12 00:03:44] [INFO] basrioglumehmet@gmail.com performed operation on mail with attachment gönderme
