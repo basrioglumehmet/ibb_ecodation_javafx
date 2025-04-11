@@ -27,7 +27,7 @@
                 <ShadcnInput fx:id="role" header="Rol"/>
             </HBox>
             <Upload fx:id="upload" />
-            <ShadcnButton onAction="#updateProfile" text="Kullanıcı bilgilerini güncelle" glyphIconName="UPLOAD" type="SUCCESS" fullWidth="true" />
+            <ShadcnButton fx:id="update" onAction="#updateProfile" text="Kullanıcı bilgilerini güncelle" glyphIconName="UPLOAD" type="SUCCESS" fullWidth="true" />
         </VBox>
     </VBox>
 </StackPane>

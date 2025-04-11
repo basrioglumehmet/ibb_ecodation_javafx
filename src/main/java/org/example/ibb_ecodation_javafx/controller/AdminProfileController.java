@@ -4,66 +4,70 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.service.UserPictureService;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
+import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.dragndrop.Upload;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 
-
 import javax.imageio.ImageIO;
-
 import java.io.File;
 import java.io.IOException;
 
 import static org.example.ibb_ecodation_javafx.utils.ImageUtil.convertImageToByteArray;
 
-
 public class AdminProfileController {
-    @FXML
-    private ShadcnAvatar shadcnAvatar;
-    @FXML
-    private ShadcnInput email;
-    @FXML
-    private ShadcnInput username;
-    @FXML
-    private ShadcnInput password;
-    @FXML
-    private ShadcnInput role;
+
+    @FXML private ShadcnAvatar shadcnAvatar;
+    @FXML private ShadcnInput email;
+    @FXML private ShadcnInput username;
+    @FXML private ShadcnInput password;
+    @FXML private ShadcnInput role;
+    @FXML private ShadcnButton update;
+
     private final UserService userService;
     private final UserPictureService userPictureService;
-
-    private final Store store = Store.getInstance();
     private final SecurityLogger securityLogger;
+    private final LanguageService languageService;
+    private final Store store = Store.getInstance();
 
-    @FXML
-    private Upload upload;
+    @FXML private Upload upload;
 
     public AdminProfileController() {
-        this.userPictureService = SpringContext.getContext().getBean(UserPictureService.class);
         this.userService = SpringContext.getContext().getBean(UserService.class);
+        this.userPictureService = SpringContext.getContext().getBean(UserPictureService.class);
         this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
-        securityLogger.logOperation("Profil açıldı");
+        this.languageService = SpringContext.getContext().getBean(LanguageService.class);
     }
 
     public void initialize() {
-//        updateLabelStyles(header.getParent(), store.getCurrentState(DarkModeState.class).isEnabled() ? "black" : "white");
+        // Load language resources
+        String languageCode = "en"; // Make this configurable (e.g., from user settings)
+        languageService.loadAll(languageCode);
+
+        // Log profile opened
+        securityLogger.logOperation(languageService.translate("log.profile.opened"));
+
+        // Set input placeholders
+        email.setHeader(languageService.translate("input.email.placeholder"));
+        username.setHeader(languageService.translate("input.username.placeholder"));
+        password.setHeader(languageService.translate("input.password.placeholder"));
+        role.setHeader(languageService.translate("input.role.placeholder"));
+        update.setText(languageService.translate("update"));
+        upload.setLabelText(languageService.translate("dragndrop"));
+
         setAvatarImageSource();
-//        var entity = new User(1,"Mehmet Basrioğlu","admin@admin.com","123456", Role.ADMIN,true,false,0);
-//        userService.create(entity);
+
+        // Fetch and populate user data
         userService.read(1, user -> {
-            user.setUsername("Mehmet Basrioğlu");
             username.setText(user.getUsername());
             email.setText(user.getEmail());
-            role.setText(user.getRole().toString());
-//            try {
-//                userService.update(user); // Başarılıysa version + 1 olacak
-//             //   userService.update(user); // Bu ikinci çağrı çakışmaya neden olacak (version uyuşmazlığı)
-//            } catch (OptimisticLockException ole) {
-//                System.out.println("Çakışma tespit edildi: " + ole.getMessage());
-//            }
+            role.setText(languageService.translate("role." + user.getRole().toString().toLowerCase()));
+            password.setText(""); // Typically, don't display password; use placeholder instead
         });
     }
 
@@ -72,11 +76,10 @@ public class AdminProfileController {
             File file = new File(this.upload.getDroppedImagePath());
             if (file.exists()) {
                 shadcnAvatar.setImage(ImageIO.read(file));
-                //Burası Refactor edilmelidir.
-                userPictureService.read(1,callback -> {
+                userPictureService.read(1, callback -> {
                     try {
                         callback.setImageData(convertImageToByteArray(ImageIO.read(file)));
-                        userPictureService.update(callback,updateCallback -> {
+                        userPictureService.update(callback, updateCallback -> {
                             var userState = store.getCurrentState(UserState.class).getUserDetail();
                             try {
                                 userState.setProfilePicture(convertImageToByteArray(ImageIO.read(file)));
@@ -85,32 +88,30 @@ public class AdminProfileController {
                                         store.getCurrentState(UserState.class).isLoggedIn(),
                                         null
                                 ));
+                                securityLogger.logOperation(languageService.translate("log.profile.updated"));
                             } catch (IOException e) {
-                                throw new RuntimeException("Hata: UserDetail güncellerken picture update operasyonunda sorun oluştu. " +  e.getMessage());
+                                throw new RuntimeException(languageService.translate("error.profile.picture.update") + ": " + e.getMessage());
                             }
                         });
                     } catch (IOException e) {
-                        throw new RuntimeException("Hata: User picture read operasyonunda sorun oluştu. " +  e.getMessage());
+                        throw new RuntimeException(languageService.translate("error.picture.read") + ": " + e.getMessage());
                     }
                 });
             } else {
-                System.out.println("File not found at the specified location: " + file.getAbsolutePath());
+                System.out.println(languageService.translate("error.file.not.found") + ": " + file.getAbsolutePath());
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error reading the image file: " + e.getMessage());
+            securityLogger.logOperation(languageService.translate("error.image.read") + ": " + e.getMessage());
+            throw new RuntimeException(languageService.translate("error.image.read") + ": " + e.getMessage());
         }
     }
-
 
     private void setAvatarImageSource() {
         try {
             shadcnAvatar.setAvatarSize(60);
             shadcnAvatar.setImage(AdminProfileController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            securityLogger.logOperation(languageService.translate("error.avatar.load") + ": " + e.getMessage());
         }
     }
-
-
 }

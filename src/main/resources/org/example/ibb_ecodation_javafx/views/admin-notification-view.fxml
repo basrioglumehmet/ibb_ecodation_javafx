@@ -14,7 +14,7 @@
            fx:controller="org.example.ibb_ecodation_javafx.controller.NotificationController">
 
     <VBox spacing="10"  style="-fx-padding: 15;">
-        <Label text="Bildirimler" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        <Label text="Notifications" fx:id="notificationsLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
         <ListView VBox.vgrow="ALWAYS"  fx:id="notificationList" prefHeight="400.0" prefWidth="300.0" />
     </VBox>
 

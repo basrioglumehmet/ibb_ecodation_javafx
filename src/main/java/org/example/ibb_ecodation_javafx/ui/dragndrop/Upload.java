@@ -29,7 +29,7 @@ public class Upload extends StackPane {
         region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS); // Region'un mümkün olduğunca genişlemesini sağlar
 
-        dragLabel = new Label("Resim Sürükle Bırak");
+        dragLabel = new Label("Label");
         dragLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:white;");
 
         // Elemanları sırayla ekle
@@ -77,7 +77,7 @@ public class Upload extends StackPane {
 
 
                     // Label güncelle
-                    dragLabel.setText("Resim Seçildi");
+                    dragLabel.setText("OK");
                 } else {
                     System.out.println("Resim formatında olmalıdır.");
                 }
@@ -91,6 +91,9 @@ public class Upload extends StackPane {
         event.consume();
     }
 
+    public void setLabelText(String text){
+        this.dragLabel.setText(text);
+    }
     private boolean isImageFile(java.io.File file) {
         String fileName = file.getName().toLowerCase();
         return fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".gif");
