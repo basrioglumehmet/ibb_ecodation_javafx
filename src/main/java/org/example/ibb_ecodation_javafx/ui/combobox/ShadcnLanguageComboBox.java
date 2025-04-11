@@ -36,9 +36,10 @@ public class ShadcnLanguageComboBox extends Button {
         loadLanguages();
         setOnMouseClicked(event -> {
             if (event.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
-                double screenX = this.localToScreen(this.getLayoutX(), this.getLayoutY()).getX();
-                double screenY = this.localToScreen(this.getLayoutX(), this.getLayoutY()).getY();
-                menu.show(this, screenX, screenY + getHeight());
+
+                double screenX = this.localToScreen(0, 0).getX();
+                double screenY = this.localToScreen(0, 0).getY() + this.getHeight();
+                menu.show(this, screenX, screenY);
             }
         });
     }
@@ -73,6 +74,7 @@ public class ShadcnLanguageComboBox extends Button {
             menu.getItems().add(createMenuItem(language, data[0], data[1]));
         });
     }
+
     private MenuItem createMenuItem(String language, String countryCode, String flagPath) {
         HBox content = new HBox(10);
         content.setAlignment(Pos.CENTER_LEFT);
@@ -98,7 +100,6 @@ public class ShadcnLanguageComboBox extends Button {
         item.setOnAction(event -> publish(countryCode, language));
         return item;
     }
-
 
     private ImageView createImageView(String fileName, int width, int height) {
         Image image = loadImage(fileName);

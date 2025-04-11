@@ -43,7 +43,7 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 # UI Introduction
 
 ## Auth Pages
-![img_12.png](img_12.png)
+![img_14.png](img_14.png)
 ![img_13.png](img_13.png)
 ![img_11.png](img_11.png)
 ## Home Page
