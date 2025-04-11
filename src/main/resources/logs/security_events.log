@@ -1348,3 +1348,218 @@
 [2025-04-11 22:25:54] [INFO] Profile opened
 [2025-04-11 22:25:54] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
 [2025-04-11 22:25:55] [INFO] Notlar açıldı
+[2025-04-11 22:32:54] [INFO] Anasayfa açıldı
+[2025-04-11 22:32:55] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:32:56] [INFO] Profile opened
+[2025-04-11 22:32:56] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:32:58] [INFO] Notlar açıldı
+[2025-04-11 22:33:00] [INFO] Settings opened
+[2025-04-11 22:33:06] [INFO] Kılavuz okuma
+[2025-04-11 22:33:08] [INFO] Anasayfa açıldı
+[2025-04-11 22:33:09] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:33:10] [INFO] Anasayfa açıldı
+[2025-04-11 22:36:30] [INFO] Anasayfa açıldı
+[2025-04-11 22:36:33] [INFO] Settings opened
+[2025-04-11 22:36:35] [INFO] Anasayfa açıldı
+[2025-04-11 22:36:36] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:36:37] [INFO] Profil açıldı
+[2025-04-11 22:36:37] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:36:38] [INFO] Notlar açıldı
+[2025-04-11 22:37:03] [INFO] Anasayfa açıldı
+[2025-04-11 22:37:04] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:37:05] [INFO] Profil açıldı
+[2025-04-11 22:37:05] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:37:05] [INFO] Notlar açıldı
+[2025-04-11 22:37:06] [INFO] Ayarlar açıldı
+[2025-04-11 22:37:07] [INFO] Kılavuz okuma
+[2025-04-11 22:37:15] [INFO] Anasayfa açıldı
+[2025-04-11 22:37:16] [INFO] Notlar açıldı
+[2025-04-11 22:39:26] [INFO] Anasayfa açıldı
+[2025-04-11 22:39:56] [INFO] Anasayfa açıldı
+[2025-04-11 22:40:16] [INFO] Settings opened
+[2025-04-11 22:40:19] [INFO] Anasayfa açıldı
+[2025-04-11 22:45:22] [INFO] Anasayfa açıldı
+[2025-04-11 22:45:30] [INFO] Settings opened
+[2025-04-11 22:45:32] [INFO] Anasayfa açıldı
+[2025-04-11 22:45:51] [INFO] User(id=21, username=Mehmet Basrioglu, email=user@user.com, password=$2a$12$MtLyos/Qeju05e.XU6DI3.md8ZtYN5/WLF.pnws/b8zrhl3Io5jXy, role=USER, isVerified=false, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-11 22:48:34] [INFO] Anasayfa açıldı
+[2025-04-11 22:48:40] [INFO] Settings opened
+[2025-04-11 22:48:42] [INFO] Anasayfa açıldı
+[2025-04-11 22:51:27] [INFO] Anasayfa açıldı
+[2025-04-11 22:51:38] [INFO] Notlar açıldı
+[2025-04-11 22:52:02] [INFO] Settings opened
+[2025-04-11 22:52:05] [INFO] Notlar açıldı
+[2025-04-11 22:54:52] [INFO] Anasayfa açıldı
+[2025-04-11 22:55:17] [INFO] Notlar açıldı
+[2025-04-11 22:55:21] [INFO] Settings opened
+[2025-04-11 22:55:23] [INFO] Notlar açıldı
+[2025-04-11 22:56:16] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:02] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:02] [INFO] Profil açıldı
+[2025-04-11 22:59:02] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:03] [INFO] Notlar açıldı
+[2025-04-11 22:59:22] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:23] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:23] [INFO] Profil açıldı
+[2025-04-11 22:59:23] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:24] [INFO] Notlar açıldı
+[2025-04-11 22:59:25] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:26] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:26] [INFO] Profil açıldı
+[2025-04-11 22:59:26] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:27] [INFO] Notlar açıldı
+[2025-04-11 22:59:28] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:30] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:30] [INFO] Profil açıldı
+[2025-04-11 22:59:30] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:32] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:33] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:34] [INFO] Profil açıldı
+[2025-04-11 22:59:34] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:41] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:42] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:43] [INFO] Profil açıldı
+[2025-04-11 22:59:43] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:43] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:44] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:44] [INFO] Profil açıldı
+[2025-04-11 22:59:44] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 22:59:45] [INFO] Notlar açıldı
+[2025-04-11 22:59:46] [INFO] Ayarlar açıldı
+[2025-04-11 22:59:47] [INFO] Kılavuz okuma
+[2025-04-11 22:59:53] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:55] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:56] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 22:59:57] [INFO] Anasayfa açıldı
+[2025-04-11 22:59:59] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:00] [INFO] Profil açıldı
+[2025-04-11 23:00:00] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:01] [INFO] Notlar açıldı
+[2025-04-11 23:00:03] [INFO] Ayarlar açıldı
+[2025-04-11 23:00:03] [INFO] Kılavuz okuma
+[2025-04-11 23:00:05] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:05] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:06] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:06] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:07] [INFO] Profil açıldı
+[2025-04-11 23:00:07] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:07] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:08] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:08] [INFO] Profil açıldı
+[2025-04-11 23:00:08] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:08] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:09] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:09] [INFO] Profil açıldı
+[2025-04-11 23:00:09] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:09] [INFO] Notlar açıldı
+[2025-04-11 23:00:11] [INFO] Profil açıldı
+[2025-04-11 23:00:11] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:11] [INFO] Notlar açıldı
+[2025-04-11 23:00:12] [INFO] Profil açıldı
+[2025-04-11 23:00:12] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:12] [INFO] Notlar açıldı
+[2025-04-11 23:00:13] [INFO] Notlar açıldı
+[2025-04-11 23:00:13] [INFO] Profil açıldı
+[2025-04-11 23:00:13] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:13] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:14] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:14] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:15] [INFO] Profil açıldı
+[2025-04-11 23:00:15] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:16] [INFO] Notlar açıldı
+[2025-04-11 23:00:16] [INFO] Ayarlar açıldı
+[2025-04-11 23:00:19] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:20] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:20] [INFO] Profil açıldı
+[2025-04-11 23:00:20] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:21] [INFO] Notlar açıldı
+[2025-04-11 23:00:22] [INFO] Ayarlar açıldı
+[2025-04-11 23:00:23] [INFO] Kılavuz okuma
+[2025-04-11 23:00:28] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:29] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:31] [INFO] Profil açıldı
+[2025-04-11 23:00:31] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:32] [INFO] Notlar açıldı
+[2025-04-11 23:00:33] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:34] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:34] [INFO] Profil açıldı
+[2025-04-11 23:00:34] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:35] [INFO] Notlar açıldı
+[2025-04-11 23:00:36] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:37] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:37] [INFO] Profil açıldı
+[2025-04-11 23:00:37] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:38] [INFO] Notlar açıldı
+[2025-04-11 23:00:40] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:41] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:45] [INFO] Profil açıldı
+[2025-04-11 23:00:45] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:46] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:47] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:48] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:49] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:49] [INFO] Profil açıldı
+[2025-04-11 23:00:49] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:50] [INFO] Notlar açıldı
+[2025-04-11 23:00:51] [INFO] Ayarlar açıldı
+[2025-04-11 23:00:52] [INFO] Kılavuz okuma
+[2025-04-11 23:00:55] [INFO] Anasayfa açıldı
+[2025-04-11 23:00:56] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:00:56] [INFO] Profile opened
+[2025-04-11 23:00:56] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:00:57] [INFO] Notlar açıldı
+[2025-04-11 23:01:03] [INFO] Settings opened
+[2025-04-11 23:01:04] [INFO] Kılavuz okuma
+[2025-04-11 23:01:07] [INFO] Anasayfa açıldı
+[2025-04-11 23:01:08] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:01:08] [INFO] Profile opened
+[2025-04-11 23:01:08] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:01:09] [INFO] Notlar açıldı
+[2025-04-11 23:01:10] [INFO] Anasayfa açıldı
+[2025-04-11 23:01:11] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:01:12] [INFO] Profile opened
+[2025-04-11 23:01:12] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:01:13] [INFO] Notlar açıldı
+[2025-04-11 23:01:13] [INFO] Settings opened
+[2025-04-11 23:01:13] [INFO] Kılavuz okuma
+[2025-04-11 23:01:15] [INFO] Notlar açıldı
+[2025-04-11 23:02:47] [INFO] Anasayfa açıldı
+[2025-04-11 23:04:32] [INFO] Anasayfa açıldı
+[2025-04-11 23:07:38] [INFO] Anasayfa açıldı
+[2025-04-11 23:09:00] [INFO] Anasayfa açıldı
+[2025-04-11 23:09:38] [INFO] Settings opened
+[2025-04-11 23:09:40] [INFO] Anasayfa açıldı
+[2025-04-11 23:15:08] [INFO] Anasayfa açıldı
+[2025-04-11 23:19:26] [INFO] Anasayfa açıldı
+[2025-04-11 23:19:43] [INFO] Settings opened
+[2025-04-11 23:19:45] [INFO] Anasayfa açıldı
+[2025-04-11 23:20:25] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:20:26] [INFO] Profil açıldı
+[2025-04-11 23:20:26] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:20:28] [INFO] Notlar açıldı
+[2025-04-11 23:20:34] [INFO] Ayarlar açıldı
+[2025-04-11 23:20:38] [INFO] Kılavuz okuma
+[2025-04-11 23:20:40] [INFO] Ayarlar açıldı
+[2025-04-11 23:20:42] [INFO] Notlar açıldı
+[2025-04-11 23:20:44] [INFO] Notlar açıldı
+[2025-04-11 23:20:45] [INFO] Anasayfa açıldı
+[2025-04-11 23:20:47] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:20:49] [INFO] Profil açıldı
+[2025-04-11 23:20:49] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:20:51] [INFO] Notlar açıldı
+[2025-04-11 23:20:52] [INFO] Ayarlar açıldı
+[2025-04-11 23:20:54] [INFO] Kılavuz okuma
+[2025-04-11 23:20:57] [INFO] Anasayfa açıldı
+[2025-04-11 23:20:58] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:21:09] [INFO] Anasayfa açıldı
+[2025-04-11 23:23:25] [INFO] Anasayfa açıldı
+[2025-04-11 23:23:32] [INFO] Settings opened
+[2025-04-11 23:23:35] [INFO] Anasayfa açıldı
+[2025-04-11 23:25:09] [INFO] Anasayfa açıldı
+[2025-04-11 23:25:28] [INFO] Anasayfa açıldı
+[2025-04-11 23:25:29] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-11 23:25:30] [INFO] Profile opened
+[2025-04-11 23:25:30] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-11 23:25:31] [INFO] Notlar açıldı
+[2025-04-11 23:25:33] [INFO] Settings opened
+[2025-04-11 23:25:34] [INFO] Kılavuz okuma
