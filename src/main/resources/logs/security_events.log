@@ -8689,3 +8689,380 @@
 [2025-04-12 20:31:01] [INFO] Notlar açıldı
 [2025-04-12 20:31:09] [ERROR] SECURITY VIOLATION: input.reportAt.future
 [2025-04-12 20:31:16] [INFO] Ayarlar açıldı
+[2025-04-12 20:34:02] [INFO] Anasayfa açıldı
+[2025-04-12 20:34:02] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 20:34:29] [INFO] Profile opened
+[2025-04-12 20:34:29] [INFO] User Not Found: User detail not found in state (User ID: -1)
+[2025-04-12 20:34:31] [INFO] Notlar açıldı
+[2025-04-12 20:34:32] [INFO] All JSON Backups read: count=5
+[2025-04-12 20:34:33] [INFO] Profile opened
+[2025-04-12 20:34:33] [INFO] User Not Found: User detail not found in state (User ID: -1)
+[2025-04-12 20:34:33] [INFO] Notlar açıldı
+[2025-04-12 20:36:31] [INFO] Anasayfa açıldı
+[2025-04-12 20:36:31] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 20:36:38] [INFO] 45(USER ID) performed operation on bildirim okuma
+[2025-04-12 20:36:39] [INFO] Profile opened
+[2025-04-12 20:36:39] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 20:36:43] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 20:36:43] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 20:36:43] [INFO] Profile updated successfully
+[2025-04-12 20:36:43] [INFO] User(id=45, username=Mehmet Basrioglu2, email=basrioglumehmet@gmail.com, password=$2a$12$57tdL87/PDOPUjGmgEo5muipQfgb1B.tz4YTYC2p.8zanDW17BCsq, role=ADMIN, isVerified=true, isLocked=false, version=4) performed operation on kullanıcı güncelleme
+[2025-04-12 20:36:44] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 20:36:44] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 20:36:44] [INFO] Profile updated successfully
+[2025-04-12 20:36:44] [INFO] User(id=45, username=Mehmet Basrioglu, email=basrioglumehmet@gmail.com, password=$2a$12$57tdL87/PDOPUjGmgEo5muipQfgb1B.tz4YTYC2p.8zanDW17BCsq, role=ADMIN, isVerified=true, isLocked=false, version=5) performed operation on kullanıcı güncelleme
+[2025-04-12 20:36:45] [INFO] Notlar açıldı
+[2025-04-12 20:37:03] [INFO] Notlar açıldı
+[2025-04-12 20:37:04] [INFO] All JSON Backups read: count=5
+[2025-04-12 20:37:08] [INFO] Settings opened
+[2025-04-12 20:37:10] [INFO] Anasayfa açıldı
+[2025-04-12 20:37:17] [INFO] JSON Backup created: header=New Backup- 2025-04-12T20:37:17.944086400
+[2025-04-12 20:37:29] [INFO] User(id=1, username=Mehmet Basrioglu, email=admin@admin.com, password=$2a$12$OxUVA0ll4LGu6.0139f.y.7uDbVpZRhT09uL27BKqzlp0HPdvyExW, role=ADMIN, isVerified=true, isLocked=false, version=53) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=29, username=Mehmet, email=test@test.com, password=$2a$12$rNXrrhiKig/rRy282LmhtORvy8Op5OZPkAjwxHo05bMXYojQ67dlO, role=ADMIN, isVerified=true, isLocked=true, version=33) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=32, username=test, email=yitiye9457@clubemp.com, password=$2a$12$n2tRayuJdrmyP2V/35kUwuayznvoeNhB.lflX3pyRA.lYV4MpTSDK, role=USER, isVerified=true, isLocked=false, version=4) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=33, username=Fake Mail 1, email=jasam75772@clubemp.com, password=$2a$12$vrV310Bm6ePQK8Sq5U3R6uVen9FWtGDcpyUqBgnn4KoGK1HMMnao2, role=USER, isVerified=true, isLocked=false, version=5) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=34, username=Fake, email=kehix57003@clubemp.com, password=$2a$12$MbTTsTWGJaO2xlrj/X9nHuwLCE13Gox0Mub4xXpAIcF8IQ30Ulu0K, role=USER, isVerified=true, isLocked=false, version=5) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=36, username=Hamit Mizrak, email=hamitmizrak@hamitmizrak.com, password=$2a$12$KCCKvQmG5O9/5RRgk5zmeOOomUU6orRstqsvoaJ6QBxPMANqhsxT6, role=USER, isVerified=false, isLocked=false, version=3) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=37, username=Deneme, email=lomibew288@anlocc.com, password=$2a$12$p2TcQCwSxH3iiPFGHxL4G.hVL6k4SUk/ampTnBvTQAPDDRYGkFib., role=USER, isVerified=true, isLocked=false, version=4) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=38, username=Mehmet Basrioglu, email=mhmtbasrioglu.1@gmail.com, password=$2a$12$g7sJ50gMSMoQvbSQErVD6uEdGhPM6pB4Y2EDhSfdXoUct0jazHjQe, role=USER, isVerified=true, isLocked=false, version=3) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=39, username=Mehmet Basrioglu, email=cameket498@anlocc.com, password=$2a$12$1JQl1aOCNMsO.bRVslu68.O5jmqZ3OVk2JZtbItrw8pc.Q1ZATci., role=USER, isVerified=false, isLocked=false, version=2) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=40, username=Kevin Lurk, email=sapoyeh860@anlocc.com, password=$2a$12$U5Erbq/rVQqV8soH2BvK4uTPAlf4.esd37uLB3NMoEF9pwNnkKqVS, role=USER, isVerified=false, isLocked=false, version=2) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=41, username=Mehmet Basrioglu, email=mojeni6369@anlocc.com, password=$2a$12$t.YtsDyhouYgNF/pldtTUeVGlARIQmrM.2GiAUA3CkU.kwjjCunI6, role=ADMIN, isVerified=true, isLocked=false, version=5) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=42, username=test, email=testq@gail.com, password=$2a$12$MgtzaLc5HQeAPPxNzu1SwO1.z2RvJ0jRV3SjVc29ZyonmHmE4Nifi, role=USER, isVerified=false, isLocked=false, version=1) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=43, username=Mehmet Basrioglu, email=higir88314@clubemp.com, password=$2a$12$SRJiHpC/dwnBgToOGwtP3u1OYxJYuiJGjEdOL/3K/x4bzHhLgMwdm, role=USER, isVerified=true, isLocked=false, version=7) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:29] [INFO] User(id=45, username=Mehmet Basrioglu, email=basrioglumehmet@gmail.com, password=$2a$12$KBqKJ4iYGG21GuX.5jQMHe0PWNDQLYyu/5RzpcaLzZg8nRbHRcIeC, role=ADMIN, isVerified=true, isLocked=false, version=6) performed operation on Kullanıcı güncellendi
+[2025-04-12 20:37:39] [INFO] User(id=33, username=Fake Mail, email=jasam75772@clubemp.com, password=$2a$12$vrV310Bm6ePQK8Sq5U3R6uVen9FWtGDcpyUqBgnn4KoGK1HMMnao2, role=USER, isVerified=true, isLocked=true, version=6) performed operation on kullanıcı güncelleme
+[2025-04-12 20:38:05] [INFO] 45(USER ID) performed operation on bildirim okuma
+[2025-04-12 20:38:05] [INFO] Profile opened
+[2025-04-12 20:38:05] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 20:38:07] [INFO] Notlar açıldı
+[2025-04-12 20:38:09] [INFO] All JSON Backups read: count=6
+[2025-04-12 20:56:47] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 20:56:50] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 20:56:50] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 20:56:51] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 20:56:52] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:00:13] [INFO] User(id=46, username=dsadas, email=viyereh950@clubemp.com, password=$2a$12$tFadzlZ26YtxoZ3qARE28ecWLNuPZmWj7lqgS9MnEWCc817ZM2hQO, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 21:00:14] [INFO] viyereh950@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 21:01:25] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 21:01:26] [INFO] fawin14917@anlocc.com performed operation on otp mail gönderme
+[2025-04-12 21:01:48] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:01:48] [INFO] Anasayfa açıldı
+[2025-04-12 21:01:49] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 21:01:53] [INFO] Profile opened
+[2025-04-12 21:01:53] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:01:55] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:01:56] [INFO] Profile opened
+[2025-04-12 21:01:56] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:01:59] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:01:59] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:01:59] [INFO] Profile updated successfully
+[2025-04-12 21:01:59] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:07] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:07] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:07] [INFO] Profile updated successfully
+[2025-04-12 21:02:07] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=3) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:10] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:10] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:10] [INFO] Profile updated successfully
+[2025-04-12 21:02:10] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=4) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:10] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:10] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:10] [INFO] Profile updated successfully
+[2025-04-12 21:02:10] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=5) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:10] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:10] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:10] [INFO] Profile updated successfully
+[2025-04-12 21:02:10] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=6) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:14] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:14] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:14] [INFO] Profile updated successfully
+[2025-04-12 21:02:14] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=7) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:14] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:14] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:15] [INFO] Profile updated successfully
+[2025-04-12 21:02:15] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=8) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:26] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:26] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:02:26] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:26] [INFO] Profile updated successfully
+[2025-04-12 21:02:26] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=9) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:40] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:40] [INFO] Profile updated successfully
+[2025-04-12 21:02:40] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:02:40] [INFO] 47(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 21:02:40] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:40] [INFO] Profile updated successfully
+[2025-04-12 21:02:40] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=10) performed operation on kullanıcı güncelleme
+[2025-04-12 21:02:54] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:54] [INFO] Profile updated successfully
+[2025-04-12 21:02:54] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:02:54] [INFO] 47(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 21:02:54] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:02:54] [INFO] Profile updated successfully
+[2025-04-12 21:02:54] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=11) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:05] [INFO] Anasayfa açıldı
+[2025-04-12 21:03:05] [INFO] fawin14917@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:03:09] [INFO] Profile opened
+[2025-04-12 21:03:09] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:12] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:12] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:12] [INFO] Profile updated successfully
+[2025-04-12 21:03:12] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=12) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:14] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:14] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:14] [INFO] Profile updated successfully
+[2025-04-12 21:03:14] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=13) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:17] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:17] [INFO] dasdsaads performed operation on kullanıcı okuma
+[2025-04-12 21:03:17] [INFO] Profile updated successfully
+[2025-04-12 21:03:17] [INFO] User(id=47, username=dasdsaads, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=14) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:20] [INFO] dasdsaads performed operation on kullanıcı okuma
+[2025-04-12 21:03:20] [INFO] dasdsaadsdsadas performed operation on kullanıcı okuma
+[2025-04-12 21:03:20] [INFO] Profile updated successfully
+[2025-04-12 21:03:20] [INFO] User(id=47, username=dasdsaadsdsadas, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=15) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:25] [INFO] dasdsaadsdsadas performed operation on kullanıcı okuma
+[2025-04-12 21:03:25] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:25] [INFO] Profile updated successfully
+[2025-04-12 21:03:25] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=16) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:30] [INFO] Settings opened
+[2025-04-12 21:03:30] [INFO] Profile opened
+[2025-04-12 21:03:30] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:33] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:33] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:33] [INFO] Profile updated successfully
+[2025-04-12 21:03:33] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=17) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:41] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:41] [INFO] Profile updated successfully
+[2025-04-12 21:03:41] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:03:41] [INFO] 47(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 21:03:41] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:03:41] [INFO] Profile updated successfully
+[2025-04-12 21:03:41] [INFO] User(id=47, username=dasdsa, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=18) performed operation on kullanıcı güncelleme
+[2025-04-12 21:03:52] [INFO] Anasayfa açıldı
+[2025-04-12 21:03:52] [INFO] fawin14917@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:04:16] [INFO] Anasayfa açıldı
+[2025-04-12 21:04:16] [INFO] fawin14917@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:04:23] [INFO] Anasayfa açıldı
+[2025-04-12 21:04:23] [INFO] fawin14917@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:04:29] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:04:30] [INFO] Profile opened
+[2025-04-12 21:04:30] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:04:31] [INFO] Notlar açıldı
+[2025-04-12 21:04:32] [INFO] Anasayfa açıldı
+[2025-04-12 21:04:53] [INFO] Profile opened
+[2025-04-12 21:04:53] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:04:56] [INFO] dasdsa performed operation on kullanıcı okuma
+[2025-04-12 21:04:56] [INFO] dasdsa5 performed operation on kullanıcı okuma
+[2025-04-12 21:04:56] [INFO] Profile updated successfully
+[2025-04-12 21:04:56] [INFO] User(id=47, username=dasdsa5, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=19) performed operation on kullanıcı güncelleme
+[2025-04-12 21:05:11] [INFO] dasdsa5 performed operation on kullanıcı okuma
+[2025-04-12 21:05:12] [INFO] Profile updated successfully
+[2025-04-12 21:05:12] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:05:12] [INFO] 47(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 21:05:12] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:05:12] [INFO] Profile updated successfully
+[2025-04-12 21:05:12] [INFO] User(id=47, username=dasdsa5656, email=fawin14917@anlocc.com, password=$2a$12$wPSrBqcGMniyozuzuikFqeWjc4j.51A1NqgrnbOTxJMATmNPryCNi, role=USER, isVerified=true, isLocked=false, version=20) performed operation on kullanıcı güncelleme
+[2025-04-12 21:05:24] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:05:25] [INFO] Profile updated successfully
+[2025-04-12 21:05:25] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:05:25] [INFO] 47(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 21:05:25] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:05:25] [INFO] Profile updated successfully
+[2025-04-12 21:05:25] [INFO] User(id=47, username=dasdsa5656, email=fawin14917@anlocc.com, password=$2a$12$gvca/SWXV.18O2Lv/GENeefk6CWfRtTqWd66IlnzBa1YPtDbxIW0C, role=USER, isVerified=true, isLocked=false, version=21) performed operation on kullanıcı güncelleme
+[2025-04-12 21:05:35] [INFO] fawin14917@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:05:38] [INFO] Anasayfa açıldı
+[2025-04-12 21:05:38] [INFO] fawin14917@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:05:40] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:05:41] [INFO] Anasayfa açıldı
+[2025-04-12 21:05:41] [INFO] Profile opened
+[2025-04-12 21:05:41] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:05:43] [INFO] Notlar açıldı
+[2025-04-12 21:05:44] [INFO] Settings opened
+[2025-04-12 21:05:50] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:05:51] [INFO] Profile opened
+[2025-04-12 21:05:51] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:05:52] [INFO] Anasayfa açıldı
+[2025-04-12 21:06:58] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:06:59] [INFO] Profile opened
+[2025-04-12 21:06:59] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:07:00] [INFO] Notlar açıldı
+[2025-04-12 21:07:01] [INFO] Settings opened
+[2025-04-12 21:07:14] [INFO] Ayarlar açıldı
+[2025-04-12 21:07:15] [INFO] Notlar açıldı
+[2025-04-12 21:07:16] [INFO] Profil açıldı
+[2025-04-12 21:07:16] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:07:17] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:07:18] [INFO] Anasayfa açıldı
+[2025-04-12 21:08:37] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:08:38] [INFO] Anasayfa açıldı
+[2025-04-12 21:10:09] [INFO] Notlar açıldı
+[2025-04-12 21:10:10] [INFO] Profil açıldı
+[2025-04-12 21:10:10] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:10:11] [INFO] Notlar açıldı
+[2025-04-12 21:11:14] [INFO] Profil açıldı
+[2025-04-12 21:11:14] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:11:15] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:11:16] [INFO] Profil açıldı
+[2025-04-12 21:11:16] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:11:24] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:11:24] [INFO] Profil başarıyla güncellendi
+[2025-04-12 21:11:24] [INFO] 47(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 21:11:24] [INFO] 47(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 21:11:24] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:11:25] [INFO] Profil başarıyla güncellendi
+[2025-04-12 21:11:25] [INFO] User(id=47, username=dasdsa5656, email=fawin14917@anlocc.com, password=$2a$12$gvca/SWXV.18O2Lv/GENeefk6CWfRtTqWd66IlnzBa1YPtDbxIW0C, role=USER, isVerified=true, isLocked=false, version=22) performed operation on kullanıcı güncelleme
+[2025-04-12 21:26:09] [INFO] Anasayfa açıldı
+[2025-04-12 21:26:50] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:26:51] [INFO] Profil açıldı
+[2025-04-12 21:26:51] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:26:52] [INFO] Notlar açıldı
+[2025-04-12 21:27:05] [INFO] Ayarlar açıldı
+[2025-04-12 21:27:10] [INFO] Anasayfa açıldı
+[2025-04-12 21:27:11] [INFO] 47(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:27:11] [INFO] Profile opened
+[2025-04-12 21:27:11] [INFO] dasdsa5656 performed operation on kullanıcı okuma
+[2025-04-12 21:27:12] [INFO] Notlar açıldı
+[2025-04-12 21:27:13] [INFO] Settings opened
+[2025-04-12 21:27:20] [INFO] Anasayfa açıldı
+[2025-04-12 21:28:52] [INFO] User(id=48, username=test, email=camofoh339@clubemp.com, password=$2a$12$RkMDiCgawegl1vRLe2Griup231jvOBxU2dt0Gg.Klgo45yd.zG.uC, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 21:28:53] [INFO] camofoh339@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 21:29:49] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 21:29:49] [INFO] Anasayfa açıldı
+[2025-04-12 21:29:49] [INFO] User(id=48, username=test, email=camofoh339@clubemp.com, password=$2a$12$RkMDiCgawegl1vRLe2Griup231jvOBxU2dt0Gg.Klgo45yd.zG.uC, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 21:29:51] [INFO] Profile opened
+[2025-04-12 21:29:51] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 21:30:58] [INFO] Anasayfa açıldı
+[2025-04-12 21:30:58] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:31:00] [INFO] Profile opened
+[2025-04-12 21:31:00] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 21:31:16] [INFO] Anasayfa açıldı
+[2025-04-12 21:31:18] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:31:19] [INFO] Anasayfa açıldı
+[2025-04-12 21:33:01] [INFO] User(id=49, username=Duru, email=xevexij756@anlocc.com, password=$2a$12$znHTtwBLwwZ2dDP1PUgpIu9Tevc1fyb1vQSn71G6gcJPv2iCwqSQm, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 21:33:01] [INFO] xevexij756@anlocc.com performed operation on otp mail gönderme
+[2025-04-12 21:33:31] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 21:33:31] [INFO] Anasayfa açıldı
+[2025-04-12 21:33:31] [INFO] User(id=49, username=Duru, email=xevexij756@anlocc.com, password=$2a$12$znHTtwBLwwZ2dDP1PUgpIu9Tevc1fyb1vQSn71G6gcJPv2iCwqSQm, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 21:34:07] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:34:08] [INFO] Profile opened
+[2025-04-12 21:34:08] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 21:36:22] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 21:36:22] [INFO] Duru Hesap 1 performed operation on kullanıcı okuma
+[2025-04-12 21:36:23] [INFO] Profile updated successfully
+[2025-04-12 21:36:23] [INFO] User(id=49, username=Duru Hesap 1, email=xevexij756@anlocc.com, password=$2a$12$znHTtwBLwwZ2dDP1PUgpIu9Tevc1fyb1vQSn71G6gcJPv2iCwqSQm, role=USER, isVerified=true, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-12 21:39:08] [INFO] Anasayfa açıldı
+[2025-04-12 21:39:09] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 21:39:19] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:39:20] [INFO] Profile opened
+[2025-04-12 21:39:20] [INFO] Duru Hesap 1 performed operation on kullanıcı okuma
+[2025-04-12 21:39:23] [INFO] Duru Hesap 1 performed operation on kullanıcı okuma
+[2025-04-12 21:39:23] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 21:39:24] [INFO] Profile updated successfully
+[2025-04-12 21:39:24] [INFO] User(id=49, username=Duru Hesap 2, email=xevexij756@anlocc.com, password=$2a$12$znHTtwBLwwZ2dDP1PUgpIu9Tevc1fyb1vQSn71G6gcJPv2iCwqSQm, role=ADMIN, isVerified=true, isLocked=false, version=3) performed operation on kullanıcı güncelleme
+[2025-04-12 21:39:25] [INFO] Notlar açıldı
+[2025-04-12 21:39:45] [INFO] All JSON Backups read: count=6
+[2025-04-12 21:39:50] [INFO] JSON Backup deleted: id=18
+[2025-04-12 21:39:50] [INFO] All JSON Backups read: count=5
+[2025-04-12 21:39:51] [INFO] JSON Backup deleted: id=13
+[2025-04-12 21:39:51] [INFO] All JSON Backups read: count=4
+[2025-04-12 21:39:53] [INFO] JSON Backup deleted: id=14
+[2025-04-12 21:39:53] [INFO] All JSON Backups read: count=3
+[2025-04-12 21:39:54] [INFO] JSON Backup deleted: id=15
+[2025-04-12 21:39:54] [INFO] All JSON Backups read: count=2
+[2025-04-12 21:39:55] [INFO] Settings opened
+[2025-04-12 21:39:59] [INFO] Anasayfa açıldı
+[2025-04-12 21:40:02] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:40:02] [INFO] Profil açıldı
+[2025-04-12 21:40:02] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 21:40:03] [INFO] Notlar açıldı
+[2025-04-12 21:40:04] [INFO] All JSON Backups read: count=2
+[2025-04-12 21:40:05] [INFO] Ayarlar açıldı
+[2025-04-12 21:40:15] [INFO] Anasayfa açıldı
+[2025-04-12 21:40:44] [INFO] User(id=50, username=Mehmet Basrioglu, email=deneme@gmail.com, password=$2a$12$Jbg8SPRdkU6lYNnWoogbP.Mz.0GdtLi3BEDKS7bvcMOwwxiGVv88., role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 21:40:59] [INFO] JSON Backup created: header=Yeni yedek- 2025-04-12T21:40:59.232932100
+[2025-04-12 21:41:55] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:41:55] [INFO] Anasayfa açıldı
+[2025-04-12 21:43:03] [INFO] xevexij756@anlocc.com performed operation on mail with attachment gönderme
+[2025-04-12 21:43:29] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 21:43:30] [INFO] Profil açıldı
+[2025-04-12 21:43:30] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 21:43:31] [INFO] Notlar açıldı
+[2025-04-12 21:43:32] [INFO] All JSON Backups read: count=3
+[2025-04-12 21:43:38] [INFO] Ayarlar açıldı
+[2025-04-12 23:19:34] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 23:19:45] [INFO] Anasayfa açıldı
+[2025-04-12 23:19:45] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 23:29:45] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:29:46] [INFO] Profil açıldı
+[2025-04-12 23:29:46] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 23:30:01] [INFO] Profil açıldı
+[2025-04-12 23:30:01] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 23:47:00] [INFO] Anasayfa açıldı
+[2025-04-12 23:47:17] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:47:17] [INFO] Profil açıldı
+[2025-04-12 23:47:17] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 23:47:19] [INFO] Notlar açıldı
+[2025-04-12 23:53:21] [INFO] Notlar açıldı
+[2025-04-12 23:53:21] [INFO] All JSON Backups read: count=3
+[2025-04-12 23:53:25] [INFO] Ayarlar açıldı
+[2025-04-12 23:53:29] [INFO] Anasayfa açıldı
+[2025-04-12 23:53:30] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:53:32] [INFO] Profil açıldı
+[2025-04-12 23:53:32] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 23:53:33] [INFO] Notlar açıldı
+[2025-04-12 23:53:34] [INFO] Profil açıldı
+[2025-04-12 23:53:34] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-12 23:53:36] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:53:37] [INFO] Anasayfa açıldı
+[2025-04-12 23:56:36] [INFO] Anasayfa açıldı
+[2025-04-12 23:56:36] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 23:56:40] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:56:40] [INFO] Profil açıldı
+[2025-04-12 23:56:41] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 23:56:42] [INFO] Anasayfa açıldı
+[2025-04-12 23:56:51] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:56:52] [INFO] Profil açıldı
+[2025-04-12 23:56:52] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 23:56:53] [INFO] Notlar açıldı
+[2025-04-12 23:56:54] [INFO] Ayarlar açıldı
+[2025-04-12 23:56:59] [INFO] Anasayfa açıldı
+[2025-04-12 23:56:59] [INFO] Anasayfa açıldı
+[2025-04-12 23:56:59] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:57:00] [INFO] Profil açıldı
+[2025-04-12 23:57:00] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 23:57:02] [INFO] Anasayfa açıldı
+[2025-04-12 23:57:03] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-12 23:57:03] [INFO] Profil açıldı
+[2025-04-12 23:57:03] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 23:57:06] [INFO] Notlar açıldı
+[2025-04-12 23:57:07] [INFO] Ayarlar açıldı
+[2025-04-12 23:57:08] [INFO] Anasayfa açıldı
+[2025-04-13 00:05:54] [INFO] Anasayfa açıldı
+[2025-04-13 00:05:55] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:10:30] [INFO] Anasayfa açıldı
+[2025-04-13 00:10:31] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:10:34] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:10:35] [INFO] Anasayfa açıldı
+[2025-04-13 00:13:48] [INFO] Anasayfa açıldı
+[2025-04-13 00:13:48] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:13:55] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:13:56] [INFO] Profile opened
+[2025-04-13 00:13:56] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:13:58] [INFO] Anasayfa açıldı
+[2025-04-13 00:13:59] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:14:00] [INFO] Profile opened
+[2025-04-13 00:14:00] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:14:01] [INFO] Anasayfa açıldı
+[2025-04-13 00:14:02] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:14:03] [INFO] Anasayfa açıldı
+[2025-04-13 00:14:04] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:14:06] [INFO] Anasayfa açıldı
+[2025-04-13 00:14:09] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:14:10] [INFO] Anasayfa açıldı
+[2025-04-13 00:14:17] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:14:19] [INFO] Anasayfa açıldı
+[2025-04-13 00:15:18] [INFO] Anasayfa açıldı
+[2025-04-13 00:15:19] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:16:33] [INFO] Anasayfa açıldı
+[2025-04-13 00:16:33] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma

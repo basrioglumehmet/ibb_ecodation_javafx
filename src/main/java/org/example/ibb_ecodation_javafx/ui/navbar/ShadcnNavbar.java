@@ -4,6 +4,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -101,6 +102,19 @@ public class ShadcnNavbar extends HBox {
         });
         helpButton.setOnAction(actionEvent -> {
             WebViewUtil.showUiDoc();
+        });
+        fullWindowButton.setOnAction(actionEvent -> {
+            Stage stage = (Stage) fullWindowButton.getScene().getWindow();
+            stage.setMaximized(!stage.isMaximized());  // Tam ekran modunu toggle et
+        });
+
+        minimizeButton.setOnAction(actionEvent -> {
+            Stage stage = (Stage)minimizeButton.getScene().getWindow();
+            stage.setIconified(true);
+        });
+        closeButton.setOnAction(actionEvent -> {
+            Platform.exit();
+            System.exit(0);
         });
         exitButton.setOnAction(actionEvent -> logout());
         this.hideButtons.addListener((obs, oldValue, newValue) -> updateButtonVisibility());
