@@ -24,8 +24,8 @@ public class ShadcnSwitchButton extends StackPane {
     // Colors (Using Provided Hex Codes and UI Image Accent)
     private static final Color DARK_OFF_BG = Color.web("#2c2c30");
     private static final Color DARK_HOVER_BG = Color.web("#38383c");
-    private static final Color LIGHT_OFF_BG = Color.web("#f2f2f3");
-    private static final Color LIGHT_HOVER_BG = Color.web("#e8e8e9");
+    private static final Color LIGHT_OFF_BG = Color.web("#121214");
+    private static final Color LIGHT_HOVER_BG = Color.web("#252529");
     private static final Color ON_BG = Color.web("#F5A623");
     private static final Color BUTTON_COLOR = Color.web("#FFFFFF");
     private static final Color FOCUS_OUTLINE = Color.web("#F5A623");

@@ -31,7 +31,7 @@ public class ShadcnInput extends VBox {
     private TextChangeListener textChangeListener;
 
     // Style Constants (Updated with New Colors)
-    private static final String FONT_FAMILY = "Segoe UI";
+    private static final String FONT_FAMILY = "Poppins";
     private static final String HEADER_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 13px; -fx-font-weight: 500;";
     private static final String TEXTFIELD_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 14px; -fx-padding: 6 10 6 10; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-border-width: 1px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);";
     private static final String ERROR_STYLE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 11px; -fx-text-fill: #FF5555; -fx-font-weight: 400;";

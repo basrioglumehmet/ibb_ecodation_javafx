@@ -46,7 +46,7 @@ public class ShadcnNoteList extends ScrollPane {
         this.languageCode = languageCode;
         languageService.loadAll(languageCode);
 
-        pageTitle = new Label("Note Page");
+        pageTitle = new Label(languageService.translate("label.note"));
         updateTitleStyle();
 
         VBox container = new VBox(12);
@@ -88,7 +88,7 @@ public class ShadcnNoteList extends ScrollPane {
 
     private void updateTitleStyle() {
         boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
-        pageTitle.setStyle("-fx-font-size: 24; -fx-font-family: 'Poppins'; -fx-font-weight: bold;" +
+        pageTitle.setStyle("-fx-font-size: 24; -fx-font-family: 'Poppins';" +
                 String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
     }
 
@@ -255,7 +255,7 @@ public class ShadcnNoteList extends ScrollPane {
         plusIcon.setGlyphSize(16); // Reduced to match second image
         plusIcon.setFill(Paint.valueOf("white"));
 
-        Label plusLabel = new Label("Create new note");
+        Label plusLabel = new Label(languageService.translate("label.newnote"));
         plusLabel.setStyle("-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-text-fill: white;");
 
         HBox plusContent = new HBox(5, plusIcon, plusLabel);
