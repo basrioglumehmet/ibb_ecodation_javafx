@@ -72,7 +72,7 @@ public class AdminConfigController {
         store.getState().subscribe(stateRegistry -> {
             boolean darkModeEnabled = stateRegistry.getState(DarkModeState.class).isEnabled();
             themeToggler.getSwitchButton().setValue(darkModeEnabled);
-            header.setStyle("-fx-font-size: 24px; -fx-text-fill:" + (darkModeEnabled ? "black" : "white") + ";");
+            header.setStyle("-fx-font-size: 24px; -fx-text-fill:" + (!darkModeEnabled ? "black" : "white") + ";");
         });
 
 
