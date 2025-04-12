@@ -204,7 +204,7 @@ public class UserManagementController {
 
         String selectedId = selectedData.get(0).get(0);
         userService.delete(Integer.parseInt(selectedId));
-        store.dispatch(UserState.class, new UserState(null, store.getCurrentState(UserState.class).isLoggedIn(), null,store.getCurrentState(UserState.class).getSelectedUserNote()));
+        store.dispatch(UserState.class, new UserState(store.getCurrentState(UserState.class).getUserDetail(), store.getCurrentState(UserState.class).isLoggedIn(), null,store.getCurrentState(UserState.class).getSelectedUserNote()));
         refreshData();
     }
 
