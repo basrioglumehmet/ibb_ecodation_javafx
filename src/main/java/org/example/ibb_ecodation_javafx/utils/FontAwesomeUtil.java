@@ -36,6 +36,9 @@ public class FontAwesomeUtil {
         FontAwesomeIcon icon = FontAwesomeIcon.USER; // Default icon
 
         switch (iconName.toUpperCase()) {
+            case "CALCULATOR":
+                icon = FontAwesomeIcon.CALCULATOR;
+                break;
             case "PLUS":
                 icon = FontAwesomeIcon.PLUS;
                 break;

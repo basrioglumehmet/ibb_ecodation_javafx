@@ -36,6 +36,7 @@
                 <ShadcnButton fx:id="btnNotes" align="LEFT" glyphIconName="NOTE" fullWidth="true" onAction="#handleNotesButton" text="Notlar" type="GHOST"/>
                 <ShadcnButton fx:id="btnBackup" align="LEFT" glyphIconName="CLOUD_UPLOAD" fullWidth="true" onAction="#handleBackupButton" text="Yedekler" type="GHOST"/>
                 <ShadcnButton fx:id="btnSettings" align="LEFT" glyphIconName="COG" fullWidth="true" onAction="#handleConfigButton" text="Arayüz Ayarları" type="GHOST"/>
+                <ShadcnButton fx:id="btnCalculator" align="LEFT" glyphIconName="CALCULATOR" fullWidth="true" text="Calculator Machine" type="GHOST"/>
             </VBox>
 
             <!-- Sidebar Alt Kısmı -->

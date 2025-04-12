@@ -20,6 +20,7 @@ import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
+import org.example.ibb_ecodation_javafx.utils.OperationSystemUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.example.ibb_ecodation_javafx.utils.WebViewUtil;
 
@@ -54,6 +55,7 @@ public class AdminDashboardController {
     @FXML private ShadcnButton btnBackup;
     @FXML private ShadcnButton btnSettings;
     @FXML private ShadcnButton btnLogout;
+    @FXML private ShadcnButton btnCalculator;
 
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final SecurityLogger securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
@@ -70,6 +72,7 @@ public class AdminDashboardController {
             changeNavbarColor(darkModeEnabled,navbar);
             changeContentColor(darkModeEnabled);
             setAvatarImageSource();
+            labelUserName.setStyle(String.format("-fx-text-fill:%s",darkModeEnabled ? "white":"black"));
             var userDetail = stateRegistry.getState(UserState.class).getUserDetail();
             if(userDetail != null){
                 labelUserName.setText(userDetail.getUsername());
@@ -90,6 +93,8 @@ public class AdminDashboardController {
         });
 
         btnLogout.setOnAction(actionEvent -> logout());
+        btnCalculator.setOnAction(actionEvent -> OperationSystemUtil.openCalculator());
+
 
     }
 
@@ -120,7 +125,8 @@ public class AdminDashboardController {
             btnNotes.setText(languageService.translate("dashboard.notes"));
             btnBackup.setText(languageService.translate("dashboard.backup"));
             btnSettings.setText(languageService.translate("dashboard.config"));
-            labelUserRole.setText(languageService.translate("dashboard.role.admin"));
+            labelUserRole.setText(languageService.translate(userDetail.getRole()));
+            btnCalculator.setText(languageService.translate("dashboard.calculator"));
             labelUserName.setText(userDetail.getUsername());
             System.out.println(userDetail.getUsername());
         } catch (Exception e) {

@@ -4,12 +4,14 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationError;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationRule;
 import org.example.ibb_ecodation_javafx.model.dto.RegisterDto;
 import org.example.ibb_ecodation_javafx.model.enums.AuthenticationResult;
 import org.example.ibb_ecodation_javafx.service.AuthenticationService;
@@ -19,12 +21,12 @@ import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.utils.OtpUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
-import org.example.ibb_ecodation_javafx.utils.ValidationUtil;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class SignUpController {
 
@@ -57,6 +59,11 @@ public class SignUpController {
     private final AuthenticationService authenticationService;
     private final MailService mailService;
     private Disposable languageSubscription;
+
+    // Email validation regex pattern
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+    );
 
     public SignUpController() {
         this.authenticationService = SpringContext.getContext().getBean(AuthenticationService.class);
@@ -102,19 +109,118 @@ public class SignUpController {
 
     @FXML
     private void handleSignUpProcess() throws IOException {
-        ValidationUtil.clearErrors(email, password, username);
+        // Clear previous errors
+        username.clearError();
+        email.clearError();
+        password.clearError();
+
         String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
         ResourceBundle bundle = languageService.loadAll(languageCode);
-        var validator = ValidationUtil.createValidator(Map.of(
-                email, bundle.getString("auth.email.empty"),
-                password, bundle.getString("auth.password.empty"),
-                username, bundle.getString("auth.username.empty")
-        ));
-        var errors = validator.runValidatorEngine();
+
+        // Create validator and add rules
+        FieldValidator validator = new FieldValidator();
+
+        // Username not empty rule
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return username.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return bundle.getString("auth.username.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return username;
+            }
+        });
+
+        // Email not empty rule
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return email.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return bundle.getString("auth.email.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return email;
+            }
+        });
+
+        // Email format rule
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return email.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return EMAIL_PATTERN.matcher(value).matches();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return bundle.getString("auth.email.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return email;
+            }
+        });
+
+        // Password not empty rule
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return password.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return bundle.getString("auth.password.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return password;
+            }
+        });
+
+        // Set error callback to display errors on UI
+        validator.onError(error -> error.getInput().setError(error.getErrorDetail()));
+
+        // Run validation
+        List<ValidationError> errors = validator.runValidatorEngine();
 
         if (errors.isEmpty()) {
             signUp();
-            mailService.sendMail(email.getText(), OtpUtil.random(6));
+            mailService.sendMail(email.getText().trim(), OtpUtil.random(6));
         }
     }
 

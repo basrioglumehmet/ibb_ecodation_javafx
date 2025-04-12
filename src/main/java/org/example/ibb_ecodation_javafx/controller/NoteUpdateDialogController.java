@@ -2,10 +2,12 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationError;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationRule;
 import org.example.ibb_ecodation_javafx.model.UserNote;
 import org.example.ibb_ecodation_javafx.service.UserNoteService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -23,9 +25,6 @@ import java.time.LocalTime;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
 
-/**
- * Not güncelleme dialogunu yöneten kontrolör.
- */
 public class NoteUpdateDialogController {
     @FXML
     private DatePicker dateField;
@@ -38,7 +37,7 @@ public class NoteUpdateDialogController {
     @FXML
     private ShadcnButton update;
     @FXML
-    private org.example.ibb_ecodation_javafx.ui.input.ShadcnInput titleField; // Assuming ShadcnInput has a TextField
+    private ShadcnInput titleField;
     @FXML
     private ShadcnInput contentField;
 
@@ -49,57 +48,172 @@ public class NoteUpdateDialogController {
 
     @FXML
     public void initialize() {
-        // Load language resources
         languageService.loadAll(languageCode);
 
-        // Set button texts with translations
         update.setText(languageService.translate("button.update"));
         close.setText(languageService.translate("button.close"));
         titleField.setHeader(languageService.translate("input.header"));
         contentField.setHeader(languageService.translate("input.description"));
-        // Load selected note from store
+
         UserState userState = store.getCurrentState(UserState.class);
         UserNote selectedNote = userState.getSelectedUserNote();
 
-        // Subscribe to dark mode changes
         store.getState().subscribe(stateRegistry -> {
             boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
             changeRootPaneColor(darkModeValue, rootPane);
         });
 
-        // Populate fields if note exists
         if (selectedNote != null) {
             dateField.setValue(selectedNote.getReportAt().toLocalDate());
             titleField.getTextField().setText(selectedNote.getHeader());
             contentField.setText(selectedNote.getDescription());
-        } else {
-            System.out.println("Seçili not bulunamadı.");
         }
     }
 
     @FXML
     private void handleUpdate() {
+        titleField.clearError();
+        contentField.clearError();
+
         UserState userState = store.getCurrentState(UserState.class);
         UserNote selectedNote = userState.getSelectedUserNote();
         if (selectedNote == null || selectedNote.getId() == -1) {
-            System.out.println("Güncellenecek geçerli bir not yok.");
             return;
         }
 
-        UserNote userNote = new UserNote();
-        userNote.setId(selectedNote.getId());
-        userNote.setHeader(titleField.getTextField().getText());
-        userNote.setDescription(contentField.getText());
-        LocalDate date = dateField.getValue();
-        userNote.setReportAt(date != null ? LocalDateTime.of(date, LocalTime.now()) : selectedNote.getReportAt());
-        userNote.setUserId(selectedNote.getUserId());
-        userNote.setVersion(selectedNote.getVersion());
+        FieldValidator validator = new FieldValidator();
 
-        userNoteService.update(userNote, updated -> {
-            System.out.println("Not güncellendi: " + updated.getHeader());
-            dateField.getScene().getWindow().hide();
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return titleField.getTextField().getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.header.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return titleField;
+            }
         });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return titleField.getTextField().getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return value.isEmpty() || (value.length() >= 3 && value.length() <= 100);
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.header.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return titleField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return contentField.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.description.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return contentField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return contentField.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return value.isEmpty() || (value.length() >= 5 && value.length() <= 500);
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.description.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return contentField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<LocalDate>() {
+            @Override
+            public LocalDate getValue() {
+                return dateField.getValue();
+            }
+
+            @Override
+            public boolean validate(LocalDate value) {
+                return value != null;
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.reportAt.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return null;
+            }
+        });
+
+        validator.onError(error -> {
+            if (error.getInput() != null) {
+                error.getInput().setError(error.getErrorDetail());
+            }
+        });
+
+        if (validator.runValidatorEngine().isEmpty()) {
+            UserNote userNote = new UserNote();
+            userNote.setId(selectedNote.getId());
+            userNote.setHeader(titleField.getTextField().getText().trim());
+            userNote.setDescription(contentField.getText().trim());
+            LocalDate date = dateField.getValue();
+            userNote.setReportAt(LocalDateTime.of(date, LocalTime.now()));
+            userNote.setUserId(selectedNote.getUserId());
+            userNote.setVersion(selectedNote.getVersion());
+
+            userNoteService.update(userNote, updated -> {
+                dateField.getScene().getWindow().hide();
+            });
+        }
     }
 
     @FXML

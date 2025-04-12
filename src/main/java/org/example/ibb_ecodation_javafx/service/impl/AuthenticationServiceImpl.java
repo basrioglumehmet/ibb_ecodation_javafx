@@ -13,6 +13,7 @@ import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.*;
 import org.example.ibb_ecodation_javafx.utils.ImageUtil;
 import org.example.ibb_ecodation_javafx.utils.OtpUtil;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -36,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void signin(Authentication authentication, Consumer<SignInDto> callback) {
         userService.readByEmail(authentication.getEmail(), user -> {
             if (user == null) {
-                callback.accept(null);
+                callback.accept(new SignInDto(AuthenticationResult.ERROR, null, null));
                 return;
             }
 
@@ -57,6 +58,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     result = AuthenticationResult.OTP_REQUIRED;
                 } else if (user.isLocked()) {
                     result = AuthenticationResult.LOCKED;
+                } else if (!BCrypt.checkpw(authentication.getPassword(), user.getPassword())) {
+                    result = AuthenticationResult.PASSWORD_MIS_MATCH;
                 } else {
                     result = AuthenticationResult.OK;
                 }

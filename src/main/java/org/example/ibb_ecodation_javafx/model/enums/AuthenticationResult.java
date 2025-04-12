@@ -6,5 +6,6 @@ public enum AuthenticationResult {
     ERROR,
     OTP_REQUIRED,
     LOCKED,
+    PASSWORD_MIS_MATCH,
     OK
 }

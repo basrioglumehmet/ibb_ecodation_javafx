@@ -14,13 +14,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
+import org.example.ibb_ecodation_javafx.controller.OtpController;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
+import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.example.ibb_ecodation_javafx.utils.WebViewUtil;
 
 import java.time.LocalDateTime;
@@ -97,6 +102,7 @@ public class ShadcnNavbar extends HBox {
         helpButton.setOnAction(actionEvent -> {
             WebViewUtil.showUiDoc();
         });
+        exitButton.setOnAction(actionEvent -> logout());
         this.hideButtons.addListener((obs, oldValue, newValue) -> updateButtonVisibility());
     }
 
@@ -123,6 +129,22 @@ public class ShadcnNavbar extends HBox {
     private void updateTranslations() {
         helpButton.setText(languageService.translate("navbar.help"));
         exitButton.setText(languageService.translate("navbar.exit"));
+    }
+
+
+    private void logout(){
+        try{
+            store.dispatch(DarkModeState.class,new DarkModeState(true));
+            store.dispatch(UserState.class,new UserState(null,false,null,null));
+            SceneUtil.loadScene(
+                    OtpController.class,
+                    (Stage) logoView.getScene().getWindow(),
+                    String.format(ViewPathConstant.FORMAT, "login"),
+                    "Login"
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void updateButtonVisibility() {

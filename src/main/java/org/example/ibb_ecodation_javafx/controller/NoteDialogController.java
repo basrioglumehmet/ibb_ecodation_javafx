@@ -5,6 +5,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationError;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationRule;
 import org.example.ibb_ecodation_javafx.model.UserNote;
 import org.example.ibb_ecodation_javafx.service.UserNoteService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -30,15 +33,15 @@ public class NoteDialogController {
     @FXML
     private VBox container;
     @FXML
-    private ShadcnInput headerField; // For note header
+    private ShadcnInput headerField;
     @FXML
-    private ShadcnInput descriptionField; // For note description
+    private ShadcnInput descriptionField;
     @FXML
-    private DatePicker dateField; // For reportAt
+    private DatePicker dateField;
     @FXML
-    private ShadcnButton closeButton; // For close button
+    private ShadcnButton closeButton;
     @FXML
-    private ShadcnButton insertButton; // For insert button
+    private ShadcnButton insertButton;
 
     private final Store store = Store.getInstance();
     private final UserNoteService userNoteService = SpringContext.getContext().getBean(UserNoteService.class);
@@ -47,15 +50,12 @@ public class NoteDialogController {
 
     @FXML
     public void initialize() {
-        // Load language resources
         languageService.loadAll(languageCode);
 
-        // Apply translations to ShadcnInput headers
         headerField.setHeader(languageService.translate("input.header"));
         descriptionField.setHeader(languageService.translate("input.description"));
         dateField.setPromptText(languageService.translate("input.reportAt"));
 
-        // Apply translations to buttons
         if (closeButton != null) {
             closeButton.setText(languageService.translate("button.close"));
         }
@@ -63,7 +63,6 @@ public class NoteDialogController {
             insertButton.setText(languageService.translate("button.insert"));
         }
 
-        // Dark mode subscription
         store.getState().subscribe(stateRegistry -> {
             boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeNavbarColor(darkModeValue, navbar);
@@ -78,17 +77,140 @@ public class NoteDialogController {
 
     @FXML
     private void insert() {
-        var userDetail = store.getCurrentState(UserState.class).getUserDetail();
-        UserNote entity = new UserNote();
-        entity.setId(0); // Auto-generated
-        entity.setUserId(userDetail.getUserId());
-        entity.setHeader(headerField.getText() != null ? headerField.getText().trim() : "");
-        entity.setDescription(descriptionField.getText() != null ? descriptionField.getText().trim() : "");
-        LocalDate date = dateField.getValue();
-        entity.setReportAt(date != null ? LocalDateTime.of(date, LocalDateTime.now().toLocalTime()) : LocalDateTime.now());
-        entity.setVersion(0); // Default version
+        headerField.clearError();
+        descriptionField.clearError();
 
-        userNoteService.create(entity);
-        closeDialog();
+        FieldValidator validator = new FieldValidator();
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return headerField.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.header.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return headerField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return headerField.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return value.isEmpty() || (value.length() >= 3 && value.length() <= 100);
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.header.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return headerField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return descriptionField.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.description.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return descriptionField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return descriptionField.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return value.isEmpty() || (value.length() >= 5 && value.length() <= 500);
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.description.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return descriptionField;
+            }
+        });
+
+        validator.addRule(new ValidationRule<LocalDate>() {
+            @Override
+            public LocalDate getValue() {
+                return dateField.getValue();
+            }
+
+            @Override
+            public boolean validate(LocalDate value) {
+                return value != null;
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.reportAt.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return null;
+            }
+        });
+
+        validator.onError(error -> {
+            if (error.getInput() != null) {
+                error.getInput().setError(error.getErrorDetail());
+            }
+        });
+
+        if (validator.runValidatorEngine().isEmpty()) {
+            var userDetail = store.getCurrentState(UserState.class).getUserDetail();
+            UserNote entity = new UserNote();
+            entity.setId(0);
+            entity.setUserId(userDetail.getUserId());
+            entity.setHeader(headerField.getText().trim());
+            entity.setDescription(descriptionField.getText().trim());
+            LocalDate date = dateField.getValue();
+            entity.setReportAt(LocalDateTime.of(date, LocalDateTime.now().toLocalTime()));
+            entity.setVersion(0);
+
+            userNoteService.create(entity);
+            closeDialog();
+        }
     }
 }

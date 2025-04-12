@@ -252,10 +252,10 @@ public class ShadcnNoteList extends ScrollPane {
         var plusIconProperty = new SimpleStringProperty("PLUS");
         FontAwesomeIconView plusIcon = FontAwesomeUtil.getGlyphIcon(plusIconProperty);
         plusIcon.setGlyphSize(16);
-        plusIcon.setFill(Paint.valueOf("white"));
+        plusIcon.setFill(Paint.valueOf("black"));
 
         Label plusLabel = new Label(languageService.translate("label.newnote"));
-        plusLabel.setStyle("-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-text-fill: white;");
+        plusLabel.setStyle("-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-text-fill: black;");
 
         HBox plusContent = new HBox(5, plusIcon, plusLabel);
         plusContent.setAlignment(Pos.CENTER);

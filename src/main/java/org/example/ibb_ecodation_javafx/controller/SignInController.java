@@ -118,6 +118,12 @@ public class SignInController {
                     System.out.println("Error loading OTP screen: " + e.getMessage());
                 }
             }
+            else if(callback.getAuthenticationResult().equals(AuthenticationResult.PASSWORD_MIS_MATCH)){
+                password.setError(languageService.translate("pwd.mismatch"));
+            }
+            else if(callback.getAuthenticationResult().equals(AuthenticationResult.ERROR)){
+                email.setError(languageService.translate("notfound"));
+            }
             else if(callback.getAuthenticationResult().equals(AuthenticationResult.OK)){
                 try {
                     var userDetail = new UserDetailDto(callback.getUser().getId(),
