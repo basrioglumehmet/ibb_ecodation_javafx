@@ -54,39 +54,24 @@ https://github.com/user-attachments/assets/f1618cc7-8f7d-464d-9642-5824c789ec91
 
 
 ## Dark / Light Mode
-![img_12.png](img_12.png)
+![img.png](img.png)
+![img_1.png](img_1.png)
 ## Authentication Page
-![img_10.png](img_10.png)
-![img_11.png](img_11.png)
-![img_9.png](img_9.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
 ## Home Page
-1. ![img_3.png](img_3.png)
 
-2. In the Home section:
+### Staff view
+![img_5.png](img_5.png)
 
-    - The **left side** is for user management operations such as:
-        - **Filter by**
-        - **Refresh**
-        - **Print**
-        - **Update**
-        - **Delete**
-        - **Create**
+### User view
+![img_6.png](img_6.png)
 
-    - The **right side** is for VAT management operations such as:
-        - **Filter by VAT number**
-        - **Refresh**
-        - **Print**
-        - **Export** (as PDF, TXT, or Excel)
-        - **Update**
-        - **Delete**
-        - **Send mail to a target email**
-        - **Create**
-
-3. At the bottom, there is a **bar chart** displaying a **graphical analysis**.
 
 ## User Notifications (Native and DB)
-
-![img_4.png](img_4.png)
+![img_8.png](img_8.png)
+![img_7.png](img_7.png)
 
 1. Users can view **error**, **information**, and other types of notifications.
 2. **Success**: Displays a tick icon to the user.
@@ -96,13 +81,13 @@ https://github.com/user-attachments/assets/f1618cc7-8f7d-464d-9642-5824c789ec91
 
 ## User Profile
 
-![img_5.png](img_5.png)
+![img_9.png](img_9.png)
 
 Displays the current user's information and provides profile management features.
 
 ## User Notes
 
-![img_6.png](img_6.png)
+![img_10.png](img_10.png)
 
 1. Users can set a timer for a specific time.
 2. Users can create and remove notes.
@@ -110,17 +95,20 @@ Displays the current user's information and provides profile management features
 
 ## Application Configs
 
-![img_7.png](img_7.png)
+![img_11.png](img_11.png)
 
 1. Users can change the UI language.
 2. Users can change the UI theme.
-3. Users can disable native notifications.
-4. **Important**: Users must save the current configurations.
+3. Users can reset configurations.
 
 ## User Guide
-![img_8.png](img_8.png)
+![img.png](img.png)
+![img_1.png](img_1.png)
 
 ### Mail Sending
-![img_2.png](img_2.png)
-### Printer Feature
+![img_12.png](img_12.png)
 ![img_13.png](img_13.png)
+
+
+### Printer Feature
+![img_14.png](img_14.png)
