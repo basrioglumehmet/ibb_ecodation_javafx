@@ -37,7 +37,7 @@ public class ThemeUtil {
 
     public static void changeBackgroundPrimary(boolean isDarkMode, Node node) {
         node.setStyle(String.format("%s -fx-background-color: %s;",
-                node.getStyle(),!isDarkMode ? "#5865f2":"#2c2c30"));
+                node.getStyle(),!isDarkMode ? "#8dd80a":"#2c2c30"));
     }
     public static void changeBackground(boolean isDarkMode, Node node) {
         node.setStyle(String.format(
@@ -59,7 +59,7 @@ public class ThemeUtil {
     }
     public static void changeTextColorPrimary(boolean isDarkMode, Node node) {
         node.setStyle(String.format("%s -fx-text-fill: %s;",
-                node.getStyle(),!isDarkMode ? "#fff":"#fff"));
+                node.getStyle(),!isDarkMode ? "#fff":"#000"));
     }
     public static void changeTextColor(boolean isDarkMode, Node node) {
         node.setStyle(String.format("%s -fx-text-fill: %s;",

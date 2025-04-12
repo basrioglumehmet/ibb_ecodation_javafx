@@ -116,7 +116,7 @@ public class DynamicTable<T> extends VBox {
         buttonGroup.setAlignment(Pos.CENTER_RIGHT);
 
         comboBox = new ShadcnComboBox(s -> s);
-        comboBox.setStyle("-fx-background-color: #5865f2; -fx-background-radius: 6; -fx-text-fill: white; -fx-font-family: 'Poppins'; -fx-font-size: 12; -fx-padding: 6 12;");
+        comboBox.setStyle("-fx-background-color: #8dd80a; -fx-background-radius: 6; -fx-text-fill: black; -fx-font-family: 'Poppins'; -fx-font-size: 12; -fx-padding: 6 12;");
         buttonGroup.getChildren().addAll(comboBox);
 
         header.getChildren().addAll(titleSection, spacer, buttonGroup);
@@ -221,7 +221,7 @@ public class DynamicTable<T> extends VBox {
 
         if (headers.isEmpty()) {
             Label noHeadersLabel = new Label("No headers defined");
-            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #5865f2; -fx-padding: 10;");
+            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #8dd80a; -fx-padding: 10;");
             tableContent.getChildren().add(noHeadersLabel);
             return;
         }
@@ -252,7 +252,7 @@ public class DynamicTable<T> extends VBox {
 
         if (data.isEmpty()) {
             Label noDataLabel = new Label("No data available");
-            noDataLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #5865f2; -fx-padding: 10;");
+            noDataLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #8dd80a; -fx-padding: 10;");
             tableContent.getChildren().add(noDataLabel);
         } else {
             for (int i = 0; i < data.size(); i++) {

@@ -1,5 +1,7 @@
 package org.example.ibb_ecodation_javafx.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.stage.FileChooser;
@@ -19,6 +21,25 @@ public class JsonBackupUtil {
 
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+    // FileChooser ile JSON dosyasına export yapar fakat String RAW datasını baz almamız gerekiyor.
+    //Bu sebepten ötürü ilk olarak değeri okuyor ve verilen tip referansına map ediyoruz.
+    public static <T> void exportRawDataToJsonWithDialog(String rawData, Window parentWindow, TypeReference<List<T>> reference) {
+       try{
+           List<T> data = mapper.readValue(rawData,reference);
+           exportToJsonWithDialog(data,parentWindow);
+       } catch (JsonProcessingException e) {
+           throw new RuntimeException(e);
+       }
+    }
+
+    public static <T> String generateRawData(List<T> data){
+        try{
+            String rawData = mapper.writeValueAsString(data);
+            return rawData;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // FileChooser ile JSON dosyasına export

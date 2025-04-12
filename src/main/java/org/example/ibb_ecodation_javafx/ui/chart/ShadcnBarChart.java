@@ -133,7 +133,7 @@ public class ShadcnBarChart extends BarChart<String, Number> {
 
     private void applyCustomColors() {
         String[] colors = {
-                "#5865f2", "#3aa15a", "#4795e5"
+                "#8dd80a", "#3aa15a", "#4795e5"
         };
 
         Platform.runLater(() -> {

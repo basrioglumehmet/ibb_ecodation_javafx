@@ -1,8 +1,8 @@
 package org.example.ibb_ecodation_javafx.ui.listItem;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import io.reactivex.rxjava3.disposables.Disposable;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,43 +10,54 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
-import org.example.ibb_ecodation_javafx.core.service.LanguageService;
-import org.example.ibb_ecodation_javafx.model.UserNote;
+import javafx.util.Duration;
+import org.example.ibb_ecodation_javafx.model.JsonBackup;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
-import javafx.animation.ScaleTransition;
-import javafx.util.Duration;
+import org.example.ibb_ecodation_javafx.ui.codehighlighter.JsonSyntaxHighlighter;
 import org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
-
-public class ShadcnNoteList extends ScrollPane {
+/**
+ * JSON yedek verilerini listeleyen bir bileşen.
+ * Her yedek için bir kart oluşturur ve JSON verisini syntax highlighting ile gösterir.
+ */
+public class ShadcnBackupList extends ScrollPane {
     private final GridPane gridPane;
-    private final List<UserNote> notes;
+    private final List<JsonBackup> backups;
     private static final int COLUMNS = 2;
-    private final StringProperty glyphIconName = new SimpleStringProperty();
-    private final LanguageService languageService;
-    private final String languageCode;
     private Button plusCard;
     private Label pageTitle;
     private javafx.event.EventHandler<javafx.event.ActionEvent> plusCardAction;
-    private Consumer<UserNote> updateNoteAction;
-    private Consumer<UserNote> removeNoteAction;
+    private Consumer<JsonBackup> downloadButtonAction;
+    private Consumer<JsonBackup> removeBackupAction;
     private Store store = Store.getInstance();
     private Disposable darkModeSubscription;
+    private final String pageTitleText;
+    private final String newBackupLabel;
+    private final String downloadButtonText;
+    private final String removeButtonText;
 
-    public ShadcnNoteList(LanguageService languageService, String languageCode) {
-        this.languageService = languageService;
-        this.languageCode = languageCode;
-        languageService.loadAll(languageCode);
+    /**
+     * ShadcnBackupList sınıfının yapıcı metodu.
+     * Dil servisi bağımlılığı olmadan, dışarıdan sağlanan metinlerle çalışır.
+     *
+     * @param pageTitleText     Liste başlığı
+     * @param newBackupLabel    Yeni yedek ekleme düğmesi etiketi
+     * @param downloadButtonText  Güncelle düğmesi etiketi
+     * @param removeButtonText  Sil düğmesi etiketi
+     */
+    public ShadcnBackupList(String pageTitleText, String newBackupLabel, String downloadButtonText, String removeButtonText) {
+        this.pageTitleText = pageTitleText;
+        this.newBackupLabel = newBackupLabel;
+        this.downloadButtonText = downloadButtonText;
+        this.removeButtonText = removeButtonText;
 
-        pageTitle = new Label(languageService.translate("label.note"));
+        pageTitle = new Label(pageTitleText);
         updateTitleStyle();
 
         VBox container = new VBox(12);
@@ -69,16 +80,14 @@ public class ShadcnNoteList extends ScrollPane {
 
         container.getChildren().addAll(pageTitle, gridPane);
 
-        notes = new ArrayList<>();
+        backups = new ArrayList<>();
         this.setContent(container);
         this.setFitToWidth(true);
         this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setStyle("-fx-background-color: transparent; -fx-padding: 15;");
 
-        glyphIconName.set("CLOCK");
         updateGrid(false);
-
 
         darkModeSubscription = store.getState().subscribe(stateRegistry -> {
             updateTitleStyle();
@@ -86,27 +95,44 @@ public class ShadcnNoteList extends ScrollPane {
         });
     }
 
+    /**
+     * Başlık stilini günceller.
+     * Karanlık mod durumuna göre başlık rengini ayarlar.
+     */
     private void updateTitleStyle() {
         boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
         pageTitle.setStyle("-fx-font-size: 24; -fx-font-family: 'Poppins';" +
                 String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
     }
 
-    public void addNote(UserNote userNote) {
-        notes.add(userNote);
-        addNewCardWithAnimation(userNote);
+    /**
+     * Yeni bir JSON yedek verisi ekler.
+     *
+     * @param jsonBackup Eklenecek JSON yedek verisi
+     */
+    public void addBackup(JsonBackup jsonBackup) {
+        backups.add(jsonBackup);
+        addNewCardWithAnimation(jsonBackup);
     }
 
-    public void clearNotes() {
-        notes.clear();
+    /**
+     * Tüm yedek verilerini temizler.
+     */
+    public void clearBackups() {
+        backups.clear();
         updateGrid(false);
     }
 
+    /**
+     * GridPane'i günceller ve tüm kartları yeniden oluşturur.
+     *
+     * @param animateAll Tüm kartlar için animasyon oynatılıp oynatılmayacağı
+     */
     private void updateGrid(boolean animateAll) {
         gridPane.getChildren().clear();
-        for (int i = 0; i < notes.size(); i++) {
-            UserNote note = notes.get(i);
-            VBox card = createNoteCard(note);
+        for (int i = 0; i < backups.size(); i++) {
+            JsonBackup backup = backups.get(i);
+            VBox card = createBackupCard(backup);
             int row = i / COLUMNS;
             int col = i % COLUMNS;
             gridPane.add(card, col, row);
@@ -116,12 +142,16 @@ public class ShadcnNoteList extends ScrollPane {
                 animateCard(card);
             }
         }
-        addPlusButton(false);
     }
 
-    private void addNewCardWithAnimation(UserNote newNote) {
-        VBox card = createNoteCard(newNote);
-        int totalItems = notes.size() - 1;
+    /**
+     * Yeni bir kart ekler ve animasyon oynatır.
+     *
+     * @param newBackup Yeni JSON yedek verisi
+     */
+    private void addNewCardWithAnimation(JsonBackup newBackup) {
+        VBox card = createBackupCard(newBackup);
+        int totalItems = backups.size() - 1;
         int row = totalItems / COLUMNS;
         int col = totalItems % COLUMNS;
         card.setScaleX(0);
@@ -130,10 +160,15 @@ public class ShadcnNoteList extends ScrollPane {
         GridPane.setHgrow(card, Priority.ALWAYS);
         GridPane.setFillWidth(card, true);
         animateCard(card);
-        updatePlusButtonPosition();
     }
 
-    private VBox createNoteCard(UserNote note) {
+    /**
+     * JSON yedek verisi için bir kart oluşturur.
+     *
+     * @param backup JSON yedek verisi
+     * @return Oluşturulan kart (VBox)
+     */
+    private VBox createBackupCard(JsonBackup backup) {
         boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
 
         VBox card = new VBox(8);
@@ -143,7 +178,7 @@ public class ShadcnNoteList extends ScrollPane {
                         isDarkMode ? "#202024" : "#f5f5f5",
                         isDarkMode ? "#2c2c30" : "#e4e4e7"));
         card.setMaxWidth(Double.MAX_VALUE);
-        card.setMinHeight(160);
+        card.setMinHeight(200);
         card.setOnMouseEntered(e -> card.setStyle("-fx-background-radius: 8;" +
                 String.format("-fx-background-color: %s; -fx-padding: 10; " +
                                 "-fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
@@ -155,65 +190,59 @@ public class ShadcnNoteList extends ScrollPane {
                         isDarkMode ? "#202024" : "#f5f5f5",
                         isDarkMode ? "#2c2c30" : "#e4e4e7")));
 
-        Label dateLabel = new Label(note.getReportAt().toString());
+        Label dateLabel = new Label(backup.getCreatedAt().toString());
         dateLabel.setStyle("-fx-font-size: 13; -fx-font-family: 'Poppins';" +
                 String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
 
-        Label titleLabel = new Label(note.getHeader());
+        Label titleLabel = new Label(backup.getHeader());
         titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-font-family: 'Poppins';" +
                 String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
         titleLabel.setWrapText(true);
 
-        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
-        iconView.setGlyphSize(16);
-        iconView.setFill(Paint.valueOf(isDarkMode ? "#fff" : "#000"));
-        StackPane iconWrapper = new StackPane(iconView);
-        iconWrapper.setPadding(new Insets(2));
-
-        Label contentLabel = new Label(note.getDescription());
-        contentLabel.setStyle("-fx-font-size: 13; -fx-font-family: 'Poppins';" +
-                String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
-        contentLabel.setWrapText(true);
-
-        HBox bottomSection = new HBox(8);
-        bottomSection.setAlignment(Pos.CENTER_LEFT);
-        bottomSection.getChildren().addAll(iconWrapper, contentLabel);
+        JsonSyntaxHighlighter jsonHighlighter = new JsonSyntaxHighlighter();
+        jsonHighlighter.setCode(backup.getJsonData());
+        jsonHighlighter.setDarkMode(isDarkMode);
 
         HBox actionSection = new HBox(8);
         actionSection.setAlignment(Pos.CENTER_LEFT);
 
-        ShadcnButton updateButton = createActionButton(
-                languageService.translate("button.update"),
+        ShadcnButton downloadButton = createActionButton(
+                downloadButtonText,
                 ShadcnButton.ButtonType.PRIMARY,
-                "USER",
+                "CLOUD",
                 e -> {
-                    if (updateNoteAction != null) {
-                        updateNoteAction.accept(note);
-                    } else {
-                        System.out.println("Güncelleme aksiyonu tanımlı değil.");
+                    if (downloadButtonAction != null) {
+                        downloadButtonAction.accept(backup);
                     }
                 }
         );
 
         ShadcnButton removeButton = createActionButton(
-                languageService.translate("button.remove"),
+                removeButtonText,
                 ShadcnButton.ButtonType.DESTRUCTIVE,
                 "TRASH",
                 e -> {
-                    if (removeNoteAction != null) {
-                        removeNoteAction.accept(note);
-                    } else {
-                        System.out.println("Silme aksiyonu tanımlı değil.");
+                    if (removeBackupAction != null) {
+                        removeBackupAction.accept(backup);
                     }
                 }
         );
 
-        actionSection.getChildren().addAll(updateButton, removeButton);
-        card.getChildren().addAll(dateLabel, titleLabel, bottomSection, actionSection);
+        actionSection.getChildren().addAll(downloadButton, removeButton);
+        card.getChildren().addAll(dateLabel, titleLabel, jsonHighlighter, actionSection);
 
         return card;
     }
 
+    /**
+     * Bir aksiyon düğmesi oluşturur.
+     *
+     * @param text   Düğme metni
+     * @param type   Düğme tipi (PRIMARY veya DESTRUCTIVE)
+     * @param icon   Düğme ikonu
+     * @param action Düğmeye tıklandığında çalışacak aksiyon
+     * @return Oluşturulan düğme
+     */
     private ShadcnButton createActionButton(String text, ShadcnButton.ButtonType type, String icon,
                                             javafx.event.EventHandler<javafx.event.ActionEvent> action) {
         ShadcnButton button = new ShadcnButton(text, type, icon, true, false, "center");
@@ -221,6 +250,11 @@ public class ShadcnNoteList extends ScrollPane {
         return button;
     }
 
+    /**
+     * Kart için animasyon oynatır.
+     *
+     * @param card Animasyon oynatılacak kart
+     */
     private void animateCard(Pane card) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), card);
         scaleTransition.setFromX(0);
@@ -232,56 +266,21 @@ public class ShadcnNoteList extends ScrollPane {
         scaleTransition.play();
     }
 
-    private void addPlusButton(boolean animate) {
-        boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
 
-        plusCard = new Button();
-        plusCard.setStyle("-fx-background-radius: 8;" +
-                "-fx-background-color: #8dd80a; -fx-text-fill: white;" +
-                "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;");
-        plusCard.setMaxWidth(Double.MAX_VALUE);
-        plusCard.setPrefHeight(160);
-
-        plusCard.setOnMouseEntered(e -> plusCard.setStyle("-fx-background-radius: 8;" +
-                "-fx-background-color: #6cad03; -fx-text-fill: white;" +
-                "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
-        plusCard.setOnMouseExited(e -> plusCard.setStyle("-fx-background-radius: 8;" +
-                "-fx-background-color: #8dd80a; -fx-text-fill: white;" +
-                "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
-
-        var plusIconProperty = new SimpleStringProperty("PLUS");
-        FontAwesomeIconView plusIcon = FontAwesomeUtil.getGlyphIcon(plusIconProperty);
-        plusIcon.setGlyphSize(16);
-        plusIcon.setFill(Paint.valueOf("white"));
-
-        Label plusLabel = new Label(languageService.translate("label.newnote"));
-        plusLabel.setStyle("-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-text-fill: white;");
-
-        HBox plusContent = new HBox(5, plusIcon, plusLabel);
-        plusContent.setAlignment(Pos.CENTER);
-        plusCard.setGraphic(plusContent);
-
-        if (plusCardAction != null) {
-            plusCard.setOnAction(plusCardAction);
-        }
-
-        int totalItems = notes.size();
-        int row = totalItems / COLUMNS;
-        int col = totalItems % COLUMNS;
-        gridPane.add(plusCard, col, row);
-        GridPane.setHgrow(plusCard, Priority.ALWAYS);
-        GridPane.setFillWidth(plusCard, true);
-    }
-
-    private void updatePlusButtonPosition() {
-        gridPane.getChildren().removeIf(node -> node instanceof Button);
-        addPlusButton(false);
-    }
-
+    /**
+     * Artı (+) düğmesini döndürür.
+     *
+     * @return Artı düğmesi
+     */
     public Button getPlusCard() {
         return plusCard;
     }
 
+    /**
+     * Artı (+) düğmesi için aksiyon ayarlar.
+     *
+     * @param action Düğmeye tıklandığında çalışacak aksiyon
+     */
     public void setPlusCardAction(javafx.event.EventHandler<javafx.event.ActionEvent> action) {
         this.plusCardAction = action;
         if (plusCard != null) {
@@ -289,14 +288,28 @@ public class ShadcnNoteList extends ScrollPane {
         }
     }
 
-    public void setUpdateNoteAction(Consumer<UserNote> action) {
-        this.updateNoteAction = action;
+    /**
+     * Yedek güncelleme aksiyonunu ayarlar.
+     *
+     * @param action Güncelleme aksiyonu
+     */
+    public void setDownloadButtonAction(Consumer<JsonBackup> action) {
+        this.downloadButtonAction = action;
     }
 
-    public void setRemoveNoteAction(Consumer<UserNote> action) {
-        this.removeNoteAction = action;
+    /**
+     * Yedek silme aksiyonunu ayarlar.
+     *
+     * @param action Silme aksiyonu
+     */
+    public void setRemoveBackupAction(Consumer<JsonBackup> action) {
+        this.removeBackupAction = action;
     }
 
+    /**
+     * Abonelikleri temizler.
+     * Karanlık mod aboneliğini sonlandırır.
+     */
     public void dispose() {
         if (darkModeSubscription != null && !darkModeSubscription.isDisposed()) {
             darkModeSubscription.dispose();

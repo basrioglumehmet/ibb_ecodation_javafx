@@ -121,8 +121,8 @@ public class ShadcnComboBox<T> extends Button {
 
         // Hover effects
         content.setOnMouseEntered(e -> {
-            content.setStyle("-fx-background-color: #5865f2; -fx-padding: 5; -fx-background-radius: 3px;");
-            label.setStyle("-fx-text-fill: #fff;"); // White text on hover
+            content.setStyle("-fx-background-color: #8dd80a; -fx-padding: 5; -fx-background-radius: 3px;");
+            label.setStyle("-fx-text-fill: #000;"); // White text on hover
         });
         content.setOnMouseExited(e -> {
             content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;");

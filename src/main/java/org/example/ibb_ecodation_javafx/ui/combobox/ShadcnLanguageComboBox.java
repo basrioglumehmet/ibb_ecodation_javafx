@@ -131,7 +131,7 @@ public class ShadcnLanguageComboBox extends Button {
         item.setHideOnClick(true);
         item.getStyleClass().clear();
         content.setOnMouseEntered(e -> {
-            content.setStyle("-fx-background-color: #5865f2; -fx-padding: 5; -fx-border-radius: 3px; -fx-background-radius: 3px;");
+            content.setStyle("-fx-background-color: #8dd80a; -fx-padding: 5; -fx-border-radius: 3px; -fx-background-radius: 3px;");
             label.setStyle("-fx-text-fill: #fff;");
         });
         content.setOnMouseExited(e -> {

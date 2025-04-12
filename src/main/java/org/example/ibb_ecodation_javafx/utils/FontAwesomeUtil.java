@@ -16,13 +16,13 @@ public class FontAwesomeUtil {
         switch (iconName.toUpperCase()) {
 
             case "SUCCESS":
-                color = "#3ba55c";
+                color = "#8dd80a";
                 break;
             case "ERROR":
                 color = "#ed4245";
                 break;
             case "INFO":
-                color = "#5865f2";
+                color = "#8dd80a";
                 break;
             default:
                 color = "white";

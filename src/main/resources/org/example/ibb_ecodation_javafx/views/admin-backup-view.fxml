@@ -4,6 +4,10 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Label?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="Admin Yedekler" style="-fx-font-size: 24px; "  />
+<?import org.example.ibb_ecodation_javafx.ui.codehighlighter.JsonSyntaxHighlighter?>
+<?import javafx.scene.layout.VBox?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.AdminBackupView">
+    <VBox fx:id="mainContainer">
+
+    </VBox>
 </StackPane>

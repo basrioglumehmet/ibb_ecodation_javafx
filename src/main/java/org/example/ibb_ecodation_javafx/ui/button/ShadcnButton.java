@@ -187,20 +187,20 @@ public class ShadcnButton extends Button {
 
         switch (type) {
             case PRIMARY:
-                backgroundColor = "#5865f2";
-                hoverColor = "#4654c0";
-                textColor = "white";
+                backgroundColor = "#8dd80a";
+                hoverColor = "#6cad03";
+                textColor = "black";
                 break;
             case GHOST:
                 backgroundColor = "transparent";
-                hoverColor = "#5865f2";
+                hoverColor = "#8dd80a";
                 textColor = !isDarkMode ? "#82838b" : "#fff";
-                hoverTextColor = "white";
+                hoverTextColor = "black";
                 break;
             case SECONDARY:
-                backgroundColor = "#ebf5ff";
-                hoverColor = "#4896e5";
-                textColor = "#4896e5";
+                backgroundColor = "#8b0ff0";
+                hoverColor = "#981eff";
+                textColor = "#fff";
                 hoverTextColor = "#fff";
                 break;
             case DESTRUCTIVE:
@@ -209,10 +209,10 @@ public class ShadcnButton extends Button {
                 textColor = "white";
                 break;
             case SUCCESS:
-                backgroundColor = "#3ba55c";
-                hoverColor = "#2d7d46";
-                textColor = "white";
-                hoverTextColor = "white";
+                backgroundColor = "#8dd80a";
+                hoverColor = "#6cad03";
+                textColor = "black";
+                hoverTextColor = "black";
                 break;
             default:
                 backgroundColor = "#1E88E5";

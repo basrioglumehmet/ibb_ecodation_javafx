@@ -12,7 +12,7 @@
 /* Scrollbar thumb (the draggable part) */
 .scroll-bar:vertical .thumb,
 .scroll-bar:horizontal .thumb {
-    -fx-background-color: #5865f2; /* Orange color to match the theme */
+    -fx-background-color: #8dd80a; /* Orange color to match the theme */
     -fx-background-radius: 5;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
     -fx-transition: -fx-background-color 0.3s ease;
@@ -134,7 +134,7 @@
 
 /* Selected row styling */
 .table-view .table-row-cell:selected {
-    -fx-background-color: #5865f2;
+    -fx-background-color: #8dd80a;
     -fx-border-color: #121214; /* Seçili satır için bölen rengi */
 }
 
@@ -163,7 +163,7 @@
 
 .check-box:selected .box {
 
--fx-background-color: #5865f2;
+-fx-background-color: #8dd80a;
 }
 
 .keyword { -fx-fill: #0000ff; -fx-font-weight: bold; }

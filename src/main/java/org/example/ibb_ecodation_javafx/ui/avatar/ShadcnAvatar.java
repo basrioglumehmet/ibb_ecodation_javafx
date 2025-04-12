@@ -40,7 +40,7 @@ public class ShadcnAvatar extends Button {
         double avatarRadius = avatarSize - padding;
         double statusSize = avatarRadius / 3;
         statusCircle = new Circle(statusSize);
-        statusCircle.setFill(Color.web("#3ba55c"));
+        statusCircle.setFill(Color.web("#8dd80a"));
 
         double statusRadius = statusSize;
 

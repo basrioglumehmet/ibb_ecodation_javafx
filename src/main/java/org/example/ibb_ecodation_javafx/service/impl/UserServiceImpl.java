@@ -4,15 +4,20 @@ import javafx.stage.Window;
 import lombok.AllArgsConstructor;
 import org.example.ibb_ecodation_javafx.backup.UserBackup;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
+import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.exception.OptimisticLockException;
 import org.example.ibb_ecodation_javafx.mapper.UserMapper;
+import org.example.ibb_ecodation_javafx.model.JsonBackup;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.repository.UserRepository;
 import org.example.ibb_ecodation_javafx.repository.query.UserQuery;
+import org.example.ibb_ecodation_javafx.service.JsonBackupService;
 import org.example.ibb_ecodation_javafx.service.UserService;
+import org.example.ibb_ecodation_javafx.utils.JsonBackupUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SecurityLogger securityLogger;
     private final UserBackup userBackup;
+    private final JsonBackupService jsonBackupService;
+    private final LanguageService languageService;
 
     /**
      * Yeni bir kullanıcı oluşturur ve şifresini şifreler.
@@ -87,6 +94,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createBackup(List<User> users, Window window) {
         userBackup.export(users, window);
+        //DB'ye backup verisini kaydet
+        var entity = new JsonBackup(0,
+                languageService.translate("new_backup")
+                        .concat(String.format("- %s",
+                                LocalDateTime.now().toString()
+                        )),
+                JsonBackupUtil.generateRawData(users),
+                LocalDateTime.now(),
+                0);
+        jsonBackupService.create(entity);
+
     }
 
     /**
