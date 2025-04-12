@@ -2,7 +2,6 @@
 
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
-
 <?import javafx.scene.control.Label?>
 <?import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar?>
 <?import javafx.scene.layout.VBox?>
@@ -10,24 +9,28 @@
 <?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
 <?import org.example.ibb_ecodation_javafx.ui.dragndrop.Upload?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
 <StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.AdminProfileController">
-    <VBox spacing="20" style="-fx-padding:15;" alignment="TOP_CENTER">
-
-        <VBox maxWidth="300" spacing="30" alignment="CENTER">
-            <HBox alignment="CENTER">
-                <ShadcnAvatar fx:id="shadcnAvatar"/>
-            </HBox>
-            <HBox spacing="20">
-                <ShadcnInput fx:id="email" header="E-posta"/>
-                <ShadcnInput fx:id="password" header="Kullanıcı şifresi"/>
-            </HBox>
-            <HBox  spacing="20">
-
-                <ShadcnInput fx:id="username" header="Kullanıcı adı"/>
-                <ShadcnInput fx:id="role" header="Rol"/>
-            </HBox>
-            <Upload fx:id="upload" />
-            <ShadcnButton fx:id="update" onAction="#updateProfile" text="Kullanıcı bilgilerini güncelle" glyphIconName="UPLOAD" type="SUCCESS" fullWidth="true" />
+    <VBox spacing="20" style="-fx-padding:15;" alignment="TOP_LEFT">
+        <Label fx:id="pageTitle" text="Profile"/>
+        <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <VBox maxWidth="500" spacing="30" alignment="CENTER">
+                <HBox alignment="CENTER">
+                    <ShadcnAvatar fx:id="shadcnAvatar"/>
+                </HBox>
+                <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="CENTER">
+                    <!-- Flexible inputs, they will grow to fill the space -->
+                    <ShadcnInput fx:id="email" header="E-posta" VBox.vgrow="ALWAYS"/>
+                    <ShadcnInput fx:id="password" header="Kullanıcı şifresi" VBox.vgrow="ALWAYS"/>
+                </HBox>
+                <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="CENTER">
+                    <ShadcnInput fx:id="username" header="Kullanıcı adı" VBox.vgrow="ALWAYS"/>
+                    <ShadcnInput  fx:id="role" header="Rol" VBox.vgrow="ALWAYS"/>
+                </HBox>
+                <Upload fx:id="upload"/>
+                <ShadcnButton fx:id="update" onAction="#updateProfile" text="Kullanıcı bilgilerini güncelle" glyphIconName="UPLOAD" type="SUCCESS" fullWidth="true"/>
+            </VBox>
         </VBox>
     </VBox>
 </StackPane>

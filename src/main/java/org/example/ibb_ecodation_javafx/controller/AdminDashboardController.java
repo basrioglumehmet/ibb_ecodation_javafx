@@ -47,7 +47,6 @@ public class AdminDashboardController {
     @FXML private ShadcnButton btnNotes;
     @FXML private ShadcnButton btnBackup;
     @FXML private ShadcnButton btnSettings;
-    @FXML private ShadcnButton btnDocumentation;
     @FXML private ShadcnButton btnLogout;
 
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
@@ -86,7 +85,6 @@ public class AdminDashboardController {
             btnNotes.setText(languageService.translate("dashboard.notes"));
             btnBackup.setText(languageService.translate("dashboard.backup"));
             btnSettings.setText(languageService.translate("dashboard.config"));
-            btnDocumentation.setText(languageService.translate("dashboard.docs"));
             labelUserRole.setText(languageService.translate("dashboard.role.admin"));
         } catch (Exception e) {
             btnHome.setText("Home");
@@ -95,7 +93,6 @@ public class AdminDashboardController {
             btnNotes.setText("Notes");
             btnBackup.setText("Backup");
             btnSettings.setText("Settings");
-            btnDocumentation.setText("Documentation");
             labelUserRole.setText("Admin");
         }
     }

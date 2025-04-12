@@ -43,24 +43,30 @@ public class DynamicTable<T> extends VBox {
     public DynamicTable() {
         this.setSpacing(20);
         this.setPadding(new Insets(20));
-        this.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
-
-
-        VBox.setVgrow(this, Priority.ALWAYS);
-        HBox.setHgrow(this, Priority.ALWAYS);
+        this.setStyle("-fx-background-color: #121214; -fx-background-radius: 20;");
 
         tableContent = new VBox();
-        tableContent.setStyle(" -fx-background-radius: 20; ");
+        tableContent.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
 
         scrollPane = new ScrollPane(tableContent);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setStyle(" -fx-background-radius: 20;");
+        scrollPane.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
+
+        // Ensure ScrollPane's viewport also has the correct background
+        scrollPane.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            if (newSkin != null) {
+                Region viewport = (Region) scrollPane.lookup(".viewport");
+                if (viewport != null) {
+                    viewport.setStyle("-fx-background-color: #202024;");
+                }
+            }
+        });
 
         tableWrapper = new StackPane(scrollPane);
-        tableWrapper.setStyle("-fx-padding:20px;");
+        tableWrapper.setStyle("-fx-background-color: #202024; -fx-padding: 20px; -fx-background-radius: 20;");
         applyRoundedClipping(tableWrapper, 20);
 
         VBox.setVgrow(tableWrapper, Priority.ALWAYS);
@@ -70,12 +76,7 @@ public class DynamicTable<T> extends VBox {
         tableContent.setMaxWidth(Double.MAX_VALUE);
         tableContent.setMaxHeight(Double.MAX_VALUE);
 
-
-
-        StackPane.setMargin(scrollPane, new Insets(0));
-        applyRoundedClipping(scrollPane, 20);
         this.getChildren().addAll(createHeader(), tableWrapper);
-
     }
 
     private void applyRoundedClipping(Region region, double radius) {
@@ -216,12 +217,17 @@ public class DynamicTable<T> extends VBox {
         tableContent.getChildren().clear();
         selectedRows.clear();
 
+        tableWrapper.setStyle("-fx-background-color: #202024; -fx-padding: 20px; -fx-background-radius: 20;");
+        scrollPane.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
+        tableContent.setStyle("-fx-background-color: #202024; -fx-background-radius: 20;");
+
         if (headers.isEmpty()) {
             Label noHeadersLabel = new Label("No headers defined");
             noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: #f27a1a; -fx-padding: 10px;");
             tableContent.getChildren().add(noHeadersLabel);
             return;
         }
+
 
 
 
@@ -306,14 +312,24 @@ public class DynamicTable<T> extends VBox {
         }
 
         store.getState().subscribe(stateRegistry -> {
-            var state = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeSecondaryBackground(state,tableContent);
-            changeSecondaryBackground(state,scrollPane);
-            changeSecondaryBackground(state,tableWrapper);
-            changeThirdBackground(state,headerRow);
-            changeBackground(state,this);
-            changeTextColor(store.getCurrentState(DarkModeState.class).isEnabled(), titleLabel);
-            changeTextColor(store.getCurrentState(DarkModeState.class).isEnabled(), subtitleLabel);
+            boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            // Only update text colors, avoid changing table background
+            changeTextColor(isDarkMode, titleLabel);
+            changeTextColor(isDarkMode, subtitleLabel);
+            headerRow.getChildren().forEach(node -> {
+                if (node instanceof Label) {
+                    changeTextColor(isDarkMode, (Label) node);
+                }
+            });
+            tableContent.getChildren().forEach(node -> {
+                if (node instanceof HBox && node != headerRow) {
+                    ((HBox) node).getChildren().forEach(child -> {
+                        if (child instanceof Label) {
+                            changeTextColor(isDarkMode, (Label) child);
+                        }
+                    });
+                }
+            });
         });
     }
 

@@ -2,12 +2,14 @@ package org.example.ibb_ecodation_javafx.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.service.UserPictureService;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
@@ -29,6 +31,8 @@ public class AdminProfileController {
     @FXML private ShadcnInput password;
     @FXML private ShadcnInput role;
     @FXML private ShadcnButton update;
+    @FXML private Label pageTitle;
+
 
     private final UserService userService;
     private final UserPictureService userPictureService;
@@ -62,6 +66,11 @@ public class AdminProfileController {
 
         setAvatarImageSource();
 
+        pageTitle.setText(languageService.translate("label.profile"));
+        pageTitle.setStyle(
+                "-fx-font-size:24;"+
+                        String.format("-fx-text-fill:%s;",
+                                !store.getCurrentState(DarkModeState.class).isEnabled() ?"white":"black"));
 
         userService.read(1, user -> {
             username.setText(user.getUsername());

@@ -11,6 +11,8 @@ import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.service.UserNotificationService;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -18,7 +20,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.ibb_ecodation_javafx.utils.LabelUtil.updateLabelStyles;
 
 public class NotificationController {
 
@@ -29,6 +30,7 @@ public class NotificationController {
     private final LanguageService languageService;
     private String languageCode;
     private List<Disposable> subscriptions = new ArrayList<>();
+    private final Store store = Store.getInstance();
 
     public NotificationController() {
         userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
@@ -100,7 +102,11 @@ public class NotificationController {
 
     private void updateUIWithLanguage() {
         notificationsLabel.setText(languageService.translate("label.notifications"));
-        updateLabelStyles(notificationsLabel, languageCode);
+        notificationsLabel.setStyle(
+                "-fx-font-size:24;"+
+                        String.format("-fx-text-fill:%s;",
+                                !store.getCurrentState(DarkModeState.class).isEnabled() ?"white":"black"));
+
     }
 
     public void dispose() {
