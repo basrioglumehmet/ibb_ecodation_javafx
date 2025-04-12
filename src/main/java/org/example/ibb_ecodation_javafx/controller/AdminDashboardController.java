@@ -67,7 +67,7 @@ public class AdminDashboardController {
             changeContentColor(darkModeEnabled);
             setAvatarImageSource();
         });
-
+        System.out.println(store.getCurrentState(UserState.class).getUserDetail().toString());
         setAvatarImageSource();
         updateUIText();
 
@@ -80,6 +80,8 @@ public class AdminDashboardController {
     private void updateUIText() {
        var bundle=  languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
         System.out.println(bundle.getString("dashboard.home"));
+        var userState = store.getCurrentState(UserState.class);
+        var userDetail = userState.getUserDetail();
         try {
             btnHome.setText(languageService.translate("dashboard.home"));
             btnNotifications.setText(languageService.translate("dashboard.notifications"));
@@ -88,6 +90,8 @@ public class AdminDashboardController {
             btnBackup.setText(languageService.translate("dashboard.backup"));
             btnSettings.setText(languageService.translate("dashboard.config"));
             labelUserRole.setText(languageService.translate("dashboard.role.admin"));
+            labelUserName.setText(userDetail.getUsername());
+            System.out.println(userDetail.getUsername());
         } catch (Exception e) {
             btnHome.setText("Home");
             btnNotifications.setText("Notifications");

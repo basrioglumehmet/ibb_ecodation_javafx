@@ -33,14 +33,14 @@ public class UserOtpCodeServiceImpl implements UserOtpCodeService {
     }
 
     @Override
-    public void verifyOtp(String otpCode,Consumer<Boolean> callback){
+    public void verifyOtp(String otpCode,Consumer<UserOtpCode> callback){
         var otpEntity = userOtpCodeRepository.read(UserOtpCode.class,UserOtpCodeQuery.READ_BY_OTP_CODE,List.of(otpCode));
         if(Objects.nonNull(otpEntity)){
+            callback.accept(otpEntity);
             delete(otpEntity.getUserId());
-            callback.accept(true);
         }
         else{
-            callback.accept(false);
+            callback.accept(null);
         }
     }
 

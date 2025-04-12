@@ -12,8 +12,12 @@ import javafx.stage.Stage;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.service.UserOtpCodeService;
+import org.example.ibb_ecodation_javafx.service.UserService;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnOtpInput;
@@ -48,15 +52,19 @@ public class OtpController {
     private ShadcnButton backButton;
     @FXML
     private ShadcnButton resendButton;
+    @FXML
+    private final UserService userService;
 
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final UserOtpCodeService userOtpCodeService;
     private final MailService mailService;
     private Disposable languageSubscription;
+    private final Store store = Store.getInstance();
 
     public OtpController() {
         this.userOtpCodeService = SpringContext.getContext().getBean(UserOtpCodeService.class);
         this.mailService = SpringContext.getContext().getBean(MailService.class);
+        this.userService = SpringContext.getContext().getBean(UserService.class);
     }
 
     @FXML
@@ -98,45 +106,71 @@ public class OtpController {
 
         new Thread(() -> {
             try {
-                Thread.sleep(1000); // Simulate verification delay
+                Thread.sleep(1000);
 
-                // Uncomment to use actual OTP verification logic
-//                Platform.runLater(() -> {
-//                    userOtpCodeService.verifyOtp(otpCodes.getCode(), cb -> {
-//                        if (cb) {
-//                            try {
-//                                // Navigate to admin dashboard on success
-//                                SceneUtil.loadScene(OtpController.class, (Stage) rootPane.getScene().getWindow(),
-//                                        String.format(ViewPathConstant.FORMAT, "admin-dashboard"), "Admin Dashboard");
-//                                continueButton.setIsLoading(false);
-//                                otpCodes.setError(false);
-//                            } catch (IOException e) {
-//                                System.out.println("Otp sayfasından dashboard'a geçerken sorun oluştu: " + e.getMessage());
-//                                continueButton.setIsLoading(false);
-//                            }
-//                        } else {
-//                            continueButton.setIsLoading(false);
-//                            otpCodes.setError(true);
-//                        }
-//                    });
-//                });
-
-                // Temporary hardcoded navigation
+                //İçim rahat etmedi callback düzensiz kod yapısı oluşturdu clean code aykırı durum.
+                //Technical debt maalesef oluşabilir çünkü zaman kısıtlı.
                 Platform.runLater(() -> {
-                    try {
-                        SceneUtil.loadScene(
+                    userOtpCodeService.verifyOtp(otpCodes.getCode(), cb -> {
+                        if (cb != null) {
+                                userService.read(cb.getUserId(),user -> {
+                                    user.setVerified(true);
+                                    userService.update(user,user1 -> {
+                                        try {
+                                            continueButton.setIsLoading(false);
+                                            otpCodes.setError(false);
+                                            var userDetail = new UserDetailDto();
+                                            user.setId(user1.getId());
+                                            user.setPassword(user1.getPassword());
+                                            user.setRole(user1.getRole());
+                                            user.setVersion(user.getVersion());
+                                            user.setLocked(user.isLocked());
+                                            user.setUsername(user.getUsername());
+                                            user.setEmail(user.getEmail());
+                                            user.setVerified(user.isVerified());
+                                            var state = new UserState(
+                                                    userDetail,
+                                                    true,
+                                                    null,
+                                                    null
+                                            );
+                                            store.dispatch(UserState.class,state);
+                                            SceneUtil.loadScene(
                                 OtpController.class,
                                 (Stage) rootPane.getScene().getWindow(),
                                 String.format(ViewPathConstant.FORMAT, "admin-dashboard"),
                                 "Admin Dashboard"
                         );
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        System.out.println("Otp sayfasından dashboard'a geçerken sorun oluştu: " + e.getMessage());
-                    } finally {
-                        continueButton.setIsLoading(false);
-                    }
+                                        } catch (IOException e) {
+                                            System.out.println("Otp sayfasından dashboard'a geçerken sorun oluştu: " + e.getMessage());
+                                            continueButton.setIsLoading(false);
+                                        }
+                                    });
+                                });
+
+                        } else {
+                            continueButton.setIsLoading(false);
+                            otpCodes.setError(true);
+                        }
+                    });
                 });
+
+                // Temporary hardcoded navigation
+//                Platform.runLater(() -> {
+//                    try {
+//                        SceneUtil.loadScene(
+//                                OtpController.class,
+//                                (Stage) rootPane.getScene().getWindow(),
+//                                String.format(ViewPathConstant.FORMAT, "admin-dashboard"),
+//                                "Admin Dashboard"
+//                        );
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        System.out.println("Otp sayfasından dashboard'a geçerken sorun oluştu: " + e.getMessage());
+//                    } finally {
+//                        continueButton.setIsLoading(false);
+//                    }
+//                });
 
             } catch (InterruptedException e) {
                 Platform.runLater(() -> {

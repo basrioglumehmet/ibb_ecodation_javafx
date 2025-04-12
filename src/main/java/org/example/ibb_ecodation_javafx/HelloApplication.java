@@ -20,7 +20,7 @@ public class HelloApplication extends Application {
             SceneUtil.loadScene(
                     LoginController.class,
                     stage,
-                    String.format(ViewPathConstant.FORMAT, "admin-dashboard"),
+                    String.format(ViewPathConstant.FORMAT, "login"),
                     "Login"
             );
 

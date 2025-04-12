@@ -4,5 +4,7 @@ public enum AuthenticationResult {
     CREATED,
     EXISTS,
     ERROR,
-    OTP_REQUIRED
+    OTP_REQUIRED,
+    LOCKED,
+    OK
 }

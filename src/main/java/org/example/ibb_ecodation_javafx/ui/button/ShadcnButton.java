@@ -198,8 +198,8 @@ public class ShadcnButton extends Button {
                 hoverTextColor = "black";
                 break;
             case SECONDARY:
-                backgroundColor = "#8b0ff0";
-                hoverColor = "#981eff";
+                backgroundColor = "#0f35f0";
+                hoverColor = "#1c45ff";
                 textColor = "#fff";
                 hoverTextColor = "#fff";
                 break;

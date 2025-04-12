@@ -4,12 +4,15 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.util.Pair;
+import javafx.stage.Stage;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.Authentication;
+import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.model.enums.AuthenticationResult;
 import org.example.ibb_ecodation_javafx.service.AuthenticationService;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
@@ -43,6 +46,9 @@ public class SignInController {
     private Label policyLabel;
     @FXML
     private ShadcnLanguageComboBox languageComboBox;
+
+    @FXML
+    private final Store store = Store.getInstance();
 
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final AuthenticationService authenticationService;
@@ -104,11 +110,29 @@ public class SignInController {
     private void handleSignIn() {
         var authenticationModel = new Authentication(email.getText(), password.getText());
         authenticationService.signin(authenticationModel, callback -> {
-            if (callback.equals(AuthenticationResult.OTP_REQUIRED)) {
+            if (callback.getAuthenticationResult().equals(AuthenticationResult.OTP_REQUIRED)) {
                 try {
-                    SceneUtil.loadSlidingContent(rootPane, "otp-verification");
+                    SceneUtil.loadSlidingContent(rootPane,
+                            "otp-verification");
                 } catch (IOException e) {
                     System.out.println("Error loading OTP screen: " + e.getMessage());
+                }
+            }
+            else if(callback.getAuthenticationResult().equals(AuthenticationResult.OK)){
+                try {
+                    var userDetail = new UserDetailDto(callback.getUser().getId(),
+                            callback.getUserPicture().getImageData(),
+                            callback.getUser().getUsername(),
+                            callback.getUser().getEmail(),
+                            callback.getUser().getRole().toString(),
+                            callback.getUser().isVerified(),
+                            callback.getUser().isLocked());
+                    store.dispatch(UserState.class,new UserState(userDetail,true,null,null));
+                    SceneUtil.loadScene(SignInController.class,(Stage) rootPane.getScene().getWindow(),
+                            "/org/example/ibb_ecodation_javafx/views/admin-dashboard-view.fxml",
+                            "test");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
