@@ -9066,3 +9066,44 @@
 [2025-04-13 00:15:19] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
 [2025-04-13 00:16:33] [INFO] Anasayfa açıldı
 [2025-04-13 00:16:33] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:41:38] [INFO] Anasayfa açıldı
+[2025-04-13 00:41:38] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:41:43] [INFO] Profile opened
+[2025-04-13 00:41:43] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:41:44] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:41:45] [INFO] Profile opened
+[2025-04-13 00:41:45] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:41:47] [INFO] Settings opened
+[2025-04-13 00:41:50] [INFO] Anasayfa açıldı
+[2025-04-13 00:41:52] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:41:53] [INFO] Profile opened
+[2025-04-13 00:41:53] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:42:38] [INFO] Settings opened
+[2025-04-13 00:45:24] [INFO] User(id=51, username=aasdda, email=dsadasdsa@gmail.com, password=$2a$12$lIAWY1LkAWXdMZ2fdU6wJ.QX45g42cw/mE.HHA21gwkrWIstdwQfu, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-13 00:45:25] [INFO] dsadasdsa@gmail.com performed operation on otp mail gönderme
+[2025-04-13 00:51:10] [INFO] Anasayfa açıldı
+[2025-04-13 00:51:10] [INFO] camofoh339@clubemp.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 00:52:04] [INFO] Profile opened
+[2025-04-13 00:52:04] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:52:05] [INFO] Anasayfa açıldı
+[2025-04-13 00:56:16] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 00:56:17] [INFO] Profile opened
+[2025-04-13 00:56:17] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:56:28] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:56:29] [INFO] 48(USER ID) performed operation on bildirim oluşturma
+[2025-04-13 00:56:29] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:56:29] [INFO] Profile updated successfully
+[2025-04-13 00:56:29] [INFO] User(id=48, username=test, email=camofoh339@clubemp.com, password=$2a$12$RkMDiCgawegl1vRLe2Griup231jvOBxU2dt0Gg.Klgo45yd.zG.uC, role=USER, isVerified=true, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-13 00:56:33] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:56:34] [INFO] Profile updated successfully
+[2025-04-13 00:56:34] [INFO] 48(USER ID) performed operation on bildirim oluşturma
+[2025-04-13 00:56:34] [INFO] 48(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-13 00:56:34] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 00:56:34] [INFO] Profile updated successfully
+[2025-04-13 00:56:34] [INFO] User(id=48, username=test, email=camofoh339@clubemp.com, password=$2a$12$RkMDiCgawegl1vRLe2Griup231jvOBxU2dt0Gg.Klgo45yd.zG.uC, role=USER, isVerified=true, isLocked=false, version=3) performed operation on kullanıcı güncelleme
+[2025-04-13 00:57:03] [INFO] 48(USER ID) performed operation on bildirim okuma
+[2025-04-13 01:00:46] [INFO] Profile opened
+[2025-04-13 01:00:46] [INFO] test performed operation on kullanıcı okuma
+[2025-04-13 01:01:40] [INFO] Notlar açıldı
+[2025-04-13 01:03:20] [INFO] Settings opened
+[2025-04-13 01:05:03] [INFO] Anasayfa açıldı
