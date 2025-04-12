@@ -1,5 +1,3 @@
-# ! ATTENTION NOT FINISHED YET !
-ENDS AT (13)
 # Project Objective:
 The goal is to develop a desktop application based on JavaFX, which includes functionalities such as VAT calculations, user management, and system settings.
 
@@ -47,6 +45,13 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 40. **Dynamic Guide**
 
 # UI Introduction
+## Quick Video
+
+<video width="320" height="240" controls>
+  <source src="./tamamlandi.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Dark / Light Mode
 ![img_12.png](img_12.png)
 ## Authentication Page
