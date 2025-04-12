@@ -11,6 +11,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.experimental.UtilityClass;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 
 import java.io.IOException;
 
@@ -19,6 +21,7 @@ import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimati
 @UtilityClass
 public class DialogUtil {
 
+    private Store store = Store.getInstance();
     private static final double MIN_WIDTH = 250;
     private static final double MIN_HEIGHT = 50;
     private static final double MAX_SCREEN_USAGE = 0.55;
@@ -35,7 +38,10 @@ public class DialogUtil {
             VBox contentPane = loader.load();
 
             StackPane root = new StackPane(contentPane);
-            root.setStyle("-fx-background-color: transparent; -fx-border-width:1; -fx-border-color:#222225;");
+            root.setStyle("-fx-background-color: transparent; -fx-border-width:1;"+
+                    String.format("-fx-border-color:%s",
+                            store.getCurrentState(DarkModeState.class).isEnabled() ?
+                            "#e5e5e8":"#2c2c2c"));
             root.setAlignment(javafx.geometry.Pos.CENTER);
 
             Scene scene = new Scene(root);

@@ -320,7 +320,7 @@ public class DynamicTable<T> extends VBox {
     private void updateRowStyle(HBox row, boolean isSelected) {
         String baseStyle = "-fx-padding: 10px; ";
         String radiusStyle = (data.indexOf(selectedRows.get(tableContent.getChildren().indexOf(row) - 1).getValue()) == data.size() - 1 && data.size() > 1) ? "-fx-background-radius: 0 0 10 10;" : "";
-        row.setStyle(baseStyle + (isSelected ? " -fx-background-color: #2a2a2e;" : " -fx-background-color: transparent;") + radiusStyle);
+        row.setStyle(baseStyle + (isSelected ? " -fx-background-color: #202024;" : " -fx-background-color: transparent;") + radiusStyle);
     }
 
     private double calculateCellWidth(String text) {

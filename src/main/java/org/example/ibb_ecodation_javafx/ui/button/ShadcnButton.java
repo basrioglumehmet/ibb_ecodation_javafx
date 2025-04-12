@@ -196,7 +196,7 @@ public class ShadcnButton extends Button {
                 break;
             case GHOST:
                 backgroundColor = "transparent";
-                hoverColor = "#2c2c30";
+                hoverColor = "#f27a1a";
                 textColor = isLightMode ? "#82838b" : "#fff";
                 hoverTextColor = "white";
                 break;

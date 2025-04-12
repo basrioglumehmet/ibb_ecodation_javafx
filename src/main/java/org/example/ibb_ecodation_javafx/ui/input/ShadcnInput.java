@@ -20,7 +20,7 @@ public class ShadcnInput extends VBox {
     private final Label errorLabel = new Label();
     private final TextField textField = new TextField();
     private final Store store = Store.getInstance();
-    private boolean isLightMode;
+    private boolean isDarkMode;
     private final String BASE_HEADER_STYLE = "-fx-font-weight: bold; -fx-font-size: 14px; " +
             "-fx-font-family: 'Poppins';";
     private Disposable disposable;
@@ -47,32 +47,53 @@ public class ShadcnInput extends VBox {
         setFillWidth(true);
         setMaxWidth(Double.MAX_VALUE);
 
-        // Header Label ayarları
-        headerLabel.setStyle(BASE_HEADER_STYLE + String.format("-fx-text-fill: %s;", isLightMode ? "black" : "white"));
+        // Get the dark mode state
+        updateDarkModeState();
+
+        // Setup header label
+        updateHeaderLabelStyle();
+
         if (header.get() != null) {
             headerLabel.setText(header.get());
         }
 
-        // Error Label ayarları
+        // Error label initial setup
         errorLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: red; -fx-font-family: 'Poppins';");
         errorLabel.setVisible(false);
 
-        // TextField ayarları
+        // Text field initial setup
         textField.setPrefWidth(getPrefWidth());
-        textField.setPrefHeight(30); // Sabit yükseklik tanımlıyoruz
-        textField.setStyle("-fx-background-color: white; -fx-font-family: 'Poppins'; -fx-font-size: 16px;");
+        textField.setPrefHeight(30);
+        updateTextFieldStyle();
 
-        // Çocuk elemanları ekle
         updateChildren();
 
-        // Store'dan tema değişikliğini dinle
+        // Subscribe to state changes
         disposable = store.getState().subscribe(stateRegistry -> {
-            isLightMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            updateDarkModeState();
             updateUI();
         });
 
-        // Yüksekliği içeriğe göre ayarla
         adjustHeight();
+    }
+
+    private void updateDarkModeState() {
+        isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+    }
+
+    private void updateHeaderLabelStyle() {
+        headerLabel.setStyle(BASE_HEADER_STYLE + String.format("-fx-text-fill: %s;", isDarkMode ? "white" : "black"));
+    }
+
+    private void updateTextFieldStyle() {
+        textField.setStyle(
+                String.format("-fx-background-color: %s; -fx-border-color: %s; -fx-text-fill:%s;",
+                        isDarkMode ? "#202024" : "white",
+                        isDarkMode ? "#202024":"#e4e4e7",
+                        isDarkMode ? "#fff" : "black") +
+                        "-fx-background-radius: 6px; -fx-border-radius: 6px; -fx-font-size: 16px;  " +
+                        "-fx-border-width: 1;  -fx-font-family: 'Poppins';"
+        );
     }
 
     private void updateChildren() {
@@ -87,27 +108,20 @@ public class ShadcnInput extends VBox {
     }
 
     private void adjustHeight() {
-        // VBox yüksekliğini içeriğe göre ayarla
         double totalHeight = 0;
         if (header.get() != null && !header.get().isEmpty()) {
-            totalHeight += headerLabel.prefHeight(-1); // Header'ın tahmini yüksekliği
+            totalHeight += headerLabel.prefHeight(-1);
         }
-        totalHeight += textField.getPrefHeight(); // TextField yüksekliği
+        totalHeight += textField.getPrefHeight();
         if (errorLabel.isVisible()) {
-            totalHeight += errorLabel.prefHeight(-1); // ErrorLabel yüksekliği
+            totalHeight += errorLabel.prefHeight(-1);
         }
         setPrefHeight(totalHeight);
     }
 
     public void updateUI() {
-        if (header.get() != null && !header.get().isEmpty()) {
-            headerLabel.setStyle(BASE_HEADER_STYLE + String.format("-fx-text-fill: %s;", isLightMode ? "black" : "white"));
-        }
-        textField.setStyle(
-                String.format("-fx-background-color: %s;", isLightMode ? "white" : "white") +
-                        "-fx-background-radius: 6px; -fx-border-radius: 6px; -fx-font-size: 16px; " +
-                        "-fx-border-width: 1; -fx-border-color: #e4e4e7; -fx-font-family: 'Poppins';"
-        );
+        updateHeaderLabelStyle();
+        updateTextFieldStyle();
     }
 
     public void dispose() {
@@ -129,7 +143,6 @@ public class ShadcnInput extends VBox {
             }
         });
     }
-
 
     public void setTextChangeListener(TextChangeListener listener) {
         this.textChangeListener = listener;

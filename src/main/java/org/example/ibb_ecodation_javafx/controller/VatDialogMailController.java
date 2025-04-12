@@ -1,5 +1,6 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -19,17 +20,17 @@ import org.example.ibb_ecodation_javafx.utils.PdfExportUtil;
 import java.io.File;
 import java.util.List;
 
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class VatDialogMailController {
     @FXML private ShadcnNavbar navbar;
     @FXML private VBox rootPaneMail;
     @FXML private ShadcnInput input;
-    @FXML private ShadcnButton closeButton; // For close button
-    @FXML private ShadcnButton sendButton;  // For send button
+    @FXML private ShadcnButton closeButton;
+    @FXML private ShadcnButton sendButton;
 
     private Store store;
+    private Disposable darkModeDisposable;
     private final MailService mailService = SpringContext.getContext().getBean(MailService.class);
     private final PdfExportUtil pdfExportUtil = SpringContext.getContext().getBean(PdfExportUtil.class);
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
@@ -50,12 +51,20 @@ public class VatDialogMailController {
             sendButton.setText(languageService.translate("button.send"));
         }
 
+        // Initialize dark mode
+        boolean initialDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        updateDarkModeStyles(initialDarkMode);
+
         // Dark mode subscription
-        store.getState().subscribe(stateRegistry -> {
+        darkModeDisposable = store.getState().subscribe(stateRegistry -> {
             boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeNavbarColor(darkModeValue, navbar);
-            changeRootPaneColor(darkModeValue, rootPaneMail);
+            updateDarkModeStyles(darkModeValue);
         });
+    }
+
+    private void updateDarkModeStyles(boolean darkModeValue) {
+        changeNavbarColor(darkModeValue, navbar);
+        changeRootPaneColor(darkModeValue, rootPaneMail);
     }
 
     private void exportVatDataToPdf() {
@@ -85,8 +94,8 @@ public class VatDialogMailController {
             System.out.println("PDF exported successfully: " + pdf.getAbsolutePath());
             String emailSubject = languageService.translate("invoice.email.subject");
             String attachmentName = languageService.translate("invoice.attachment.name");
-            System.out.println("Translated subject: " + emailSubject); // Debug
-            System.out.println("Translated attachment: " + attachmentName); // Debug
+            System.out.println("Translated subject: " + emailSubject);
+            System.out.println("Translated attachment: " + attachmentName);
             mailService.sendMailWithAttachment(
                     input.getText(),
                     emailSubject,
@@ -105,6 +114,13 @@ public class VatDialogMailController {
 
     @FXML
     private void closeVatDialog() {
+        dispose();
         DialogUtil.closeDialog();
+    }
+
+    private void dispose() {
+        if (darkModeDisposable != null && !darkModeDisposable.isDisposed()) {
+            darkModeDisposable.dispose();
+        }
     }
 }

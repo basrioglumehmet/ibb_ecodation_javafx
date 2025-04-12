@@ -1,5 +1,6 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -21,34 +22,24 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class VatDialogController {
-    @FXML
-    private ShadcnNavbar navbar;
-    @FXML
-    private VBox rootPane;
-    @FXML
-    private ShadcnInput amount;
-    @FXML
-    private ShadcnInput rate;
-    @FXML
-    private ShadcnInput receipt;
-    @FXML
-    private ShadcnInput description;
-    @FXML
-    private DatePicker transactionDateField; // For transaction date (createdAt)
-    @FXML
-    private Label resultLabel;
-    @FXML
-    private ShadcnButton closeButton; // For close button
-    @FXML
-    private ShadcnButton insertButton; // For insert button
+    @FXML private ShadcnNavbar navbar;
+    @FXML private VBox rootPane;
+    @FXML private ShadcnInput amount;
+    @FXML private ShadcnInput rate;
+    @FXML private ShadcnInput receipt;
+    @FXML private ShadcnInput description;
+    @FXML private DatePicker transactionDateField;
+    @FXML private Label resultLabel;
+    @FXML private ShadcnButton closeButton;
+    @FXML private ShadcnButton insertButton;
 
     private Store store;
     private double totalAmount;
     private double vatAmount;
+    private Disposable darkModeDisposable;
 
     private final VatService vatService = SpringContext.getContext().getBean(VatService.class);
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
@@ -75,22 +66,34 @@ public class VatDialogController {
             insertButton.setText(languageService.translate("button.insert"));
         }
 
-        // Set initial result label text
+        // Style result label
+        resultLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 16px;");
         resultLabel.setText(languageService.translate("label.result"));
 
+        // Initialize dark mode
+        boolean initialDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        updateDarkModeStyles(initialDarkMode);
+
         // Dark mode subscription
-        store.getState().subscribe(stateRegistry -> {
+        darkModeDisposable = store.getState().subscribe(stateRegistry -> {
             boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeNavbarColor(darkModeValue, navbar);
-            changeRootPaneColor(darkModeValue, rootPane);
+            updateDarkModeStyles(darkModeValue);
         });
 
+        // Set up listeners
         amount.setTextChangeListener((newValue) -> calculateVat());
         rate.setTextChangeListener((newValue) -> calculateVat());
     }
 
+    private void updateDarkModeStyles(boolean darkModeValue) {
+        changeNavbarColor(darkModeValue, navbar);
+        changeRootPaneColor(darkModeValue, rootPane);
+        changeTextColor(darkModeValue, resultLabel);
+    }
+
     @FXML
     private void closeVatDialog() {
+        dispose();
         DialogUtil.closeDialog();
     }
 
@@ -121,7 +124,7 @@ public class VatDialogController {
                 BigDecimal.valueOf(vatAmount),
                 BigDecimal.valueOf(totalAmount),
                 receipt.getText(),
-                LocalDateTime.of(transactionDate, LocalTime.MIDNIGHT), // Use midnight for selected date
+                LocalDateTime.of(transactionDate, LocalTime.MIDNIGHT),
                 description.getText(),
                 "VARSAYILAN",
                 false,
@@ -157,5 +160,11 @@ public class VatDialogController {
 
     private boolean isValidNumber(String text) {
         return text != null && !text.trim().isEmpty() && text.matches("\\d+(\\.\\d+)?");
+    }
+
+    private void dispose() {
+        if (darkModeDisposable != null && !darkModeDisposable.isDisposed()) {
+            darkModeDisposable.dispose();
+        }
     }
 }

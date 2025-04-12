@@ -7,19 +7,25 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 
 public class Upload extends StackPane {
 
+    private Store store = Store.getInstance();
     private String droppedImagePath;
     private Label dragLabel;
     private HBox insideContainer;
     private Region region;
-    private String BASE_STYLE = "-fx-background-radius: 4px; -fx-padding: 10;";
+    private String BASE_STYLE = "-fx-background-radius: 4px; -fx-padding: 10; ";
 
     public Upload() {
 
-        this.setStyle("-fx-background-color: #1a1a1e; -fx-border-width:2px; -fx-border-color:#2c2c30;" +
-                "-fx-border-style: dashed;-fx-border-insets: 10; -fx-border-radius: 8px;");
+        this.setStyle(" -fx-border-width:2px; -fx-border-color:#2c2c30;" +
+                "-fx-border-style: dashed;-fx-border-insets: 10; -fx-border-radius: 8px;"+
+                String.format(!store.getCurrentState(DarkModeState.class).isEnabled() ?
+                        "-fx-background-color: #1a1a1e;":
+                        "-fx-background-color: #fff;"));
         this.setPrefSize(Double.MAX_VALUE, 120);
         this.setPadding(new javafx.geometry.Insets(10));
 
@@ -30,7 +36,11 @@ public class Upload extends StackPane {
         HBox.setHgrow(region, Priority.ALWAYS); // Region'un mümkün olduğunca genişlemesini sağlar
 
         dragLabel = new Label("Label");
-        dragLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:white;");
+        dragLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; "+
+                String.format(!store.getCurrentState(DarkModeState.class).isEnabled() ?
+                "-fx-text-fill:white; ":
+                "-fx-text-fill:black; ")
+        );
 
         // Elemanları sırayla ekle
         insideContainer.getChildren().addAll(dragLabel);

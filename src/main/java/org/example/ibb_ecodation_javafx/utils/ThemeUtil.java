@@ -10,6 +10,17 @@ public class ThemeUtil {
         navbar.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "white":"#121214") +
                 "-fx-padding: 10px 20px 10px 20px;");
     }
+    public static void changeLanguageComboBoxBackground(boolean lightModeValue, Node node) {
+        node.setStyle(String.format("%s -fx-background-color: %s; -fx-border-color: %s; -fx-text-fill: %s;",
+                node.getStyle(),lightModeValue ? "#fbfbfb":"#121214",lightModeValue ? "#e5e5e8":"#2e2e2e",
+                lightModeValue ? "#000":"#fff")+
+                "-fx-background-radius: 6px;" +
+                "-fx-border-radius: 6px;   " +
+                "-fx-border-width:1px;   " +
+                "-fx-padding:5;"
+        );
+    }
+
     public static void changeContextMenuBackground(boolean lightModeValue, ContextMenu node) {
         node.setStyle(String.format("%s -fx-background-color: %s; -fx-border-color: %s; -fx-text-fill: %s;",
                 node.getStyle(),lightModeValue ? "#fbfbfb":"#121214",lightModeValue ? "#e5e5e8":"#2e2e2e",
@@ -28,6 +39,10 @@ public class ThemeUtil {
     public static void changeBackground(boolean lightModeValue, Node node) {
         node.setStyle(String.format("%s -fx-background-color: %s;",
                 node.getStyle(),lightModeValue ? "#fbfbfb":"#121214"));
+    }
+    public static void changeContextMenuTextColor(boolean lightModeValue, Node node) {
+        node.setStyle(String.format("%s -fx-text-fill: %s;",
+                node.getStyle(),lightModeValue ? "#000":"#fff"));
     }
     public static void changeTextColorPrimary(boolean lightModeValue, Node node) {
         node.setStyle(String.format("%s -fx-text-fill: %s;",

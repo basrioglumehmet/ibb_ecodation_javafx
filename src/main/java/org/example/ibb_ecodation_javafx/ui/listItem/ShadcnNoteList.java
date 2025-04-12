@@ -12,6 +12,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNote;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import javafx.animation.ScaleTransition;
 import javafx.util.Duration;
@@ -36,6 +38,7 @@ public class ShadcnNoteList extends ScrollPane {
     private javafx.event.EventHandler<javafx.event.ActionEvent> plusCardAction;
     private Consumer<UserNote> updateNoteAction;
     private Consumer<UserNote> removeNoteAction;
+    private Store store = Store.getInstance();
 
     public ShadcnNoteList(LanguageService languageService, String languageCode) {
         this.languageService = languageService;
@@ -134,25 +137,48 @@ public class ShadcnNoteList extends ScrollPane {
      */
     private VBox createNoteCard(UserNote note) {
         VBox card = new VBox(5);
-        card.setStyle("-fx-background-color: #202024; -fx-background-radius: 8px; -fx-padding: 20px;");
+        card.setStyle(" -fx-background-radius: 8px; -fx-padding: 20px;"+
+                String.format("-fx-background-color: %s;",
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
+                                "#202024": // dark
+                                "#fbfbfb"
+                ));
         card.setMaxWidth(Double.MAX_VALUE);
         card.setSpacing(20);
         card.setMinHeight(182);
 
         Label dateLabel = new Label(note.getReportAt().toString());
-        dateLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #fff;");
+        dateLabel.setStyle("-fx-font-size: 12px;"+
+                String.format("-fx-text-fill: %s;",
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
+                                "#fff": // dark
+                                "#000"
+                ));
 
         Label titleLabel = new Label(note.getHeader());
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #fff;");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;"+
+                String.format("-fx-text-fill: %s;",
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
+                                "#fff": // dark
+                                "#000"
+                ));
         titleLabel.setWrapText(true);
 
         FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
         iconView.setGlyphSize(16);
-        iconView.setFill(Paint.valueOf("white"));
+        iconView.setFill(Paint.valueOf( !store.getCurrentState(DarkModeState.class).isEnabled() ?
+                        "#fff": // dark
+                        "#000"
+        ));
         StackPane iconWrapper = new StackPane(iconView);
 
         Label contentLabel = new Label(note.getDescription());
-        contentLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #fff;");
+        contentLabel.setStyle("-fx-font-size: 12px;"+
+                String.format("-fx-text-fill: %s;",
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
+                                "#fff": // dark
+                                "#000"
+                ));
         contentLabel.setWrapText(true);
 
         HBox bottomSection = new HBox(10);

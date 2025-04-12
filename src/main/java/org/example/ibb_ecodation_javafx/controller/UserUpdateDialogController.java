@@ -1,5 +1,6 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -19,8 +20,7 @@ import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class UserUpdateDialogController {
     @FXML
@@ -37,17 +37,17 @@ public class UserUpdateDialogController {
     private ShadcnInput password;
     @FXML
     private ShadcnInput role;
-
     @FXML
     private ShadcnButton close;
-
     @FXML
     private ShadcnButton update;
-
 
     private ShadcnSwitchButton isVerified;
     private ShadcnSwitchButton isLocked;
     private User selectedUser;
+    private Label isVerifiedLabel;
+    private Label isLockedLabel;
+    private Disposable darkModeDisposable;
 
     private final UserService userService = SpringContext.getContext().getBean(UserService.class);
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
@@ -71,20 +71,13 @@ public class UserUpdateDialogController {
         update.setText(languageService.translate("button.update"));
         close.setText(languageService.translate("button.close"));
 
-        // Dark mode subscription
-        store.getState().subscribe(stateRegistry -> {
-            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeNavbarColor(darkModeValue, navbar);
-            changeRootPaneColor(darkModeValue, rootPane);
-        });
-
         // Initialize switch buttons and labels with translations
-        Label isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
-        isVerifiedLabel.setStyle("-fx-text-fill:white; -fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+        isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
+        isVerifiedLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: bold;");
         isVerified = new ShadcnSwitchButton();
 
-        Label isLockedLabel = new Label(languageService.translate("label.isLocked"));
-        isLockedLabel.setStyle("-fx-text-fill:white; -fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+        isLockedLabel = new Label(languageService.translate("label.isLocked"));
+        isLockedLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: bold;");
         isLocked = new ShadcnSwitchButton();
 
         // Load selected user from store
@@ -145,10 +138,27 @@ public class UserUpdateDialogController {
                 }
             }
         });
+
+        // Dark mode subscription
+        boolean initialDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        updateDarkModeStyles(initialDarkMode);
+
+        darkModeDisposable = store.getState().subscribe(stateRegistry -> {
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            updateDarkModeStyles(darkModeValue);
+        });
+    }
+
+    private void updateDarkModeStyles(boolean darkModeValue) {
+        changeNavbarColor(darkModeValue, navbar);
+        changeRootPaneColor(darkModeValue, rootPane);
+        changeTextColor(darkModeValue, isVerifiedLabel);
+        changeTextColor(darkModeValue, isLockedLabel);
     }
 
     @FXML
     private void closeDialog() {
+        dispose();
         DialogUtil.closeDialog();
     }
 
@@ -160,6 +170,12 @@ public class UserUpdateDialogController {
             });
         } else {
             System.err.println("Güncellenecek kullanıcı yok.");
+        }
+    }
+
+    private void dispose() {
+        if (darkModeDisposable != null && !darkModeDisposable.isDisposed()) {
+            darkModeDisposable.dispose();
         }
     }
 }

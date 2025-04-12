@@ -18,8 +18,7 @@ import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class UserDialogController {
     @FXML
@@ -40,7 +39,7 @@ public class UserDialogController {
     private ShadcnButton closeButton; // For close button
     @FXML
     private ShadcnButton insertButton; // For insert button
-
+    private Label isVerifiedLabel;
     private ShadcnSwitchButton isVerifiedSwitch;
 
     private final UserService userService = SpringContext.getContext().getBean(UserService.class);
@@ -71,16 +70,12 @@ public class UserDialogController {
             insertButton.setText(languageService.translate("button.insert"));
         }
 
-        // Dark mode subscription
-        store.getState().subscribe(stateRegistry -> {
-            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeNavbarColor(darkModeValue, navbar);
-            changeRootPaneColor(darkModeValue, rootPane);
-        });
+
 
         // Initialize switch button and label with translation
-        Label isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
-        isVerifiedLabel.setStyle("-fx-text-fill:white; -fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+         isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
+        isVerifiedLabel.setStyle("-fx-font-family:'Poppins'; -fx-font-size:20px; -fx-font-weight:bold;");
+
         isVerifiedSwitch = new ShadcnSwitchButton();
 
         HBox switchContainer = new HBox(20, isVerifiedLabel, isVerifiedSwitch);
@@ -91,6 +86,13 @@ public class UserDialogController {
         } else {
             System.err.println("Error: 'container' VBox is not initialized. Ensure it is defined in the FXML file.");
         }
+        // Dark mode subscription
+        store.getState().subscribe(stateRegistry -> {
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            changeNavbarColor(darkModeValue, navbar);
+            changeRootPaneColor(darkModeValue, rootPane);
+            changeTextColor(darkModeValue,isVerifiedLabel);
+        });
     }
 
     @FXML

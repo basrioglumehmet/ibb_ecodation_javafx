@@ -1,5 +1,6 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -21,33 +22,23 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class VatUpdateDialogController {
-    @FXML
-    private ShadcnNavbar navbar;
-    @FXML
-    private VBox rootPaneUpdate;
-    @FXML
-    private ShadcnInput amount;
-    @FXML
-    private ShadcnInput rate;
-    @FXML
-    private ShadcnInput receipt;
-    @FXML
-    private ShadcnInput description;
-    @FXML
-    private DatePicker transactionDateField; // For transaction date (createdAt)
-    @FXML
-    private Label resultLabel;
-    @FXML
-    private ShadcnButton close;
-    @FXML
-    private ShadcnButton update;
+    @FXML private ShadcnNavbar navbar;
+    @FXML private VBox rootPaneUpdate;
+    @FXML private ShadcnInput amount;
+    @FXML private ShadcnInput rate;
+    @FXML private ShadcnInput receipt;
+    @FXML private ShadcnInput description;
+    @FXML private DatePicker transactionDateField;
+    @FXML private Label resultLabel;
+    @FXML private ShadcnButton close;
+    @FXML private ShadcnButton update;
 
     private Store store;
     private Vat selectedItemData;
+    private Disposable darkModeDisposable;
     private final VatService vatService = SpringContext.getContext().getBean(VatService.class);
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
@@ -73,16 +64,11 @@ public class VatUpdateDialogController {
             update.setText(languageService.translate("button.update"));
         }
 
-        // Set initial result label text
+        // Style result label
+        resultLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 16px;");
         resultLabel.setText(languageService.translate("label.result"));
 
-        // Dark mode subscription
-        store.getState().subscribe(stateRegistry -> {
-            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeNavbarColor(darkModeValue, navbar);
-            changeRootPaneColor(darkModeValue, rootPaneUpdate);
-        });
-
+        // Load selected VAT item
         selectedItemData = store.getCurrentState(VatTableState.class).getSelectedVatItem();
         if (selectedItemData != null) {
             amount.setText(selectedItemData.getBaseAmount().toPlainString());
@@ -92,13 +78,32 @@ public class VatUpdateDialogController {
             transactionDateField.setValue(selectedItemData.getTransactionDate() != null ? selectedItemData.getTransactionDate().toLocalDate() : null);
         }
 
+        // Set up listeners
         amount.setTextChangeListener((newValue) -> calculateVat());
         rate.setTextChangeListener((newValue) -> calculateVat());
+
+        // Initialize dark mode
+        boolean initialDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        updateDarkModeStyles(initialDarkMode);
+
+        // Dark mode subscription
+        darkModeDisposable = store.getState().subscribe(stateRegistry -> {
+            boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
+            updateDarkModeStyles(darkModeValue);
+        });
+
         calculateVat();
+    }
+
+    private void updateDarkModeStyles(boolean darkModeValue) {
+        changeNavbarColor(darkModeValue, navbar);
+        changeRootPaneColor(darkModeValue, rootPaneUpdate);
+        changeTextColor(darkModeValue, resultLabel);
     }
 
     @FXML
     private void closeVatDialog() {
+        dispose();
         DialogUtil.closeDialog();
     }
 
@@ -171,5 +176,11 @@ public class VatUpdateDialogController {
 
     private boolean isValidNumber(String text) {
         return text != null && !text.trim().isEmpty() && text.matches("\\d+(\\.\\d+)?");
+    }
+
+    private void dispose() {
+        if (darkModeDisposable != null && !darkModeDisposable.isDisposed()) {
+            darkModeDisposable.dispose();
+        }
     }
 }
