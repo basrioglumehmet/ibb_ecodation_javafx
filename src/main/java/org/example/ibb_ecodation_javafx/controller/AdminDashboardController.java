@@ -10,6 +10,7 @@ import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
+import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
@@ -68,6 +69,10 @@ public class AdminDashboardController {
             setAvatarImageSource();
             var userDetail = stateRegistry.getState(UserState.class).getUserDetail();
             labelUserName.setText(userDetail.getUsername());
+            if(userDetail.getRole().equals(Role.USER.toString())){
+                btnBackup.setVisible(false);
+                btnBackup.setManaged(false);
+            }
         });
         System.out.println(store.getCurrentState(UserState.class).getUserDetail().toString());
         setAvatarImageSource();
@@ -77,6 +82,8 @@ public class AdminDashboardController {
             String newLangCode = pair.getKey();
             Platform.runLater(() -> updateUIText());
         });
+
+
     }
 
     private void updateUIText() {

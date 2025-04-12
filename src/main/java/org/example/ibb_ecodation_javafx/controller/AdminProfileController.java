@@ -123,6 +123,7 @@ public class AdminProfileController {
         UserDetailDto userDetail = mapUserToUserDetailDto(user, userPicture);
         if(userDetail.getRole().equals(Role.USER.toString())){
             role.setVisible(false);
+            role.setManaged(false);
         }
         username.setText(userDetail.getUsername());
         email.setText(userDetail.getEmail());

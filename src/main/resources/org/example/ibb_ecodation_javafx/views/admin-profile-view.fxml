@@ -16,15 +16,15 @@
         <Label fx:id="pageTitle" text="Profile"/>
         <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
             <VBox maxWidth="500" spacing="30" alignment="CENTER">
-                <HBox alignment="CENTER">
+                <HBox alignment="CENTER_LEFT">
                     <ShadcnAvatar fx:id="shadcnAvatar"/>
                 </HBox>
-                <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="CENTER">
+                <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="CENTER_LEFT">
                     <!-- Flexible inputs, they will grow to fill the space -->
                     <ShadcnInput fx:id="email" header="E-posta" VBox.vgrow="ALWAYS"/>
                     <ShadcnInput fx:id="password" header="Kullanıcı şifresi" VBox.vgrow="ALWAYS"/>
                 </HBox>
-                <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="CENTER">
+                <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="CENTER_LEFT">
                     <ShadcnInput fx:id="username" header="Kullanıcı adı" VBox.vgrow="ALWAYS"/>
                     <ShadcnInput  fx:id="role" header="Rol" VBox.vgrow="ALWAYS"/>
                 </HBox>
