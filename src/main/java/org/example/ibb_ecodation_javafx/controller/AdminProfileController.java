@@ -129,9 +129,6 @@ public class AdminProfileController {
         username.setText(userDetail.getUsername());
         email.setText(userDetail.getEmail());
         role.setText(userDetail.getRole());
-        email.setText(userDetail.getEmail());
-        username.setText(userDetail.getUsername());
-        role.setText(userDetail.getRole());
     }
 
     private UserDetailDto mapUserToUserDetailDto(User user, UserPicture userPicture) {
@@ -155,6 +152,7 @@ public class AdminProfileController {
         username.clearError();
         email.clearError();
         role.clearError();
+        password.clearError();
 
         FieldValidator validator = new FieldValidator();
 
@@ -273,6 +271,28 @@ public class AdminProfileController {
             }
         });
 
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return password.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return value.isEmpty() || value.length() >= 8;
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.password.length");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return password;
+            }
+        });
+
         validator.onError(error -> error.getInput().setError(error.getErrorDetail()));
 
         if (validator.runValidatorEngine().isEmpty()) {
@@ -306,11 +326,13 @@ public class AdminProfileController {
                         }
                     }
 
+                    String finalPassword = passwordValue.isEmpty() ? latestUser.getPassword() : BCrypt.hashpw(passwordValue, BCrypt.gensalt(12));
+
                     User updatedUser = new User(
                             latestUser.getId(),
                             usernameValue,
                             emailValue,
-                            passwordValue.isEmpty() ? latestUser.getPassword() : BCrypt.hashpw(passwordValue, BCrypt.gensalt(12)),
+                            finalPassword,
                             Role.fromString(roleValue),
                             latestUser.isVerified(),
                             latestUser.isLocked(),
@@ -426,7 +448,7 @@ public class AdminProfileController {
     }
 
     private void setDefaultAvatarImage() {
-        shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
+        shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.png"));
     }
 
     private void logAndThrowException(String errorCode, String message) {
