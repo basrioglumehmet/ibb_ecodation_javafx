@@ -20,7 +20,7 @@
  Her yeni bileşen, bir öncekinin altına gelecek şekilde sıralanır.
  -->
 
-<VBox alignment="CENTER" maxHeight="-Infinity" prefHeight="671.0" prefWidth="850.0" spacing="10" style="-fx-padding: 0; -fx-background-color: #f4f2f4;" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.UserController">
+<VBox alignment="CENTER" maxHeight="-Infinity" prefHeight="671.0" prefWidth="850.0" spacing="10" style="-fx-padding: 0; -fx-background-color: #f4f2f4;" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.UserController">
    <HBox alignment="CENTER_LEFT" prefHeight="87.0" prefWidth="850.0" spacing="10.0" style="-fx-padding: 15; -fx-background-color: white;">
       <children>
          <Pane prefHeight="46.0" prefWidth="643.0">

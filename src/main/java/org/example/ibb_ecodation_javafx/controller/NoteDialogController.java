@@ -9,6 +9,7 @@ import org.example.ibb_ecodation_javafx.model.UserNote;
 import org.example.ibb_ecodation_javafx.service.UserNoteService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
@@ -77,9 +78,10 @@ public class NoteDialogController {
 
     @FXML
     private void insert() {
+        var userDetail = store.getCurrentState(UserState.class).getUserDetail();
         UserNote entity = new UserNote();
         entity.setId(0); // Auto-generated
-        entity.setUserId(1); // Hardcoded for now; adjust as needed
+        entity.setUserId(userDetail.getUserId());
         entity.setHeader(headerField.getText() != null ? headerField.getText().trim() : "");
         entity.setDescription(descriptionField.getText() != null ? descriptionField.getText().trim() : "");
         LocalDate date = dateField.getValue();

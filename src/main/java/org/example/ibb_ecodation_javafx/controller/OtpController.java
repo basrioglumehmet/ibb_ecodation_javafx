@@ -120,14 +120,22 @@ public class OtpController {
                                             continueButton.setIsLoading(false);
                                             otpCodes.setError(false);
                                             var userDetail = new UserDetailDto();
-                                            user.setId(user1.getId());
-                                            user.setPassword(user1.getPassword());
-                                            user.setRole(user1.getRole());
-                                            user.setVersion(user.getVersion());
-                                            user.setLocked(user.isLocked());
-                                            user.setUsername(user.getUsername());
-                                            user.setEmail(user.getEmail());
-                                            user.setVerified(user.isVerified());
+                                            userDetail.setUserId(user1.getId());
+                                            userDetail.setPassword(user1.getPassword());
+                                            userDetail.setRole(user1.getRole().toString());
+                                            userDetail.setVersion(user.getVersion());
+                                            userDetail.setLocked(user.isLocked());
+                                            userDetail.setUsername(user.getUsername());
+                                            userDetail.setEmail(user.getEmail());
+                                            userDetail.setVerified(user.isVerified());
+//                                            user.setId(user1.getId());
+//                                            user.setPassword(user1.getPassword());
+//                                            user.setRole(user1.getRole());
+//                                            user.setVersion(user.getVersion());
+//                                            user.setLocked(user.isLocked());
+//                                            user.setUsername(user.getUsername());
+//                                            user.setEmail(user.getEmail());
+//                                            user.setVerified(user.isVerified());
                                             var state = new UserState(
                                                     userDetail,
                                                     true,

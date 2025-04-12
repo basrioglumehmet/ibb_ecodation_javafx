@@ -57,7 +57,8 @@ public class AdminNoteController {
 
     private void refreshNoteList() {
         noteList.clearNotes();
-        List<UserNote> data = userNoteService.readAll(1); // Assuming userId = 1 for now
+        var userDetail = store.getCurrentState(UserState.class).getUserDetail();
+        List<UserNote> data = userNoteService.readAll(userDetail.getUserId());
         System.out.println("Not sayısı: " + data.size());
         for (UserNote userNote : data) {
             noteList.addNote(userNote);

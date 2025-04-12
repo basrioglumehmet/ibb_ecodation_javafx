@@ -19,7 +19,7 @@
 <HBox maxHeight="-Infinity" maxWidth="-Infinity"
       fx:controller="org.example.ibb_ecodation_javafx.controller.LoginController"
       minHeight="-Infinity" minWidth="-Infinity" prefHeight="853.0" prefWidth="1413.0"
-      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+      xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox style="-fx-background-color: black;" alignment="CENTER"
             prefHeight="108.0" prefWidth="590.0"

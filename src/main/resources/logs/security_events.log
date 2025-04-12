@@ -6226,3 +6226,725 @@
 [2025-04-12 14:38:21] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
 [2025-04-12 14:38:25] [INFO] Notlar açıldı
 [2025-04-12 14:38:26] [INFO] Anasayfa açıldı
+[2025-04-12 14:40:29] [INFO] Anasayfa açıldı
+[2025-04-12 14:40:30] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:40:30] [INFO] Profile opened
+[2025-04-12 14:40:30] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:40:31] [INFO] Anasayfa açıldı
+[2025-04-12 14:40:32] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:40:33] [INFO] Profile opened
+[2025-04-12 14:40:33] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:40:44] [INFO] Anasayfa açıldı
+[2025-04-12 14:40:45] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:40:46] [INFO] Profile opened
+[2025-04-12 14:40:46] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:40:47] [INFO] Notlar açıldı
+[2025-04-12 14:40:47] [INFO] Settings opened
+[2025-04-12 14:40:48] [INFO] Profile opened
+[2025-04-12 14:40:48] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:40:50] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:40:50] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 14:40:50] [INFO] Profile updated successfully
+[2025-04-12 14:40:50] [INFO] User(id=29, username=Mehmet Basrioglu2, email=test@test.com, password=$2a$12$Lj1M6Ww0Dmheo24Mi1SLXu0bY0V9jRAc4KGaovM2RmBVWBmVlrT52, role=USER, isVerified=true, isLocked=false, version=21) performed operation on kullanıcı güncelleme
+[2025-04-12 14:40:52] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 14:40:52] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:40:52] [INFO] Profile updated successfully
+[2025-04-12 14:40:52] [INFO] User(id=29, username=Mehmet Basrioglu, email=test@test.com, password=$2a$12$Lj1M6Ww0Dmheo24Mi1SLXu0bY0V9jRAc4KGaovM2RmBVWBmVlrT52, role=USER, isVerified=true, isLocked=false, version=22) performed operation on kullanıcı güncelleme
+[2025-04-12 14:40:53] [INFO] Anasayfa açıldı
+[2025-04-12 14:40:53] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:41:40] [INFO] Anasayfa açıldı
+[2025-04-12 14:41:40] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:41:41] [INFO] Profile opened
+[2025-04-12 14:41:41] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:41:42] [INFO] Notlar açıldı
+[2025-04-12 14:41:43] [INFO] Settings opened
+[2025-04-12 14:41:44] [INFO] Anasayfa açıldı
+[2025-04-12 14:41:44] [INFO] 1(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:42:49] [INFO] Anasayfa açıldı
+[2025-04-12 14:42:49] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 14:42:50] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:42:54] [INFO] Anasayfa açıldı
+[2025-04-12 14:42:56] [INFO] Anasayfa açıldı
+[2025-04-12 14:42:57] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:42:58] [INFO] Anasayfa açıldı
+[2025-04-12 14:42:58] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:42:59] [INFO] Anasayfa açıldı
+[2025-04-12 14:42:59] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:00] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:01] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:01] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:02] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:02] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:03] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:04] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:05] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:07] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:08] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:09] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:09] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:11] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:11] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:12] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:13] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:15] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:15] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:43:16] [INFO] Anasayfa açıldı
+[2025-04-12 14:43:16] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:44:10] [INFO] Anasayfa açıldı
+[2025-04-12 14:44:15] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:44:16] [INFO] Anasayfa açıldı
+[2025-04-12 14:44:17] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:44:18] [INFO] Profile opened
+[2025-04-12 14:44:18] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:45:10] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:45:11] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:28] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:28] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 14:46:36] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:36] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:46] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:47] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:49] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:50] [INFO] Profile opened
+[2025-04-12 14:46:50] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:46:51] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:52] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:53] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:53] [INFO] Profile opened
+[2025-04-12 14:46:53] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:46:55] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:55] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:56] [INFO] Profile opened
+[2025-04-12 14:46:56] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:46:57] [INFO] Anasayfa açıldı
+[2025-04-12 14:46:57] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:46:58] [INFO] Profile opened
+[2025-04-12 14:46:58] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:46:59] [INFO] Notlar açıldı
+[2025-04-12 14:48:09] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:09] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 14:48:10] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:11] [INFO] Notlar açıldı
+[2025-04-12 14:48:12] [INFO] Profile opened
+[2025-04-12 14:48:12] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:12] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:13] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:13] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:14] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:14] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:15] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:16] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:17] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:17] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:19] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:19] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:21] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:22] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:22] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:23] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:24] [INFO] Profile opened
+[2025-04-12 14:48:24] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:26] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:26] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:27] [INFO] Profile opened
+[2025-04-12 14:48:27] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:27] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:28] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:28] [INFO] Profile opened
+[2025-04-12 14:48:28] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:29] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:29] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:30] [INFO] Profile opened
+[2025-04-12 14:48:30] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:31] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:31] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:31] [INFO] Profile opened
+[2025-04-12 14:48:31] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:33] [INFO] Anasayfa açıldı
+[2025-04-12 14:48:33] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:48:33] [INFO] Profile opened
+[2025-04-12 14:48:33] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:48:34] [INFO] Notlar açıldı
+[2025-04-12 14:50:07] [INFO] Anasayfa açıldı
+[2025-04-12 14:50:07] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 14:50:09] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:50:09] [INFO] Profile opened
+[2025-04-12 14:50:09] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:50:11] [INFO] Notlar açıldı
+[2025-04-12 14:50:25] [INFO] Anasayfa açıldı
+[2025-04-12 14:50:25] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:50:25] [INFO] Profile opened
+[2025-04-12 14:50:25] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:50:26] [INFO] Notlar açıldı
+[2025-04-12 14:50:27] [INFO] Anasayfa açıldı
+[2025-04-12 14:50:28] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:50:28] [INFO] Profile opened
+[2025-04-12 14:50:28] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:50:28] [INFO] Notlar açıldı
+[2025-04-12 14:50:30] [INFO] Anasayfa açıldı
+[2025-04-12 14:50:30] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:50:31] [INFO] Profile opened
+[2025-04-12 14:50:31] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:50:31] [INFO] Notlar açıldı
+[2025-04-12 14:50:58] [INFO] Anasayfa açıldı
+[2025-04-12 14:50:59] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:00] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:00] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:01] [INFO] Profile opened
+[2025-04-12 14:51:01] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:02] [INFO] Notlar açıldı
+[2025-04-12 14:51:02] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:03] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:03] [INFO] Profile opened
+[2025-04-12 14:51:03] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:03] [INFO] Notlar açıldı
+[2025-04-12 14:51:04] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:04] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:04] [INFO] Profile opened
+[2025-04-12 14:51:04] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:04] [INFO] Notlar açıldı
+[2025-04-12 14:51:06] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:06] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:06] [INFO] Profile opened
+[2025-04-12 14:51:06] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:07] [INFO] Notlar açıldı
+[2025-04-12 14:51:07] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:07] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:07] [INFO] Profile opened
+[2025-04-12 14:51:07] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:08] [INFO] Notlar açıldı
+[2025-04-12 14:51:09] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:09] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:10] [INFO] Profile opened
+[2025-04-12 14:51:10] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:12] [INFO] Notlar açıldı
+[2025-04-12 14:51:13] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:13] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:13] [INFO] Profile opened
+[2025-04-12 14:51:13] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:13] [INFO] Notlar açıldı
+[2025-04-12 14:51:23] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:24] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:26] [INFO] Profile opened
+[2025-04-12 14:51:26] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:27] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:28] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:29] [INFO] Profile opened
+[2025-04-12 14:51:29] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:31] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:31] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 14:51:31] [INFO] Profile updated successfully
+[2025-04-12 14:51:31] [INFO] User(id=29, username=Mehmet Basrioglu2, email=test@test.com, password=$2a$12$Lj1M6Ww0Dmheo24Mi1SLXu0bY0V9jRAc4KGaovM2RmBVWBmVlrT52, role=USER, isVerified=true, isLocked=false, version=23) performed operation on kullanıcı güncelleme
+[2025-04-12 14:51:32] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:35] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:35] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:38] [INFO] Profile opened
+[2025-04-12 14:51:38] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 14:51:40] [INFO] Mehmet Basrioglu2 performed operation on kullanıcı okuma
+[2025-04-12 14:51:40] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:40] [INFO] Profile updated successfully
+[2025-04-12 14:51:40] [INFO] User(id=29, username=Mehmet Basrioglu, email=test@test.com, password=$2a$12$Lj1M6Ww0Dmheo24Mi1SLXu0bY0V9jRAc4KGaovM2RmBVWBmVlrT52, role=USER, isVerified=true, isLocked=false, version=24) performed operation on kullanıcı güncelleme
+[2025-04-12 14:51:41] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:42] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:43] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:43] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:44] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:45] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:46] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:46] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:47] [INFO] Profile opened
+[2025-04-12 14:51:47] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:48] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:49] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:50] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:51] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:52] [INFO] Profile opened
+[2025-04-12 14:51:52] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:53] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:53] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:53] [INFO] Profile opened
+[2025-04-12 14:51:53] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:55] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:55] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:55] [INFO] Profile opened
+[2025-04-12 14:51:55] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:56] [INFO] Anasayfa açıldı
+[2025-04-12 14:51:57] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:51:57] [INFO] Profile opened
+[2025-04-12 14:51:57] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:51:58] [INFO] Notlar açıldı
+[2025-04-12 14:52:01] [INFO] Settings opened
+[2025-04-12 14:52:07] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:11] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:12] [INFO] Notlar açıldı
+[2025-04-12 14:52:29] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:30] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:31] [INFO] Profil açıldı
+[2025-04-12 14:52:31] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:52:32] [INFO] Notlar açıldı
+[2025-04-12 14:52:32] [INFO] Ayarlar açıldı
+[2025-04-12 14:52:33] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:33] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:33] [INFO] Profil açıldı
+[2025-04-12 14:52:33] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:52:34] [INFO] Notlar açıldı
+[2025-04-12 14:52:35] [INFO] Ayarlar açıldı
+[2025-04-12 14:52:36] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:36] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:37] [INFO] Profil açıldı
+[2025-04-12 14:52:37] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:52:37] [INFO] Notlar açıldı
+[2025-04-12 14:52:37] [INFO] Ayarlar açıldı
+[2025-04-12 14:52:38] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:39] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:39] [INFO] Profil açıldı
+[2025-04-12 14:52:39] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:52:40] [INFO] Notlar açıldı
+[2025-04-12 14:52:41] [INFO] Ayarlar açıldı
+[2025-04-12 14:52:41] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:42] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:43] [INFO] Profil açıldı
+[2025-04-12 14:52:43] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:52:44] [INFO] Notlar açıldı
+[2025-04-12 14:52:45] [INFO] Ayarlar açıldı
+[2025-04-12 14:52:46] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:47] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:47] [INFO] Profil açıldı
+[2025-04-12 14:52:47] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 14:52:47] [INFO] Notlar açıldı
+[2025-04-12 14:52:48] [INFO] Ayarlar açıldı
+[2025-04-12 14:52:52] [INFO] Anasayfa açıldı
+[2025-04-12 14:52:52] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:52:54] [INFO] Anasayfa açıldı
+[2025-04-12 14:58:11] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-12 14:58:11] [INFO] User(id=30, username=Duru, email=basrioglumehmet@gmail.com, password=$2a$12$Bekc2EgQKHk5hEq/bWTgBuT4IR2MANOEfAE7UKFBMjyriZaBvQBqy, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 14:58:11] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-12 14:58:41] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 14:58:42] [INFO] Anasayfa açıldı
+[2025-04-12 14:58:42] [INFO] User(id=30, username=Duru, email=basrioglumehmet@gmail.com, password=$2a$12$Bekc2EgQKHk5hEq/bWTgBuT4IR2MANOEfAE7UKFBMjyriZaBvQBqy, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 14:58:44] [INFO] Anasayfa açıldı
+[2025-04-12 14:58:44] [INFO] 0(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:58:45] [INFO] Anasayfa açıldı
+[2025-04-12 14:58:46] [INFO] 0(USER ID) performed operation on bildirim okuma
+[2025-04-12 14:58:46] [INFO] Profile opened
+[2025-04-12 14:58:47] [INFO] Notlar açıldı
+[2025-04-12 14:58:49] [INFO] All JSON Backups read: count=2
+[2025-04-12 15:00:55] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-12 15:00:55] [INFO] User(id=31, username=Duru, email=basrioglumehmet@gmail.com, password=$2a$12$cMIVFEtFGMGRjTCLTD/Vh.XU7Hbi.Z641ebcIG1ra3kH7zOa1Vz6G, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 15:00:55] [INFO] basrioglumehmet@gmail.com performed operation on otp mail gönderme
+[2025-04-12 15:01:41] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 15:01:41] [INFO] Anasayfa açıldı
+[2025-04-12 15:01:41] [INFO] User(id=31, username=Duru, email=basrioglumehmet@gmail.com, password=$2a$12$cMIVFEtFGMGRjTCLTD/Vh.XU7Hbi.Z641ebcIG1ra3kH7zOa1Vz6G, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 15:02:45] [INFO] yitiye9457@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 15:02:45] [INFO] User(id=32, username=test, email=yitiye9457@clubemp.com, password=$2a$12$tHqST8sBBNTmq/NtaofdbO1pgG5mvc4EQXUAxhOdLUOTrVGeLZZqa, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 15:02:46] [INFO] yitiye9457@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 15:03:07] [INFO] test performed operation on kullanıcı okuma
+[2025-04-12 15:03:07] [INFO] Anasayfa açıldı
+[2025-04-12 15:03:07] [INFO] User(id=32, username=test, email=yitiye9457@clubemp.com, password=$2a$12$tHqST8sBBNTmq/NtaofdbO1pgG5mvc4EQXUAxhOdLUOTrVGeLZZqa, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 15:05:51] [INFO] jasam75772@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 15:05:51] [INFO] User(id=33, username=Deneme, email=jasam75772@clubemp.com, password=$2a$12$tvCP5e9J2pZudtBUoQajReI5yZ6ZqxDxklZ7hQLNvD3orostwRaya, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 15:05:52] [INFO] jasam75772@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 15:06:13] [INFO] Deneme performed operation on kullanıcı okuma
+[2025-04-12 15:06:13] [INFO] Anasayfa açıldı
+[2025-04-12 15:06:13] [INFO] User(id=33, username=Deneme, email=jasam75772@clubemp.com, password=$2a$12$tvCP5e9J2pZudtBUoQajReI5yZ6ZqxDxklZ7hQLNvD3orostwRaya, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 15:06:15] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:06:16] [INFO] Profile opened
+[2025-04-12 15:06:16] [INFO] Deneme performed operation on kullanıcı okuma
+[2025-04-12 15:06:20] [INFO] Notlar açıldı
+[2025-04-12 15:06:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:06:33] [INFO] Notlar açıldı
+[2025-04-12 15:06:34] [INFO] Profile opened
+[2025-04-12 15:06:34] [INFO] Deneme performed operation on kullanıcı okuma
+[2025-04-12 15:06:35] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:06:36] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:06:36] [INFO] Profile opened
+[2025-04-12 15:06:36] [INFO] Deneme performed operation on kullanıcı okuma
+[2025-04-12 15:06:51] [INFO] Deneme performed operation on kullanıcı okuma
+[2025-04-12 15:06:52] [INFO] 33(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 15:06:52] [INFO] Fake Mail 1 performed operation on kullanıcı okuma
+[2025-04-12 15:06:52] [INFO] Profile updated successfully
+[2025-04-12 15:06:52] [INFO] User(id=33, username=Fake Mail 1, email=jasam75772@clubemp.com, password=$2a$12$tvCP5e9J2pZudtBUoQajReI5yZ6ZqxDxklZ7hQLNvD3orostwRaya, role=USER, isVerified=true, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-12 15:06:54] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:06:57] [INFO] Anasayfa açıldı
+[2025-04-12 15:07:13] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:13] [INFO] Anasayfa açıldı
+[2025-04-12 15:07:20] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:20] [INFO] Profile opened
+[2025-04-12 15:07:20] [INFO] Fake Mail 1 performed operation on kullanıcı okuma
+[2025-04-12 15:07:21] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:21] [INFO] Anasayfa açıldı
+[2025-04-12 15:07:22] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:23] [INFO] Notlar açıldı
+[2025-04-12 15:07:24] [INFO] Settings opened
+[2025-04-12 15:07:26] [INFO] Anasayfa açıldı
+[2025-04-12 15:07:28] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:29] [INFO] Profil açıldı
+[2025-04-12 15:07:29] [INFO] Fake Mail 1 performed operation on kullanıcı okuma
+[2025-04-12 15:07:29] [INFO] Notlar açıldı
+[2025-04-12 15:07:31] [INFO] Ayarlar açıldı
+[2025-04-12 15:07:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:07:32] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:32] [INFO] Profil açıldı
+[2025-04-12 15:07:32] [INFO] Fake Mail 1 performed operation on kullanıcı okuma
+[2025-04-12 15:07:33] [INFO] Notlar açıldı
+[2025-04-12 15:07:33] [INFO] Ayarlar açıldı
+[2025-04-12 15:07:34] [INFO] Anasayfa açıldı
+[2025-04-12 15:07:34] [INFO] 33(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:07:34] [INFO] Profil açıldı
+[2025-04-12 15:07:34] [INFO] Fake Mail 1 performed operation on kullanıcı okuma
+[2025-04-12 15:07:34] [INFO] Notlar açıldı
+[2025-04-12 15:07:35] [INFO] Ayarlar açıldı
+[2025-04-12 15:08:18] [INFO] kehix57003@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 15:08:19] [INFO] User(id=34, username=Fake, email=kehix57003@clubemp.com, password=$2a$12$QoPb5NWIANkJUl6DkeuUDO2S3NHh4ipv9Saao9sYsJmeERzR/D4MO, role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-12 15:08:19] [INFO] kehix57003@clubemp.com performed operation on otp mail gönderme
+[2025-04-12 15:08:53] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:08:53] [INFO] Anasayfa açıldı
+[2025-04-12 15:08:53] [INFO] User(id=34, username=Fake, email=kehix57003@clubemp.com, password=$2a$12$QoPb5NWIANkJUl6DkeuUDO2S3NHh4ipv9Saao9sYsJmeERzR/D4MO, role=USER, isVerified=true, isLocked=false, version=1) performed operation on kullanıcı güncelleme
+[2025-04-12 15:08:55] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:08:55] [INFO] Profile opened
+[2025-04-12 15:08:55] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:08:56] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:08:57] [INFO] Profile opened
+[2025-04-12 15:08:57] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:08:57] [INFO] Notlar açıldı
+[2025-04-12 15:09:12] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:12] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:13] [INFO] Profile opened
+[2025-04-12 15:09:13] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:13] [INFO] Notlar açıldı
+[2025-04-12 15:09:14] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:17] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:17] [INFO] Profile opened
+[2025-04-12 15:09:17] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:27] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:27] [INFO] 34(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 15:09:27] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:27] [INFO] Profile updated successfully
+[2025-04-12 15:09:27] [INFO] User(id=34, username=Fake, email=kehix57003@clubemp.com, password=$2a$12$QoPb5NWIANkJUl6DkeuUDO2S3NHh4ipv9Saao9sYsJmeERzR/D4MO, role=USER, isVerified=true, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-12 15:09:29] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:30] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:34] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:35] [INFO] Profile opened
+[2025-04-12 15:09:35] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:36] [INFO] Notlar açıldı
+[2025-04-12 15:09:42] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:43] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:43] [INFO] Profile opened
+[2025-04-12 15:09:43] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:44] [INFO] Notlar açıldı
+[2025-04-12 15:09:45] [INFO] Profile opened
+[2025-04-12 15:09:45] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:47] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:48] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:48] [INFO] Profile opened
+[2025-04-12 15:09:48] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:50] [INFO] Notlar açıldı
+[2025-04-12 15:09:51] [INFO] Settings opened
+[2025-04-12 15:09:54] [INFO] Anasayfa açıldı
+[2025-04-12 15:09:55] [INFO] 34(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:09:56] [INFO] Profile opened
+[2025-04-12 15:09:56] [INFO] Fake performed operation on kullanıcı okuma
+[2025-04-12 15:09:59] [INFO] Notlar açıldı
+[2025-04-12 15:09:59] [INFO] Settings opened
+[2025-04-12 15:14:03] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:03] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:14:05] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:06] [INFO] Profile opened
+[2025-04-12 15:14:06] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:14:09] [INFO] Notlar açıldı
+[2025-04-12 15:14:11] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:11] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:13] [INFO] Profile opened
+[2025-04-12 15:14:13] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:14:13] [INFO] Notlar açıldı
+[2025-04-12 15:14:16] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:17] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:17] [INFO] Profile opened
+[2025-04-12 15:14:17] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:14:18] [INFO] Notlar açıldı
+[2025-04-12 15:14:18] [INFO] Settings opened
+[2025-04-12 15:14:42] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:42] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:14:44] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:44] [INFO] Profile opened
+[2025-04-12 15:14:44] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 15:14:46] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:47] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:47] [INFO] Profile opened
+[2025-04-12 15:14:47] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 15:14:50] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:50] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:51] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:51] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:52] [INFO] Profile opened
+[2025-04-12 15:14:52] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 15:14:53] [INFO] Anasayfa açıldı
+[2025-04-12 15:14:54] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:14:55] [INFO] Profile opened
+[2025-04-12 15:14:55] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 15:14:57] [INFO] Duru performed operation on kullanıcı okuma
+[2025-04-12 15:14:57] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:14:57] [INFO] Profile updated successfully
+[2025-04-12 15:14:57] [INFO] User(id=31, username=Duru V, email=basrioglumehmet@gmail.com, password=$2a$12$cMIVFEtFGMGRjTCLTD/Vh.XU7Hbi.Z641ebcIG1ra3kH7zOa1Vz6G, role=USER, isVerified=true, isLocked=false, version=2) performed operation on kullanıcı güncelleme
+[2025-04-12 15:16:26] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:26] [INFO] 31(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 15:16:26] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:26] [INFO] Profile updated successfully
+[2025-04-12 15:16:26] [INFO] User(id=31, username=Duru V, email=basrioglumehmet@gmail.com, password=$2a$12$cMIVFEtFGMGRjTCLTD/Vh.XU7Hbi.Z641ebcIG1ra3kH7zOa1Vz6G, role=USER, isVerified=true, isLocked=false, version=3) performed operation on kullanıcı güncelleme
+[2025-04-12 15:16:28] [INFO] Anasayfa açıldı
+[2025-04-12 15:16:29] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:16:29] [INFO] Profile opened
+[2025-04-12 15:16:29] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:31] [INFO] Notlar açıldı
+[2025-04-12 15:16:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:16:33] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:16:33] [INFO] Profile opened
+[2025-04-12 15:16:33] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:34] [INFO] Anasayfa açıldı
+[2025-04-12 15:16:35] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:16:36] [INFO] Profile opened
+[2025-04-12 15:16:36] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:37] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:16:37] [INFO] Profile opened
+[2025-04-12 15:16:37] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:38] [INFO] Notlar açıldı
+[2025-04-12 15:16:39] [INFO] Anasayfa açıldı
+[2025-04-12 15:16:39] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:16:39] [INFO] Profile opened
+[2025-04-12 15:16:39] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:40] [INFO] Notlar açıldı
+[2025-04-12 15:16:40] [INFO] Settings opened
+[2025-04-12 15:16:56] [INFO] Anasayfa açıldı
+[2025-04-12 15:16:57] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:16:57] [INFO] Profile opened
+[2025-04-12 15:16:57] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:16:57] [INFO] Notlar açıldı
+[2025-04-12 15:16:58] [INFO] Settings opened
+[2025-04-12 15:23:33] [INFO] Anasayfa açıldı
+[2025-04-12 15:23:33] [INFO] basrioglumehmet@gmail.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:23:35] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:23:36] [INFO] Profile opened
+[2025-04-12 15:23:36] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:23:44] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:23:44] [INFO] Profile updated successfully
+[2025-04-12 15:23:45] [INFO] 31(USER ID) performed operation on bildirim oluşturma
+[2025-04-12 15:23:45] [INFO] 31(USER ID) performed operation on profil fotoğrafı güncelleme
+[2025-04-12 15:23:45] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:23:45] [INFO] Profile updated successfully
+[2025-04-12 15:23:45] [INFO] User(id=31, username=Duru V, email=basrioglumehmet@gmail.com, password=$2a$12$cMIVFEtFGMGRjTCLTD/Vh.XU7Hbi.Z641ebcIG1ra3kH7zOa1Vz6G, role=USER, isVerified=true, isLocked=false, version=4) performed operation on kullanıcı güncelleme
+[2025-04-12 15:23:46] [INFO] Anasayfa açıldı
+[2025-04-12 15:23:47] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:23:47] [INFO] Profile opened
+[2025-04-12 15:23:47] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:23:49] [INFO] Anasayfa açıldı
+[2025-04-12 15:23:50] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:23:51] [INFO] Profile opened
+[2025-04-12 15:23:51] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:23:51] [INFO] Notlar açıldı
+[2025-04-12 15:23:57] [INFO] Anasayfa açıldı
+[2025-04-12 15:23:58] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:23:59] [INFO] Profile opened
+[2025-04-12 15:23:59] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:24:00] [INFO] Notlar açıldı
+[2025-04-12 15:24:01] [INFO] Settings opened
+[2025-04-12 15:24:03] [INFO] Anasayfa açıldı
+[2025-04-12 15:24:04] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:24:04] [INFO] Profil açıldı
+[2025-04-12 15:24:04] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:24:05] [INFO] Anasayfa açıldı
+[2025-04-12 15:24:30] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:24:30] [INFO] Anasayfa açıldı
+[2025-04-12 15:24:31] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:24:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:24:33] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:24:34] [INFO] Profil açıldı
+[2025-04-12 15:24:34] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:24:35] [INFO] Anasayfa açıldı
+[2025-04-12 15:24:37] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:24:38] [INFO] Profil açıldı
+[2025-04-12 15:24:38] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:24:39] [INFO] Notlar açıldı
+[2025-04-12 15:24:40] [INFO] Ayarlar açıldı
+[2025-04-12 15:24:41] [INFO] Notlar açıldı
+[2025-04-12 15:25:09] [INFO] Anasayfa açıldı
+[2025-04-12 15:25:09] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:25:10] [INFO] Profil açıldı
+[2025-04-12 15:25:10] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:25:10] [INFO] Notlar açıldı
+[2025-04-12 15:25:11] [INFO] Anasayfa açıldı
+[2025-04-12 15:25:11] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:25:12] [INFO] Profil açıldı
+[2025-04-12 15:25:12] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:25:12] [INFO] Notlar açıldı
+[2025-04-12 15:25:13] [INFO] Anasayfa açıldı
+[2025-04-12 15:25:13] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:25:14] [INFO] Profil açıldı
+[2025-04-12 15:25:14] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:25:15] [INFO] Anasayfa açıldı
+[2025-04-12 15:25:15] [INFO] 31(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:25:15] [INFO] Profil açıldı
+[2025-04-12 15:25:15] [INFO] Duru V performed operation on kullanıcı okuma
+[2025-04-12 15:25:16] [INFO] Notlar açıldı
+[2025-04-12 15:26:53] [INFO] Anasayfa açıldı
+[2025-04-12 15:26:53] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:26:55] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:26:56] [INFO] Profil açıldı
+[2025-04-12 15:26:56] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:26:57] [INFO] Anasayfa açıldı
+[2025-04-12 15:26:57] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:26:58] [INFO] Profil açıldı
+[2025-04-12 15:26:58] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:26:58] [INFO] Notlar açıldı
+[2025-04-12 15:27:00] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:00] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:01] [INFO] Profil açıldı
+[2025-04-12 15:27:01] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:01] [INFO] Notlar açıldı
+[2025-04-12 15:27:02] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:02] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:02] [INFO] Profil açıldı
+[2025-04-12 15:27:02] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:03] [INFO] Notlar açıldı
+[2025-04-12 15:27:03] [INFO] Ayarlar açıldı
+[2025-04-12 15:27:07] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:07] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:08] [INFO] Notlar açıldı
+[2025-04-12 15:27:08] [INFO] Ayarlar açıldı
+[2025-04-12 15:27:09] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:12] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:13] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:13] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:14] [INFO] Profil açıldı
+[2025-04-12 15:27:14] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:15] [INFO] Notlar açıldı
+[2025-04-12 15:27:16] [INFO] Ayarlar açıldı
+[2025-04-12 15:27:18] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:25] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:26] [INFO] Profil açıldı
+[2025-04-12 15:27:26] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:27] [INFO] Notlar açıldı
+[2025-04-12 15:27:27] [INFO] Ayarlar açıldı
+[2025-04-12 15:27:28] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:29] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:30] [INFO] Profil açıldı
+[2025-04-12 15:27:30] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:30] [INFO] Notlar açıldı
+[2025-04-12 15:27:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:33] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:33] [INFO] Profil açıldı
+[2025-04-12 15:27:33] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:34] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:37] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:38] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:40] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:41] [INFO] Profil açıldı
+[2025-04-12 15:27:41] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:50] [INFO] Mehmet Basrioglu performed operation on kullanıcı okuma
+[2025-04-12 15:27:50] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:27:50] [INFO] Profil başarıyla güncellendi
+[2025-04-12 15:27:50] [INFO] User(id=29, username=Mehmet Basrioglu 2, email=test@test.com, password=$2a$12$Lj1M6Ww0Dmheo24Mi1SLXu0bY0V9jRAc4KGaovM2RmBVWBmVlrT52, role=USER, isVerified=true, isLocked=false, version=25) performed operation on kullanıcı güncelleme
+[2025-04-12 15:27:52] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:53] [INFO] Profil açıldı
+[2025-04-12 15:27:53] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:27:54] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:54] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:55] [INFO] Profil açıldı
+[2025-04-12 15:27:55] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:27:58] [INFO] Anasayfa açıldı
+[2025-04-12 15:27:59] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:27:59] [INFO] Anasayfa açıldı
+[2025-04-12 15:28:00] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:28:00] [INFO] Profil açıldı
+[2025-04-12 15:28:00] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:28:01] [INFO] Notlar açıldı
+[2025-04-12 15:28:02] [INFO] Ayarlar açıldı
+[2025-04-12 15:28:02] [INFO] Anasayfa açıldı
+[2025-04-12 15:28:03] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:28:03] [INFO] Profil açıldı
+[2025-04-12 15:28:03] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:28:03] [INFO] Anasayfa açıldı
+[2025-04-12 15:28:04] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:28:04] [INFO] Profil açıldı
+[2025-04-12 15:28:04] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:28:06] [INFO] Anasayfa açıldı
+[2025-04-12 15:28:06] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:28:07] [INFO] Profil açıldı
+[2025-04-12 15:28:07] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:28:07] [INFO] Notlar açıldı
+[2025-04-12 15:28:07] [INFO] Ayarlar açıldı
+[2025-04-12 15:29:13] [INFO] Anasayfa açıldı
+[2025-04-12 15:29:13] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:29:19] [INFO] Anasayfa açıldı
+[2025-04-12 15:29:19] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:29:21] [INFO] Settings opened
+[2025-04-12 15:29:32] [INFO] Anasayfa açıldı
+[2025-04-12 15:29:32] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:29:36] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:29:38] [INFO] Profil açıldı
+[2025-04-12 15:29:38] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:29:48] [INFO] Notlar açıldı
+[2025-04-12 15:29:49] [INFO] Ayarlar açıldı
+[2025-04-12 15:30:03] [INFO] Anasayfa açıldı
+[2025-04-12 15:30:03] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:30:07] [INFO] Anasayfa açıldı
+[2025-04-12 15:30:08] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:30:09] [INFO] Profil açıldı
+[2025-04-12 15:30:10] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:30:11] [INFO] Notlar açıldı
+[2025-04-12 15:30:12] [INFO] Ayarlar açıldı
+[2025-04-12 15:30:13] [INFO] Anasayfa açıldı
+[2025-04-12 15:30:14] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:30:15] [INFO] Profil açıldı
+[2025-04-12 15:30:15] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:30:15] [INFO] Notlar açıldı
+[2025-04-12 15:30:24] [INFO] Anasayfa açıldı
+[2025-04-12 15:30:25] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:30:25] [INFO] Profil açıldı
+[2025-04-12 15:30:25] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:30:26] [INFO] Notlar açıldı
+[2025-04-12 15:30:26] [INFO] Ayarlar açıldı
+[2025-04-12 15:32:23] [INFO] Anasayfa açıldı
+[2025-04-12 15:32:23] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:32:24] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:32:25] [INFO] Profile opened
+[2025-04-12 15:32:25] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:32:26] [INFO] Notlar açıldı
+[2025-04-12 15:32:27] [INFO] Settings opened
+[2025-04-12 15:32:45] [INFO] Anasayfa açıldı
+[2025-04-12 15:32:45] [INFO] test@test.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-12 15:32:48] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:32:49] [INFO] Anasayfa açıldı
+[2025-04-12 15:32:49] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:32:50] [INFO] Profil açıldı
+[2025-04-12 15:32:50] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:32:50] [INFO] Notlar açıldı
+[2025-04-12 15:32:51] [INFO] Anasayfa açıldı
+[2025-04-12 15:32:52] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:32:53] [INFO] Profil açıldı
+[2025-04-12 15:32:53] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:32:54] [INFO] Notlar açıldı
+[2025-04-12 15:32:54] [INFO] Ayarlar açıldı
+[2025-04-12 15:32:55] [INFO] Anasayfa açıldı
+[2025-04-12 15:32:56] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:32:57] [INFO] Profil açıldı
+[2025-04-12 15:32:57] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:33:03] [INFO] Anasayfa açıldı
+[2025-04-12 15:33:04] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:33:05] [INFO] Profil açıldı
+[2025-04-12 15:33:05] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:33:05] [INFO] Notlar açıldı
+[2025-04-12 15:33:06] [INFO] Anasayfa açıldı
+[2025-04-12 15:33:07] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:33:07] [INFO] Profil açıldı
+[2025-04-12 15:33:07] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:33:08] [INFO] Anasayfa açıldı
+[2025-04-12 15:33:08] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:33:09] [INFO] Profil açıldı
+[2025-04-12 15:33:09] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:33:10] [INFO] Notlar açıldı
+[2025-04-12 15:33:11] [INFO] Anasayfa açıldı
+[2025-04-12 15:33:12] [INFO] 29(USER ID) performed operation on bildirim okuma
+[2025-04-12 15:33:13] [INFO] Profil açıldı
+[2025-04-12 15:33:13] [INFO] Mehmet Basrioglu 2 performed operation on kullanıcı okuma
+[2025-04-12 15:33:14] [INFO] Notlar açıldı

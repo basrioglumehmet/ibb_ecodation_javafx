@@ -38,7 +38,7 @@
                 <Label fx:id="termsLabel" text="By clicking continue, you agree to our"
                        alignment="CENTER" textAlignment="CENTER" wrapText="true"
                        style="-fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-text-fill:white;"
-                       maxWidth="385.0" />
+                       maxWidth="420.0" />
                 <Label fx:id="policyLabel" text="Terms of Service and Privacy Policy."
                        alignment="CENTER" textAlignment="CENTER" wrapText="true"
                        maxWidth="385.0" style="-fx-text-fill:#3b82f6; -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: bold;" />

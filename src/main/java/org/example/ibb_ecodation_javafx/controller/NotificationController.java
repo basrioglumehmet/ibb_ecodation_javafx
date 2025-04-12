@@ -13,6 +13,7 @@ import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -85,7 +86,8 @@ public class NotificationController {
 
     private void loadNotifications() {
         notificationList.getItems().clear();
-        List<UserNotification> data = userNotificationService.readAll(1);
+        var userDetail = store.getCurrentState(UserState.class).getUserDetail();
+        List<UserNotification> data = userNotificationService.readAll(userDetail.getUserId());
         for (UserNotification notification : data) {
 
             ShadcnListItem item = new ShadcnListItem(

@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
@@ -18,6 +20,7 @@ import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
+import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.example.ibb_ecodation_javafx.utils.WebViewUtil;
 
 import java.io.ByteArrayInputStream;
@@ -68,11 +71,14 @@ public class AdminDashboardController {
             changeContentColor(darkModeEnabled);
             setAvatarImageSource();
             var userDetail = stateRegistry.getState(UserState.class).getUserDetail();
-            labelUserName.setText(userDetail.getUsername());
-            if(userDetail.getRole().equals(Role.USER.toString())){
-                btnBackup.setVisible(false);
-                btnBackup.setManaged(false);
+            if(userDetail != null){
+                labelUserName.setText(userDetail.getUsername());
+                if(userDetail.getRole().equals(Role.USER.toString())){
+                    btnBackup.setVisible(false);
+                    btnBackup.setManaged(false);
+                }
             }
+
         });
         System.out.println(store.getCurrentState(UserState.class).getUserDetail().toString());
         setAvatarImageSource();
@@ -83,7 +89,23 @@ public class AdminDashboardController {
             Platform.runLater(() -> updateUIText());
         });
 
+        btnLogout.setOnAction(actionEvent -> logout());
 
+    }
+
+    private void logout(){
+        try{
+            store.dispatch(DarkModeState.class,new DarkModeState(true));
+            store.dispatch(UserState.class,new UserState(null,false,null,null));
+            SceneUtil.loadScene(
+                    OtpController.class,
+                    (Stage) rootPane.getScene().getWindow(),
+                    String.format(ViewPathConstant.FORMAT, "login"),
+                    "Login"
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void updateUIText() {

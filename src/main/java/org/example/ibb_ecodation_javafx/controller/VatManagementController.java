@@ -12,6 +12,7 @@ import org.example.ibb_ecodation_javafx.service.MailService;
 import org.example.ibb_ecodation_javafx.service.VatService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.VatTableState;
 import org.example.ibb_ecodation_javafx.ui.chart.ShadcnBarChart;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
@@ -240,7 +241,8 @@ public class VatManagementController {
     private void refreshData() {
         originalTableData.clear();
         vatTable.clearData();
-        vatService.readAll(1).forEach(this::addVatData);
+        var userDetail = store.getCurrentState(UserState.class).getUserDetail();
+        vatService.readAll(userDetail.getUserId()).forEach(this::addVatData);
         updateBarChartFromTableData();
         applyFilters();
     }
