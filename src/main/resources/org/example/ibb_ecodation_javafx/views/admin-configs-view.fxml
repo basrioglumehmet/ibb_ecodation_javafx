@@ -12,10 +12,8 @@
         <Label fx:id="header" />
         <ShadcnListItem fx:id="languageItem" type="WITH_LANGUAGE_OPTION"/>
         <ShadcnListItem fx:id="themeToggler" type="WITH_SWITCH"/>
-        <ShadcnListItem fx:id="shadcnListItem2" type="WITH_SWITCH"/>
         <HBox fx:id="buttonBox" spacing="10">
-            <ShadcnButton fx:id="saveButton" glyphIconName="COG" fullWidth="false" type="SUCCESS"/>
-            <ShadcnButton fx:id="resetButton" glyphIconName="COG" fullWidth="false" type="DESTRUCTIVE"/>
+            <ShadcnButton onAction="#reset" fx:id="resetButton" glyphIconName="COG" fullWidth="false" type="DESTRUCTIVE"/>
         </HBox>
     </VBox>
 </StackPane>

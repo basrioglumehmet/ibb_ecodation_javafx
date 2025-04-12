@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import io.reactivex.rxjava3.disposables.Disposable;
-import javafx.scene.paint.Paint;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -31,7 +30,7 @@ public class ShadcnListItem extends HBox {
     private final StringProperty descriptionKey = new SimpleStringProperty("default.description");
     private final StringProperty glyphIconName = new SimpleStringProperty("USER");
     private LanguageService languageService;
-    private String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode(); // Default
+    private String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
     private ShadcnSwitchButton switchButton;
     private Disposable switchButtonSubscription;
     private Disposable languageSubscription;
@@ -39,10 +38,10 @@ public class ShadcnListItem extends HBox {
     private boolean isLightMode;
     private Label headerLabel;
     private Label detailLabel;
+    private ShadcnLanguageComboBox languageComboBox;
 
     public ShadcnListItem() {
         this.languageService = SpringContext.getContext().getBean(LanguageService.class);
-
         setContainerStyle();
         initializeStyle(type.get());
     }
@@ -59,44 +58,70 @@ public class ShadcnListItem extends HBox {
         initializeStyle(type);
     }
 
-    public StringProperty glyphIconNameProperty() { return glyphIconName; }
+    public StringProperty glyphIconNameProperty() {
+        return glyphIconName;
+    }
 
-    @FXML public void setGlyphIconName(String glyphIconName) { this.glyphIconName.set(glyphIconName); }
+    @FXML
+    public void setGlyphIconName(String glyphIconName) {
+        this.glyphIconName.set(glyphIconName);
+    }
 
-    @FXML public String getGlyphIconName() { return glyphIconName.get(); }
+    @FXML
+    public String getGlyphIconName() {
+        return glyphIconName.get();
+    }
 
-    @FXML public void setDescriptionText(String description) {
+    @FXML
+    public void setDescriptionText(String description) {
         this.descriptionKey.set(description);
         if (detailLabel != null) {
-            detailLabel.setText(description); // Set directly without translation
+            detailLabel.setText(description);
         }
     }
 
-    public String getDescriptionText() { return descriptionKey.get(); } // Return raw value
+    public String getDescriptionText() {
+        return descriptionKey.get();
+    }
 
-    public ObjectProperty<ListItemType> typeProperty() { return type; }
+    public ObjectProperty<ListItemType> typeProperty() {
+        return type;
+    }
 
-    public ShadcnSwitchButton getSwitchButton() { return switchButton; }
+    public ShadcnSwitchButton getSwitchButton() {
+        return switchButton;
+    }
 
     public void setType(ListItemType type) {
         this.type.set(type);
         initializeStyle(type);
     }
 
-    @FXML public void setHeaderText(String header) {
+    @FXML
+    public void setHeaderText(String header) {
         this.headerKey.set(header);
         if (headerLabel != null) {
-            headerLabel.setText(header); // Set directly without translation
+            headerLabel.setText(header);
         }
     }
 
-    public String getHeaderText() { return headerKey.get(); } // Return raw value
+    public String getHeaderText() {
+        return headerKey.get();
+    }
 
-    public ListItemType getType() { return type.get(); }
+    public ListItemType getType() {
+        return type.get();
+    }
+
+    public void resetLanguage() {
+        if (type.get() == ListItemType.WITH_LANGUAGE_OPTION && languageComboBox != null) {
+            languageComboBox.resetLanguage();
+        }
+    }
 
     private void setContainerStyle() {
-        this.setStyle(String.format("-fx-background-color: %s;", isLightMode ? "#f2f2f3" : "#202024") +
-                " -fx-background-radius: 8px; -fx-padding: 10px;");
+        this.setStyle("-fx-background-color: " + (isLightMode ? "#f2f2f3" : "#202024") +
+                "; -fx-background-radius: 8px; -fx-padding: 10px;");
     }
 
     private void initializeStyle(ListItemType type) {
@@ -105,7 +130,6 @@ public class ShadcnListItem extends HBox {
             languageService.loadAll(languageCode);
         }
         isLightMode = store.getCurrentState(DarkModeState.class).isEnabled();
-        // Translate only during initialization
         headerLabel = new Label(headerKey.get());
         detailLabel = new Label(descriptionKey.get());
 
@@ -148,7 +172,6 @@ public class ShadcnListItem extends HBox {
                 HBox.setHgrow(spacer2, Priority.ALWAYS);
                 FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
                 iconView.setGlyphSize(40);
-                iconView.setFill(Paint.valueOf("white"));
                 StackPane iconWrapper = new StackPane(iconView);
                 HBox rightContainer2 = new HBox(iconWrapper);
                 rightContainer2.setAlignment(Pos.CENTER_RIGHT);
@@ -159,7 +182,7 @@ public class ShadcnListItem extends HBox {
             case WITH_LANGUAGE_OPTION:
                 Region spacer3 = new Region();
                 HBox.setHgrow(spacer3, Priority.ALWAYS);
-                ShadcnLanguageComboBox languageComboBox = new ShadcnLanguageComboBox();
+                languageComboBox = new ShadcnLanguageComboBox();
                 HBox rightContainerLanguage = new HBox(languageComboBox);
                 rightContainerLanguage.setAlignment(Pos.CENTER_RIGHT);
                 rightContainerLanguage.setSpacing(10);
@@ -171,7 +194,6 @@ public class ShadcnListItem extends HBox {
                 languageSubscription = languageComboBox.watchLanguageValue().subscribe(pair -> {
                     this.languageCode = pair.getKey();
                     languageService.loadAll(this.languageCode);
-
                 });
                 break;
         }
@@ -179,13 +201,12 @@ public class ShadcnListItem extends HBox {
 
     private void updateTextStyles(Label header, Label detail) {
         if (header != null && detail != null) {
-            header.setText(headerKey.get()); // Use raw value
-            header.setStyle("-fx-font-weight: bold; " +
-                    String.format("-fx-text-fill: %s;", isLightMode ? "black" : "white") +
-                    " -fx-font-size: 16px;");
-            detail.setText(descriptionKey.get()); // Use raw value
-            detail.setStyle(String.format("-fx-text-fill: %s;", isLightMode ? "black" : "white") +
-                    " -fx-font-size: 14px;");
+            header.setText(headerKey.get());
+            header.setStyle("-fx-font-weight: bold; -fx-text-fill: " + (isLightMode ? "black" : "white") +
+                    "; -fx-font-size: 16px;");
+            detail.setText(descriptionKey.get());
+            detail.setStyle("-fx-text-fill: " + (isLightMode ? "black" : "white") +
+                    "; -fx-font-size: 14px;");
         }
     }
 

@@ -22,7 +22,7 @@ public class Store {
             initialRegistry.registerState(UserState.class, new UserState(new UserDetailDto(), false, null,
                     null));
             initialRegistry.registerState(DarkModeState.class, new DarkModeState(false));
-            initialRegistry.registerState(TranslatorState.class, new TranslatorState(CountryCode.TR));
+            initialRegistry.registerState(TranslatorState.class, new TranslatorState(CountryCode.EN));
             initialRegistry.registerState(VatTableState.class, new VatTableState(new ArrayList<>(),null));
             instance = new Store(initialRegistry);
         }

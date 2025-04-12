@@ -7,7 +7,10 @@ import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.enums.CountryCode;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
@@ -20,11 +23,10 @@ public class AdminConfigController {
     private Store store;
 
     @FXML private ShadcnListItem themeToggler;
-    @FXML private ShadcnListItem shadcnListItem2;
+
     @FXML private ShadcnListItem languageItem;
     @FXML private Label header;
     @FXML private HBox buttonBox;
-    @FXML private ShadcnButton saveButton;
     @FXML private ShadcnButton resetButton;
 
     private Map<String, Disposable> switchButtonSubscriptions = new HashMap<>();
@@ -56,18 +58,15 @@ public class AdminConfigController {
         themeToggler.setHeaderText(languageService.translate("item.theme.header"));
         themeToggler.setDescriptionText(languageService.translate("item.theme.description"));
         themeToggler.setGlyphIconName("MOON");
-        shadcnListItem2.setHeaderText(languageService.translate("item.system.notifications.header"));
-        shadcnListItem2.setDescriptionText(languageService.translate("item.system.notifications.description"));
-        shadcnListItem2.setGlyphIconName("BELL");
+
 
 
         header.setText(languageService.translate("label.admin.settings"));
-        saveButton.setText(languageService.translate("button.save.settings"));
         resetButton.setText(languageService.translate("button.reset.settings"));
 
 
         addSwitchButtonListener(themeToggler);
-        addSwitchButtonListener(shadcnListItem2);
+
 
 
         store.getState().subscribe(stateRegistry -> {
@@ -110,9 +109,6 @@ public class AdminConfigController {
         languageItem.setDescriptionText(languageService.translate("item.language.description"));
         themeToggler.setHeaderText(languageService.translate("item.theme.header"));
         themeToggler.setDescriptionText(languageService.translate("item.theme.description"));
-        shadcnListItem2.setHeaderText(languageService.translate("item.system.notifications.header"));
-        shadcnListItem2.setDescriptionText(languageService.translate("item.system.notifications.description"));
-        saveButton.setText(languageService.translate("button.save.settings"));
         resetButton.setText(languageService.translate("button.reset.settings"));
     }
 
@@ -128,6 +124,18 @@ public class AdminConfigController {
         }
     }
 
+    @FXML
+    public void reset(){
+        store.dispatch(
+                DarkModeState.class,
+                new DarkModeState(false)
+        );
+        languageItem.resetLanguage();
+        store.dispatch(
+                TranslatorState.class,
+                new TranslatorState(CountryCode.EN)
+        );
+    }
     @FXML
     public void onDestroy() {
         dispose();
