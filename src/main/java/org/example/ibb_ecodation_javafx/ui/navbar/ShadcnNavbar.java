@@ -111,7 +111,7 @@ public class ShadcnNavbar extends HBox {
     }
 
     private void updateUI() {
-        String logoPath = isDarkMode ?
+        String logoPath = !isDarkMode ?
                 "/org/example/ibb_ecodation_javafx/assets/logo.png" :
                 "/org/example/ibb_ecodation_javafx/assets/logo_dark.png";
         Image image = new Image(Objects.requireNonNull(

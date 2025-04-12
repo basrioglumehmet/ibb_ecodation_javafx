@@ -32,9 +32,9 @@ public class Upload extends StackPane {
     private String baseTextColor;
 
     public Upload() {
-        baseBackground = !store.getCurrentState(DarkModeState.class).isEnabled() ? "#1a1a1e" : "#fff";
-        baseBorderColor = !store.getCurrentState(DarkModeState.class).isEnabled() ? "#2c2c30" : "#e4e4e7";
-        baseTextColor = !store.getCurrentState(DarkModeState.class).isEnabled() ? "white" : "black";
+        baseBackground = store.getCurrentState(DarkModeState.class).isEnabled() ? "#1a1a1e" : "#fff";
+        baseBorderColor = store.getCurrentState(DarkModeState.class).isEnabled() ? "#2c2c30" : "#e4e4e7";
+        baseTextColor = store.getCurrentState(DarkModeState.class).isEnabled() ? "white" : "black";
 
         this.setStyle("-fx-border-width: 2; -fx-border-color: " + baseBorderColor + ";" +
                 "-fx-border-style: dashed; -fx-border-radius: 8; -fx-background-radius: 8;" +
@@ -63,7 +63,7 @@ public class Upload extends StackPane {
         this.setOnDragExited(event -> handleDragExited(event));
         this.setOnMouseEntered(event -> this.setStyle("-fx-border-width: 2; -fx-border-color: " + baseBorderColor + ";" +
                 "-fx-border-style: dashed; -fx-border-radius: 8; -fx-background-radius: 8;" +
-                "-fx-background-color: " + (!store.getCurrentState(DarkModeState.class).isEnabled() ? "#252529" : "#f5f5f5") + ";"));
+                "-fx-background-color: " + (store.getCurrentState(DarkModeState.class).isEnabled() ? "#252529" : "#f5f5f5") + ";"));
         this.setOnMouseExited(event -> this.setStyle("-fx-border-width: 2; -fx-border-color: " + baseBorderColor + ";" +
                 "-fx-border-style: dashed; -fx-border-radius: 8; -fx-background-radius: 8;" +
                 "-fx-background-color: " + baseBackground + ";"));

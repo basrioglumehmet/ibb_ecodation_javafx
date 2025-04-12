@@ -38,7 +38,7 @@ public class ShadcnListItem extends HBox {
     private Disposable switchButtonSubscription;
     private Disposable languageSubscription;
     private final Store store = Store.getInstance();
-    private boolean isLightMode;
+    private boolean isDarkMode;
     private Label headerLabel;
     private Label detailLabel;
     private ShadcnLanguageComboBox languageComboBox;
@@ -63,10 +63,10 @@ public class ShadcnListItem extends HBox {
     }
 
     private void initializeUI() {
-        isLightMode = store.getCurrentState(DarkModeState.class).isEnabled();
-        baseBackground = isLightMode ? "#f2f2f3" : "#202024";
-        baseBorderColor = isLightMode ? "#e4e4e7" : "#2c2c30";
-        baseTextColor = isLightMode ? "black" : "white";
+        isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        baseBackground = !isDarkMode ? "#f2f2f3" : "#202024";
+        baseBorderColor = !isDarkMode ? "#e4e4e7" : "#2c2c30";
+        baseTextColor = !isDarkMode ? "black" : "white";
 
         setContainerStyle();
         setSpacing(15);
@@ -74,17 +74,17 @@ public class ShadcnListItem extends HBox {
         initializeStyle(type.get());
 
         store.getState().subscribe(stateRegistry -> {
-            isLightMode = stateRegistry.getState(DarkModeState.class).isEnabled();
-            baseBackground = isLightMode ? "#f2f2f3" : "#202024";
-            baseBorderColor = isLightMode ? "#e4e4e7" : "#2c2c30";
-            baseTextColor = isLightMode ? "black" : "white";
+            isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            baseBackground = !isDarkMode ? "#f2f2f3" : "#202024";
+            baseBorderColor = !isDarkMode ? "#e4e4e7" : "#2c2c30";
+            baseTextColor = !isDarkMode ? "black" : "white";
             updateTextStyles(headerLabel, detailLabel);
             setContainerStyle();
         });
 
         type.addListener((obs, oldType, newType) -> initializeStyle(newType));
 
-        setOnMouseEntered(e -> this.setStyle("-fx-background-color: " + (isLightMode ? "#e8e8e8" : "#2c2c30") +
+        setOnMouseEntered(e -> this.setStyle("-fx-background-color: " + (!isDarkMode ? "#e8e8e8" : "#2c2c30") +
                 "; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: " + baseBorderColor +
                 "; -fx-padding: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);"));
         setOnMouseExited(e -> setContainerStyle());
@@ -139,7 +139,7 @@ public class ShadcnListItem extends HBox {
                 HBox.setHgrow(spacer2, Priority.ALWAYS);
                 FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
                 iconView.setGlyphSize(24);
-                iconView.setFill(Color.web(isLightMode ? getColor(this.glyphIconName) : "white"));
+                iconView.setFill(Color.web(!isDarkMode ? getColor(this.glyphIconName) : "white"));
                 StackPane iconWrapper = new StackPane(iconView);
                 iconWrapper.setPadding(new Insets(5));
                 HBox rightContainer2 = new HBox(iconWrapper);

@@ -105,7 +105,7 @@ public class NotificationController {
         notificationsLabel.setStyle(
                 "-fx-font-size:24;"+
                         String.format("-fx-text-fill:%s;",
-                                !store.getCurrentState(DarkModeState.class).isEnabled() ?"white":"black"));
+                                store.getCurrentState(DarkModeState.class).isEnabled() ?"white":"black"));
 
     }
 

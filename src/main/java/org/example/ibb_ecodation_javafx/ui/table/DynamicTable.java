@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
 public class DynamicTable<T> extends VBox {
 
@@ -81,11 +80,11 @@ public class DynamicTable<T> extends VBox {
         this.getChildren().addAll(createHeader(), tableWrapper);
 
         store.getState().subscribe(stateRegistry -> {
-            boolean isLightMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
             this.setStyle(String.format("-fx-background-color: %s; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;" +
                             "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);",
-                    isLightMode ? "#f2f2f3" : "#202024",
-                    isLightMode ? "#e4e4e7" : "#2c2c30"));
+                    !isDarkMode ? "#f2f2f3" : "#202024",
+                    !isDarkMode ? "#e4e4e7" : "#2c2c30"));
             tableContent.setStyle("-fx-background-color: transparent;");
             scrollPane.setStyle("-fx-background-color: transparent;");
             tableWrapper.setStyle("-fx-background-color: transparent; -fx-padding: 10;");
@@ -103,11 +102,11 @@ public class DynamicTable<T> extends VBox {
         VBox titleSection = new VBox(5);
         titleLabel = new Label(headerText);
         titleLabel.setStyle(String.format("-fx-font-family: 'Poppins'; -fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: %s;",
-                store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
+                !store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
 
         subtitleLabel = new Label(descriptionText);
         subtitleLabel.setStyle(String.format("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: %s;",
-                store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
+                !store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
         titleSection.getChildren().addAll(titleLabel, subtitleLabel);
 
         Region spacer = new Region();
@@ -117,7 +116,7 @@ public class DynamicTable<T> extends VBox {
         buttonGroup.setAlignment(Pos.CENTER_RIGHT);
 
         comboBox = new ShadcnComboBox(s -> s);
-        comboBox.setStyle("-fx-background-color: #f27a1a; -fx-background-radius: 6; -fx-text-fill: white; -fx-font-family: 'Poppins'; -fx-font-size: 12; -fx-padding: 6 12;");
+        comboBox.setStyle("-fx-background-color: #5865f2; -fx-background-radius: 6; -fx-text-fill: white; -fx-font-family: 'Poppins'; -fx-font-size: 12; -fx-padding: 6 12;");
         buttonGroup.getChildren().addAll(comboBox);
 
         header.getChildren().addAll(titleSection, spacer, buttonGroup);
@@ -222,14 +221,14 @@ public class DynamicTable<T> extends VBox {
 
         if (headers.isEmpty()) {
             Label noHeadersLabel = new Label("No headers defined");
-            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #f27a1a; -fx-padding: 10;");
+            noHeadersLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #5865f2; -fx-padding: 10;");
             tableContent.getChildren().add(noHeadersLabel);
             return;
         }
 
         headerRow = new HBox();
         headerRow.setStyle(String.format("-fx-background-color: %s; -fx-padding: 10; -fx-background-radius: 8 8 0 0;",
-                store.getCurrentState(DarkModeState.class).isEnabled() ? "#e8e8e8" : "#2c2c30"));
+                !store.getCurrentState(DarkModeState.class).isEnabled() ? "#e8e8e8" : "#2c2c30"));
         headerRow.setSpacing(8);
 
         Label emptyLabel = new Label("");
@@ -242,7 +241,7 @@ public class DynamicTable<T> extends VBox {
         for (int i = 0; i < headers.size(); i++) {
             Label headerLabel = new Label(headers.get(i));
             headerLabel.setStyle(String.format("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-font-weight: bold; -fx-padding: 5; -fx-text-fill: %s;",
-                    store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
+                    !store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
             headerLabel.setMinWidth(headerWidths.get(i));
             headerLabel.setMaxWidth(headerWidths.get(i));
             headerLabel.setAlignment(Pos.CENTER);
@@ -253,14 +252,14 @@ public class DynamicTable<T> extends VBox {
 
         if (data.isEmpty()) {
             Label noDataLabel = new Label("No data available");
-            noDataLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #f27a1a; -fx-padding: 10;");
+            noDataLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #5865f2; -fx-padding: 10;");
             tableContent.getChildren().add(noDataLabel);
         } else {
             for (int i = 0; i < data.size(); i++) {
                 List<String> row = data.get(i);
                 final HBox dataRow = new HBox();
                 boolean isEvenRow = (i % 2 == 0);
-                String rowBackground = store.getCurrentState(DarkModeState.class).isEnabled() ?
+                String rowBackground = !store.getCurrentState(DarkModeState.class).isEnabled() ?
                         (isEvenRow ? "#ffffff" : "#f5f5f5") : (isEvenRow ? "#2c2c30" : "#252529");
                 String radiusStyle = (i == 0 && i == data.size() - 1) ? "-fx-background-radius: 0 0 8 8;" :
                         (i == 0) ? "-fx-background-radius: 0;" :
@@ -307,7 +306,7 @@ public class DynamicTable<T> extends VBox {
                                 (rowIndex == 0) ? "-fx-background-radius: 0;" :
                                         (rowIndex == data.size() - 1) ? "-fx-background-radius: 0 0 8 8;" : "-fx-background-radius: 4;";
                         dataRow.setStyle(String.format("-fx-padding: 8; -fx-background-color: %s; %s",
-                                store.getCurrentState(DarkModeState.class).isEnabled() ? "#f0f0f0" : "#2c2c30", hoverRadiusStyle));
+                                !store.getCurrentState(DarkModeState.class).isEnabled() ? "#f0f0f0" : "#2c2c30", hoverRadiusStyle));
                     }
                 });
                 dataRow.setOnMouseExited(e -> {
@@ -322,7 +321,7 @@ public class DynamicTable<T> extends VBox {
                     String cellText = j < row.size() ? row.get(j) : "";
                     Label cellLabel = new Label(cellText);
                     cellLabel.setStyle(String.format("-fx-font-family: 'Poppins'; -fx-font-size: 13; -fx-padding: 5; -fx-text-fill: %s;",
-                            store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
+                            !store.getCurrentState(DarkModeState.class).isEnabled() ? "#000" : "#fff"));
                     cellLabel.setMinWidth(headerWidths.get(j));
                     cellLabel.setMaxWidth(headerWidths.get(j));
                     cellLabel.setAlignment(Pos.CENTER);
@@ -336,14 +335,14 @@ public class DynamicTable<T> extends VBox {
 
     private void updateRowStyle(HBox row, boolean isSelected, int rowIndex) {
         boolean isEvenRow = (rowIndex % 2 == 0);
-        String rowBackground = store.getCurrentState(DarkModeState.class).isEnabled() ?
+        String rowBackground = !store.getCurrentState(DarkModeState.class).isEnabled() ?
                 (isEvenRow ? "#ffffff" : "#f5f5f5") : (isEvenRow ? "#2c2c30" : "#252529");
         String radiusStyle = (rowIndex == 0 && data.size() == 1) ? "-fx-background-radius: 0 0 8 8;" :
                 (rowIndex == 0) ? "-fx-background-radius: 0;" :
                         (rowIndex == data.size() - 1) ? "-fx-background-radius: 0 0 8 8;" : "-fx-background-radius: 4;";
         String baseStyle = "-fx-padding: 8;";
         row.setStyle(baseStyle + (isSelected ?
-                String.format("-fx-background-color: %s; %s", store.getCurrentState(DarkModeState.class).isEnabled() ? "#d9d9d9" : "#3a3a3e", radiusStyle) :
+                String.format("-fx-background-color: %s; %s", !store.getCurrentState(DarkModeState.class).isEnabled() ? "#d9d9d9" : "#3a3a3e", radiusStyle) :
                 String.format("-fx-background-color: %s; %s", rowBackground, radiusStyle)));
     }
 

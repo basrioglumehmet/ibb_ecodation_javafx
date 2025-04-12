@@ -8,8 +8,8 @@ import org.example.ibb_ecodation_javafx.statemanagement.AppState;
 public class DarkModeState extends AppState {
     private  boolean isEnabled;
 
-    public DarkModeState setIsEnabled(boolean username) {
-        return new DarkModeState(true);
+    public DarkModeState setIsEnabled(boolean state) {
+        return new DarkModeState(state);
     }
 
     public boolean isEnabled() {

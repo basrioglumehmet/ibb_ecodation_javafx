@@ -22,7 +22,7 @@ public class FontAwesomeUtil {
                 color = "#ed4245";
                 break;
             case "INFO":
-                color = "#f27a1a";
+                color = "#5865f2";
                 break;
             default:
                 color = "white";

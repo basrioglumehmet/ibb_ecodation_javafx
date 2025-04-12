@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.BooleanProperty;
@@ -22,8 +21,6 @@ import javafx.application.Platform;
 import org.example.ibb_ecodation_javafx.ui.spinner.LoadingSpinner;
 import org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil;
 import javafx.scene.layout.Region;
-
-import java.util.Objects;
 
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimationForNode;
@@ -39,7 +36,7 @@ public class ShadcnButton extends Button {
     private final BooleanProperty isIconOnly = new SimpleBooleanProperty(false);
     private final StringProperty align = new SimpleStringProperty("CENTER");
     private final Store store = Store.getInstance();
-    private boolean isLightMode = false;
+    private boolean isDarkMode = false;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final BooleanProperty isLoading = new SimpleBooleanProperty(false);
     private LoadingSpinner loadingSpinner;
@@ -151,8 +148,8 @@ public class ShadcnButton extends Button {
         Disposable stateSubscription = store.getState().subscribe(stateRegistry -> {
             boolean darkModeValue = stateRegistry.getState(DarkModeState.class).isEnabled();
             Platform.runLater(() -> {
-                if (darkModeValue != isLightMode) {
-                    isLightMode = darkModeValue;
+                if (darkModeValue != isDarkMode) {
+                    isDarkMode = darkModeValue;
                     updateButtonStyle(type);
                 }
             });
@@ -190,14 +187,14 @@ public class ShadcnButton extends Button {
 
         switch (type) {
             case PRIMARY:
-                backgroundColor = "#f27a1a";
-                hoverColor = "#ff8b39";
+                backgroundColor = "#5865f2";
+                hoverColor = "#4654c0";
                 textColor = "white";
                 break;
             case GHOST:
                 backgroundColor = "transparent";
-                hoverColor = "#f27a1a";
-                textColor = isLightMode ? "#82838b" : "#fff";
+                hoverColor = "#5865f2";
+                textColor = !isDarkMode ? "#82838b" : "#fff";
                 hoverTextColor = "white";
                 break;
             case SECONDARY:
@@ -224,7 +221,7 @@ public class ShadcnButton extends Button {
         }
 
         setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
-        setWrapText(true); // Enable text wrapping
+        setWrapText(true);
 
         FontAwesomeIconView iconView = !glyphIconName.get().isEmpty() ? getGlyphIcon(this.glyphIconName) : null;
         if (iconView != null) {
@@ -267,19 +264,17 @@ public class ShadcnButton extends Button {
 
     private void updateWidth() {
         if (fullWidth.get()) {
-            setMinWidth(0); // Allow shrinking if needed
-            setMaxWidth(Double.MAX_VALUE); // Allow growing to fill container
+            setMinWidth(0);
+            setMaxWidth(Double.MAX_VALUE);
             Parent parent = getParent();
             if (parent instanceof Region) {
                 Region regionParent = (Region) parent;
-                // Bind prefWidth to parent's width
                 prefWidthProperty().bind(regionParent.widthProperty());
             } else {
-                // Fallback if parent isn’t a Region or isn’t set yet
+
                 setPrefWidth(USE_COMPUTED_SIZE);
             }
         } else {
-            // Unbind and reset to default behavior
             prefWidthProperty().unbind();
             setMinWidth(USE_COMPUTED_SIZE);
             setMaxWidth(isIconOnly.get() ? 30 : Double.MAX_VALUE);

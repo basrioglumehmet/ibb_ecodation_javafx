@@ -55,7 +55,7 @@ public class ShadcnNoteList extends ScrollPane {
 
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(15));
-        gridPane.setHgap(8); // Reduced to match second image
+        gridPane.setHgap(8);
         gridPane.setVgap(8);
         gridPane.setStyle("-fx-background-color: transparent;");
         gridPane.setMaxWidth(Double.MAX_VALUE);
@@ -79,15 +79,15 @@ public class ShadcnNoteList extends ScrollPane {
         glyphIconName.set("CLOCK");
         updateGrid(false);
 
-        // Subscribe to DarkModeState Changes
+
         darkModeSubscription = store.getState().subscribe(stateRegistry -> {
             updateTitleStyle();
-            updateGrid(false); // Rebuild cards to update colors
+            updateGrid(false);
         });
     }
 
     private void updateTitleStyle() {
-        boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+        boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
         pageTitle.setStyle("-fx-font-size: 24; -fx-font-family: 'Poppins';" +
                 String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
     }
@@ -134,7 +134,7 @@ public class ShadcnNoteList extends ScrollPane {
     }
 
     private VBox createNoteCard(UserNote note) {
-        boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+        boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
 
         VBox card = new VBox(8);
         card.setStyle("-fx-background-radius: 8;" +
@@ -143,8 +143,7 @@ public class ShadcnNoteList extends ScrollPane {
                         isDarkMode ? "#202024" : "#f5f5f5",
                         isDarkMode ? "#2c2c30" : "#e4e4e7"));
         card.setMaxWidth(Double.MAX_VALUE);
-        card.setMinHeight(160); // Reduced to match second image
-
+        card.setMinHeight(160);
         card.setOnMouseEntered(e -> card.setStyle("-fx-background-radius: 8;" +
                 String.format("-fx-background-color: %s; -fx-padding: 10; " +
                                 "-fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
@@ -166,7 +165,7 @@ public class ShadcnNoteList extends ScrollPane {
         titleLabel.setWrapText(true);
 
         FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
-        iconView.setGlyphSize(16); // Reduced to match second image
+        iconView.setGlyphSize(16);
         iconView.setFill(Paint.valueOf(isDarkMode ? "#fff" : "#000"));
         StackPane iconWrapper = new StackPane(iconView);
         iconWrapper.setPadding(new Insets(2));
@@ -238,21 +237,21 @@ public class ShadcnNoteList extends ScrollPane {
 
         plusCard = new Button();
         plusCard.setStyle("-fx-background-radius: 8;" +
-                "-fx-background-color: #f27a1a; -fx-text-fill: white;" +
+                "-fx-background-color: #5865f2; -fx-text-fill: white;" +
                 "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;");
         plusCard.setMaxWidth(Double.MAX_VALUE);
-        plusCard.setPrefHeight(160); // Reduced to match second image
+        plusCard.setPrefHeight(160);
 
         plusCard.setOnMouseEntered(e -> plusCard.setStyle("-fx-background-radius: 8;" +
-                "-fx-background-color: #e66b0e; -fx-text-fill: white;" +
+                "-fx-background-color: #4654c0; -fx-text-fill: white;" +
                 "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
         plusCard.setOnMouseExited(e -> plusCard.setStyle("-fx-background-radius: 8;" +
-                "-fx-background-color: #f27a1a; -fx-text-fill: white;" +
+                "-fx-background-color: #5865f2; -fx-text-fill: white;" +
                 "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
 
         var plusIconProperty = new SimpleStringProperty("PLUS");
         FontAwesomeIconView plusIcon = FontAwesomeUtil.getGlyphIcon(plusIconProperty);
-        plusIcon.setGlyphSize(16); // Reduced to match second image
+        plusIcon.setGlyphSize(16);
         plusIcon.setFill(Paint.valueOf("white"));
 
         Label plusLabel = new Label(languageService.translate("label.newnote"));

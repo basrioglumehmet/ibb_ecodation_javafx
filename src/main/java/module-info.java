@@ -25,6 +25,7 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.ui.splitpane to javafx.fxml, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.ui.chart to javafx.fxml, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.ui.table to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.ui.codehighlighter to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.service.impl to spring.beans, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.mapper to spring.beans;
     opens org.example.ibb_ecodation_javafx.repository to spring.beans;
@@ -57,6 +58,7 @@ module org.example.ibb_ecodation_javafx {
     requires org.apache.logging.log4j;
     requires java.sql;
     requires org.apache.commons.io;
+    requires richtextfx;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;

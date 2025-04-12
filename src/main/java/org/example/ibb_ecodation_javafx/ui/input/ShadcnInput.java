@@ -30,15 +30,15 @@ public class ShadcnInput extends VBox {
     private Disposable disposable;
     private TextChangeListener textChangeListener;
 
-    // Style Constants (Updated with New Colors)
+
     private static final String FONT_FAMILY = "Poppins";
     private static final String HEADER_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 13px; -fx-font-weight: 500;";
     private static final String TEXTFIELD_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 14px; -fx-padding: 6 10 6 10; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-border-width: 1px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);";
     private static final String ERROR_STYLE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 11px; -fx-text-fill: #FF5555; -fx-font-weight: 400;";
     private static final String LIGHT_MODE = "-fx-background-color: #f2f2f3; -fx-border-color: #e4e4e7; -fx-text-fill: #1C2526;";
-    private static final String LIGHT_MODE_FOCUS = "-fx-border-color: #f27a1a; -fx-background-color: #FFFFFF;";
+    private static final String LIGHT_MODE_FOCUS = "-fx-border-color: #5865f2; -fx-background-color: #FFFFFF;";
     private static final String DARK_MODE = "-fx-background-color: #2c2c30; -fx-border-color: #2b2b30; -fx-text-fill: #FFFFFF;";
-    private static final String DARK_MODE_FOCUS = "-fx-border-color:#f27a1a; -fx-background-color: #38383c;";
+    private static final String DARK_MODE_FOCUS = "-fx-border-color:#5865f2; -fx-background-color: #38383c;";
     private static final String DARK_MODE_HOVER = "-fx-background-color: #343438;";
     private static final String ERROR_OUTLINE = "-fx-border-color: #FF5555;";
 
@@ -53,7 +53,7 @@ public class ShadcnInput extends VBox {
     }
 
     public ShadcnInput(String headerText) {
-        super(6); // Reduced spacing to match the compact look
+        super(6);
         setHeader(headerText);
         initializeUI();
         setupBindings();
@@ -85,12 +85,12 @@ public class ShadcnInput extends VBox {
 
         // Subscribe to Dark Mode
         disposable = store.getState().subscribe(stateRegistry -> {
-            boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+            boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
             updateStyles(isDarkMode);
         });
 
         // Initial Theme
-        updateStyles(!store.getCurrentState(DarkModeState.class).isEnabled());
+        updateStyles(store.getCurrentState(DarkModeState.class).isEnabled());
     }
 
     // Update Styles Based on Theme
@@ -123,7 +123,7 @@ public class ShadcnInput extends VBox {
             textField.setStyle(style);
         });
 
-        // Hover Effect (Only for Dark Mode to Match the Image)
+
         if (isDarkMode) {
             textField.setOnMouseEntered(e -> {
                 if (!textField.isFocused() && !hasError) {

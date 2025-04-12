@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import static org.example.ibb_ecodation_javafx.utils.SceneUtil.loadContent;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeSidebarColor;
 
 public class AdminDashboardController {
 
@@ -60,8 +62,8 @@ public class AdminDashboardController {
 
         store.getState().subscribe(stateRegistry -> {
             boolean darkModeEnabled = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeSidebarColor(darkModeEnabled);
-            changeNavbarColor(darkModeEnabled);
+            changeSidebarColor(darkModeEnabled,sidebar,sidebarBottom,sidebarBottomInsideContainer,shadcnAvatar);
+            changeNavbarColor(darkModeEnabled,navbar);
             changeContentColor(darkModeEnabled);
             setAvatarImageSource();
         });
@@ -97,22 +99,14 @@ public class AdminDashboardController {
         }
     }
 
-    private void changeContentColor(boolean lightMode) {
-        mainContentArea.setStyle(String.format("-fx-background-radius: 10px 0px 0px 0px; -fx-background-color: %s;", lightMode ? "white" : "#1a1a1e"));
-        rootPane.setStyle(String.format("-fx-background-color: %s;", lightMode ? "white" : "#121214"));
+    private void changeContentColor(boolean isDarkMode) {
+        mainContentArea.setStyle(String.format("-fx-background-radius: 10px 0px 0px 0px; -fx-background-color: %s;", !isDarkMode ? "white" : "#1a1a1e"));
+        rootPane.setStyle(String.format("-fx-background-color: %s;", !isDarkMode ? "white" : "#121214"));
     }
 
-    private void changeNavbarColor(boolean lightMode) {
-        navbar.setStyle(String.format("-fx-background-color: %s;", lightMode ? "white" : "#121214") + "-fx-padding: 10px 20px 10px 20px;");
-    }
 
-    private void changeSidebarColor(boolean lightMode) {
-        sidebar.setStyle(String.format("-fx-background-color: %s;", lightMode ? "white" : "#121214"));
-        sidebarBottom.setStyle("-fx-padding: 10;");
-        sidebarBottomInsideContainer.setStyle("-fx-background-radius: 14px; -fx-padding: 10;" +
-                String.format("-fx-background-color: %s;", lightMode ? "#f2f2f3" : "#202024"));
-        shadcnAvatar.setAvatarBorder(lightMode ? javafx.scene.paint.Color.web("#f2f2f3") : javafx.scene.paint.Color.web("#202024"));
-    }
+
+
 
     private void setAvatarImageSource() {
         try {

@@ -44,13 +44,13 @@ public class ShadcnComboBox<T> extends Button {
             }
         });
 
-        // Subscribe to dark mode changes
+
         store.getState().subscribe(stateRegistry -> {
             boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
             updateDarkModeStyles(isDarkMode);
         });
 
-        // Apply initial dark mode styles
+
         updateDarkModeStyles(store.getCurrentState(DarkModeState.class).isEnabled());
     }
 
@@ -97,7 +97,7 @@ public class ShadcnComboBox<T> extends Button {
         titleLabel = new Label(title);
         titleLabel.setStyle("-fx-font-weight: bold;");
         boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
-        // Use primary text color (always white) to match the image
+
         changeTextColorPrimary(isDarkMode, titleLabel);
 
         header.getChildren().add(titleLabel);
@@ -121,7 +121,7 @@ public class ShadcnComboBox<T> extends Button {
 
         // Hover effects
         content.setOnMouseEntered(e -> {
-            content.setStyle("-fx-background-color: #f27a1a; -fx-padding: 5; -fx-background-radius: 3px;");
+            content.setStyle("-fx-background-color: #5865f2; -fx-padding: 5; -fx-background-radius: 3px;");
             label.setStyle("-fx-text-fill: #fff;"); // White text on hover
         });
         content.setOnMouseExited(e -> {
@@ -129,10 +129,8 @@ public class ShadcnComboBox<T> extends Button {
             changeTextColor(isDarkMode, label); // Revert to default (#000 light, #fff dark)
         });
 
-        // Action
         item.setOnAction(event -> publish(key, value));
 
-        // Subscribe to dark mode changes
         store.getState().subscribe(stateRegistry -> {
             boolean darkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeTextColor(darkMode, label); // Update text color on mode change
@@ -151,16 +149,13 @@ public class ShadcnComboBox<T> extends Button {
     }
 
     private void updateDarkModeStyles(boolean isDarkMode) {
-        // Button styling with primary background
-        changeBackgroundPrimary(isDarkMode, this); // #f27a1a (light) or #2c2c30 (dark)
+        changeBackgroundPrimary(isDarkMode, this);
         if (titleLabel != null) {
-            changeTextColorPrimary(isDarkMode, titleLabel); // Always #fff
+            changeTextColorPrimary(isDarkMode, titleLabel);
         }
 
-        // ContextMenu styling
-        changeContextMenuBackground(isDarkMode, menu); // #fbfbfb (light) or #121214 (dark) with border and text adjustments
+        changeContextMenuBackground(isDarkMode, menu);
 
-        // Refresh menu items to apply new dark mode state
         refreshMenuItems();
     }
 }
