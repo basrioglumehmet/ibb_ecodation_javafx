@@ -3,10 +3,9 @@ package org.example.ibb_ecodation_javafx.ui.input;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
@@ -15,135 +14,178 @@ import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacity
 
 public class ShadcnInput extends VBox {
 
-    private final StringProperty header = new SimpleStringProperty(null);
+    // Properties
+    private final StringProperty header = new SimpleStringProperty("");
+    private final StringProperty error = new SimpleStringProperty("");
+    private final StringProperty text = new SimpleStringProperty("");
+
+    // UI Components
     private final Label headerLabel = new Label();
     private final Label errorLabel = new Label();
     private final TextField textField = new TextField();
+    private final Tooltip errorTooltip = new Tooltip();
+
+    // State Management
     private final Store store = Store.getInstance();
-    private boolean isDarkMode;
-    private final String BASE_HEADER_STYLE = "-fx-font-weight: bold; -fx-font-size: 14px; " +
-            "-fx-font-family: 'Poppins';";
     private Disposable disposable;
     private TextChangeListener textChangeListener;
 
-    // Callback interface for external usage
+    // Style Constants (Updated with New Colors)
+    private static final String FONT_FAMILY = "Segoe UI";
+    private static final String HEADER_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 13px; -fx-font-weight: 500;";
+    private static final String TEXTFIELD_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 14px; -fx-padding: 6 10 6 10; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-border-width: 1px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);";
+    private static final String ERROR_STYLE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 11px; -fx-text-fill: #FF5555; -fx-font-weight: 400;";
+    private static final String LIGHT_MODE = "-fx-background-color: #f2f2f3; -fx-border-color: #e4e4e7; -fx-text-fill: #1C2526;";
+    private static final String LIGHT_MODE_FOCUS = "-fx-border-color: #f27a1a; -fx-background-color: #FFFFFF;";
+    private static final String DARK_MODE = "-fx-background-color: #2c2c30; -fx-border-color: #2b2b30; -fx-text-fill: #FFFFFF;";
+    private static final String DARK_MODE_FOCUS = "-fx-border-color:#f27a1a; -fx-background-color: #38383c;";
+    private static final String DARK_MODE_HOVER = "-fx-background-color: #343438;";
+    private static final String ERROR_OUTLINE = "-fx-border-color: #FF5555;";
+
+    // Callback Interface
     public interface TextChangeListener {
         void onTextChanged(String newValue);
     }
 
+    // Constructors
     public ShadcnInput() {
-        this(null);
+        this("");
     }
 
     public ShadcnInput(String headerText) {
-        super(5); // Spacing 0, elemanlar arasında boşluk yok
-        this.header.set(headerText);
+        super(6); // Reduced spacing to match the compact look
+        setHeader(headerText);
         initializeUI();
         setupBindings();
     }
 
+    // Initialize UI
     private void initializeUI() {
-        dispose();
-        setFillWidth(true);
         setMaxWidth(Double.MAX_VALUE);
+        setMinWidth(200);
 
-        // Get the dark mode state
-        updateDarkModeState();
+        // Header Label
+        headerLabel.textProperty().bind(header);
+        updateHeaderStyle(false);
 
-        // Setup header label
-        updateHeaderLabelStyle();
+        // Text Field
+        textField.setPrefHeight(36);
+        textField.textProperty().bindBidirectional(text);
+        updateTextFieldStyle(false, false);
 
-        if (header.get() != null) {
-            headerLabel.setText(header.get());
-        }
-
-        // Error label initial setup
-        errorLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: red; -fx-font-family: 'Poppins';");
+        // Error Label
+        errorLabel.setStyle(ERROR_STYLE);
+        errorLabel.textProperty().bind(error);
         errorLabel.setVisible(false);
+        errorTooltip.textProperty().bind(error);
+        errorLabel.setTooltip(errorTooltip);
 
-        // Text field initial setup
-        textField.setPrefWidth(getPrefWidth());
-        textField.setPrefHeight(30);
-        updateTextFieldStyle();
-
+        // Layout
         updateChildren();
 
-        // Subscribe to state changes
+        // Subscribe to Dark Mode
         disposable = store.getState().subscribe(stateRegistry -> {
-            updateDarkModeState();
-            updateUI();
+            boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+            updateStyles(isDarkMode);
         });
 
-        adjustHeight();
+        // Initial Theme
+        updateStyles(!store.getCurrentState(DarkModeState.class).isEnabled());
     }
 
-    private void updateDarkModeState() {
-        isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+    // Update Styles Based on Theme
+    private void updateStyles(boolean isDarkMode) {
+        updateHeaderStyle(isDarkMode);
+        updateTextFieldStyle(isDarkMode, !error.get().isEmpty());
     }
 
-    private void updateHeaderLabelStyle() {
-        headerLabel.setStyle(BASE_HEADER_STYLE + String.format("-fx-text-fill: %s;", isDarkMode ? "white" : "black"));
+    private void updateHeaderStyle(boolean isDarkMode) {
+        String color = isDarkMode ? "-fx-text-fill: #FFFFFF;" : "-fx-text-fill: #1C2526;";
+        headerLabel.setStyle(HEADER_STYLE_BASE + color);
     }
 
-    private void updateTextFieldStyle() {
-        textField.setStyle(
-                String.format("-fx-background-color: %s; -fx-border-color: %s; -fx-text-fill:%s;",
-                        isDarkMode ? "#202024" : "white",
-                        isDarkMode ? "#202024":"#e4e4e7",
-                        isDarkMode ? "#fff" : "black") +
-                        "-fx-background-radius: 6px; -fx-border-radius: 6px; -fx-font-size: 16px;  " +
-                        "-fx-border-width: 1;  -fx-font-family: 'Poppins';"
-        );
+    private void updateTextFieldStyle(boolean isDarkMode, boolean hasError) {
+        String baseStyle = TEXTFIELD_STYLE_BASE + (isDarkMode ? DARK_MODE : LIGHT_MODE);
+        if (hasError) {
+            baseStyle += ERROR_OUTLINE;
+        }
+        textField.setStyle(baseStyle);
+
+        // Focus and Hover Effects
+        textField.focusedProperty().removeListener((obs, old, newVal) -> {});
+        textField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
+            String style = TEXTFIELD_STYLE_BASE + (isDarkMode ? DARK_MODE : LIGHT_MODE);
+            if (isFocused) {
+                style += (isDarkMode ? DARK_MODE_FOCUS : LIGHT_MODE_FOCUS);
+            } else if (hasError) {
+                style += ERROR_OUTLINE;
+            }
+            textField.setStyle(style);
+        });
+
+        // Hover Effect (Only for Dark Mode to Match the Image)
+        if (isDarkMode) {
+            textField.setOnMouseEntered(e -> {
+                if (!textField.isFocused() && !hasError) {
+                    textField.setStyle(TEXTFIELD_STYLE_BASE + DARK_MODE + DARK_MODE_HOVER);
+                }
+            });
+            textField.setOnMouseExited(e -> {
+                if (!textField.isFocused() && !hasError) {
+                    textField.setStyle(TEXTFIELD_STYLE_BASE + DARK_MODE);
+                }
+            });
+        }
     }
 
+    // Update Layout
     private void updateChildren() {
         getChildren().clear();
         if (header.get() != null && !header.get().isEmpty()) {
             getChildren().add(headerLabel);
         }
         getChildren().add(textField);
-        if (errorLabel.isVisible()) {
+        if (error.get() != null && !error.get().isEmpty()) {
             getChildren().add(errorLabel);
+            errorLabel.setVisible(true);
+            runOpacityAnimation(errorLabel);
+        } else {
+            errorLabel.setVisible(false);
         }
+        adjustHeight();
     }
 
+    // Adjust Component Height
     private void adjustHeight() {
-        double totalHeight = 0;
+        double totalHeight = textField.getPrefHeight() + getSpacing();
         if (header.get() != null && !header.get().isEmpty()) {
-            totalHeight += headerLabel.prefHeight(-1);
+            totalHeight += 18 + getSpacing();
         }
-        totalHeight += textField.getPrefHeight();
-        if (errorLabel.isVisible()) {
-            totalHeight += errorLabel.prefHeight(-1);
+        if (error.get() != null && !error.get().isEmpty()) {
+            totalHeight += 14 + getSpacing();
         }
         setPrefHeight(totalHeight);
     }
 
-    public void updateUI() {
-        updateHeaderLabelStyle();
-        updateTextFieldStyle();
-    }
-
-    public void dispose() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-    }
-
+    // Bindings
     private void setupBindings() {
-        header.addListener((obs, oldVal, newVal) -> {
-            headerLabel.setText(newVal);
+        header.addListener((obs, old, newVal) -> updateChildren());
+        error.addListener((obs, old, newVal) -> {
+            boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
+            updateTextFieldStyle(isDarkMode, !newVal.isEmpty());
             updateChildren();
-            adjustHeight();
         });
-
-        textField.textProperty().addListener((observable, oldVal, newVal) -> {
+        textField.textProperty().addListener((obs, old, newVal) -> {
             if (textChangeListener != null) {
                 textChangeListener.onTextChanged(newVal);
+            }
+            if (!error.get().isEmpty()) {
+                clearError();
             }
         });
     }
 
+    // Public API
     public void setTextChangeListener(TextChangeListener listener) {
         this.textChangeListener = listener;
     }
@@ -161,38 +203,33 @@ public class ShadcnInput extends VBox {
     }
 
     public String getText() {
-        return textField.getText();
-    }
-
-    public String getErrorText() {
-        return errorLabel.getText();
-    }
-
-    public void setError(String error) {
-        errorLabel.setText(error);
-        errorLabel.setVisible(true);
-        updateChildren();
-        adjustHeight();
-        runOpacityAnimation(errorLabel);
-    }
-
-    public void clearError() {
-        errorLabel.setText("");
-        errorLabel.setVisible(false);
-        updateChildren();
-        adjustHeight();
+        return text.get();
     }
 
     public void setText(String value) {
-        textField.setText(value);
+        text.set(value);
+    }
+
+    public String getErrorText() {
+        return error.get();
+    }
+
+    public void setError(String errorText) {
+        error.set(errorText);
+    }
+
+    public void clearError() {
+        error.set("");
     }
 
     public TextField getTextField() {
         return textField;
     }
 
-    @FXML
-    public void onDestroy() {
-        dispose();
+    // Cleanup
+    public void dispose() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 }

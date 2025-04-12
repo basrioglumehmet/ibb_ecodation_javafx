@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -41,11 +42,13 @@ public class ShadcnListItem extends HBox {
     private Label headerLabel;
     private Label detailLabel;
     private ShadcnLanguageComboBox languageComboBox;
+    private String baseBackground;
+    private String baseBorderColor;
+    private String baseTextColor;
 
     public ShadcnListItem() {
         this.languageService = SpringContext.getContext().getBean(LanguageService.class);
-        setContainerStyle();
-        initializeStyle(type.get());
+        initializeUI();
     }
 
     public ShadcnListItem(LanguageService languageService, String languageCode, ListItemType type, String headerKey, String descriptionKey, String glyphIconName) {
@@ -56,8 +59,125 @@ public class ShadcnListItem extends HBox {
         this.headerKey.set(headerKey);
         this.descriptionKey.set(descriptionKey);
         this.glyphIconName.set(glyphIconName);
+        initializeUI();
+    }
+
+    private void initializeUI() {
+        isLightMode = store.getCurrentState(DarkModeState.class).isEnabled();
+        baseBackground = isLightMode ? "#f2f2f3" : "#202024";
+        baseBorderColor = isLightMode ? "#e4e4e7" : "#2c2c30";
+        baseTextColor = isLightMode ? "black" : "white";
+
         setContainerStyle();
-        initializeStyle(type);
+        setSpacing(15);
+        setAlignment(Pos.CENTER_LEFT);
+        initializeStyle(type.get());
+
+        store.getState().subscribe(stateRegistry -> {
+            isLightMode = stateRegistry.getState(DarkModeState.class).isEnabled();
+            baseBackground = isLightMode ? "#f2f2f3" : "#202024";
+            baseBorderColor = isLightMode ? "#e4e4e7" : "#2c2c30";
+            baseTextColor = isLightMode ? "black" : "white";
+            updateTextStyles(headerLabel, detailLabel);
+            setContainerStyle();
+        });
+
+        type.addListener((obs, oldType, newType) -> initializeStyle(newType));
+
+        setOnMouseEntered(e -> this.setStyle("-fx-background-color: " + (isLightMode ? "#e8e8e8" : "#2c2c30") +
+                "; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: " + baseBorderColor +
+                "; -fx-padding: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);"));
+        setOnMouseExited(e -> setContainerStyle());
+    }
+
+    private void setContainerStyle() {
+        this.setStyle("-fx-background-color: " + baseBackground +
+                "; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: " + baseBorderColor +
+                "; -fx-padding: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);");
+    }
+
+    private void initializeStyle(ListItemType type) {
+        if (languageService == null) {
+            languageService = SpringContext.getContext().getBean(LanguageService.class);
+            languageService.loadAll(languageCode);
+        }
+        headerLabel = new Label(headerKey.get());
+        detailLabel = new Label(descriptionKey.get());
+        updateTextStyles(headerLabel, detailLabel);
+
+        VBox leftContent;
+        if (this.getChildren().isEmpty()) {
+            leftContent = new VBox(8);
+            this.getChildren().add(leftContent);
+        } else {
+            leftContent = (VBox) this.getChildren().get(0);
+            leftContent.getChildren().clear();
+        }
+        leftContent.getChildren().addAll(headerLabel, detailLabel);
+        leftContent.setAlignment(Pos.CENTER_LEFT);
+
+        if (this.getChildren().size() > 1) {
+            this.getChildren().remove(1, this.getChildren().size());
+        }
+
+        switch (type) {
+            case NORMAL:
+                break;
+
+            case WITH_SWITCH:
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+                switchButton = new ShadcnSwitchButton();
+                HBox rightContainer = new HBox(switchButton);
+                rightContainer.setAlignment(Pos.CENTER_RIGHT);
+                rightContainer.setPadding(new Insets(0, 5, 0, 0));
+                this.getChildren().addAll(spacer, rightContainer);
+                break;
+
+            case WITH_ICON:
+                Region spacer2 = new Region();
+                HBox.setHgrow(spacer2, Priority.ALWAYS);
+                FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
+                iconView.setGlyphSize(24);
+                iconView.setFill(Color.web(isLightMode ? getColor(this.glyphIconName) : "white"));
+                StackPane iconWrapper = new StackPane(iconView);
+                iconWrapper.setPadding(new Insets(5));
+                HBox rightContainer2 = new HBox(iconWrapper);
+                rightContainer2.setAlignment(Pos.CENTER_RIGHT);
+                this.getChildren().addAll(spacer2, rightContainer2);
+                break;
+
+            case WITH_LANGUAGE_OPTION:
+                Region spacer3 = new Region();
+                HBox.setHgrow(spacer3, Priority.ALWAYS);
+                languageComboBox = new ShadcnLanguageComboBox();
+                HBox rightContainerLanguage = new HBox(languageComboBox);
+                rightContainerLanguage.setAlignment(Pos.CENTER_RIGHT);
+                rightContainerLanguage.setPadding(new Insets(0, 5, 0, 0));
+                this.getChildren().addAll(spacer3, rightContainerLanguage);
+
+                if (languageSubscription != null && !languageSubscription.isDisposed()) {
+                    languageSubscription.dispose();
+                }
+                languageSubscription = languageComboBox.watchLanguageValue().subscribe(pair -> {
+                    this.languageCode = pair.getKey();
+                    languageService.loadAll(this.languageCode);
+                    headerLabel.setText(headerKey.get());
+                    detailLabel.setText(descriptionKey.get());
+                });
+                break;
+        }
+    }
+
+    private void updateTextStyles(Label header, Label detail) {
+        if (header != null && detail != null) {
+            header.setText(headerKey.get());
+            header.setStyle("-fx-font-weight: bold; -fx-font-family: 'Poppins'; -fx-text-fill: " + baseTextColor +
+                    "; -fx-font-size: 16;");
+            detail.setText(descriptionKey.get());
+            detail.setStyle("-fx-font-family: 'Poppins'; -fx-text-fill: " + baseTextColor +
+                    "; -fx-font-size: 13;");
+        }
     }
 
     public StringProperty glyphIconNameProperty() {
@@ -90,13 +210,22 @@ public class ShadcnListItem extends HBox {
         return type;
     }
 
-    public ShadcnSwitchButton getSwitchButton() {
-        return switchButton;
+    @FXML
+    public void setType(String type) {
+        this.type.set(ListItemType.valueOf(type));
     }
 
+    @FXML
     public void setType(ListItemType type) {
         this.type.set(type);
-        initializeStyle(type);
+    }
+
+    public ListItemType getType() {
+        return type.get();
+    }
+
+    public ShadcnSwitchButton getSwitchButton() {
+        return switchButton;
     }
 
     @FXML
@@ -111,105 +240,9 @@ public class ShadcnListItem extends HBox {
         return headerKey.get();
     }
 
-    public ListItemType getType() {
-        return type.get();
-    }
-
     public void resetLanguage() {
         if (type.get() == ListItemType.WITH_LANGUAGE_OPTION && languageComboBox != null) {
             languageComboBox.resetLanguage();
-        }
-    }
-
-    private void setContainerStyle() {
-        this.setStyle("-fx-background-color: " + (isLightMode ? "#f2f2f3" : "#202024") +
-                "; -fx-background-radius: 8px; -fx-padding: 10px;");
-    }
-
-    private void initializeStyle(ListItemType type) {
-        if (languageService == null) {
-            languageService = SpringContext.getContext().getBean(LanguageService.class);
-            languageService.loadAll(languageCode);
-        }
-        isLightMode = store.getCurrentState(DarkModeState.class).isEnabled();
-        headerLabel = new Label(headerKey.get());
-        detailLabel = new Label(descriptionKey.get());
-
-        store.getState().subscribe(stateRegistry -> {
-            isLightMode = stateRegistry.getState(DarkModeState.class).isEnabled();
-            updateTextStyles(headerLabel, detailLabel);
-            setContainerStyle();
-        });
-
-        VBox leftContent;
-        if (this.getChildren().isEmpty()) {
-            leftContent = new VBox();
-            this.getChildren().add(leftContent);
-        } else {
-            leftContent = (VBox) this.getChildren().get(0);
-            leftContent.getChildren().clear();
-        }
-        leftContent.getChildren().addAll(headerLabel, detailLabel);
-
-        if (this.getChildren().size() > 1) {
-            this.getChildren().remove(1, this.getChildren().size());
-        }
-
-        switch (type) {
-            case NORMAL:
-                break;
-
-            case WITH_SWITCH:
-                Region spacer = new Region();
-                HBox.setHgrow(spacer, Priority.ALWAYS);
-                switchButton = new ShadcnSwitchButton();
-                HBox rightContainer = new HBox(switchButton);
-                rightContainer.setAlignment(Pos.CENTER_RIGHT);
-                rightContainer.setSpacing(10);
-                this.getChildren().addAll(spacer, rightContainer);
-                break;
-
-            case WITH_ICON:
-                Region spacer2 = new Region();
-                HBox.setHgrow(spacer2, Priority.ALWAYS);
-                FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
-                iconView.setGlyphSize(40);
-                iconView.setFill(Color.web(getColor(this.glyphIconName)));
-                StackPane iconWrapper = new StackPane(iconView);
-                HBox rightContainer2 = new HBox(iconWrapper);
-                rightContainer2.setAlignment(Pos.CENTER_RIGHT);
-                rightContainer2.setSpacing(10);
-                this.getChildren().addAll(spacer2, rightContainer2);
-                break;
-
-            case WITH_LANGUAGE_OPTION:
-                Region spacer3 = new Region();
-                HBox.setHgrow(spacer3, Priority.ALWAYS);
-                languageComboBox = new ShadcnLanguageComboBox();
-                HBox rightContainerLanguage = new HBox(languageComboBox);
-                rightContainerLanguage.setAlignment(Pos.CENTER_RIGHT);
-                rightContainerLanguage.setSpacing(10);
-                this.getChildren().addAll(spacer3, rightContainerLanguage);
-
-                if (languageSubscription != null && !languageSubscription.isDisposed()) {
-                    languageSubscription.dispose();
-                }
-                languageSubscription = languageComboBox.watchLanguageValue().subscribe(pair -> {
-                    this.languageCode = pair.getKey();
-                    languageService.loadAll(this.languageCode);
-                });
-                break;
-        }
-    }
-
-    private void updateTextStyles(Label header, Label detail) {
-        if (header != null && detail != null) {
-            header.setText(headerKey.get());
-            header.setStyle("-fx-font-weight: bold; -fx-text-fill: " + (isLightMode ? "black" : "white") +
-                    "; -fx-font-size: 16px;");
-            detail.setText(descriptionKey.get());
-            detail.setStyle("-fx-text-fill: " + (isLightMode ? "black" : "white") +
-                    "; -fx-font-size: 14px;");
         }
     }
 

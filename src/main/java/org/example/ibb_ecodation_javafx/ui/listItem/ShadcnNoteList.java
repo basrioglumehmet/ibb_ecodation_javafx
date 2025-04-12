@@ -17,6 +17,8 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import javafx.animation.ScaleTransition;
 import javafx.util.Duration;
+import org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,29 +34,29 @@ public class ShadcnNoteList extends ScrollPane {
     private final LanguageService languageService;
     private final String languageCode;
     private Button plusCard;
+    private Label pageTitle;
     private javafx.event.EventHandler<javafx.event.ActionEvent> plusCardAction;
     private Consumer<UserNote> updateNoteAction;
     private Consumer<UserNote> removeNoteAction;
     private Store store = Store.getInstance();
+    private Disposable darkModeSubscription;
 
     public ShadcnNoteList(LanguageService languageService, String languageCode) {
         this.languageService = languageService;
         this.languageCode = languageCode;
         languageService.loadAll(languageCode);
 
-        Label pageTitle = new Label(languageService.translate("label.note"));
-        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-family:'Poppins';" +
-                String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
+        pageTitle = new Label("Note Page");
+        updateTitleStyle();
 
-        VBox container = new VBox(10);
+        VBox container = new VBox(12);
         container.setAlignment(Pos.TOP_LEFT);
         container.setPadding(new Insets(0, 0, 0, 0));
 
         gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(15));
+        gridPane.setHgap(8); // Reduced to match second image
+        gridPane.setVgap(8);
         gridPane.setStyle("-fx-background-color: transparent;");
         gridPane.setMaxWidth(Double.MAX_VALUE);
 
@@ -72,10 +74,22 @@ public class ShadcnNoteList extends ScrollPane {
         this.setFitToWidth(true);
         this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
-        this.setStyle("-fx-padding: 15px;");
+        this.setStyle("-fx-background-color: transparent; -fx-padding: 15;");
 
         glyphIconName.set("CLOCK");
         updateGrid(false);
+
+        // Subscribe to DarkModeState Changes
+        darkModeSubscription = store.getState().subscribe(stateRegistry -> {
+            updateTitleStyle();
+            updateGrid(false); // Rebuild cards to update colors
+        });
+    }
+
+    private void updateTitleStyle() {
+        boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+        pageTitle.setStyle("-fx-font-size: 24; -fx-font-family: 'Poppins'; -fx-font-weight: bold;" +
+                String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
     }
 
     public void addNote(UserNote userNote) {
@@ -120,48 +134,59 @@ public class ShadcnNoteList extends ScrollPane {
     }
 
     private VBox createNoteCard(UserNote note) {
-        VBox card = new VBox(5);
-        card.setStyle("-fx-background-radius: 8px; -fx-padding: 20px;" +
-                String.format("-fx-background-color: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
-                                "#202024" : "#fbfbfb"));
+        boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+
+        VBox card = new VBox(8);
+        card.setStyle("-fx-background-radius: 8;" +
+                String.format("-fx-background-color: %s; -fx-padding: 10;" +
+                                "-fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
+                        isDarkMode ? "#202024" : "#f5f5f5",
+                        isDarkMode ? "#2c2c30" : "#e4e4e7"));
         card.setMaxWidth(Double.MAX_VALUE);
-        card.setSpacing(20);
-        card.setMinHeight(182);
+        card.setMinHeight(160); // Reduced to match second image
+
+        card.setOnMouseEntered(e -> card.setStyle("-fx-background-radius: 8;" +
+                String.format("-fx-background-color: %s; -fx-padding: 10; " +
+                                "-fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
+                        isDarkMode ? "#2c2c30" : "#e5e5e5",
+                        isDarkMode ? "#2c2c30" : "#e4e4e7")));
+        card.setOnMouseExited(e -> card.setStyle("-fx-background-radius: 8;" +
+                String.format("-fx-background-color: %s; -fx-padding: 10;" +
+                                "-fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
+                        isDarkMode ? "#202024" : "#f5f5f5",
+                        isDarkMode ? "#2c2c30" : "#e4e4e7")));
 
         Label dateLabel = new Label(note.getReportAt().toString());
-        dateLabel.setStyle("-fx-font-size: 12px;" +
-                String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
+        dateLabel.setStyle("-fx-font-size: 13; -fx-font-family: 'Poppins';" +
+                String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
 
         Label titleLabel = new Label(note.getHeader());
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;" +
-                String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-font-family: 'Poppins';" +
+                String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
         titleLabel.setWrapText(true);
 
         FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
-        iconView.setGlyphSize(16);
-        iconView.setFill(Paint.valueOf(!store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
+        iconView.setGlyphSize(16); // Reduced to match second image
+        iconView.setFill(Paint.valueOf(isDarkMode ? "#fff" : "#000"));
         StackPane iconWrapper = new StackPane(iconView);
+        iconWrapper.setPadding(new Insets(2));
 
         Label contentLabel = new Label(note.getDescription());
-        contentLabel.setStyle("-fx-font-size: 12px;" +
-                String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
+        contentLabel.setStyle("-fx-font-size: 13; -fx-font-family: 'Poppins';" +
+                String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
         contentLabel.setWrapText(true);
 
-        HBox bottomSection = new HBox(10);
+        HBox bottomSection = new HBox(8);
         bottomSection.setAlignment(Pos.CENTER_LEFT);
         bottomSection.getChildren().addAll(iconWrapper, contentLabel);
 
-        VBox actionSection = new VBox(10);
+        HBox actionSection = new HBox(8);
         actionSection.setAlignment(Pos.CENTER_LEFT);
 
         ShadcnButton updateButton = createActionButton(
                 languageService.translate("button.update"),
                 ShadcnButton.ButtonType.PRIMARY,
-                "PENCIL",
+                "USER",
                 e -> {
                     if (updateNoteAction != null) {
                         updateNoteAction.accept(note);
@@ -209,12 +234,33 @@ public class ShadcnNoteList extends ScrollPane {
     }
 
     private void addPlusButton(boolean animate) {
-        plusCard = new Button(languageService.translate("label.newnote"));
-        plusCard.setPadding(new Insets(10));
-        plusCard.setStyle("-fx-background-color: #f27a1a; -fx-background-radius: 8px; -fx-padding: 20px; -fx-text-fill: #1a1a1e; -fx-font-size: 36px;");
+        boolean isDarkMode = !store.getCurrentState(DarkModeState.class).isEnabled();
+
+        plusCard = new Button();
+        plusCard.setStyle("-fx-background-radius: 8;" +
+                "-fx-background-color: #f27a1a; -fx-text-fill: white;" +
+                "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;");
         plusCard.setMaxWidth(Double.MAX_VALUE);
-        plusCard.setPrefHeight(200);
-        plusCard.setAlignment(Pos.CENTER);
+        plusCard.setPrefHeight(160); // Reduced to match second image
+
+        plusCard.setOnMouseEntered(e -> plusCard.setStyle("-fx-background-radius: 8;" +
+                "-fx-background-color: #e66b0e; -fx-text-fill: white;" +
+                "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
+        plusCard.setOnMouseExited(e -> plusCard.setStyle("-fx-background-radius: 8;" +
+                "-fx-background-color: #f27a1a; -fx-text-fill: white;" +
+                "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
+
+        var plusIconProperty = new SimpleStringProperty("PLUS");
+        FontAwesomeIconView plusIcon = FontAwesomeUtil.getGlyphIcon(plusIconProperty);
+        plusIcon.setGlyphSize(16); // Reduced to match second image
+        plusIcon.setFill(Paint.valueOf("white"));
+
+        Label plusLabel = new Label("Create new note");
+        plusLabel.setStyle("-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-text-fill: white;");
+
+        HBox plusContent = new HBox(5, plusIcon, plusLabel);
+        plusContent.setAlignment(Pos.CENTER);
+        plusCard.setGraphic(plusContent);
 
         if (plusCardAction != null) {
             plusCard.setOnAction(plusCardAction);
@@ -229,8 +275,7 @@ public class ShadcnNoteList extends ScrollPane {
     }
 
     private void updatePlusButtonPosition() {
-        gridPane.getChildren().removeIf(node -> node instanceof Button
-                && languageService.translate("label.newnote").equals(((Button) node).getText()));
+        gridPane.getChildren().removeIf(node -> node instanceof Button);
         addPlusButton(false);
     }
 
@@ -251,5 +296,11 @@ public class ShadcnNoteList extends ScrollPane {
 
     public void setRemoveNoteAction(Consumer<UserNote> action) {
         this.removeNoteAction = action;
+    }
+
+    public void dispose() {
+        if (darkModeSubscription != null && !darkModeSubscription.isDisposed()) {
+            darkModeSubscription.dispose();
+        }
     }
 }

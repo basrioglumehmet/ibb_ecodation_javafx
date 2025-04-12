@@ -3,9 +3,11 @@ package org.example.ibb_ecodation_javafx.utils;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import lombok.experimental.UtilityClass;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 
 @UtilityClass
 public class ThemeUtil {
+
     public static void changeNavbarColor(boolean lightModeValue, Node navbar) {
         navbar.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "white":"#121214") +
                 "-fx-padding: 10px 20px 10px 20px;");
@@ -37,8 +39,18 @@ public class ThemeUtil {
                 node.getStyle(),lightModeValue ? "#f27a1a":"#2c2c30"));
     }
     public static void changeBackground(boolean lightModeValue, Node node) {
-        node.setStyle(String.format("%s -fx-background-color: %s;",
-                node.getStyle(),lightModeValue ? "#fbfbfb":"#121214"));
+        node.setStyle(String.format(
+                "-fx-background-color: %s; " +
+                        "-fx-background-radius: 10px; " +
+                        "-fx-padding: 10px; " +
+                        "-fx-text-fill: %s; " +
+                        "-fx-transition: -fx-background-color 0.3s ease-in-out; -fx-background-radius: 8;" +
+                        " -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
+
+                lightModeValue ? "#fbfbfb" : "#202024",
+                lightModeValue ? "#000000" : "#ffffff" ,
+                lightModeValue ? "#e4e4e7" : "#2c2c30"
+        ));
     }
     public static void changeContextMenuTextColor(boolean lightModeValue, Node node) {
         node.setStyle(String.format("%s -fx-text-fill: %s;",
@@ -54,7 +66,7 @@ public class ThemeUtil {
     }
     public static void changeThirdBackground(boolean lightModeValue, Node node) {
         node.setStyle(String.format("%s -fx-background-color: %s;",
-                node.getStyle(),lightModeValue ? "#fff":"#1a1a1d"));
+                node.getStyle(),lightModeValue ? "#fff":"#202024"));
     }
     public static void changeSecondaryBackground(boolean lightModeValue, Node node) {
         node.setStyle(String.format("%s -fx-background-color: %s;",
@@ -63,8 +75,20 @@ public class ThemeUtil {
 
 
     public static void changeFilterColor(boolean lightModeValue, Node node) {
-        node.setStyle(String.format("-fx-background-color: %s;", lightModeValue ? "#fbfbfb":"#121214") +
-                "-fx-background-radius:20px; -fx-padding:20px;");
+        if (node != null) {
+            node.setStyle(String.format(
+                    "-fx-background-color: %s; " +
+                            "-fx-background-radius: 10px; " +
+                            "-fx-padding: 10px; " +
+                            "-fx-text-fill: %s; " +
+                            "-fx-transition: -fx-background-color 0.3s ease-in-out; -fx-background-radius: 8;" +
+                            " -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;",
+
+                    lightModeValue ? "#fbfbfb" : "#202024",
+                    lightModeValue ? "#000000" : "#ffffff" ,
+                    lightModeValue ? "#e4e4e7" : "#2c2c30"
+            ));
+        }
     }
 
     public static void  changeRootPaneColor(boolean lightModeValue, Node rootPane) {

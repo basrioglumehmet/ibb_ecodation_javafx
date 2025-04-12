@@ -12,7 +12,6 @@ import org.example.ibb_ecodation_javafx.repository.query.UserQuery;
 import org.example.ibb_ecodation_javafx.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +121,7 @@ public class UserServiceImpl implements UserService {
      * @param callback Güncellenen kullanıcıyı işlemek için geri çağırım fonksiyonu
      */
     @Override
-    @Transactional
+
     public void update(User entity, Consumer<User> callback) {
         var user = userRepository.update(entity,
                 UserQuery.UPDATE_USER_BY_ID,
@@ -158,7 +157,7 @@ public class UserServiceImpl implements UserService {
      * @throws OptimisticLockException Versiyon uyuşmazlığı durumunda
      */
     @Override
-    @Transactional
+
     public List<User> saveAll(List<User> users) {
         List<List<Object>> insertParamsList = new ArrayList<>();
         List<User> updatedUsers = new ArrayList<>();
