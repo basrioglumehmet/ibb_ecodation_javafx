@@ -143,7 +143,7 @@ public class WebViewUtil {
         String targetFile = String.format("%s/%s/uidoc_%s.html",
                 mainPath,
                 store.getCurrentState(TranslatorState.class).countryCode(),
-                store.getCurrentState(DarkModeState.class).isEnabled() ? "light":"dark");
+                store.getCurrentState(DarkModeState.class).isEnabled() ? "dark":"light");
         System.out.println(targetFile);
         showHelpPopup(targetFile,"Guide");
     }

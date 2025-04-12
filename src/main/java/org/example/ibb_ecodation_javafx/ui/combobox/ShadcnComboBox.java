@@ -31,7 +31,7 @@ public class ShadcnComboBox<T> extends Button {
         this.menu = new ContextMenu();
 
         // Initial button styling
-        setStyle("-fx-background-radius: 6px;");
+        setStyle("-fx-background-radius: 3px;");
         setContextMenu(menu);
         loadLabel();
 
@@ -111,7 +111,7 @@ public class ShadcnComboBox<T> extends Button {
         content.setPrefWidth(160);
 
         Label label = new Label(displayConverter.apply(value));
-        changeTextColor(isDarkMode, label); // #fff (dark) or #000 (light) by default
+        changeTextColor(isDarkMode, label);
 
         content.getChildren().add(label);
 
@@ -122,19 +122,19 @@ public class ShadcnComboBox<T> extends Button {
         // Hover effects
         content.setOnMouseEntered(e -> {
             content.setStyle("-fx-background-color: #8dd80a; -fx-padding: 5; -fx-background-radius: 3px;");
-            label.setStyle("-fx-text-fill: #000;"); // White text on hover
+            label.setStyle("-fx-text-fill: #000;");
         });
         content.setOnMouseExited(e -> {
             content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;");
-            changeTextColor(isDarkMode, label); // Revert to default (#000 light, #fff dark)
+            changeTextColor(isDarkMode, label);
         });
 
         item.setOnAction(event -> publish(key, value));
 
         store.getState().subscribe(stateRegistry -> {
             boolean darkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
-            changeTextColor(darkMode, label); // Update text color on mode change
-            content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;"); // Reset base style
+            changeTextColor(darkMode, label);
+            content.setStyle("-fx-background-color: transparent; -fx-padding: 5; -fx-background-radius: 3px;");
         });
 
         return item;
@@ -149,7 +149,7 @@ public class ShadcnComboBox<T> extends Button {
     }
 
     private void updateDarkModeStyles(boolean isDarkMode) {
-        changeBackgroundPrimary(isDarkMode, this);
+
         if (titleLabel != null) {
             changeTextColorPrimary(isDarkMode, titleLabel);
         }

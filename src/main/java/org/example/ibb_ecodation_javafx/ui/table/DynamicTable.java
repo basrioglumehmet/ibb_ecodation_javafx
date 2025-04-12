@@ -45,8 +45,8 @@ public class DynamicTable<T> extends VBox {
         this.setPadding(new Insets(15));
         this.setStyle(String.format("-fx-background-color: %s; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: %s;" +
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);",
-                store.getCurrentState(DarkModeState.class).isEnabled() ? "#f2f2f3" : "#202024",
-                store.getCurrentState(DarkModeState.class).isEnabled() ? "#e4e4e7" : "#2c2c30"));
+                store.getCurrentState(DarkModeState.class).isEnabled() ? "#f2f2f3" : "#8dd80a",
+                store.getCurrentState(DarkModeState.class).isEnabled() ? "#e4e4e7" : "#8dd80a"));
 
         tableContent = new VBox();
         tableContent.setStyle("-fx-background-color: transparent;");

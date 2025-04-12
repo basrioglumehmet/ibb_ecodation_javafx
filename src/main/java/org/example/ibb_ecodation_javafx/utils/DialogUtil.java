@@ -40,7 +40,7 @@ public class DialogUtil {
             StackPane root = new StackPane(contentPane);
             root.setStyle("-fx-background-color: transparent; -fx-border-width:1;"+
                     String.format("-fx-border-color:%s",
-                            store.getCurrentState(DarkModeState.class).isEnabled() ?
+                            !store.getCurrentState(DarkModeState.class).isEnabled() ?
                             "#e5e5e8":"#2c2c2c"));
             root.setAlignment(javafx.geometry.Pos.CENTER);
 
