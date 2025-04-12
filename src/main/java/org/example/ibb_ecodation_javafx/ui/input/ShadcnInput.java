@@ -1,9 +1,12 @@
 package org.example.ibb_ecodation_javafx.ui.input;
 
 import io.reactivex.rxjava3.disposables.Disposable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
@@ -14,22 +17,19 @@ import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacity
 
 public class ShadcnInput extends VBox {
 
-    // Properties
     private final StringProperty header = new SimpleStringProperty("");
     private final StringProperty error = new SimpleStringProperty("");
     private final StringProperty text = new SimpleStringProperty("");
+    private final BooleanProperty password = new SimpleBooleanProperty(false);
 
-    // UI Components
     private final Label headerLabel = new Label();
     private final Label errorLabel = new Label();
-    private final TextField textField = new TextField();
+    private TextField textField;
     private final Tooltip errorTooltip = new Tooltip();
 
-    // State Management
     private final Store store = Store.getInstance();
     private Disposable disposable;
     private TextChangeListener textChangeListener;
-
 
     private static final String FONT_FAMILY = "Poppins";
     private static final String HEADER_STYLE_BASE = "-fx-font-family: '" + FONT_FAMILY + "'; -fx-font-size: 13px; -fx-font-weight: 500;";
@@ -42,58 +42,54 @@ public class ShadcnInput extends VBox {
     private static final String DARK_MODE_HOVER = "-fx-background-color: #343438;";
     private static final String ERROR_OUTLINE = "-fx-border-color: #FF5555;";
 
-    // Callback Interface
     public interface TextChangeListener {
         void onTextChanged(String newValue);
     }
 
-    // Constructors
     public ShadcnInput() {
-        this("");
+        this("", false);
     }
 
     public ShadcnInput(String headerText) {
+        this(headerText, false);
+    }
+
+    public ShadcnInput(String headerText, boolean isPassword) {
         super(6);
         setHeader(headerText);
+        setPassword(isPassword);
+        textField = isPassword ? new PasswordField() : new TextField();
         initializeUI();
         setupBindings();
     }
 
-    // Initialize UI
     private void initializeUI() {
         setMaxWidth(Double.MAX_VALUE);
         setMinWidth(200);
 
-        // Header Label
         headerLabel.textProperty().bind(header);
         updateHeaderStyle(false);
 
-        // Text Field
         textField.setPrefHeight(36);
         textField.textProperty().bindBidirectional(text);
         updateTextFieldStyle(false, false);
 
-        // Error Label
         errorLabel.setStyle(ERROR_STYLE);
         errorLabel.textProperty().bind(error);
         errorLabel.setVisible(false);
         errorTooltip.textProperty().bind(error);
         errorLabel.setTooltip(errorTooltip);
 
-        // Layout
         updateChildren();
 
-        // Subscribe to Dark Mode
         disposable = store.getState().subscribe(stateRegistry -> {
             boolean isDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
             updateStyles(isDarkMode);
         });
 
-        // Initial Theme
         updateStyles(store.getCurrentState(DarkModeState.class).isEnabled());
     }
 
-    // Update Styles Based on Theme
     private void updateStyles(boolean isDarkMode) {
         updateHeaderStyle(isDarkMode);
         updateTextFieldStyle(isDarkMode, !error.get().isEmpty());
@@ -111,7 +107,6 @@ public class ShadcnInput extends VBox {
         }
         textField.setStyle(baseStyle);
 
-        // Focus and Hover Effects
         textField.focusedProperty().removeListener((obs, old, newVal) -> {});
         textField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
             String style = TEXTFIELD_STYLE_BASE + (isDarkMode ? DARK_MODE : LIGHT_MODE);
@@ -122,7 +117,6 @@ public class ShadcnInput extends VBox {
             }
             textField.setStyle(style);
         });
-
 
         if (isDarkMode) {
             textField.setOnMouseEntered(e -> {
@@ -138,7 +132,6 @@ public class ShadcnInput extends VBox {
         }
     }
 
-    // Update Layout
     private void updateChildren() {
         getChildren().clear();
         if (header.get() != null && !header.get().isEmpty()) {
@@ -155,7 +148,6 @@ public class ShadcnInput extends VBox {
         adjustHeight();
     }
 
-    // Adjust Component Height
     private void adjustHeight() {
         double totalHeight = textField.getPrefHeight() + getSpacing();
         if (header.get() != null && !header.get().isEmpty()) {
@@ -167,7 +159,6 @@ public class ShadcnInput extends VBox {
         setPrefHeight(totalHeight);
     }
 
-    // Bindings
     private void setupBindings() {
         header.addListener((obs, old, newVal) -> updateChildren());
         error.addListener((obs, old, newVal) -> {
@@ -183,9 +174,29 @@ public class ShadcnInput extends VBox {
                 clearError();
             }
         });
+        password.addListener((obs, oldVal, newVal) -> {
+            replaceTextField(newVal);
+        });
     }
 
-    // Public API
+    private void replaceTextField(boolean isPassword) {
+        String currentText = textField.getText();
+        TextField newField = isPassword ? new PasswordField() : new TextField();
+        newField.setPrefHeight(36);
+        newField.textProperty().bindBidirectional(text);
+        newField.setStyle(textField.getStyle());
+        newField.setOnMouseEntered(textField.getOnMouseEntered());
+        newField.setOnMouseExited(textField.getOnMouseExited());
+        textField.textProperty().removeListener((obs, old, newVal) -> {});
+        textField.focusedProperty().removeListener((obs, old, newVal) -> {});
+        getChildren().remove(textField);
+        getChildren().add(getChildren().indexOf(headerLabel) + 1, newField);
+        newField.setText(currentText);
+        textField = newField;
+        setupBindings();
+        updateTextFieldStyle(store.getCurrentState(DarkModeState.class).isEnabled(), !error.get().isEmpty());
+    }
+
     public void setTextChangeListener(TextChangeListener listener) {
         this.textChangeListener = listener;
     }
@@ -226,7 +237,18 @@ public class ShadcnInput extends VBox {
         return textField;
     }
 
-    // Cleanup
+    public BooleanProperty passwordProperty() {
+        return password;
+    }
+
+    public boolean isPassword() {
+        return password.get();
+    }
+
+    public void setPassword(boolean value) {
+        password.set(value);
+    }
+
     public void dispose() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();

@@ -80,7 +80,7 @@ public class Upload extends StackPane {
         if (event.getDragboard().hasFiles()) {
             this.setStyle("-fx-border-width: 2; -fx-border-color: " + baseBorderColor + ";" +
                     "-fx-border-style: solid; -fx-border-radius: 8; -fx-background-radius: 8;" +
-                    "-fx-background-color: " + (!store.getCurrentState(DarkModeState.class).isEnabled() ? "#2c2c30" : "#f0f0f0") + ";");
+                    "-fx-background-color: " + (store.getCurrentState(DarkModeState.class).isEnabled() ? "#2c2c30" : "#8dd80a") + ";");
         }
         event.consume();
     }

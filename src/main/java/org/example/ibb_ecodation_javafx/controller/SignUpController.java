@@ -220,7 +220,6 @@ public class SignUpController {
 
         if (errors.isEmpty()) {
             signUp();
-            mailService.sendMail(email.getText().trim(), OtpUtil.random(6));
         }
     }
 

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
+import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
 import org.example.ibb_ecodation_javafx.core.validation.ValidationError;
@@ -47,7 +48,7 @@ public class NoteDialogController {
     private final UserNoteService userNoteService = SpringContext.getContext().getBean(UserNoteService.class);
     private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
     private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
-
+    private final SecurityLogger securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
     @FXML
     public void initialize() {
         languageService.loadAll(languageCode);
@@ -192,9 +193,55 @@ public class NoteDialogController {
             }
         });
 
+        validator.addRule(new ValidationRule<LocalDate>() {
+            @Override
+            public LocalDate getValue() {
+                return dateField.getValue();
+            }
+
+            @Override
+            public boolean validate(LocalDate value) {
+                return value == null || !value.isAfter(LocalDate.now());
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.reportAt.future");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return null;
+            }
+        });
+
+        validator.addRule(new ValidationRule<LocalDate>() {
+            @Override
+            public LocalDate getValue() {
+                return dateField.getValue();
+            }
+
+            @Override
+            public boolean validate(LocalDate value) {
+                return value == null || value.isAfter(LocalDate.now().minusYears(1));
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.reportAt.tooOld");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return null;
+            }
+        });
+
         validator.onError(error -> {
             if (error.getInput() != null) {
                 error.getInput().setError(error.getErrorDetail());
+            } else {
+                securityLogger.logSecurityViolation(error.getErrorDetail());
             }
         });
 

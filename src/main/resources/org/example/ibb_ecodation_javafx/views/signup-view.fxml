@@ -26,7 +26,7 @@
 
             <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />
             <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
-            <ShadcnInput fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
+            <ShadcnInput password="true"  fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
 
             <ShadcnButton fx:id="continueButton" onAction="#handleSignUpProcess" fullWidth="true" text="Continue" type="PRIMARY" align="CENTER"
                           mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />

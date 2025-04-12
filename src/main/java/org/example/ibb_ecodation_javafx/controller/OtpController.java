@@ -70,11 +70,9 @@ public class OtpController {
     @FXML
     public void initialize() {
 
-        // Initialize with current language
         String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
         updateUIText(languageCode);
 
-        // Subscribe to language changes
         languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
             String newLanguageCode = pair.getKey();
             Platform.runLater(() -> updateUIText(newLanguageCode));
@@ -109,7 +107,7 @@ public class OtpController {
                 Thread.sleep(1000);
 
                 //İçim rahat etmedi callback düzensiz kod yapısı oluşturdu clean code aykırı durum.
-                //Technical debt maalesef oluşabilir çünkü zaman kısıtlı.
+                //Technical debt maalesef oluşabilir
                 Platform.runLater(() -> {
                     userOtpCodeService.verifyOtp(otpCodes.getCode(), cb -> {
                         if (cb != null) {
@@ -206,10 +204,10 @@ public class OtpController {
 
         new Thread(() -> {
             try {
-                Thread.sleep(1000); // Simulate resend delay
+                Thread.sleep(1000);
 
-                // Assuming email is stored somewhere or passed; using placeholder for now
-                String email = "user@example.com"; // Replace with actual email logic
+
+                String email = "user@example.com";
                 mailService.sendMail(email, OtpUtil.random(6));
 
                 Platform.runLater(() -> {
@@ -226,7 +224,7 @@ public class OtpController {
         }).start();
     }
 
-    // Clean up subscription on controller destruction
+
     public void shutdown() {
         if (languageSubscription != null && !languageSubscription.isDisposed()) {
             languageSubscription.dispose();

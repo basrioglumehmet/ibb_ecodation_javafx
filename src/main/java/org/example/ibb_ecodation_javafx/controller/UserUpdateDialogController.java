@@ -7,6 +7,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationError;
+import org.example.ibb_ecodation_javafx.core.validation.ValidationRule;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserService;
@@ -19,6 +22,8 @@ import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.DialogUtil;
+
+import java.util.regex.Pattern;
 
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 
@@ -54,16 +59,15 @@ public class UserUpdateDialogController {
     private final Store store = Store.getInstance();
     private final String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+
     public UserUpdateDialogController() {
-        // Constructor remains empty as dependencies are initialized as fields
     }
 
     @FXML
     public void initialize() {
-        // Load language resources
         languageService.loadAll(languageCode);
 
-        // Apply translations to ShadcnInput headers
         username.setHeader(languageService.translate("input.username"));
         email.setHeader(languageService.translate("input.email"));
         password.setHeader(languageService.translate("input.password"));
@@ -71,7 +75,6 @@ public class UserUpdateDialogController {
         update.setText(languageService.translate("button.update"));
         close.setText(languageService.translate("button.close"));
 
-        // Initialize switch buttons and labels with translations
         isVerifiedLabel = new Label(languageService.translate("label.isVerified"));
         isVerifiedLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: bold;");
         isVerified = new ShadcnSwitchButton();
@@ -80,7 +83,6 @@ public class UserUpdateDialogController {
         isLockedLabel.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: bold;");
         isLocked = new ShadcnSwitchButton();
 
-        // Load selected user from store
         selectedUser = store.getCurrentState(UserState.class).getSelectedUser();
         if (selectedUser != null) {
             email.setText(selectedUser.getEmail());
@@ -88,22 +90,15 @@ public class UserUpdateDialogController {
             role.setText(selectedUser.getRole().toString());
             isVerified.setValue(selectedUser.isVerified());
             isLocked.setValue(selectedUser.isLocked());
-        } else {
-            System.err.println("Seçili kullanıcı bulunamadı.");
         }
 
-        // Create switch containers
         HBox switchContainer = new HBox(20, isVerifiedLabel, isVerified);
         HBox switchContainer2 = new HBox(20, isLockedLabel, isLocked);
 
-        // Add switch containers to VBox
         if (container != null) {
             container.getChildren().addAll(switchContainer, switchContainer2);
-        } else {
-            System.err.println("Error: 'container' VBox is not initialized. Ensure it is defined in the FXML file.");
         }
 
-        // Set up listeners
         isVerified.watchIsActive().subscribe(aBoolean -> {
             if (selectedUser != null) {
                 selectedUser.setVerified(aBoolean);
@@ -134,12 +129,10 @@ public class UserUpdateDialogController {
                 try {
                     selectedUser.setRole(Role.valueOf(newValue.trim().toUpperCase()));
                 } catch (IllegalArgumentException e) {
-                    System.err.println("Invalid role: " + newValue);
                 }
             }
         });
 
-        // Dark mode subscription
         boolean initialDarkMode = store.getCurrentState(DarkModeState.class).isEnabled();
         updateDarkModeStyles(initialDarkMode);
 
@@ -164,12 +157,133 @@ public class UserUpdateDialogController {
 
     @FXML
     private void updateHandler() {
-        if (selectedUser != null) {
+        username.clearError();
+        email.clearError();
+        role.clearError();
+
+        FieldValidator validator = new FieldValidator();
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return username.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.username.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return username;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return email.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.email.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return email;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return email.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return value.isEmpty() || EMAIL_PATTERN.matcher(value).matches();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.email.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return email;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return role.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                return !value.isEmpty();
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.role.empty");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return role;
+            }
+        });
+
+        validator.addRule(new ValidationRule<String>() {
+            @Override
+            public String getValue() {
+                return role.getText().trim();
+            }
+
+            @Override
+            public boolean validate(String value) {
+                try {
+                    Role.valueOf(value.toUpperCase());
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    return false;
+                }
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return languageService.translate("input.role.invalid");
+            }
+
+            @Override
+            public ShadcnInput getInput() {
+                return role;
+            }
+        });
+
+        validator.onError(error -> error.getInput().setError(error.getErrorDetail()));
+
+        if (validator.runValidatorEngine().isEmpty() && selectedUser != null) {
             userService.update(selectedUser, user -> {
                 closeDialog();
             });
-        } else {
-            System.err.println("Güncellenecek kullanıcı yok.");
         }
     }
 
