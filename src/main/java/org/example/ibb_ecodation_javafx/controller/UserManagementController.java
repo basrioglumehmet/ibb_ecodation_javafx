@@ -80,6 +80,11 @@ public class UserManagementController {
             var state = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeFilterColor(state,filters);
         });
+        var userState = store.getCurrentState(UserState.class).getUserDetail();
+        if(userState.getRole().equals(Role.USER.toString())){
+            userTable.setVisible(false);
+            filters.setVisible(false);
+        }
 
 
         comboItems = new HashMap<>();

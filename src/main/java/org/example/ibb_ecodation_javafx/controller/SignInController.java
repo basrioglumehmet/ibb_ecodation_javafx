@@ -124,9 +124,10 @@ public class SignInController {
                             callback.getUserPicture().getImageData(),
                             callback.getUser().getUsername(),
                             callback.getUser().getEmail(),
+                            callback.getUser().getPassword(),
                             callback.getUser().getRole().toString(),
                             callback.getUser().isVerified(),
-                            callback.getUser().isLocked());
+                            callback.getUser().isLocked(),callback.getUser().getVersion());
                     store.dispatch(UserState.class,new UserState(userDetail,true,null,null));
                     SceneUtil.loadScene(SignInController.class,(Stage) rootPane.getScene().getWindow(),
                             "/org/example/ibb_ecodation_javafx/views/admin-dashboard-view.fxml",

@@ -66,6 +66,8 @@ public class AdminDashboardController {
             changeNavbarColor(darkModeEnabled,navbar);
             changeContentColor(darkModeEnabled);
             setAvatarImageSource();
+            var userDetail = stateRegistry.getState(UserState.class).getUserDetail();
+            labelUserName.setText(userDetail.getUsername());
         });
         System.out.println(store.getCurrentState(UserState.class).getUserDetail().toString());
         setAvatarImageSource();
@@ -120,7 +122,6 @@ public class AdminDashboardController {
                 if (imageBytes.length > 0) {
                     Image image = new Image(new ByteArrayInputStream(imageBytes));
                     shadcnAvatar.setImage(image);
-                    labelUserName.setText(userDetail.getUsername());
                     return;
                 }
             }

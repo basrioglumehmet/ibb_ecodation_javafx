@@ -14,7 +14,9 @@ public class UserDetailDto {
     private byte[] profilePicture;
     private String username;
     private String email;
+    private String password;
     private String role;
-    private boolean is_verified;
-    private boolean is_locked;
+    private boolean isVerified;
+    private boolean isLocked;
+    private int version;
 }

@@ -11,19 +11,24 @@ public class ShadcnSplitPane extends HBox {
     private final VBox rightPane;
 
     public ShadcnSplitPane() {
-        // Initialize panes
         leftPane = new VBox();
         rightPane = new VBox();
-        this.setStyle("-fx-padding:20;");
-        leftPane.setPrefWidth(900);
-        rightPane.setMaxWidth(900);
+
+        this.setStyle("-fx-padding: 20;");
         this.setSpacing(20);
 
-        // Set grow properties (Burası önemli)
         HBox.setHgrow(leftPane, Priority.ALWAYS);
         HBox.setHgrow(rightPane, Priority.ALWAYS);
+        VBox.setVgrow(leftPane,Priority.ALWAYS);
+        VBox.setVgrow(rightPane,Priority.ALWAYS);
 
+        // Add panes to HBox
         getChildren().addAll(leftPane, rightPane);
+    }
+    public void toggleLeftContent() {
+        boolean currentlyVisible = leftPane.isVisible();
+        leftPane.setVisible(!currentlyVisible);
+        leftPane.setManaged(!currentlyVisible);
     }
 
     public void setLeftContent(Node... children) {

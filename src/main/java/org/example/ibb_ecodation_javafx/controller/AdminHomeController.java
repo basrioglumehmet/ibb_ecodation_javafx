@@ -7,7 +7,10 @@ import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
+import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.service.UserNotificationService;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.splitpane.ShadcnSplitPane;
 import org.example.ibb_ecodation_javafx.ui.table.DynamicTable;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
@@ -21,6 +24,7 @@ public class AdminHomeController {
     @FXML
     private UserNotificationService userNotificationService;
     private final SecurityLogger securityLogger;
+    private final Store store = Store.getInstance();
 
     public AdminHomeController(){
         userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
@@ -39,8 +43,15 @@ public class AdminHomeController {
             Parent kdvPane = kdvLoader.load();
 
             // Panellere yerleştir
+            var userState = store.getCurrentState(UserState.class).getUserDetail();
+
+
+            if(userState.getRole().equals(Role.USER.toString())){
+              splitPane.toggleLeftContent();
+            }
             splitPane.setLeftContent(userPane);
             splitPane.setRightContent(kdvPane);
+
 
         } catch (IOException e) {
             e.printStackTrace();
