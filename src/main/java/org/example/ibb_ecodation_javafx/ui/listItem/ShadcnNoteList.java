@@ -24,9 +24,6 @@ import java.util.function.Consumer;
 
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 
-/**
- * Not kartlarını görüntüleyen ve yöneten ScrollPane bileşeni.
- */
 public class ShadcnNoteList extends ScrollPane {
     private final GridPane gridPane;
     private final List<UserNote> notes;
@@ -45,12 +42,20 @@ public class ShadcnNoteList extends ScrollPane {
         this.languageCode = languageCode;
         languageService.loadAll(languageCode);
 
+        Label pageTitle = new Label(languageService.translate("label.note"));
+        pageTitle.setStyle("-fx-font-size: 24px; -fx-font-family:'Poppins';" +
+                String.format("-fx-text-fill: %s;",
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
+
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setPadding(new Insets(0, 0, 0, 0));
+
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setStyle("-fx-background-color: transparent;");
-        this.setStyle("-fx-padding: 20px;");
         gridPane.setMaxWidth(Double.MAX_VALUE);
 
         for (int i = 0; i < COLUMNS; i++) {
@@ -60,39 +65,29 @@ public class ShadcnNoteList extends ScrollPane {
             gridPane.getColumnConstraints().add(column);
         }
 
+        container.getChildren().addAll(pageTitle, gridPane);
+
         notes = new ArrayList<>();
-        this.setContent(gridPane);
+        this.setContent(container);
         this.setFitToWidth(true);
         this.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
+        this.setStyle("-fx-padding: 15px;");
 
         glyphIconName.set("CLOCK");
         updateGrid(false);
     }
 
-    /**
-     * Yeni bir not ekler.
-     *
-     * @param userNote Eklenecek UserNote nesnesi.
-     */
     public void addNote(UserNote userNote) {
         notes.add(userNote);
         addNewCardWithAnimation(userNote);
     }
 
-    /**
-     * Tüm notları temizler.
-     */
     public void clearNotes() {
         notes.clear();
         updateGrid(false);
     }
 
-    /**
-     * Not kartlarını günceller ve ızgarayı yeniden çizer.
-     *
-     * @param animateAll Tüm kartların animasyonlu olup olmayacağı.
-     */
     private void updateGrid(boolean animateAll) {
         gridPane.getChildren().clear();
         for (int i = 0; i < notes.size(); i++) {
@@ -110,11 +105,6 @@ public class ShadcnNoteList extends ScrollPane {
         addPlusButton(false);
     }
 
-    /**
-     * Yeni bir not kartı ekler ve animasyon uygular.
-     *
-     * @param newNote Eklenecek not.
-     */
     private void addNewCardWithAnimation(UserNote newNote) {
         VBox card = createNoteCard(newNote);
         int totalItems = notes.size() - 1;
@@ -129,56 +119,36 @@ public class ShadcnNoteList extends ScrollPane {
         updatePlusButtonPosition();
     }
 
-    /**
-     * Not kartı oluşturur.
-     *
-     * @param note Kartın verileri.
-     * @return Oluşturulan kart.
-     */
     private VBox createNoteCard(UserNote note) {
         VBox card = new VBox(5);
-        card.setStyle(" -fx-background-radius: 8px; -fx-padding: 20px;"+
+        card.setStyle("-fx-background-radius: 8px; -fx-padding: 20px;" +
                 String.format("-fx-background-color: %s;",
                         !store.getCurrentState(DarkModeState.class).isEnabled() ?
-                                "#202024": // dark
-                                "#fbfbfb"
-                ));
+                                "#202024" : "#fbfbfb"));
         card.setMaxWidth(Double.MAX_VALUE);
         card.setSpacing(20);
         card.setMinHeight(182);
 
         Label dateLabel = new Label(note.getReportAt().toString());
-        dateLabel.setStyle("-fx-font-size: 12px;"+
+        dateLabel.setStyle("-fx-font-size: 12px;" +
                 String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
-                                "#fff": // dark
-                                "#000"
-                ));
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
 
         Label titleLabel = new Label(note.getHeader());
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;"+
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;" +
                 String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
-                                "#fff": // dark
-                                "#000"
-                ));
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
         titleLabel.setWrapText(true);
 
         FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
         iconView.setGlyphSize(16);
-        iconView.setFill(Paint.valueOf( !store.getCurrentState(DarkModeState.class).isEnabled() ?
-                        "#fff": // dark
-                        "#000"
-        ));
+        iconView.setFill(Paint.valueOf(!store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
         StackPane iconWrapper = new StackPane(iconView);
 
         Label contentLabel = new Label(note.getDescription());
-        contentLabel.setStyle("-fx-font-size: 12px;"+
+        contentLabel.setStyle("-fx-font-size: 12px;" +
                 String.format("-fx-text-fill: %s;",
-                        !store.getCurrentState(DarkModeState.class).isEnabled() ?
-                                "#fff": // dark
-                                "#000"
-                ));
+                        !store.getCurrentState(DarkModeState.class).isEnabled() ? "#fff" : "#000"));
         contentLabel.setWrapText(true);
 
         HBox bottomSection = new HBox(10);

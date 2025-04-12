@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.controller;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
@@ -31,6 +32,7 @@ public class AdminNoteController {
     private ShadcnNoteList noteList;
 
     private final Store store = Store.getInstance();
+
 
     public AdminNoteController() {
         this.securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
