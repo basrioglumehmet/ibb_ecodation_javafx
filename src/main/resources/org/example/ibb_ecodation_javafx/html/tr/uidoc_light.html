@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Yardım Kılavuzu</title>
+    <style>
+        body {
+          font-family: "Segoe UI", sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f5f5f5;
+          color: #333;
+          animation: fadeInBody 1s ease;
+        }
+
+        @keyframes fadeInBody {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+          background: linear-gradient(to right, #e0e0e0, #ffffff);
+          padding: 90px 20px;
+          text-align: center;
+          color: #222;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          animation: slideDown 1s ease;
+        }
+
+        @keyframes slideDown {
+          from { transform: translateY(-30px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
+        header h1 {
+          margin: 0;
+          font-size: 32px;
+          font-weight: bold;
+        }
+
+        header p {
+          font-size: 16px;
+          margin-top: 8px;
+          opacity: 0.9;
+        }
+
+        .container {
+          max-width: 900px;
+          margin: 30px auto;
+          padding: 0 20px;
+        }
+
+        .accordion {
+          margin-bottom: 15px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          animation: fadeIn 0.8s ease forwards;
+          opacity: 0;
+        }
+
+        .accordion:nth-child(1) { animation-delay: 0.2s; }
+        .accordion:nth-child(2) { animation-delay: 0.4s; }
+        .accordion:nth-child(3) { animation-delay: 0.6s; }
+        .accordion:nth-child(4) { animation-delay: 0.8s; }
+        .accordion:nth-child(5) { animation-delay: 1s; }
+
+        @keyframes fadeIn {
+          to { opacity: 1; }
+        }
+
+        .accordion-header {
+          background-color: #ffffff;
+          color: #333;
+          padding: 18px 20px;
+          cursor: pointer;
+          font-size: 18px;
+          font-weight: 500;
+          transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+          background-color: #f0f0f0;
+        }
+
+        .accordion-content {
+          background-color: #fafafa;
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.4s ease, padding 0.4s ease;
+          padding: 0 20px;
+        }
+
+        .accordion-content.open {
+          padding: 20px;
+        }
+
+        .accordion-content p {
+          font-size: 15px;
+          line-height: 1.6;
+          color: #555;
+        }
+
+        .highlight {
+          background: #f9f9f9;
+          border-left: 4px solid #f27a1a;
+          padding: 12px;
+          margin-top: 12px;
+          border-radius: 4px;
+          font-size: 14px;
+          color: #333;
+        }
+
+        .footer {
+          text-align: center;
+          font-size: 13px;
+          color: #666;
+          padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📘 Kullanıcı Kılavuzu</h1>
+    <p>JavaFX tabanlı masaüstü uygulamasının kullanım rehberi.</p>
+</header>
+
+<div class="container">
+    <div class="accordion">
+        <div class="accordion-header">🔐 Giriş Ekranı</div>
+        <div class="accordion-content">
+            <p>Uygulama açıldığında kullanıcı adı ve şifre ile giriş yapılır. Güvenli kimlik doğrulama için Bcrypt şifreleme kullanılır. Başarılı giriş sonrası ana panele geçiş animasyonlu sahne yükleyici ile sağlanır.</p>
+            <div class="highlight">📌 Kayıt olunan hesap OTP onaylanmamışsa, giriş yapılamaz.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">🏠 Ana Sayfa</div>
+        <div class="accordion-content">
+            <p>Ana sayfa, kullanıcı yönetimi ve KDV işlemlerini içerir. Sol tarafta kullanıcı işlemleri (filtreleme, yenileme, yazdırma, güncelleme, silme, oluşturma) yer alır. Sağ tarafta KDV işlemleri (KDV numarasına göre filtreleme, yenileme, yazdırma, PDF/TXT/Excel dışa aktarma, güncelleme, silme, e-posta gönderme, oluşturma) bulunur. Alt kısımda KDV ve kullanıcı verilerine dayalı bar grafik analizi gösterilir.</p>
+            <div class="highlight">🛠️ Tüm işlemler kullanıcı dostu arayüzle desteklenir ve animasyonlu geçişlerle zenginleştirilir.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">🔔 Bildirimler</div>
+        <div class="accordion-content">
+            <p>Kullanıcılar bilgi, başarı ve hata bildirimlerini gerçek zamanlı olarak görür. Bildirimler veritabanında saklanır ve yerel bildirimler olarak da gösterilir. Başarı bildirimlerinde tik, bilgi bildirimlerinde "i", hata bildirimlerinde "X" simgesi kullanılır.</p>
+            <div class="highlight">📦 Bildirimler hem anlık hem de kalıcı olarak yönetilir.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">👤 Profil Yönetimi</div>
+        <div class="accordion-content">
+            <p>Kullanıcılar kişisel bilgilerini görüntüleyebilir ve düzenleyebilir. Profil yönetimi, kullanıcı adı, e-posta ve diğer bilgileri güncelleme imkanı sunar.</p>
+            <div class="highlight">📸 Profil resmi ekleme ve düzenleme desteği mevcuttur.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">📝 Notlar</div>
+        <div class="accordion-content">
+            <p>Kullanıcılar belirli bir zaman için zamanlayıcı ayarlayarak notlar oluşturabilir ve silebilir. Notlar animasyonlu bir şekilde görüntülenir.</p>
+            <div class="highlight">⏰ Notlar, kullanıcıya hatırlatma olarak bildirilir.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">⚙️ Ayarlar</div>
+        <div class="accordion-content">
+            <p>Kullanıcılar dil (Türkçe, İngilizce) ve tema (koyu/açık mod) ayarlarını değiştirebilir. Dil seçimi uluslararasılaşma (i18n) desteği ile tüm arayüzü günceller. Koyu ve açık mod, kullanıcı deneyimini özelleştirir.</p>
+            <div class="highlight">💾 Değişikliklerin sıfırlanması için “Sıfırla” butonuna basılmalıdır.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">📬 E-posta ve Yazdırma</div>
+        <div class="accordion-content">
+            <p>KDV verileri veya kullanıcı bilgileri hedef e-posta adresine gönderilebilir. SendGrid API ile güvenli e-posta gönderimi sağlanır. Ayrıca, veriler yazıcıdan doğrudan çıktı alınarak yazdırılabilir.</p>
+            <div class="highlight">📤 E-posta ve yazdırma işlemleri hızlı ve güvenilirdir.</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    © 2025 Tüm Hakları Saklıdır.
+</div>
+
+<script>
+    const headers = document.querySelectorAll('.accordion-header');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const isOpen = content.classList.contains('open');
+
+        document.querySelectorAll('.accordion-content').forEach(c => {
+          c.classList.remove('open');
+          c.style.maxHeight = null;
+        });
+
+        if (!isOpen) {
+          content.classList.add('open');
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    });
+</script>
+
+</body>
+</html>

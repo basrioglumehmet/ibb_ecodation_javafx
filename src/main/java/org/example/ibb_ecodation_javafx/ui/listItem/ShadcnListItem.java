@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import io.reactivex.rxjava3.disposables.Disposable;
+import javafx.scene.paint.Color;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -17,6 +18,7 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnSwitchButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 
+import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getColor;
 import static org.example.ibb_ecodation_javafx.utils.FontAwesomeUtil.getGlyphIcon;
 
 public class ShadcnListItem extends HBox {
@@ -172,6 +174,7 @@ public class ShadcnListItem extends HBox {
                 HBox.setHgrow(spacer2, Priority.ALWAYS);
                 FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
                 iconView.setGlyphSize(40);
+                iconView.setFill(Color.web(getColor(this.glyphIconName)));
                 StackPane iconWrapper = new StackPane(iconView);
                 HBox rightContainer2 = new HBox(iconWrapper);
                 rightContainer2.setAlignment(Pos.CENTER_RIGHT);

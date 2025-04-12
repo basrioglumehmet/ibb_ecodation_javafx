@@ -15,6 +15,15 @@ public enum CountryCode {
     public String getCode() {
         return code;
     }
+    public static CountryCode fromCode(String code) {
+        for (CountryCode countryCode : CountryCode.values()) {
+            if (countryCode.getCode().equalsIgnoreCase(code)) {
+                return countryCode;
+            }
+        }
+        throw new IllegalArgumentException("Unknown country code: " + code);
+    }
+
 
     @Override
     public String toString() {

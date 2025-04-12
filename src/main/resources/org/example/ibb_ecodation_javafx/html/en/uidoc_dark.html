@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Yardım Kılavuzu</title>
+    <title>User Guide</title>
     <style>
         body {
           font-family: "Segoe UI", sans-serif;
           margin: 0;
           padding: 0;
-          background-color: #fffaf5;
-          color: #333;
+          background-color: #121212;
+          color: #e0e0e0;
           animation: fadeInBody 1s ease;
         }
 
@@ -19,11 +19,11 @@
         }
 
         header {
-          background: linear-gradient(to right, #f27a1a, #f68d2b);
+          background: linear-gradient(to right, #2b2b2b, #444);
           padding: 90px 20px;
           text-align: center;
           color: white;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.4);
           animation: slideDown 1s ease;
         }
 
@@ -54,7 +54,7 @@
           margin-bottom: 15px;
           border-radius: 8px;
           overflow: hidden;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
           animation: fadeIn 0.8s ease forwards;
           opacity: 0;
         }
@@ -70,7 +70,7 @@
         }
 
         .accordion-header {
-          background-color: #f27a1a;
+          background-color: #333;
           color: white;
           padding: 18px 20px;
           cursor: pointer;
@@ -80,11 +80,11 @@
         }
 
         .accordion-header:hover {
-          background-color: #e86f10;
+          background-color: #444;
         }
 
         .accordion-content {
-          background-color: white;
+          background-color: #1e1e1e;
           max-height: 0;
           overflow: hidden;
           transition: max-height 0.4s ease, padding 0.4s ease;
@@ -98,22 +98,23 @@
         .accordion-content p {
           font-size: 15px;
           line-height: 1.6;
-          color: #444;
+          color: #ccc;
         }
 
         .highlight {
-          background: #fff1e5;
+          background: #2a2a2a;
           border-left: 4px solid #f27a1a;
           padding: 12px;
           margin-top: 12px;
           border-radius: 4px;
           font-size: 14px;
+          color: #f1f1f1;
         }
 
         .footer {
           text-align: center;
           font-size: 13px;
-          color: #aaa;
+          color: #777;
           padding: 20px;
         }
     </style>
@@ -121,54 +122,70 @@
 <body>
 
 <header>
-    <h1>📘 Kullanıcı Kılavuzu</h1>
-    <p>Uygulamanın arayüzüne dair rehber.</p>
+    <h1>📘 User Guide</h1>
+    <p>Guide for using the JavaFX-based desktop application.</p>
 </header>
 
 <div class="container">
     <div class="accordion">
-        <div class="accordion-header">🔐 Giriş Ekranı</div>
+        <div class="accordion-header">🔐 Login Screen</div>
         <div class="accordion-content">
-            <p>Uygulama açıldığında kullanıcı adı ve şifre girerek sisteme giriş yapılır. Başarılı giriş sonrası ana panele yönlendirme gerçekleşir.</p>
-            <div class="highlight">📌 “Beni Hatırla” seçeneği oturum bilgisini korur.</div>
+            <p>The application opens with a login screen where users enter their username and password. Secure authentication is ensured using Bcrypt encryption. Upon successful login, users are directed to the main panel with an animated scene loader.</p>
+            <div class="highlight">📌 Accounts that have not completed OTP verification cannot log in.</div>
         </div>
     </div>
 
     <div class="accordion">
-        <div class="accordion-header">🏠 Ana Sayfa</div>
+        <div class="accordion-header">🏠 Home Page</div>
         <div class="accordion-content">
-            <p>Kullanıcının son hareketleri, bildirimleri ve hızlı erişim bileşenleri burada bulunur.</p>
-            <div class="highlight">⚡ Gerçek zamanlı güncellemeler WebSocket ile sağlanır.</div>
+            <p>The home page includes user management and VAT operations. The left side handles user operations (filtering, refreshing, printing, updating, deleting, creating). The right side manages VAT operations (filtering by VAT number, refreshing, printing, exporting to PDF/TXT/Excel, updating, deleting, emailing, creating). A bar chart at the bottom displays graphical analysis of user and VAT data.</p>
+            <div class="highlight">🛠️ All operations are supported by a user-friendly interface and enhanced with animated transitions.</div>
         </div>
     </div>
 
     <div class="accordion">
-        <div class="accordion-header">⚙️ Ayarlar</div>
+        <div class="accordion-header">🔔 Notifications</div>
         <div class="accordion-content">
-            <p>Kullanıcı profili, uygulama dili, tema seçimi gibi sistem tercihlerine buradan ulaşabilirsiniz.</p>
-            <div class="highlight">🌗 Koyu tema aktif edildiğinde uygulama renkleri değişir.</div>
+            <p>Users receive real-time info, success, and error notifications. Notifications are stored in the database and displayed as native notifications. Success notifications show a checkmark, info notifications an "i" icon, and error notifications an "X" icon.</p>
+            <div class="highlight">📦 Notifications are managed both instantly and persistently.</div>
         </div>
     </div>
 
     <div class="accordion">
-        <div class="accordion-header">📑 Raporlar</div>
+        <div class="accordion-header">👤 Profile Management</div>
         <div class="accordion-content">
-            <p>Geçmiş verilere ait raporları filtreleyerek listeleyebilir, dışa aktarabilirsiniz.</p>
-            <div class="highlight">📥 PDF ve Excel olarak dışa aktarım mümkündür.</div>
+            <p>Users can view and edit their personal information. Profile management allows updating username, email, and other details.</p>
+            <div class="highlight">📸 Profile picture addition and editing are supported.</div>
         </div>
     </div>
 
     <div class="accordion">
-        <div class="accordion-header">❓ Yardım</div>
+        <div class="accordion-header">📝 Notes</div>
         <div class="accordion-content">
-            <p>Yardım almak için sıkça sorulan sorulara göz atabilir veya bizimle iletişime geçebilirsiniz.</p>
-            <div class="highlight">📩 Teknik destek: destek@uygulama.com</div>
+            <p>Users can create and delete notes with a timer set for a specific time. Notes are displayed with animations.</p>
+            <div class="highlight">⏰ Notes serve as reminders for users.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">⚙️ Settings</div>
+        <div class="accordion-content">
+            <p>Users can change the language (English, Turkish) and theme (dark/light mode). Language selection updates the entire interface with internationalization (i18n) support. Dark and light modes customize the user experience.</p>
+            <div class="highlight">💾 To reset changes, the “Reset” button must be pressed.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">📬 Email and Printing</div>
+        <div class="accordion-content">
+            <p>VAT data or user information can be sent to a target email address. Secure email sending is provided via the SendGrid API. Additionally, data can be printed directly from a printer.</p>
+            <div class="highlight">📤 Email and printing operations are fast and reliable.</div>
         </div>
     </div>
 </div>
 
 <div class="footer">
-    © 2025 Tüm Hakları Saklıdır.
+    © 2025 All Rights Reserved.
 </div>
 
 <script>

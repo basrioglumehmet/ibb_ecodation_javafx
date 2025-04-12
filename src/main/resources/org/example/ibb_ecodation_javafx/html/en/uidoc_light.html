@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>User Guide</title>
+    <style>
+        body {
+          font-family: "Segoe UI", sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f5f5f5;
+          color: #333;
+          animation: fadeInBody 1s ease;
+        }
+
+        @keyframes fadeInBody {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+          background: linear-gradient(to right, #e0e0e0, #ffffff);
+          padding: 90px 20px;
+          text-align: center;
+          color: #222;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          animation: slideDown 1s ease;
+        }
+
+        @keyframes slideDown {
+          from { transform: translateY(-30px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
+        header h1 {
+          margin: 0;
+          font-size: 32px;
+          font-weight: bold;
+        }
+
+        header p {
+          font-size: 16px;
+          margin-top: 8px;
+          opacity: 0.9;
+        }
+
+        .container {
+          max-width: 900px;
+          margin: 30px auto;
+          padding: 0 20px;
+        }
+
+        .accordion {
+          margin-bottom: 15px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          animation: fadeIn 0.8s ease forwards;
+          opacity: 0;
+        }
+
+        .accordion:nth-child(1) { animation-delay: 0.2s; }
+        .accordion:nth-child(2) { animation-delay: 0.4s; }
+        .accordion:nth-child(3) { animation-delay: 0.6s; }
+        .accordion:nth-child(4) { animation-delay: 0.8s; }
+        .accordion:nth-child(5) { animation-delay: 1s; }
+
+        @keyframes fadeIn {
+          to { opacity: 1; }
+        }
+
+        .accordion-header {
+          background-color: #ffffff;
+          color: #333;
+          padding: 18px 20px;
+          cursor: pointer;
+          font-size: 18px;
+          font-weight: 500;
+          transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+          background-color: #f0f0f0;
+        }
+
+        .accordion-content {
+          background-color: #fafafa;
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.4s ease, padding 0.4s ease;
+          padding: 0 20px;
+        }
+
+        .accordion-content.open {
+          padding: 20px;
+        }
+
+        .accordion-content p {
+          font-size: 15px;
+          line-height: 1.6;
+          color: #555;
+        }
+
+        .highlight {
+          background: #f9f9f9;
+          border-left: 4px solid #f27a1a;
+          padding: 12px;
+          margin-top: 12px;
+          border-radius: 4px;
+          font-size: 14px;
+          color: #333;
+        }
+
+        .footer {
+          text-align: center;
+          font-size: 13px;
+          color: #666;
+          padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📘 User Guide</h1>
+    <p>Guide for using the JavaFX-based desktop application.</p>
+</header>
+
+<div class="container">
+    <div class="accordion">
+        <div class="accordion-header">🔐 Login Screen</div>
+        <div class="accordion-content">
+            <p>The application opens with a login screen where users enter their username and password. Secure authentication is ensured using Bcrypt encryption. Upon successful login, users are directed to the main panel with an animated scene loader.</p>
+            <div class="highlight">📌 Accounts that have not completed OTP verification cannot log in.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">🏠 Home Page</div>
+        <div class="accordion-content">
+            <p>The home page includes user management and VAT operations. The left side handles user operations (filtering, refreshing, printing, updating, deleting, creating). The right side manages VAT operations (filtering by VAT number, refreshing, printing, exporting to PDF/TXT/Excel, updating, deleting, emailing, creating). A bar chart at the bottom displays graphical analysis of user and VAT data.</p>
+            <div class="highlight">🛠️ All operations are supported by a user-friendly interface and enhanced with animated transitions.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">🔔 Notifications</div>
+        <div class="accordion-content">
+            <p>Users receive real-time info, success, and error notifications. Notifications are stored in the database and displayed as native notifications. Success notifications show a checkmark, info notifications an "i" icon, and error notifications an "X" icon.</p>
+            <div class="highlight">📦 Notifications are managed both instantly and persistently.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">👤 Profile Management</div>
+        <div class="accordion-content">
+            <p>Users can view and edit their personal information. Profile management allows updating username, email, and other details.</p>
+            <div class="highlight">📸 Profile picture addition and editing are supported.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">📝 Notes</div>
+        <div class="accordion-content">
+            <p>Users can create and delete notes with a timer set for a specific time. Notes are displayed with animations.</p>
+            <div class="highlight">⏰ Notes serve as reminders for users.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">⚙️ Settings</div>
+        <div class="accordion-content">
+            <p>Users can change the language (English, Turkish) and theme (dark/light mode). Language selection updates the entire interface with internationalization (i18n) support. Dark and light modes customize the user experience.</p>
+            <div class="highlight">💾 To reset changes, the “Reset” button must be pressed.</div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">📬 Email and Printing</div>
+        <div class="accordion-content">
+            <p>VAT data or user information can be sent to a target email address. Secure email sending is provided via the SendGrid API. Additionally, data can be printed directly from a printer.</p>
+            <div class="highlight">📤 Email and printing operations are fast and reliable.</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    © 2025 All Rights Reserved.
+</div>
+
+<script>
+    const headers = document.querySelectorAll('.accordion-header');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const isOpen = content.classList.contains('open');
+
+        document.querySelectorAll('.accordion-content').forEach(c => {
+          c.classList.remove('open');
+          c.style.maxHeight = null;
+        });
+
+        if (!isOpen) {
+          content.classList.add('open');
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    });
+</script>
+
+</body>
+</html>

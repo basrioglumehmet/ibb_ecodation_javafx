@@ -44,6 +44,7 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 37. **Application Constants for Reusable Infrastructure**
 38. **Apache POI**
 39. **Jackson Serialization**
+40. **Dynamic Guide**
 
 # UI Introduction
 ## Dark / Light Mode

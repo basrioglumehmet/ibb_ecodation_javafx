@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
 import javafx.util.Pair;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.enums.CountryCode;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 
@@ -79,6 +80,10 @@ public class ShadcnLanguageComboBox extends Button {
                 label.setText(pair.getValue());
                 currentLanguageCode = pair.getKey();
                 changeContextMenuTextColor(isDarkMode, label);
+                store.dispatch(TranslatorState.class,
+                        new TranslatorState(
+                                CountryCode.fromCode(currentLanguageCode)
+                        ));
             }
         });
     }

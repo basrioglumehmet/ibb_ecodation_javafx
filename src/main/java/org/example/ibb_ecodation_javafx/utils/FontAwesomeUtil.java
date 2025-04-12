@@ -8,6 +8,29 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class FontAwesomeUtil {
+    public static String getColor(StringProperty glyphIconName){
+
+        String iconName = glyphIconName.get();
+        String color = "white"; // Default color
+
+        switch (iconName.toUpperCase()) {
+
+            case "SUCCESS":
+                color = "#3ba55c";
+                break;
+            case "ERROR":
+                color = "#ed4245";
+                break;
+            case "INFO":
+                color = "#f27a1a";
+                break;
+            default:
+                color = "white";
+                break;
+        }
+
+        return color;
+    }
     public static FontAwesomeIconView getGlyphIcon(StringProperty glyphIconName) {
         String iconName = glyphIconName.get();
         FontAwesomeIcon icon = FontAwesomeIcon.USER; // Default icon

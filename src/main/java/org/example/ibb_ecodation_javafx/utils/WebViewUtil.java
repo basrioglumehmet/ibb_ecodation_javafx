@@ -17,6 +17,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.experimental.UtilityClass;
+import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 
 import java.net.URL;
@@ -39,6 +42,7 @@ public class WebViewUtil {
     private static double xOffset = 0;
     private static double yOffset = 0;
     private static boolean isDragging = false;
+    private Store store = Store.getInstance();
 
     /**
      * HTML dosyasını modal bir popup olarak gösterir, ana pencerenin bulunduğu ekranın ortasında.
@@ -50,7 +54,6 @@ public class WebViewUtil {
         // WebView oluşturuluyor
         WebView webView = new WebView();
         webView.setContextMenuEnabled(false);
-
         // Scrollbar'ları gizle ama scroll özelliği kalsın
         webView.getEngine().setUserStyleSheetLocation(
                 WebViewUtil.class.getResource("/org/example/ibb_ecodation_javafx/css/style.css").toExternalForm()
@@ -93,7 +96,7 @@ public class WebViewUtil {
 
         // Paneli oluşturuyoruz
         StackPane root = new StackPane(webView, buttonContainer);
-        root.setStyle("-fx-background-color: transparent;");
+        root.setStyle("-fx-background-color: transparent; -fx-border-width:1; -fx-border-color:#2c2c2c;");
         root.setAlignment(Pos.CENTER);
 
         // Scene'i ayarlıyoruz
@@ -116,10 +119,7 @@ public class WebViewUtil {
         stage.setWidth(dimensions[0]);
         stage.setHeight(dimensions[1]);
         webView.setPrefSize(dimensions[0], dimensions[1] - buttonContainer.getPrefHeight());
-        Rectangle clip = new Rectangle(0, 0, dimensions[0], dimensions[1]);
-        clip.setArcWidth(20);
-        clip.setArcHeight(20);
-        root.setClip(clip);
+
 
         // Ekranın ortasına yerleştir
         centerStage(stage, targetScreen.getVisualBounds(), dimensions[0], dimensions[1]);
@@ -136,6 +136,16 @@ public class WebViewUtil {
 
         runAnimation(root);
         stage.show();
+    }
+
+    public void showUiDoc(){
+        String mainPath = "/org/example/ibb_ecodation_javafx/html";
+        String targetFile = String.format("%s/%s/uidoc_%s.html",
+                mainPath,
+                store.getCurrentState(TranslatorState.class).countryCode(),
+                store.getCurrentState(DarkModeState.class).isEnabled() ? "light":"dark");
+        System.out.println(targetFile);
+        showHelpPopup(targetFile,"Guide");
     }
 
     /**
@@ -291,9 +301,6 @@ public class WebViewUtil {
             stage.setY(screenBounds.getMinY());
         }
 
-        Rectangle clip = (Rectangle) root.getClip();
-        clip.setWidth(newWidth);
-        clip.setHeight(newHeight);
 
         HBox buttonContainer = (HBox) root.getChildren().get(1);
         webView.setPrefSize(newWidth, newHeight - buttonContainer.getPrefHeight());
@@ -315,9 +322,7 @@ public class WebViewUtil {
                 double newWidth = newVal.doubleValue();
                 double newHeight = Math.max(MIN_HEIGHT, newWidth / ASPECT_RATIO);
                 stage.setHeight(newHeight);
-                Rectangle clip = (Rectangle) root.getClip();
-                clip.setWidth(newWidth);
-                clip.setHeight(newHeight);
+
                 HBox buttonContainer = (HBox) root.getChildren().get(1);
                 webView.setPrefSize(newWidth, newHeight - buttonContainer.getPrefHeight());
                 root.requestLayout();
@@ -330,9 +335,7 @@ public class WebViewUtil {
                 double newHeight = newVal.doubleValue();
                 double newWidth = Math.max(MIN_WIDTH, newHeight * ASPECT_RATIO);
                 stage.setWidth(newWidth);
-                Rectangle clip = (Rectangle) root.getClip();
-                clip.setWidth(newWidth);
-                clip.setHeight(newHeight);
+
                 HBox buttonContainer = (HBox) root.getChildren().get(1);
                 webView.setPrefSize(newWidth, newHeight - buttonContainer.getPrefHeight());
                 root.requestLayout();
