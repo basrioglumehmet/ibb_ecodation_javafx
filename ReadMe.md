@@ -47,10 +47,11 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 # UI Introduction
 ## Quick Video
 
-<video width="320" height="240" controls>
-  <source src="./tamamlandi.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+
+
+https://github.com/user-attachments/assets/f1618cc7-8f7d-464d-9642-5824c789ec91
+
+
 
 ## Dark / Light Mode
 ![img_12.png](img_12.png)
