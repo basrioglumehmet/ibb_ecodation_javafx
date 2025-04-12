@@ -33,7 +33,6 @@ public class UserNoteServiceImpl implements UserNoteService {
 
     @Override
     public UserNote create(UserNote entity) {
-        entity.setReportAt(LocalDateTime.now()); // Default to now, can be overridden
         UserNote createdNote = userNoteRepository.create(entity, UserNoteQuery.CREATE_NOTE, List.of(
                 entity.getUserId(),
                 entity.getReportAt(),

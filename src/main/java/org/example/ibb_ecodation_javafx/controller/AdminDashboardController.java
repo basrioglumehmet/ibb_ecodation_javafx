@@ -160,7 +160,7 @@ public class AdminDashboardController {
                     return;
                 }
             }
-            shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.jpg"));
+            shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

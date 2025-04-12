@@ -22,6 +22,7 @@ import org.example.ibb_ecodation_javafx.utils.DialogUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeRootPaneColor;
@@ -201,7 +202,7 @@ public class NoteDialogController {
 
             @Override
             public boolean validate(LocalDate value) {
-                return value == null || !value.isAfter(LocalDate.now());
+                return value == null || value.isAfter(LocalDate.now());
             }
 
             @Override
@@ -253,9 +254,10 @@ public class NoteDialogController {
             entity.setHeader(headerField.getText().trim());
             entity.setDescription(descriptionField.getText().trim());
             LocalDate date = dateField.getValue();
-            entity.setReportAt(LocalDateTime.of(date, LocalDateTime.now().toLocalTime()));
+            entity.setReportAt(LocalDateTime.of(date, LocalTime.MIDNIGHT));
             entity.setVersion(0);
-
+            System.out.println(dateField.getValue());
+            System.out.println(entity.getReportAt());
             userNoteService.create(entity);
             closeDialog();
         }
