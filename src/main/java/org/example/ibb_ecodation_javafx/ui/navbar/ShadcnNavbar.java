@@ -86,6 +86,10 @@ public class ShadcnNavbar extends HBox {
         timeline.play();
         helpButton = new ShadcnButton(languageService.translate("navbar.help"), ShadcnButton.ButtonType.SECONDARY, "QUESTION", false, false, "LEFT");
         exitButton = new ShadcnButton(languageService.translate("navbar.exit"), ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", false, false, "LEFT");
+        if(!store.getCurrentState(UserState.class).isLoggedIn()){
+            exitButton.setVisible(false);
+            exitButton.setManaged(false);
+        }
         minimizeButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MINIMIZE", false, true, "LEFT");
         fullWindowButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MAXIMIZE", false, true, "LEFT");
         closeButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "CLOSE", false, true, "LEFT");

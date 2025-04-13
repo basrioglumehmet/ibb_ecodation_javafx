@@ -1,17 +1,27 @@
 module org.example.ibb_ecodation_javafx {
+    requires javafx.graphics;
+    requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.web;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
-    requires static lombok;
     requires com.h2database;
-    requires org.mapstruct;
-    requires javafx.web;
     requires sendgrid.java;
+    requires jbcrypt;
+    requires jakarta.xml.bind;
+    requires io.reactivex.rxjava3;
+    requires spring.context;
+    requires spring.beans;
+    requires org.apache.logging.log4j;
+    requires org.apache.poi.ooxml;
+    requires org.apache.pdfbox;
+    requires richtextfx;
+    requires com.microsoft.sqlserver.jdbc;
 
-    opens org.example.ibb_ecodation_javafx to javafx.fxml, lombok, org.mapstruct, javafx.base,com.fasterxml.jackson.databind;
+    opens org.example.ibb_ecodation_javafx  to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
     opens org.example.ibb_ecodation_javafx.controller to javafx.fxml, lombok, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.ui.button to javafx.fxml, lombok, org.mapstruct;
     opens org.example.ibb_ecodation_javafx.ui.navbar to javafx.fxml, lombok, org.mapstruct;
@@ -39,29 +49,23 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.model.enums to com.fasterxml.jackson.databind;
     opens org.example.ibb_ecodation_javafx.utils to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
 
-    requires java.compiler;
-    requires jbcrypt;
-    requires jaxb.api;
-    requires io.reactivex.rxjava3;
     requires de.jensd.fx.glyphs.fontawesome;
-    requires com.fasterxml.jackson.databind;
-    requires spring.context;
-    requires spring.beans;
     requires java.net.http;
     requires org.apache.logging.log4j.core;
     requires layout;
     requires io;
     requires kernel;
-    requires org.apache.poi.ooxml;
-    requires org.apache.pdfbox;
-    requires java.desktop;
-    requires org.apache.logging.log4j;
-    requires java.sql;
     requires org.apache.commons.io;
-    requires richtextfx;
+    requires static lombok;
+    requires org.mapstruct;
+    requires com.fasterxml.jackson.dataformat.yaml;
+    requires com.fasterxml.jackson.databind;
+    requires java.desktop;
+    requires java.sql;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
     exports org.example.ibb_ecodation_javafx;
+    exports org.example.ibb_ecodation_javafx.config;
     exports org.example.ibb_ecodation_javafx.mapper;
     exports org.example.ibb_ecodation_javafx.model;
     exports org.example.ibb_ecodation_javafx.core.service;
@@ -74,4 +78,5 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.model.event to org.mapstruct, spring.beans;
     exports org.example.ibb_ecodation_javafx.core.mapper;
     opens org.example.ibb_ecodation_javafx.core.mapper to spring.beans;
+
 }

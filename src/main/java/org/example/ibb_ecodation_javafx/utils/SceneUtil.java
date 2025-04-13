@@ -6,6 +6,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -18,6 +19,8 @@ import lombok.experimental.UtilityClass;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
 @UtilityClass
 public class SceneUtil {
@@ -38,6 +41,7 @@ public class SceneUtil {
         FXMLLoader loader = new FXMLLoader(clazz.getResource(fxmlPath));
         Parent root = loader.load();
 
+
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
 
@@ -48,6 +52,8 @@ public class SceneUtil {
         stage.setScene(scene);
         stage.setTitle(title);
 
+
+
         makeDraggable(stage, root);
         GuiAnimationUtil.runAnimation(root);
 
@@ -56,6 +62,32 @@ public class SceneUtil {
             initializeStageSize(stage, root, targetScreen);
             addResponsiveListeners(stage, root);
         });
+
+
+        // Load multiple icon sizes (similar to HTML favicon approach)
+        String[] iconPaths = {
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-16x16.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-32x32.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-96x96.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/apple-icon-180x180.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon.ico" // Optional ICO
+        };
+
+        for (String iconPath : iconPaths) {
+            try {
+                java.io.InputStream iconStream = SceneUtil.class.getResourceAsStream(iconPath);
+                if (iconStream != null) {
+                    Image icon = new Image(iconStream);
+                    stage.getIcons().add(icon);
+                    System.out.println("Loaded icon: " + iconPath);
+                    iconStream.close();
+                } else {
+                    System.err.println("Icon not found: " + iconPath);
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to load icon " + iconPath + ": " + e.getMessage());
+            }
+        }
 
         stage.show();
     }

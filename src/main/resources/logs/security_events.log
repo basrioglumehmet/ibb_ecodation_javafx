@@ -9109,3 +9109,75 @@
 [2025-04-13 01:05:03] [INFO] Anasayfa açıldı
 [2025-04-13 12:45:31] [INFO] Anasayfa açıldı
 [2025-04-13 12:45:31] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 15:46:41] [INFO] Anasayfa açıldı
+[2025-04-13 15:46:41] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 15:47:20] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 15:47:20] [INFO] Profile opened
+[2025-04-13 15:47:20] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 15:47:22] [INFO] Notlar açıldı
+[2025-04-13 15:47:23] [INFO] All JSON Backups read: count=3
+[2025-04-13 15:47:23] [INFO] Profile opened
+[2025-04-13 15:47:23] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 15:47:51] [INFO] Settings opened
+[2025-04-13 15:47:53] [INFO] All JSON Backups read: count=3
+[2025-04-13 15:49:26] [INFO] Settings opened
+[2025-04-13 15:49:28] [INFO] Anasayfa açıldı
+[2025-04-13 15:50:02] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 15:50:03] [INFO] Profile opened
+[2025-04-13 15:50:03] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 15:50:22] [INFO] Settings opened
+[2025-04-13 15:51:55] [INFO] Anasayfa açıldı
+[2025-04-13 15:52:11] [INFO] Anasayfa açıldı
+[2025-04-13 15:52:12] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 15:52:13] [INFO] Notlar açıldı
+[2025-04-13 15:53:04] [INFO] Anasayfa açıldı
+[2025-04-13 15:53:06] [INFO] All JSON Backups read: count=3
+[2025-04-13 15:53:07] [INFO] Settings opened
+[2025-04-13 15:56:03] [INFO] Anasayfa açıldı
+[2025-04-13 15:58:03] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 15:59:13] [INFO] Anasayfa açıldı
+[2025-04-13 16:31:59] [INFO] User(id=52, username=dasdsasa, email=adsdsadasdasd@gmail.com, password=$2a$12$hYe9z2vL7BQl2xcj1XMcb.QlCI8VvMM4dbIxo82FvXO3mZB2G1dV., role=USER, isVerified=false, isLocked=false, version=0) performed operation on kullanıcı oluşturma
+[2025-04-13 16:32:00] [INFO] adsdsadasdasd@gmail.com performed operation on otp mail gönderme
+[2025-04-13 17:02:55] [INFO] Anasayfa açıldı
+[2025-04-13 17:02:55] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 17:17:47] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 17:20:26] [INFO] Profile opened
+[2025-04-13 17:20:26] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 17:20:47] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 17:20:47] [INFO] 49(USER ID) performed operation on bildirim oluşturma
+[2025-04-13 17:20:47] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 17:20:47] [INFO] Profile updated successfully
+[2025-04-13 17:20:47] [INFO] User(id=49, username=Duru Hesap 2, email=xevexij756@anlocc.com, password=$2a$12$znHTtwBLwwZ2dDP1PUgpIu9Tevc1fyb1vQSn71G6gcJPv2iCwqSQm, role=ADMIN, isVerified=true, isLocked=false, version=4) performed operation on kullanıcı güncelleme
+[2025-04-13 17:20:49] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 17:29:54] [INFO] Profile opened
+[2025-04-13 17:29:54] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 17:37:42] [INFO] Notlar açıldı
+[2025-04-13 17:42:03] [INFO] Notlar açıldı
+[2025-04-13 17:42:04] [INFO] All JSON Backups read: count=3
+[2025-04-13 17:45:27] [INFO] All JSON Backups read: count=3
+[2025-04-13 17:45:29] [INFO] All JSON Backups read: count=3
+[2025-04-13 17:45:29] [INFO] Notlar açıldı
+[2025-04-13 17:45:32] [ERROR] SECURITY VIOLATION: Report date cannot be empty
+[2025-04-13 17:47:56] [INFO] Notlar açıldı
+[2025-04-13 17:47:56] [INFO] All JSON Backups read: count=3
+[2025-04-13 17:54:44] [INFO] Settings opened
+[2025-04-13 18:13:40] [INFO] Anasayfa açıldı
+[2025-04-13 19:51:35] [INFO] Anasayfa açıldı
+[2025-04-13 19:51:35] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 19:51:40] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 19:51:40] [INFO] Profile opened
+[2025-04-13 19:51:40] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 19:51:41] [INFO] Notlar açıldı
+[2025-04-13 19:51:41] [INFO] All JSON Backups read: count=3
+[2025-04-13 19:51:44] [INFO] JSON Backup deleted: id=16
+[2025-04-13 19:51:44] [INFO] All JSON Backups read: count=2
+[2025-04-13 20:42:41] [INFO] dsada performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 22:12:34] [INFO] Anasayfa açıldı
+[2025-04-13 22:12:34] [INFO] xevexij756@anlocc.com performed operation on kullanıcı email adresine göre okuma
+[2025-04-13 22:12:36] [INFO] 49(USER ID) performed operation on bildirim okuma
+[2025-04-13 22:12:36] [INFO] Profile opened
+[2025-04-13 22:12:36] [INFO] Duru Hesap 2 performed operation on kullanıcı okuma
+[2025-04-13 22:12:37] [INFO] Anasayfa açıldı
+[2025-04-14 00:19:49] [INFO] DB YAML dosyası bulunamadı lütfen iletişime geçin.
+[2025-04-14 00:20:45] [INFO] DB YAML dosyası başarıyla yüklendi. Uygulama kullanıma hazır.
+[2025-04-14 00:21:06] [INFO] DB YAML dosyası başarıyla yüklendi. Uygulama kullanıma hazır:DatabaseConfig(url=jdbc:sqlserver://localhost:1433;databaseName=ibb_java_se;trustServerCertificate=true;, username=user=mehmet;, password=password=123456, driver=com.microsoft.sqlserver.jdbc.SQLServerDriver)
