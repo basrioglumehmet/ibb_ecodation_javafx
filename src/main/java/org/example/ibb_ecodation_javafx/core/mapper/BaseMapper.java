@@ -1,6 +1,4 @@
-package org.example.ibb_ecodation_javafx.mapper;
-
-import org.example.ibb_ecodation_javafx.core.mapper.GenericMapper;
+package org.example.ibb_ecodation_javafx.core.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
