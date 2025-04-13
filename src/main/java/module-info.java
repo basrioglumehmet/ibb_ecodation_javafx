@@ -48,6 +48,7 @@ module org.example.ibb_ecodation_javafx {
     opens org.example.ibb_ecodation_javafx.model.dto to com.fasterxml.jackson.databind;
     opens org.example.ibb_ecodation_javafx.model.enums to com.fasterxml.jackson.databind;
     opens org.example.ibb_ecodation_javafx.utils to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
+    opens org.example.ibb_ecodation_javafx.core.db to javafx.fxml, javafx.base, lombok, org.mapstruct, spring.beans;
 
     requires de.jensd.fx.glyphs.fontawesome;
     requires java.net.http;
@@ -64,6 +65,7 @@ module org.example.ibb_ecodation_javafx {
     requires java.sql;
 
     exports org.example.ibb_ecodation_javafx.service.impl;
+    exports org.example.ibb_ecodation_javafx.core.db;
     exports org.example.ibb_ecodation_javafx;
     exports org.example.ibb_ecodation_javafx.config;
     exports org.example.ibb_ecodation_javafx.mapper;
