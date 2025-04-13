@@ -9,8 +9,11 @@ import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
+import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 
 import java.util.ResourceBundle;
+
+import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 
 public class LoginController {
     @FXML
@@ -21,6 +24,9 @@ public class LoginController {
 
     @FXML
     private VBox languageArea;
+
+    @FXML
+    private ShadcnNavbar navbar;
 
     private final Store store = Store.getInstance();
 
@@ -48,6 +54,7 @@ public class LoginController {
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             scrollPane.setPannable(true); // Allows mouse dragging to scroll
+            changeNavbarColor(true,navbar);
         });
     }
 }

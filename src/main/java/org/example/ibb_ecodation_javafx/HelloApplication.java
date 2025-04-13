@@ -2,11 +2,13 @@ package org.example.ibb_ecodation_javafx;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.example.ibb_ecodation_javafx.config.DatabaseConfig;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.controller.LoginController;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.utils.AlertSchedulerUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
+import org.example.ibb_ecodation_javafx.utils.YamlReader;
 
 import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotification;
 
@@ -29,6 +31,8 @@ public class HelloApplication extends Application {
 
             showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
 
+            DatabaseConfig db = YamlReader.readDatabaseConfig("/db-config.yml");
+            System.out.println(db.getUrl());
             // Dark mode için state dinleme örneği (açmak istersen)
             /*
             store.getState().subscribe(stateRegistry -> {
