@@ -1,10 +1,10 @@
 package org.example.ibb_ecodation_javafx.mapper;
 
+import org.example.ibb_ecodation_javafx.core.mapper.BaseMapper;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.dto.RegisterDto;
 import org.example.ibb_ecodation_javafx.model.dto.UserDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public abstract class UserMapper extends BaseMapper<UserDto, User> {
