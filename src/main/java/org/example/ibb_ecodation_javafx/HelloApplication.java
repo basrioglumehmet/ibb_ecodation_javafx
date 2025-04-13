@@ -14,8 +14,6 @@ import static org.example.ibb_ecodation_javafx.utils.TrayUtil.showTrayNotificati
 
 public class HelloApplication extends Application {
 
-    private final Store store = Store.getInstance();
-
     @Override
     public void start(Stage stage) {
         try {
@@ -32,15 +30,6 @@ public class HelloApplication extends Application {
             showTrayNotification("Hoşgeldiniz", "IBB ve Ecodation Bootcamp Projesi");
 
             DatabaseConfig db = YamlReader.readDatabaseConfig("/db-config.yml");
-            System.out.println(db.getUrl());
-            // Dark mode için state dinleme örneği (açmak istersen)
-            /*
-            store.getState().subscribe(stateRegistry -> {
-                boolean isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
-                String textColor = !isDarkMode ? "black" : "white";
-                updateLabelStyles(stage.getScene().getRoot(), textColor);
-            });
-            */
 
         } catch (Exception e) {
             e.printStackTrace(); // Geliştirme aşamasında hata kontrolü için
