@@ -7,7 +7,6 @@ import org.example.ibb_ecodation_javafx.config.DatabaseConfig;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 @UtilityClass
 public class YamlReader {
