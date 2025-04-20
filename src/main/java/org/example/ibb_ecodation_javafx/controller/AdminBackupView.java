@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.core.util.JsonUtils;
-import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.JsonBackup;
 import org.example.ibb_ecodation_javafx.model.User;

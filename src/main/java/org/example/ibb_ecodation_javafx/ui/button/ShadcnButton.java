@@ -130,7 +130,7 @@ public class ShadcnButton extends Button {
     @FXML
     public void setGlyphIconName(String glyphIconName) {
         this.glyphIconName.set(glyphIconName);
-        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
+        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName.get());
         setGraphic(iconView);
     }
 
@@ -223,7 +223,7 @@ public class ShadcnButton extends Button {
         setStyle("-fx-background-color: " + backgroundColor + "; " + "-fx-text-fill: " + textColor + "; " + baseStyle);
         setWrapText(true);
 
-        FontAwesomeIconView iconView = !glyphIconName.get().isEmpty() ? getGlyphIcon(this.glyphIconName) : null;
+        FontAwesomeIconView iconView = !glyphIconName.get().isEmpty() ? getGlyphIcon(this.glyphIconName.get()) : null;
         if (iconView != null) {
             iconView.setFill(Paint.valueOf(textColor));
         }

@@ -8,8 +8,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
-import org.example.ibb_ecodation_javafx.core.context.SpringContext;
-import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.service.UserNotificationService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
@@ -31,23 +29,16 @@ public class NotificationController {
     @FXML private Label notificationsLabel;
 
     private final UserNotificationService userNotificationService;
-    private final LanguageService languageService;
     private String languageCode;
     private List<Disposable> subscriptions = new ArrayList<>();
     private Store store = Store.getInstance();
-
-
+    private String notificationsLabelText = "Notifications";
 
     public void initialize() {
-
         languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
-
         updateUIWithLanguage();
-
-
         loadNotifications();
-
 
         notificationList.setCellFactory(lv -> {
             ListCell<ShadcnListItem> cell = new ListCell<>() {
@@ -81,7 +72,12 @@ public class NotificationController {
             }
         });
 
-
+        // Subscribe to language changes
+        Disposable languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
+            languageCode = pair.getKey();
+            updateUIWithLanguage();
+        });
+        subscriptions.add(languageSubscription);
     }
 
     private void loadNotifications() {
@@ -89,26 +85,36 @@ public class NotificationController {
         var userDetail = store.getCurrentState(UserState.class).getUserDetail();
         List<UserNotification> data = userNotificationService.findAllById(userDetail.getUserId());
         for (UserNotification notification : data) {
-
             ShadcnListItem item = new ShadcnListItem(
-                    languageService,
                     languageCode,
                     ShadcnListItem.ListItemType.WITH_ICON,
                     notification.getHeader(),
                     notification.getDescription(),
                     notification.getType()
             );
+            System.out.println(notification.getType());
             notificationList.getItems().add(item);
         }
     }
 
     private void updateUIWithLanguage() {
-        notificationsLabel.setText(languageService.translate("label.notifications"));
+        notificationsLabel.setText(notificationsLabelText);
         notificationsLabel.setStyle(
-                "-fx-font-size:24;"+
+                "-fx-font-size:24;" +
                         String.format("-fx-text-fill:%s;",
-                                store.getCurrentState(DarkModeState.class).isEnabled() ?"white":"black"));
+                                store.getCurrentState(DarkModeState.class).isEnabled() ? "white" : "black"));
+    }
 
+    // Getter and Setter for notifications label text
+    public String getNotificationsLabelText() {
+        return notificationsLabelText;
+    }
+
+    public void setNotificationsLabelText(String notificationsLabelText) {
+        this.notificationsLabelText = notificationsLabelText;
+        if (notificationsLabel != null) {
+            notificationsLabel.setText(notificationsLabelText);
+        }
     }
 
     public void dispose() {

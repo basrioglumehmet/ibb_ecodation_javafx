@@ -8,12 +8,11 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class FontAwesomeUtil {
-    public static String getColor(StringProperty glyphIconName){
+    public static String getColor(String glyphIconName){
 
-        String iconName = glyphIconName.get();
         String color = "white"; // Default color
 
-        switch (iconName.toUpperCase()) {
+        switch (glyphIconName.toUpperCase()) {
 
             case "SUCCESS":
                 color = "#8dd80a";
@@ -31,11 +30,11 @@ public class FontAwesomeUtil {
 
         return color;
     }
-    public static FontAwesomeIconView getGlyphIcon(StringProperty glyphIconName) {
-        String iconName = glyphIconName.get();
+    public static FontAwesomeIconView getGlyphIcon(String glyphIconName) {
+
         FontAwesomeIcon icon = FontAwesomeIcon.USER; // Default icon
 
-        switch (iconName.toUpperCase()) {
+        switch (glyphIconName.toUpperCase()) {
             case "CALCULATOR":
                 icon = FontAwesomeIcon.CALCULATOR;
                 break;

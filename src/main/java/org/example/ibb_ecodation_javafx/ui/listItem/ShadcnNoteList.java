@@ -164,7 +164,7 @@ public class ShadcnNoteList extends ScrollPane {
                 String.format("-fx-text-fill: %s;", isDarkMode ? "#fff" : "#000"));
         titleLabel.setWrapText(true);
 
-        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
+        FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName.get());
         iconView.setGlyphSize(16);
         iconView.setFill(Paint.valueOf(isDarkMode ? "#fff" : "#000"));
         StackPane iconWrapper = new StackPane(iconView);
@@ -250,7 +250,7 @@ public class ShadcnNoteList extends ScrollPane {
                 "-fx-font-size: 14; -fx-font-family: 'Poppins'; -fx-padding: 10;"));
 
         var plusIconProperty = new SimpleStringProperty("PLUS");
-        FontAwesomeIconView plusIcon = FontAwesomeUtil.getGlyphIcon(plusIconProperty);
+        FontAwesomeIconView plusIcon = FontAwesomeUtil.getGlyphIcon(plusIconProperty.get());
         plusIcon.setGlyphSize(16);
         plusIcon.setFill(Paint.valueOf("black"));
 
