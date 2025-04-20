@@ -149,11 +149,11 @@ public class ShadcnDatePicker extends VBox implements ValidatableComponent {
         Label currentMonthLabel = new Label(currentMonth.format(formatter));
         changeTextColor(true, currentMonthLabel);
 
-        FontAwesomeIconView iconView = getGlyphIcon(prevIcon);
+        FontAwesomeIconView iconView = getGlyphIcon(prevIcon.get());
         iconView.setGlyphSize(16);
         iconView.setFill(changeIconColor(true));
 
-        FontAwesomeIconView nextIconView = getGlyphIcon(nextIcon);
+        FontAwesomeIconView nextIconView = getGlyphIcon(nextIcon.get());
         nextIconView.setGlyphSize(16);
         nextIconView.setFill(changeIconColor(true));
 

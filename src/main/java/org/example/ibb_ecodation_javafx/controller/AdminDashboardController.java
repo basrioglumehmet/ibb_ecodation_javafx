@@ -71,6 +71,8 @@ public class AdminDashboardController {
     private Disposable languageSubscription;
     private final AlertScheduler alertScheduler;
 
+    private final OperationSystemUtil operationSystemUtil;
+
     @FXML
     public void initialize() {
 
@@ -78,6 +80,8 @@ public class AdminDashboardController {
         System.out.println(sendGridConfig.getApiKey());
 
         alertScheduler.start();
+        navbar.setHelpButtonText(languageService.translate("navbar.help"));
+        navbar.setExitButtonText(languageService.translate("navbar.exit"));
         navbar.setOnExitButtonClick(stage -> {
             try {
                 sceneUtil.loadScene(
@@ -117,7 +121,7 @@ public class AdminDashboardController {
         });
 
         btnLogout.setOnAction(actionEvent -> logout());
-        btnCalculator.setOnAction(actionEvent -> OperationSystemUtil.openCalculator());
+        btnCalculator.setOnAction(actionEvent -> operationSystemUtil.openCalculator());
 
 
     }

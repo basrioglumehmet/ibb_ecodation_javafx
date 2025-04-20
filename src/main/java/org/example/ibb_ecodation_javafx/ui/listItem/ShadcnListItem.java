@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.scene.paint.Color;
-import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
@@ -32,7 +31,6 @@ public class ShadcnListItem extends HBox {
     private final StringProperty headerKey = new SimpleStringProperty("default.header");
     private final StringProperty descriptionKey = new SimpleStringProperty("default.description");
     private final StringProperty glyphIconName = new SimpleStringProperty("USER");
-    private LanguageService languageService;
     private String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
     private ShadcnSwitchButton switchButton;
     private Disposable switchButtonSubscription;
@@ -47,14 +45,11 @@ public class ShadcnListItem extends HBox {
     private String baseTextColor;
 
     public ShadcnListItem() {
-        this.languageService = SpringContext.getContext().getBean(LanguageService.class);
         initializeUI();
     }
 
-    public ShadcnListItem(LanguageService languageService, String languageCode, ListItemType type, String headerKey, String descriptionKey, String glyphIconName) {
-        this.languageService = languageService;
+    public ShadcnListItem(String languageCode, ListItemType type, String headerKey, String descriptionKey, String glyphIconName) {
         this.languageCode = languageCode;
-        languageService.loadAll(languageCode);
         this.type.set(type);
         this.headerKey.set(headerKey);
         this.descriptionKey.set(descriptionKey);
@@ -97,10 +92,6 @@ public class ShadcnListItem extends HBox {
     }
 
     private void initializeStyle(ListItemType type) {
-        if (languageService == null) {
-            languageService = SpringContext.getContext().getBean(LanguageService.class);
-            languageService.loadAll(languageCode);
-        }
         headerLabel = new Label(headerKey.get());
         detailLabel = new Label(descriptionKey.get());
         updateTextStyles(headerLabel, detailLabel);
@@ -137,9 +128,9 @@ public class ShadcnListItem extends HBox {
             case WITH_ICON:
                 Region spacer2 = new Region();
                 HBox.setHgrow(spacer2, Priority.ALWAYS);
-                FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName);
+                FontAwesomeIconView iconView = getGlyphIcon(this.glyphIconName.get());
                 iconView.setGlyphSize(24);
-                iconView.setFill(Color.web(!isDarkMode ? getColor(this.glyphIconName) : "white"));
+                iconView.setFill(Color.web(!isDarkMode ? getColor(this.glyphIconName.get()) : "white"));
                 StackPane iconWrapper = new StackPane(iconView);
                 iconWrapper.setPadding(new Insets(5));
                 HBox rightContainer2 = new HBox(iconWrapper);
@@ -161,7 +152,6 @@ public class ShadcnListItem extends HBox {
                 }
                 languageSubscription = languageComboBox.watchLanguageValue().subscribe(pair -> {
                     this.languageCode = pair.getKey();
-                    languageService.loadAll(this.languageCode);
                     headerLabel.setText(headerKey.get());
                     detailLabel.setText(descriptionKey.get());
                 });

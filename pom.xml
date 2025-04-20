@@ -394,13 +394,13 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.example.ibb_ecodation_javafx.GUIStarter</mainClass>
+                                    <mainClass>org.example.ibb_ecodation_javafx.Launcher</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>module-info.class</resource>
                                 </transformer>
-                                <!-- Add this transformer to include resources -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+<!--                                &lt;!&ndash; Add this transformer to include resources &ndash;&gt;-->
+<!--                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>-->
                             </transformers>
                         </configuration>
                     </execution>

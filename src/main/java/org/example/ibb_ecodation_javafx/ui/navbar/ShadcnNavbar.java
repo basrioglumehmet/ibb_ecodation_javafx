@@ -17,14 +17,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
-import org.example.ibb_ecodation_javafx.controller.OtpController;
-import org.example.ibb_ecodation_javafx.controller.SignInController;
-import org.example.ibb_ecodation_javafx.core.context.SpringContext;
-import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
-import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
@@ -51,8 +45,11 @@ public class ShadcnNavbar extends HBox {
     private ShadcnButton closeButton;
     private Label version;
     private Region spacer;
-    private LanguageService languageService;
+    private Timeline timeline;
     private Consumer<Stage> onExitButtonClick;
+    private String helpButtonText = "Help";
+    private String exitButtonText = "Exit";
+    private String dateFormatPattern = "yyyy-MM-dd HH:mm:ss";
 
     public ShadcnNavbar() {
         this(false);
@@ -63,31 +60,32 @@ public class ShadcnNavbar extends HBox {
         this.hideButtons.set(hideButtons);
         setAlignment(Pos.CENTER_LEFT);
         setPrefHeight(60);
-        languageService = SpringContext.getContext().getBean(LanguageService.class);
-        languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
+
         Image logoImage = new Image(Objects.requireNonNull(
                 getClass().getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/logo.png")
         ));
         logoView = new ImageView(logoImage);
         logoView.setFitHeight(28);
         logoView.setPreserveRatio(true);
+
         version = new Label(VERSION_TEXT_CONSTANT);
         version.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f7f86;");
+
         spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        Timeline timeline = new Timeline(
+
+        timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), e -> {
                     LocalDateTime now = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
-                            languageService.translate("navbar.date.format")
-                    );
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormatPattern);
                     version.setText(VERSION_TEXT_CONSTANT + " - " + now.format(formatter));
                 })
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-        helpButton = new ShadcnButton(languageService.translate("navbar.help"), ShadcnButton.ButtonType.SECONDARY, "QUESTION", false, false, "LEFT");
-        exitButton = new ShadcnButton(languageService.translate("navbar.exit"), ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", false, false, "LEFT");
+
+        helpButton = new ShadcnButton(helpButtonText, ShadcnButton.ButtonType.SECONDARY, "QUESTION", false, false, "LEFT");
+        exitButton = new ShadcnButton(exitButtonText, ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", false, false, "LEFT");
         if (!store.getCurrentState(UserState.class).isLoggedIn()) {
             exitButton.setVisible(false);
             exitButton.setManaged(false);
@@ -96,15 +94,18 @@ public class ShadcnNavbar extends HBox {
         fullWindowButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "MAXIMIZE", false, true, "LEFT");
         closeButton = new ShadcnButton("", ShadcnButton.ButtonType.GHOST, "CLOSE", false, true, "LEFT");
         closeButton.setVisible(true);
+
         updateButtonVisibility();
+
         darkModeDisposable = store.getState().subscribe(stateRegistry -> {
             isDarkMode = stateRegistry.getState(DarkModeState.class).isEnabled();
             updateUI();
         });
+
         languageDisposable = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
-            languageService.loadAll(pair.getKey());
             updateTranslations();
         });
+
         helpButton.setOnAction(actionEvent -> {
             WebViewUtil.showUiDoc();
         });
@@ -121,6 +122,7 @@ public class ShadcnNavbar extends HBox {
             System.exit(0);
         });
         exitButton.setOnAction(actionEvent -> logout());
+
         this.hideButtons.addListener((obs, oldValue, newValue) -> updateButtonVisibility());
     }
 
@@ -134,9 +136,41 @@ public class ShadcnNavbar extends HBox {
         return this.hideButtons.get();
     }
 
-
     public void setOnExitButtonClick(Consumer<Stage> handler) {
         this.onExitButtonClick = handler;
+    }
+
+    // Getter and Setter for help button text
+    public String getHelpButtonText() {
+        return helpButtonText;
+    }
+
+    public void setHelpButtonText(String helpButtonText) {
+        this.helpButtonText = helpButtonText;
+        if (helpButton != null) {
+            helpButton.setText(helpButtonText);
+        }
+    }
+
+    // Getter and Setter for exit button text
+    public String getExitButtonText() {
+        return exitButtonText;
+    }
+
+    public void setExitButtonText(String exitButtonText) {
+        this.exitButtonText = exitButtonText;
+        if (exitButton != null) {
+            exitButton.setText(exitButtonText);
+        }
+    }
+
+    // Getter and Setter for date format pattern
+    public String getDateFormatPattern() {
+        return dateFormatPattern;
+    }
+
+    public void setDateFormatPattern(String dateFormatPattern) {
+        this.dateFormatPattern = dateFormatPattern;
     }
 
     private void updateUI() {
@@ -150,8 +184,8 @@ public class ShadcnNavbar extends HBox {
     }
 
     private void updateTranslations() {
-        helpButton.setText(languageService.translate("navbar.help"));
-        exitButton.setText(languageService.translate("navbar.exit"));
+        helpButton.setText(helpButtonText);
+        exitButton.setText(exitButtonText);
     }
 
     private void logout() {
@@ -185,6 +219,9 @@ public class ShadcnNavbar extends HBox {
         }
         if (languageDisposable != null && !languageDisposable.isDisposed()) {
             languageDisposable.dispose();
+        }
+        if (timeline != null) {
+            timeline.stop();
         }
     }
 }
