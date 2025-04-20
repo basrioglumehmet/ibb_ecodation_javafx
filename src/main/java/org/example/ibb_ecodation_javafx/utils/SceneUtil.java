@@ -43,9 +43,9 @@ public class SceneUtil {
 
     private void loadFonts() {
         List<String> fontPaths = List.of(
-                "/org/example/ibb_ecodation_javafx/ui/assets/fonts/Poppins-Regular.ttf",
-                "/org/example/ibb_ecodation_javafx/ui/assets/fonts/Poppins-Bold.ttf",
-                "/org/example/ibb_ecodation_javafx/ui/assets/fonts/Poppins-Medium.ttf"
+                "/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf",
+                "/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Bold.ttf",
+                "/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Medium.ttf"
         );
 
         for (String fontPath : fontPaths) {

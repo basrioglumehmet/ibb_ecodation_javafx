@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
+import org.example.ibb_ecodation_javafx.core.config.SendGridConfig;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
@@ -23,6 +24,7 @@ import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
+import org.example.ibb_ecodation_javafx.utils.AlertScheduler;
 import org.example.ibb_ecodation_javafx.utils.OperationSystemUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.springframework.stereotype.Controller;
@@ -64,14 +66,18 @@ public class AdminDashboardController {
     private  Store store = Store.getInstance();
     private final SceneUtil sceneUtil;
 
-    private Disposable languageSubscription;
+    private final SendGridConfig sendGridConfig;
 
+    private Disposable languageSubscription;
+    private final AlertScheduler alertScheduler;
 
     @FXML
     public void initialize() {
 
         languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
+        System.out.println(sendGridConfig.getApiKey());
 
+        alertScheduler.start();
         navbar.setOnExitButtonClick(stage -> {
             try {
                 sceneUtil.loadScene(
@@ -126,6 +132,8 @@ public class AdminDashboardController {
                     String.format(ViewPathConstant.FORMAT, "login"),
                     "Login"
             );
+
+            alertScheduler.stop();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
