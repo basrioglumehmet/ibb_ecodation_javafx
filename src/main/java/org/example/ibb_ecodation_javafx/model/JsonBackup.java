@@ -1,10 +1,10 @@
 package org.example.ibb_ecodation_javafx.model;
 
 import lombok.*;
-import org.example.ibb_ecodation_javafx.annotation.JdbcNamedField;
+import org.example.ibb_ecodation_javafx.annotation.DbField;
 import org.example.ibb_ecodation_javafx.core.db.Entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,18 +14,18 @@ import java.time.LocalDateTime;
 @ToString
 public class JsonBackup implements Entity {
 
-    @JdbcNamedField(dbFieldName = "id")
+    @DbField(name = "id")
     private int id;
 
-    @JdbcNamedField(dbFieldName = "header")
+    @DbField(name = "header")
     private String header;
 
-    @JdbcNamedField(dbFieldName = "json_data")
+    @DbField(name = "json_data")
     private String jsonData;
 
-    @JdbcNamedField(dbFieldName = "created_at")
-    private LocalDateTime createdAt;
+    @DbField(name = "created_at")
+    private Timestamp createdAt;
 
-    @JdbcNamedField(dbFieldName = "version")
+    @DbField(name = "version")
     private int version = 1;
 }

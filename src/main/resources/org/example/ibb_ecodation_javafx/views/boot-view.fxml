@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox  fx:id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      spacing="50" prefHeight="526.0" prefWidth="691.0" style="-fx-background-color: #121214;"
+      fx:controller="org.example.ibb_ecodation_javafx.controller.BootController"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="bootLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/loadinglogo.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER" prefHeight="113.0" prefWidth="691.0">
+         <children>
+            <Label fx:id="titleLabel" text="SendGrid SaaS ve Veritabanı" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusLabel" text="ile bağlantı kurulmaya çalışılıyor, Lütfen bekleyin..." textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorLabel" text="Hay aksi! Bir sorun oluştu" textFill="#ed4245" visible="false">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorDetailLabel" text="Problem detayı" textFill="#ed4245" visible="false">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Label fx:id="footerLabel" text="Sakin olun, eğer ekran hala kapanmadıysa yapılandırmaları yanlış yapmışsınız demektir" textFill="#8d8d8d">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</VBox>

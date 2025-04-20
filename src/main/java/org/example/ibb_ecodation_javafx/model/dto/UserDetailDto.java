@@ -1,14 +1,13 @@
 package org.example.ibb_ecodation_javafx.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@ToString
 public class UserDetailDto {
     private int userId;
     private byte[] profilePicture;

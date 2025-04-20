@@ -5,16 +5,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import org.example.ibb_ecodation_javafx.core.context.SpringContext;
-import org.example.ibb_ecodation_javafx.core.service.LanguageService;
+import lombok.RequiredArgsConstructor;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
-
-import java.util.ResourceBundle;
+import org.springframework.stereotype.Controller;
 
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 
+@Controller
+@RequiredArgsConstructor
 public class LoginController {
     @FXML
     private StackPane loginContent;
@@ -28,7 +28,7 @@ public class LoginController {
     @FXML
     private ShadcnNavbar navbar;
 
-    private final Store store = Store.getInstance();
+    private  Store store = Store.getInstance();
 
     @FXML
     public void initialize() {

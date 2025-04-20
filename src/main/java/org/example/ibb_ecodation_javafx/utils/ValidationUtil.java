@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.utils;
 import lombok.experimental.UtilityClass;
 import org.example.ibb_ecodation_javafx.core.validation.FieldValidator;
 import org.example.ibb_ecodation_javafx.core.validation.ValidationRule;
+import org.example.ibb_ecodation_javafx.ui.ValidatableComponent;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 
 import java.util.Map;
@@ -24,7 +25,7 @@ public class ValidationUtil {
 
         return validator.onError(error -> {
             // Validation error, input'a error mesajını verir.
-            error.getInput().setError(error.getErrorDetail());
+            error.getComponent().setError(error.getErrorDetail());
         });
     }
 
@@ -52,7 +53,7 @@ public class ValidationUtil {
             }
 
             @Override
-            public ShadcnInput getInput() {
+            public ValidatableComponent getComponent() {
                 return input;
             }
         };

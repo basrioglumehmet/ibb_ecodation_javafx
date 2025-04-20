@@ -12,10 +12,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.ui.ValidatableComponent;
 
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runOpacityAnimation;
 
-public class ShadcnInput extends VBox {
+public class ShadcnInput extends VBox implements ValidatableComponent {
 
     private final StringProperty header = new SimpleStringProperty("");
     private final StringProperty error = new SimpleStringProperty("");
@@ -225,10 +226,12 @@ public class ShadcnInput extends VBox {
         return error.get();
     }
 
+    @Override
     public void setError(String errorText) {
         error.set(errorText);
     }
 
+    @Override
     public void clearError() {
         error.set("");
     }

@@ -45,7 +45,7 @@
                     <ShadcnAvatar fx:id="shadcnAvatar"/>
 
                     <VBox fx:id="userInfoBox" alignment="CENTER_LEFT" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-                        <Label fx:id="labelUserName" text="Mehmet Basrioğlu" style="-fx-text-fill:white;" />
+                        <Label fx:id="labelUserName" text="Mehmet Basrioğlu" style="-fx-text-fill:blue;" />
                         <Label fx:id="labelUserRole" text="Admin" style="-fx-text-fill:#7f7f86;" />
                     </VBox>
 

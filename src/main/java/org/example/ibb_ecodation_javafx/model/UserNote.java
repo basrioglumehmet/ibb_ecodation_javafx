@@ -1,11 +1,10 @@
 package org.example.ibb_ecodation_javafx.model;
 
 import lombok.*;
-import org.example.ibb_ecodation_javafx.annotation.JdbcNamedField;
-import org.example.ibb_ecodation_javafx.annotation.PdfIgnore;
+import org.example.ibb_ecodation_javafx.annotation.DbField;
 import org.example.ibb_ecodation_javafx.core.db.Entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -15,22 +14,22 @@ import java.time.LocalDateTime;
 @ToString
 public class UserNote implements Entity {
 
-    @JdbcNamedField(dbFieldName = "id")
+    @DbField(name = "id")
     private int id;
 
-    @JdbcNamedField(dbFieldName = "user_id")
+    @DbField(name = "user_id")
     private int userId;
 
-    @JdbcNamedField(dbFieldName = "report_at")
-    private LocalDateTime reportAt;
+    @DbField(name = "report_at")
+    private Timestamp reportAt;
 
-    @JdbcNamedField(dbFieldName = "header")
+    @DbField(name = "header")
     private String header;
 
-    @JdbcNamedField(dbFieldName = "description")
+    @DbField(name = "description")
     private String description;
 
-    @JdbcNamedField(dbFieldName = "version")
+    @DbField(name = "version")
     private int version = 1;
 
 }

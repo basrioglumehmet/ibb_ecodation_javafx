@@ -6,14 +6,15 @@
 <?import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton?>
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
 
+<?import org.example.ibb_ecodation_javafx.ui.datepicker.ShadcnDatePicker?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
-      fx:controller="org.example.ibb_ecodation_javafx.controller.NoteDialogController">
+      fx:controller="org.example.ibb_ecodation_javafx.controller.CreateNoteController">
     <ShadcnNavbar hideButtons="true" fx:id="navbar" />
     <VBox fx:id="container" VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10">
         <ShadcnInput fx:id="headerField" prefHeight="43.0" prefWidth="387.0" header="Header" />
         <ShadcnInput fx:id="descriptionField" prefHeight="43.0" prefWidth="387.0" header="Description" />
-        <DatePicker fx:id="dateField" promptText="Report Date" prefWidth="387.0" />
+        <ShadcnDatePicker   fx:id="dateField" header="Report Date" prefWidth="387.0"/>
     </VBox>
     <HBox style="-fx-padding:20;" spacing="20" alignment="CENTER">
         <ShadcnButton fx:id="closeButton" onAction="#closeDialog" fullWidth="true" text="Close Dialog" type="DESTRUCTIVE" align="CENTER"

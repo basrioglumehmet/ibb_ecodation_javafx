@@ -12,6 +12,7 @@
 <?import javafx.scene.image.Image?>
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnOtpInput?>
 
+<?import org.example.ibb_ecodation_javafx.ui.datepicker.ShadcnDatePicker?>
 <StackPane fx:id="rootPane"
            fx:controller="org.example.ibb_ecodation_javafx.controller.OtpController"
            style="-fx-background-color: #1a1a1e; -fx-padding:20;"

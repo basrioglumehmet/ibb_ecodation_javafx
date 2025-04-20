@@ -7,7 +7,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="rootPaneMail"
-      fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogMailController">
+      fx:controller="org.example.ibb_ecodation_javafx.controller.VatMailController">
     <ShadcnNavbar hideButtons="true" fx:id="navbar" />
     <VBox style="-fx-padding:20;" spacing="10">
         <ShadcnInput fx:id="input" prefHeight="43.0" prefWidth="387.0" header="E-mail" />

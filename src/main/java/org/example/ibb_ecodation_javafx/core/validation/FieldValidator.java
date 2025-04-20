@@ -1,12 +1,14 @@
 package org.example.ibb_ecodation_javafx.core.validation;
 
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Component
 public class FieldValidator {
     private final List<ValidationRule<?>> rules = new ArrayList<>();
-    private Consumer<ValidationError> errorCallback = System.out::println;
+    private Consumer<ValidationError> errorCallback = error -> System.out.println(error.getErrorDetail());
 
     public FieldValidator addRule(ValidationRule<?> rule) {
         rules.add(rule);
@@ -24,7 +26,7 @@ public class FieldValidator {
             Object value = rule.getValue();
             boolean isValid = validateRule(rule, value);
             if (!isValid) {
-                ValidationError error = new ValidationError(rule.getInput(),rule.getErrorMessage());
+                ValidationError error = new ValidationError(rule.getComponent(), rule.getErrorMessage());
                 errors.add(error);
                 if (errorCallback != null) {
                     errorCallback.accept(error);

@@ -9,7 +9,7 @@
 <?import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
-      fx:controller="org.example.ibb_ecodation_javafx.controller.UserUpdateDialogController">
+      fx:controller="org.example.ibb_ecodation_javafx.controller.UserUpdateController">
 <ShadcnNavbar hideButtons="true" fx:id="navbar" />
 <VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10" fx:id="container">
     <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />

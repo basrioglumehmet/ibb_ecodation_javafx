@@ -18,5 +18,5 @@
 <ShadcnInput HBox.hgrow="ALWAYS" fx:id="name" header="Kullanıcı adına göre ara..." />
 <ShadcnInput HBox.hgrow="ALWAYS" fx:id="role" header="Rol adına göre ara..." />
 </HBox>
-<DynamicTable fx:id="userTable" VBox.vgrow="ALWAYS" /> <!-- DynamicTable esnek bir şekilde büyüsün -->
+<DynamicTable fx:id="userTable" VBox.vgrow="ALWAYS" />
         </VBox>

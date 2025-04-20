@@ -1,7 +1,7 @@
 package org.example.ibb_ecodation_javafx.model;
 
 import lombok.*;
-import org.example.ibb_ecodation_javafx.annotation.JdbcNamedField;
+import org.example.ibb_ecodation_javafx.annotation.DbField;
 import org.example.ibb_ecodation_javafx.core.db.Entity;
 
 @Getter
@@ -11,10 +11,10 @@ import org.example.ibb_ecodation_javafx.core.db.Entity;
 @EqualsAndHashCode
 @ToString
 public class UserPicture implements Entity {
-    @JdbcNamedField(dbFieldName = "user_id")
+    @DbField(name = "user_id")
     private int userId;
-    @JdbcNamedField(dbFieldName = "image_data")
+    @DbField(name = "image_data")
     private byte[] imageData;
-    @JdbcNamedField(dbFieldName = "version")
+    @DbField(name = "version")
     private int version = 1;
 }
