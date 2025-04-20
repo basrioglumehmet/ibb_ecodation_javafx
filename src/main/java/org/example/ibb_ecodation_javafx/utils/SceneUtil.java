@@ -15,32 +15,62 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import lombok.experimental.UtilityClass;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
-@UtilityClass
+@Component
 public class SceneUtil {
+    private static final Logger LOGGER = Logger.getLogger(SceneUtil.class.getName());
     private static final double ASPECT_RATIO = 16.0 / 9.0;
     private static final double MIN_WIDTH = 800;
     private static final double MIN_HEIGHT = 450;
     private static final double MAX_SCREEN_USAGE = 0.9;
 
-    private static double xOffset = 0;
-    private static double yOffset = 0;
-    private static boolean isDragging = false;
+    private final ApplicationContext springContext;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
-    public static void loadScene(Class<?> clazz, Stage stage, String fxmlPath, String title) throws IOException {
-        Font.loadFont(clazz.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf"), 12);
-        Font.loadFont(clazz.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Bold.ttf"), 12);
-        Font.loadFont(clazz.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Medium.ttf"), 12);
+    public SceneUtil(ApplicationContext springContext) {
+        this.springContext = springContext;
+        loadFonts();
+    }
 
-        FXMLLoader loader = new FXMLLoader(clazz.getResource(fxmlPath));
+    private void loadFonts() {
+        List<String> fontPaths = List.of(
+                "/org/example/ibb_ecodation_javafx/ui/assets/fonts/Poppins-Regular.ttf",
+                "/org/example/ibb_ecodation_javafx/ui/assets/fonts/Poppins-Bold.ttf",
+                "/org/example/ibb_ecodation_javafx/ui/assets/fonts/Poppins-Medium.ttf"
+        );
+
+        for (String fontPath : fontPaths) {
+            try {
+                if (Font.loadFont(getClass().getResourceAsStream(fontPath), 12) == null) {
+                    LOGGER.warning("Failed to load font: " + fontPath);
+                }
+            } catch (Exception e) {
+                LOGGER.severe("Error loading font " + fontPath + ": " + e.getMessage());
+            }
+        }
+    }
+
+    public void loadScene(Class<?> clazz, Stage stage, String fxmlPath, String title) throws IOException {
+        Objects.requireNonNull(clazz, "Class cannot be null");
+        Objects.requireNonNull(stage, "Stage cannot be null");
+        Objects.requireNonNull(fxmlPath, "FXML path cannot be null");
+        Objects.requireNonNull(title, "Title cannot be null");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        loader.setControllerFactory(springContext::getBean);
+        if (loader.getLocation() == null) {
+            throw new IOException("FXML file not found: " + fxmlPath);
+        }
         Parent root = loader.load();
-
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -52,10 +82,7 @@ public class SceneUtil {
         stage.setScene(scene);
         stage.setTitle(title);
 
-
-
         makeDraggable(stage, root);
-        GuiAnimationUtil.runAnimation(root);
 
         Platform.runLater(() -> {
             Screen targetScreen = determineTargetScreen(stage);
@@ -63,45 +90,42 @@ public class SceneUtil {
             addResponsiveListeners(stage, root);
         });
 
-
-        // Load multiple icon sizes (similar to HTML favicon approach)
-        String[] iconPaths = {
-                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-16x16.png",
-                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-32x32.png",
-                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-96x96.png",
-                "/org/example/ibb_ecodation_javafx/assets/favicon/apple-icon-180x180.png",
-                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon.ico" // Optional ICO
-        };
-
-        for (String iconPath : iconPaths) {
-            try {
-                java.io.InputStream iconStream = SceneUtil.class.getResourceAsStream(iconPath);
-                if (iconStream != null) {
-                    Image icon = new Image(iconStream);
-                    stage.getIcons().add(icon);
-                    System.out.println("Loaded icon: " + iconPath);
-                    iconStream.close();
-                } else {
-                    System.err.println("Icon not found: " + iconPath);
-                }
-            } catch (Exception e) {
-                System.err.println("Failed to load icon " + iconPath + ": " + e.getMessage());
-            }
-        }
+        loadIcons(stage);
 
         stage.show();
     }
 
-    private static Screen determineTargetScreen(Stage stage) {
-        if (stage.getX() == Double.NaN || stage.getY() == Double.NaN) {
-            return Screen.getPrimary();
+    private void loadIcons(Stage stage) {
+        List<String> iconPaths = List.of(
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-16x16.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-32x32.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon-96x96.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/apple-icon-180x180.png",
+                "/org/example/ibb_ecodation_javafx/assets/favicon/favicon.ico"
+        );
+
+        for (String iconPath : iconPaths) {
+            try {
+                Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath)));
+                stage.getIcons().add(icon);
+                LOGGER.info("Loaded icon: " + iconPath);
+            } catch (Exception e) {
+                LOGGER.warning("Failed to load icon " + iconPath + ": " + e.getMessage());
+            }
         }
-        return Screen.getScreensForRectangle(
-                stage.getX(), stage.getY(), 1, 1
-        ).stream().findFirst().orElse(Screen.getPrimary());
     }
 
-    private static void initializeStageSize(Stage stage, Parent root, Screen screen) {
+    private Screen determineTargetScreen(Stage stage) {
+        if (Double.isNaN(stage.getX()) || Double.isNaN(stage.getY())) {
+            return Screen.getPrimary();
+        }
+        return Screen.getScreensForRectangle(stage.getX(), stage.getY(), 1, 1)
+                .stream()
+                .findFirst()
+                .orElse(Screen.getPrimary());
+    }
+
+    private void initializeStageSize(Stage stage, Parent root, Screen screen) {
         Rectangle2D screenBounds = screen.getVisualBounds();
 
         double optimalWidth = screenBounds.getWidth() * MAX_SCREEN_USAGE;
@@ -132,7 +156,7 @@ public class SceneUtil {
         }
     }
 
-    private static void centerStage(Stage stage, Rectangle2D screenBounds, double width, double height) {
+    private void centerStage(Stage stage, Rectangle2D screenBounds, double width, double height) {
         double centerX = screenBounds.getMinX() + (screenBounds.getWidth() - width) / 2;
         double centerY = screenBounds.getMinY() + (screenBounds.getHeight() - height) / 2;
 
@@ -140,86 +164,52 @@ public class SceneUtil {
         stage.setY(Math.max(screenBounds.getMinY(), Math.min(centerY, screenBounds.getMaxY() - height)));
     }
 
-    private static void makeDraggable(Stage stage, Parent root) {
+    private void makeDraggable(Stage stage, Parent root) {
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
-            isDragging = false;
         });
 
         root.setOnMouseDragged(event -> {
-            isDragging = true;
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);
         });
 
         root.setOnMouseReleased(event -> {
-            if (isDragging) {
-                Screen newScreen = determineTargetScreen(stage);
-                resizeForNewScreen(stage, root, newScreen);
-                isDragging = false;
-            }
+            Screen newScreen = determineTargetScreen(stage);
+            resizeForNewScreen(stage, root, newScreen);
         });
     }
 
-    private static void resizeForNewScreen(Stage stage, Parent root, Screen newScreen) {
-        Rectangle2D screenBounds = newScreen.getVisualBounds();
-
-        double optimalWidth = screenBounds.getWidth() * MAX_SCREEN_USAGE;
-        double optimalHeight = optimalWidth / ASPECT_RATIO;
-
-        if (optimalHeight > screenBounds.getHeight() * MAX_SCREEN_USAGE) {
-            optimalHeight = screenBounds.getHeight() * MAX_SCREEN_USAGE;
-            optimalWidth = optimalHeight * ASPECT_RATIO;
-        }
-
-        double newWidth = Math.max(MIN_WIDTH, Math.min(optimalWidth, screenBounds.getWidth()));
-        double newHeight = Math.max(MIN_HEIGHT, Math.min(optimalHeight, screenBounds.getHeight()));
-
-        if (newHeight < newWidth / ASPECT_RATIO) {
-            newHeight = newWidth / ASPECT_RATIO;
-        } else if (newWidth < newHeight * ASPECT_RATIO) {
-            newWidth = newHeight * ASPECT_RATIO;
-        }
-
-        stage.setWidth(newWidth);
-        stage.setHeight(newHeight);
-        centerStage(stage, screenBounds, newWidth, newHeight);
-
-        if (root instanceof Region region) {
-            region.setPrefSize(newWidth, newHeight);
-            region.setMinSize(MIN_WIDTH, MIN_HEIGHT);
-            region.setMaxSize(screenBounds.getWidth(), screenBounds.getHeight());
-        }
+    private void resizeForNewScreen(Stage stage, Parent root, Screen newScreen) {
+        initializeStageSize(stage, root, newScreen);
     }
 
-    private static void addResponsiveListeners(Stage stage, Parent root) {
-        if (!(root instanceof Region region)) return;
+    private void addResponsiveListeners(Stage stage, Parent root) {
+        if (!(root instanceof Region region)) {
+            return;
+        }
 
         stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (!isDragging) {
-                double newWidth = newVal.doubleValue();
-                double newHeight = Math.max(MIN_HEIGHT, newWidth / ASPECT_RATIO);
-                stage.setHeight(newHeight);
-                region.setPrefWidth(newWidth);
-                region.setPrefHeight(newHeight);
-            }
+            double newWidth = newVal.doubleValue();
+            double newHeight = Math.max(MIN_HEIGHT, newWidth / ASPECT_RATIO);
+            stage.setHeight(newHeight);
+            region.setPrefWidth(newWidth);
+            region.setPrefHeight(newHeight);
         });
 
         stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (!isDragging) {
-                double newHeight = newVal.doubleValue();
-                double newWidth = Math.max(MIN_WIDTH, newHeight * ASPECT_RATIO);
-                stage.setWidth(newWidth);
-                region.setPrefHeight(newHeight);
-                region.setPrefWidth(newWidth);
-            }
+            double newHeight = newVal.doubleValue();
+            double newWidth = Math.max(MIN_WIDTH, newHeight * ASPECT_RATIO);
+            stage.setWidth(newWidth);
+            region.setPrefWidth(newWidth);
+            region.setPrefHeight(newHeight);
         });
 
         stage.addEventHandler(WindowEvent.WINDOW_SHOWN, e -> adjustToCurrentScreen(stage));
     }
 
-    private static void adjustToCurrentScreen(Stage stage) {
+    private void adjustToCurrentScreen(Stage stage) {
         Screen currentScreen = determineTargetScreen(stage);
         Rectangle2D bounds = currentScreen.getVisualBounds();
 
@@ -233,60 +223,65 @@ public class SceneUtil {
         stage.setY(newY);
     }
 
-    public static Screen getScreenForNewStage(Stage existingStage) {
-        if (existingStage == null || existingStage.getX() == Double.NaN) {
-            return Screen.getPrimary();
+    public void loadContent(String fxmlPath, StackPane contentArea) throws IOException {
+        Objects.requireNonNull(fxmlPath, "FXML path cannot be null");
+        Objects.requireNonNull(contentArea, "Content area cannot be null");
+
+        cleanupNode(contentArea);
+        contentArea.getChildren().clear();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+
+        if (loader.getLocation() == null) {
+            throw new IOException("FXML file not found: " + fxmlPath);
         }
-        return determineTargetScreen(existingStage);
+        loader.setControllerFactory(springContext::getBean);
+        StackPane newContent = loader.load();
+        contentArea.getChildren().setAll(newContent);
     }
 
-    // Helper method to clean up a node and its children
-    private static void cleanupNode(Node node) {
-        if (node == null) return;
-        // Remove event handlers
+    public Parent loadParent(String fxmlPath) throws IOException {
+        Objects.requireNonNull(fxmlPath, "FXML path cannot be null");
+
+        LOGGER.info("Loading Parent FXML: " + fxmlPath);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        loader.setControllerFactory(clazz -> springContext.getBean(clazz));
+        if (loader.getLocation() == null) {
+            throw new IOException("FXML file not found: " + fxmlPath);
+        }
+
+        Parent parent = loader.load();
+        LOGGER.info("Loaded Parent FXML: " + fxmlPath);
+        return parent;
+    }
+
+    public void loadSlidingContent(StackPane rootPane, String viewName) throws IOException {
+        String fxmlPath = String.format(ViewPathConstant.FORMAT, viewName);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        loader.setControllerFactory(springContext::getBean); // 💉 Fix injection
+        Parent newRoot = loader.load();
+
+        if (!rootPane.getChildren().isEmpty()) {
+            Node oldRoot = rootPane.getChildren().get(0);
+            cleanupNode(oldRoot);
+            oldRoot.setOpacity(0.2);
+            GuiAnimationUtil.runSceneSlideAnimation(newRoot, rootPane, oldRoot);
+        } else {
+            rootPane.getChildren().setAll(newRoot);
+        }
+    }
+
+    private void cleanupNode(Node node) {
+        if (node == null) {
+            return;
+        }
         node.setOnMouseClicked(null);
         node.setOnMousePressed(null);
         node.setOnMouseDragged(null);
         node.setOnMouseReleased(null);
 
-        // Recursively clean up children
         if (node instanceof Parent parent) {
-            parent.getChildrenUnmodifiable().forEach(SceneUtil::cleanupNode);
-        }
-    }
-
-    public static void loadContent(String fxmlFile, StackPane contentArea) throws IOException {
-        // Clean up existing content
-        if (!contentArea.getChildren().isEmpty()) {
-            contentArea.getChildren().forEach(SceneUtil::cleanupNode);
-            contentArea.getChildren().clear();
-        }
-
-        // Load new content
-        FXMLLoader loader = new FXMLLoader(SceneUtil.class.getResource(fxmlFile));
-        Font.loadFont(SceneUtil.class.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Regular.ttf"), 12);
-        Font.loadFont(SceneUtil.class.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Bold.ttf"), 12);
-        Font.loadFont(SceneUtil.class.getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/fonts/Poppins-Medium.ttf"), 12);
-
-        StackPane newContent = loader.load();
-        GuiAnimationUtil.runOpacityAnimation(newContent);
-        contentArea.getChildren().setAll(newContent);
-    }
-
-    public static void loadSlidingContent(StackPane rootPane, String viewName) throws IOException {
-        // Load the new FXML file
-        String fxmlPath = String.format(ViewPathConstant.FORMAT, viewName);
-        FXMLLoader loader = new FXMLLoader(SceneUtil.class.getResource(fxmlPath));
-        Parent newRoot = loader.load();
-
-        // Clean up and replace content
-        if (!rootPane.getChildren().isEmpty()) {
-            Node oldRoot = rootPane.getChildren().get(0);
-            cleanupNode(oldRoot); // Clean up old content
-            oldRoot.setOpacity(0.2);
-            GuiAnimationUtil.runSceneSlideAnimation(newRoot, rootPane, oldRoot);
-        } else {
-            rootPane.getChildren().setAll(newRoot);
+            parent.getChildrenUnmodifiable().forEach(this::cleanupNode);
         }
     }
 }

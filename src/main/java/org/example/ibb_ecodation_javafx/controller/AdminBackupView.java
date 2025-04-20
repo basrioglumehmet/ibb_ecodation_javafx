@@ -1,5 +1,7 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -16,22 +18,18 @@ import org.example.ibb_ecodation_javafx.utils.JsonBackupUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@RequiredArgsConstructor
+@Controller
 public class AdminBackupView {
-
     @FXML
     private VBox mainContainer;
 
-    private LanguageService languageService;
+    private final LanguageService languageService;
 
     private final Store store = Store.getInstance();
 
     private final JsonBackupService backupService;
 
-    public AdminBackupView() {
-        languageService = SpringContext.getContext().getBean(LanguageService.class);
-        backupService = SpringContext.getContext().getBean(JsonBackupService.class);
-    }
 
     @FXML
     private void initialize() {
@@ -44,7 +42,7 @@ public class AdminBackupView {
                 languageService.translate("button.remove"));
 
         // Veritabanından tüm yedekleri oku ve listeye ekle
-        List<JsonBackup> backups = backupService.readAll();
+        List<JsonBackup> backups = backupService.findAll();
         for (JsonBackup backup : backups) {
             backupList.addBackup(backup);
         }
@@ -60,7 +58,7 @@ public class AdminBackupView {
         backupList.setRemoveBackupAction(backup -> {
             backupService.delete(backup.getId());
             backupList.clearBackups();
-            backupService.readAll().forEach(backupList::addBackup);
+            backupService.findAll().forEach(backupList::addBackup);
             System.out.println("Removed: " + backup.getHeader());
         });
 

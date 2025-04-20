@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @UtilityClass
+
 public class SpringContext {
 
     private static ClassPathXmlApplicationContext context;

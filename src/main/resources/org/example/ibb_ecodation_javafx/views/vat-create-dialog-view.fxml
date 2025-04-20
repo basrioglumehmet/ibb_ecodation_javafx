@@ -9,7 +9,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
-      fx:controller="org.example.ibb_ecodation_javafx.controller.VatDialogController">
+      fx:controller="org.example.ibb_ecodation_javafx.controller.VatCreateController">
     <ShadcnNavbar hideButtons="true" fx:id="navbar" />
     <VBox VBox.vgrow="ALWAYS" style="-fx-padding:20;" spacing="10">
         <ShadcnInput fx:id="amount" prefHeight="43.0" prefWidth="387.0" header="Tutar" />

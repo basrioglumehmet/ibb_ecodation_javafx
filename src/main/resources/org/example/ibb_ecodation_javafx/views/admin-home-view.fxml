@@ -13,6 +13,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import org.example.ibb_ecodation_javafx.ui.splitpane.ShadcnSplitPane?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.AdminHomeController">
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ibb_ecodation_javafx.controller.HomeController">
     <ShadcnSplitPane fx:id="splitPane"/>
 </StackPane>

@@ -13,14 +13,16 @@ import javafx.stage.StageStyle;
 import lombok.experimental.UtilityClass;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 import static org.example.ibb_ecodation_javafx.utils.GuiAnimationUtil.runAnimation;
 
-@UtilityClass
+@Component
 public class DialogUtil {
-
+    private final ApplicationContext springContext;
     private Store store = Store.getInstance();
     private static final double MIN_WIDTH = 250;
     private static final double MIN_HEIGHT = 50;
@@ -31,10 +33,15 @@ public class DialogUtil {
     private static boolean isDragging = false;
     private static Stage currentDialogStage = null;
 
-    public static void showHelpPopup(String fxmlResourcePath, String title) {
+    public DialogUtil(ApplicationContext springContext) {
+        this.springContext = springContext;
+    }
+
+    public void showHelpPopup(String fxmlResourcePath, String title) {
         try {
 
             FXMLLoader loader = new FXMLLoader(DialogUtil.class.getResource(fxmlResourcePath));
+            loader.setControllerFactory(springContext::getBean);
             VBox contentPane = loader.load();
 
             StackPane root = new StackPane(contentPane);
@@ -75,6 +82,7 @@ public class DialogUtil {
             runAnimation(root);
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to load FXML file: " + fxmlResourcePath, e);
         }
     }

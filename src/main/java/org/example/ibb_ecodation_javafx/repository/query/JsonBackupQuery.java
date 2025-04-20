@@ -14,8 +14,7 @@ public class JsonBackupQuery {
     public static String READ_ALL_JSON_BACKUPS = "SELECT * FROM json_backup";
 
     public static String UPDATE_JSON_BACKUP_BY_ID = "UPDATE json_backup SET " +
-            "header = ?, json_data = ?, created_at = ?, version = version + 1 " +
-            "WHERE id = ? AND version = ?";
+            "header = ?, json_data = ?, created_at = ?, version = version + 1";
 
     public static String DELETE_JSON_BACKUP_BY_ID = "DELETE FROM json_backup WHERE id = ?";
 }

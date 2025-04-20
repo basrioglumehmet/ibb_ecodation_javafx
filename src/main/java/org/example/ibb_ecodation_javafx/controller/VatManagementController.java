@@ -1,5 +1,9 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
+import org.springframework.stereotype.Controller;
+
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,11 +36,9 @@ import java.util.stream.Collectors;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.*;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeTextColor;
 
-/**
- * Controller for managing VAT-related operations
- */
+@Controller
+@RequiredArgsConstructor
 public class VatManagementController {
-
     @FXML private DynamicTable<Vat> vatTable;
     @FXML private ShadcnInput vatNumberInput;
     @FXML private ShadcnBarChart barChart;
@@ -44,10 +46,10 @@ public class VatManagementController {
     @FXML private HBox chartContainer;
     @FXML private HBox searchBar;
 
-    private final VatService vatService = SpringContext.getContext().getBean(VatService.class);
-    private final MailService mailService = SpringContext.getContext().getBean(MailService.class);
-    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
-    private final PdfExportUtil pdfExportUtil = SpringContext.getContext().getBean(PdfExportUtil.class);
+    private final VatService vatService;
+    private final MailService mailService;
+    private final LanguageService languageService;
+    private final PdfExportUtil pdfExportUtil;
     private final Store store = Store.getInstance();
 
     private List<Vat> originalTableData = new ArrayList<>();
@@ -55,9 +57,10 @@ public class VatManagementController {
     private List<String> pdfHeaders;
     private Map<String, String> comboBoxItems;
     private Disposable languageSubscription;
-    TxtUtil txtUtil = SpringContext.getContext().getBean(TxtUtil.class);
-    ExcelUtil excelUtil = SpringContext.getContext().getBean(ExcelUtil.class);
+    private final TxtUtil txtUtil;
+    private final ExcelUtil excelUtil;
 
+    private final DialogUtil dialogUtil;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public void initialize() {
@@ -104,28 +107,35 @@ public class VatManagementController {
     }
 
     private void setupComboBoxActions() {
-        vatTable.watchComboBox().subscribe(pair -> {
-            String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
-            switch (pair.getKey()) {
-                case "add" -> showDialog("/org/example/ibb_ecodation_javafx/views/vat-create-dialog-view.fxml", "Vat Dialog");
-                case "delete" -> deleteSelectedRow();
-                case "refresh" -> refreshData();
-                case "update" -> updateSelectedRow();
-                case "sendMail" -> sendMail(languageCode);
-                case "print" -> printPdf(languageCode);
-                case "export_pdf" -> exportPdf(languageCode);
-                case "export_excel" -> excelUtil.exportToExcel(originalTableData, Vat.class, languageCode, vatPane.getScene().getWindow());
-                case "export_txt" -> txtUtil.exportToTxt(vatTable, Vat.class, languageCode, vatPane.getScene().getWindow());
-            }
-        });
+        vatTable.watchComboBox().subscribe(
+                pair -> {
+                    String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+                    switch (pair.getKey()) {
+                        case "add" -> showDialog("/org/example/ibb_ecodation_javafx/views/vat-create-dialog-view.fxml", "Vat Dialog");
+                        case "delete" -> deleteSelectedRow();
+                        case "refresh" -> refreshData();
+                        case "update" -> updateSelectedRow();
+                        case "sendMail" -> sendMail(languageCode);
+                        case "print" -> printPdf(languageCode);
+                        case "export_pdf" -> exportPdf(languageCode);
+                        case "export_excel" -> excelUtil.exportToExcel(originalTableData, Vat.class, languageCode, vatPane.getScene().getWindow());
+                        case "export_txt" -> txtUtil.exportToTxt(vatTable, Vat.class, languageCode, vatPane.getScene().getWindow());
+                    }
+                },
+                throwable -> {
+                    Platform.runLater(() -> {
+                        String errorMessage = "Error processing action: " + throwable.getMessage();
+                        System.err.println(errorMessage);
+                    });
+                }
+        );
     }
-
     private void loadInitialData() {
         refreshData();
     }
 
     private void updateUIText(String languageCode) {
-        ResourceBundle bundle = languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
+        ResourceBundle bundle = languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
         try {
             configureInputAndTableHeaders(bundle);
             configureComboBoxItems(bundle);
@@ -179,7 +189,7 @@ public class VatManagementController {
     }
 
     private void showDialog(String fxmlPath, String title) {
-        DialogUtil.showHelpPopup(fxmlPath, title);
+        dialogUtil.showHelpPopup(fxmlPath, title);
     }
 
     private void sendMail(String languageCode) {
@@ -242,7 +252,7 @@ public class VatManagementController {
         originalTableData.clear();
         vatTable.clearData();
         var userDetail = store.getCurrentState(UserState.class).getUserDetail();
-        vatService.readAll(userDetail.getUserId()).forEach(this::addVatData);
+        vatService.findAllById(userDetail.getUserId()).forEach(this::addVatData);
         updateBarChartFromTableData();
         applyFilters();
     }
@@ -257,7 +267,7 @@ public class VatManagementController {
                 vat.getAmount().toString(),
                 vat.getTotalAmount().toString(),
                 vat.getReceiptNumber(),
-                vat.getTransactionDate().format(DATE_FORMAT),
+                vat.getTransactionDate().toLocalDateTime().format(DATE_FORMAT),
                 vat.getDescription(),
                 vat.getExportFormat(),
                 String.valueOf(vat.isDeleted()),
@@ -281,7 +291,7 @@ public class VatManagementController {
                 vat.getAmount().toString(),
                 vat.getTotalAmount().toString(),
                 vat.getReceiptNumber(),
-                DATE_FORMAT.format(vat.getTransactionDate()),
+                DATE_FORMAT.format(vat.getTransactionDate().toLocalDateTime()),
                 vat.getDescription(),
                 vat.getExportFormat(),
                 String.valueOf(vat.isDeleted()),
@@ -294,7 +304,7 @@ public class VatManagementController {
         originalTableData.stream()
                 .sorted(Comparator.comparing(Vat::getTransactionDate))
                 .forEach(vat -> {
-                    String date = DATE_FORMAT.format(vat.getTransactionDate());
+                    String date = DATE_FORMAT.format(vat.getTransactionDate().toLocalDateTime());
                     BigDecimal total = vat.getTotalAmount();
                     chartData.merge(date, total, BigDecimal::add);
                 });

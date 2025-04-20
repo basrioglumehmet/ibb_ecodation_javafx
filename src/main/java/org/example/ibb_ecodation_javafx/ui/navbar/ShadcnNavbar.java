@@ -19,19 +19,21 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.controller.OtpController;
+import org.example.ibb_ecodation_javafx.controller.SignInController;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
-import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.example.ibb_ecodation_javafx.utils.WebViewUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class ShadcnNavbar extends HBox {
 
@@ -50,7 +52,7 @@ public class ShadcnNavbar extends HBox {
     private Label version;
     private Region spacer;
     private LanguageService languageService;
-    private String languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+    private Consumer<Stage> onExitButtonClick;
 
     public ShadcnNavbar() {
         this(false);
@@ -62,7 +64,7 @@ public class ShadcnNavbar extends HBox {
         setAlignment(Pos.CENTER_LEFT);
         setPrefHeight(60);
         languageService = SpringContext.getContext().getBean(LanguageService.class);
-        languageService.loadAll(languageCode);
+        languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
         Image logoImage = new Image(Objects.requireNonNull(
                 getClass().getResourceAsStream("/org/example/ibb_ecodation_javafx/assets/logo.png")
         ));
@@ -86,7 +88,7 @@ public class ShadcnNavbar extends HBox {
         timeline.play();
         helpButton = new ShadcnButton(languageService.translate("navbar.help"), ShadcnButton.ButtonType.SECONDARY, "QUESTION", false, false, "LEFT");
         exitButton = new ShadcnButton(languageService.translate("navbar.exit"), ShadcnButton.ButtonType.DESTRUCTIVE, "EXIT", false, false, "LEFT");
-        if(!store.getCurrentState(UserState.class).isLoggedIn()){
+        if (!store.getCurrentState(UserState.class).isLoggedIn()) {
             exitButton.setVisible(false);
             exitButton.setManaged(false);
         }
@@ -100,8 +102,7 @@ public class ShadcnNavbar extends HBox {
             updateUI();
         });
         languageDisposable = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
-            languageCode = pair.getKey();
-            languageService.loadAll(languageCode);
+            languageService.loadAll(pair.getKey());
             updateTranslations();
         });
         helpButton.setOnAction(actionEvent -> {
@@ -109,11 +110,10 @@ public class ShadcnNavbar extends HBox {
         });
         fullWindowButton.setOnAction(actionEvent -> {
             Stage stage = (Stage) fullWindowButton.getScene().getWindow();
-            stage.setMaximized(!stage.isMaximized());  // Tam ekran modunu toggle et
+            stage.setMaximized(!stage.isMaximized());
         });
-
         minimizeButton.setOnAction(actionEvent -> {
-            Stage stage = (Stage)minimizeButton.getScene().getWindow();
+            Stage stage = (Stage) minimizeButton.getScene().getWindow();
             stage.setIconified(true);
         });
         closeButton.setOnAction(actionEvent -> {
@@ -134,6 +134,11 @@ public class ShadcnNavbar extends HBox {
         return this.hideButtons.get();
     }
 
+
+    public void setOnExitButtonClick(Consumer<Stage> handler) {
+        this.onExitButtonClick = handler;
+    }
+
     private void updateUI() {
         String logoPath = !isDarkMode ?
                 "/org/example/ibb_ecodation_javafx/assets/logo.png" :
@@ -149,17 +154,17 @@ public class ShadcnNavbar extends HBox {
         exitButton.setText(languageService.translate("navbar.exit"));
     }
 
+    private void logout() {
+        try {
+            // Update states
+            store.dispatch(DarkModeState.class, new DarkModeState(true));
+            store.dispatch(UserState.class, new UserState(null, false, null, null));
 
-    private void logout(){
-        try{
-            store.dispatch(DarkModeState.class,new DarkModeState(true));
-            store.dispatch(UserState.class,new UserState(null,false,null,null));
-            SceneUtil.loadScene(
-                    OtpController.class,
-                    (Stage) logoView.getScene().getWindow(),
-                    String.format(ViewPathConstant.FORMAT, "login"),
-                    "Login"
-            );
+            // Invoke the exit button click handler
+            if (onExitButtonClick != null) {
+                Stage stage = (Stage) logoView.getScene().getWindow();
+                onExitButtonClick.accept(stage);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

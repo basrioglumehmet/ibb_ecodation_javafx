@@ -1,7 +1,7 @@
 package org.example.ibb_ecodation_javafx.model;
 
 import lombok.*;
-import org.example.ibb_ecodation_javafx.annotation.JdbcNamedField;
+import org.example.ibb_ecodation_javafx.annotation.DbField;
 import org.example.ibb_ecodation_javafx.core.db.Entity;
 
 @Getter
@@ -11,16 +11,16 @@ import org.example.ibb_ecodation_javafx.core.db.Entity;
 @EqualsAndHashCode
 @ToString
 public class UserNotification implements Entity {
-    @JdbcNamedField(dbFieldName = "id")
+    @DbField(name = "id")
     private int id;
-    @JdbcNamedField(dbFieldName = "user_id")
+    @DbField(name = "user_id")
     private int userId;
-    @JdbcNamedField(dbFieldName = "header")
+    @DbField(name = "header")
     private String header;
-    @JdbcNamedField(dbFieldName = "description")
+    @DbField(name = "description")
     private String description;
-    @JdbcNamedField(dbFieldName = "type")
+    @DbField(name = "type")
     private String type;
-    @JdbcNamedField(dbFieldName = "version")
+    @DbField(name = "version")
     private int version = 1;
 }

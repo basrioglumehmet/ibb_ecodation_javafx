@@ -12,7 +12,16 @@ public class FileLanguageLoader implements LanguageLoader {
 
     @Override
     public ResourceBundle load(Locale locale) {
-        resourceBundle = ResourceBundle.getBundle("org.example.ibb_ecodation_javafx.languages.lang", locale);
+        try {
+            System.out.println("Loading ResourceBundle for locale: " + locale);
+            resourceBundle = ResourceBundle.getBundle("org.example.ibb_ecodation_javafx.languages.lang", locale);
+        } catch (Exception e) {
+            System.err.println("Could not load resource bundle for locale " + locale);
+            e.printStackTrace();
+            resourceBundle = ResourceBundle.getBundle("org.example.ibb_ecodation_javafx.languages.lang");  // Fallback to default
+        }
         return resourceBundle;
     }
+
+
 }

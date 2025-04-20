@@ -7,6 +7,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.fxml.FXML;
+import lombok.RequiredArgsConstructor;
 import org.example.ibb_ecodation_javafx.core.context.SpringContext;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
@@ -17,11 +18,13 @@ import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.listItem.ShadcnListItem;
 import io.reactivex.rxjava3.disposables.Disposable;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Controller
+@RequiredArgsConstructor
 public class NotificationController {
 
     @FXML private ListView<ShadcnListItem> notificationList;
@@ -31,16 +34,13 @@ public class NotificationController {
     private final LanguageService languageService;
     private String languageCode;
     private List<Disposable> subscriptions = new ArrayList<>();
-    private final Store store = Store.getInstance();
+    private Store store = Store.getInstance();
 
-    public NotificationController() {
-        userNotificationService = SpringContext.getContext().getBean(UserNotificationService.class);
-        languageService = SpringContext.getContext().getBean(LanguageService.class);
-    }
+
 
     public void initialize() {
 
-       languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
+        languageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
 
 
         updateUIWithLanguage();
@@ -87,7 +87,7 @@ public class NotificationController {
     private void loadNotifications() {
         notificationList.getItems().clear();
         var userDetail = store.getCurrentState(UserState.class).getUserDetail();
-        List<UserNotification> data = userNotificationService.readAll(userDetail.getUserId());
+        List<UserNotification> data = userNotificationService.findAllById(userDetail.getUserId());
         for (UserNotification notification : data) {
 
             ShadcnListItem item = new ShadcnListItem(

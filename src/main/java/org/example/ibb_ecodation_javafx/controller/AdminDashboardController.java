@@ -5,16 +5,19 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
-import org.example.ibb_ecodation_javafx.core.context.SpringContext;
-import org.example.ibb_ecodation_javafx.core.logger.SecurityLogger;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
@@ -22,16 +25,16 @@ import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
 import org.example.ibb_ecodation_javafx.ui.navbar.ShadcnNavbar;
 import org.example.ibb_ecodation_javafx.utils.OperationSystemUtil;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
-import org.example.ibb_ecodation_javafx.utils.WebViewUtil;
+import org.springframework.stereotype.Controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ResourceBundle;
 
-import static org.example.ibb_ecodation_javafx.utils.SceneUtil.loadContent;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeNavbarColor;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeSidebarColor;
 
+@Controller
+@RequiredArgsConstructor
 public class AdminDashboardController {
 
     @FXML private BorderPane rootPane;
@@ -57,15 +60,30 @@ public class AdminDashboardController {
     @FXML private ShadcnButton btnLogout;
     @FXML private ShadcnButton btnCalculator;
 
-    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
-    private final SecurityLogger securityLogger = SpringContext.getContext().getBean(SecurityLogger.class);
-    private final Store store = Store.getInstance();
+    private final LanguageService languageService;
+    private  Store store = Store.getInstance();
+    private final SceneUtil sceneUtil;
 
     private Disposable languageSubscription;
+
 
     @FXML
     public void initialize() {
 
+        languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
+
+        navbar.setOnExitButtonClick(stage -> {
+            try {
+                sceneUtil.loadScene(
+                        SignInController.class,
+                        stage,
+                        String.format(ViewPathConstant.FORMAT, "login"),
+                        "Login"
+                );
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
         store.getState().subscribe(stateRegistry -> {
             boolean darkModeEnabled = stateRegistry.getState(DarkModeState.class).isEnabled();
             changeSidebarColor(darkModeEnabled,sidebar,sidebarBottom,sidebarBottomInsideContainer,shadcnAvatar);
@@ -83,7 +101,7 @@ public class AdminDashboardController {
             }
 
         });
-        System.out.println(store.getCurrentState(UserState.class).getUserDetail().toString());
+
         setAvatarImageSource();
         updateUIText();
 
@@ -102,7 +120,7 @@ public class AdminDashboardController {
         try{
             store.dispatch(DarkModeState.class,new DarkModeState(true));
             store.dispatch(UserState.class,new UserState(null,false,null,null));
-            SceneUtil.loadScene(
+            sceneUtil.loadScene(
                     OtpController.class,
                     (Stage) rootPane.getScene().getWindow(),
                     String.format(ViewPathConstant.FORMAT, "login"),
@@ -113,9 +131,30 @@ public class AdminDashboardController {
         }
     }
 
+    private void setAvatarImageSource() {
+        try {
+            UserDetailDto userDetail = store.getCurrentState(UserState.class).getUserDetail();
+            if (userDetail != null && userDetail.getProfilePicture() != null) {
+                byte[] imageBytes = userDetail.getProfilePicture();
+                if (imageBytes.length > 0) {
+                    Image image = new Image(new ByteArrayInputStream(imageBytes));
+                    shadcnAvatar.setImage(image);
+                    return;
+                }
+            }
+            shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void changeContentColor(boolean isDarkMode) {
+        mainContentArea.setStyle(String.format("-fx-background-radius: 10px 0px 0px 0px; -fx-background-color: %s;", !isDarkMode ? "white" : "#1a1a1e"));
+        rootPane.setStyle(String.format("-fx-background-color: %s;", !isDarkMode ? "white" : "#121214"));
+    }
+
     private void updateUIText() {
-       var bundle=  languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
-        System.out.println(bundle.getString("dashboard.home"));
         var userState = store.getCurrentState(UserState.class);
         var userDetail = userState.getUserDetail();
         try {
@@ -140,65 +179,28 @@ public class AdminDashboardController {
         }
     }
 
-    private void changeContentColor(boolean isDarkMode) {
-        mainContentArea.setStyle(String.format("-fx-background-radius: 10px 0px 0px 0px; -fx-background-color: %s;", !isDarkMode ? "white" : "#1a1a1e"));
-        rootPane.setStyle(String.format("-fx-background-color: %s;", !isDarkMode ? "white" : "#121214"));
-    }
-
-
-
-
-
-    private void setAvatarImageSource() {
-        try {
-            UserDetailDto userDetail = store.getCurrentState(UserState.class).getUserDetail();
-            if (userDetail != null && userDetail.getProfilePicture() != null) {
-                byte[] imageBytes = userDetail.getProfilePicture();
-                if (imageBytes.length > 0) {
-                    Image image = new Image(new ByteArrayInputStream(imageBytes));
-                    shadcnAvatar.setImage(image);
-                    return;
-                }
-            }
-            shadcnAvatar.setImage(AdminDashboardController.class.getResource("/org/example/ibb_ecodation_javafx/assets/avatar.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void shutdown() {
-        if (languageSubscription != null && !languageSubscription.isDisposed()) {
-            languageSubscription.dispose();
-        }
-    }
-
     // Navigation Handlers
     @FXML private void handleHomeButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-home-view.fxml", mainContentArea);
+        sceneUtil.loadContent("/org/example/ibb_ecodation_javafx/views/admin-home-view.fxml", mainContentArea);
     }
 
     @FXML private void handleNotificationsButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-notification-view.fxml", mainContentArea);
+        sceneUtil.loadContent("/org/example/ibb_ecodation_javafx/views/admin-notification-view.fxml", mainContentArea);
     }
 
     @FXML private void handleProfileButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-profile-view.fxml", mainContentArea);
+        sceneUtil.loadContent("/org/example/ibb_ecodation_javafx/views/admin-profile-view.fxml", mainContentArea);
     }
 
     @FXML private void handleNotesButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-note-view.fxml", mainContentArea);
+        sceneUtil.loadContent("/org/example/ibb_ecodation_javafx/views/admin-note-view.fxml", mainContentArea);
     }
 
     @FXML private void handleBackupButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-backup-view.fxml", mainContentArea);
+        sceneUtil.loadContent("/org/example/ibb_ecodation_javafx/views/admin-backup-view.fxml", mainContentArea);
     }
 
     @FXML private void handleConfigButton() throws IOException {
-        loadContent("/org/example/ibb_ecodation_javafx/views/admin-configs-view.fxml", mainContentArea);
-    }
-
-    @FXML private void openDocument() {
-        WebViewUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/html/uidoc.html", "Yardım Kılavuzu");
-        securityLogger.logOperation("Kılavuz okuma");
+        sceneUtil.loadContent("/org/example/ibb_ecodation_javafx/views/dashboard-configs-view.fxml", mainContentArea);
     }
 }

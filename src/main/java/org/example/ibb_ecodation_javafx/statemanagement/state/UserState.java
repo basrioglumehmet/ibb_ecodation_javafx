@@ -3,7 +3,7 @@ package org.example.ibb_ecodation_javafx.statemanagement.state;
 import org.example.ibb_ecodation_javafx.model.User;
 import org.example.ibb_ecodation_javafx.model.UserNote;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
-import org.example.ibb_ecodation_javafx.service.UserNoteService;
+
 import org.example.ibb_ecodation_javafx.statemanagement.AppState;
 
 public class UserState extends AppState {

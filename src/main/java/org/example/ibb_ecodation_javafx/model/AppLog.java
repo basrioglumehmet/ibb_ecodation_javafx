@@ -1,10 +1,10 @@
 package org.example.ibb_ecodation_javafx.model;
 
 import lombok.*;
-import org.example.ibb_ecodation_javafx.annotation.JdbcNamedField;
+import org.example.ibb_ecodation_javafx.annotation.DbField;
 import org.example.ibb_ecodation_javafx.core.db.Entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,21 +14,21 @@ import java.time.LocalDateTime;
 @ToString
 public class AppLog implements Entity {
 
-    @JdbcNamedField(dbFieldName = "id")
+    @DbField(name = "id")
     private int id;
 
-    @JdbcNamedField(dbFieldName = "description")
+    @DbField(name = "description")
     private String description;
 
-    @JdbcNamedField(dbFieldName = "computer_name")
+    @DbField(name = "computer_name")
     private String computerName;
 
-    @JdbcNamedField(dbFieldName = "ip_addresses")
+    @DbField(name = "ip_addresses")
     private String ipAddresses;
 
-    @JdbcNamedField(dbFieldName = "at_time")
-    private LocalDateTime atTime;
+    @DbField(name = "at_time")
+    private Timestamp atTime;
 
-    @JdbcNamedField(dbFieldName = "version")
+    @DbField(name = "version")
     private int version = 1;
 }

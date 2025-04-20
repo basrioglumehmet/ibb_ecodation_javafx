@@ -19,21 +19,18 @@
           maxWidth="Infinity" maxHeight="Infinity"
           VBox.vgrow="ALWAYS" StackPane.alignment="CENTER">
         <children>
-
             <Label fx:id="signUpLabel" alignment="CENTER" prefHeight="31.0" prefWidth="530.0"
                    style="-fx-font-family: 'Poppins'; -fx-font-weight: bold; -fx-text-fill:white; -fx-font-size: 28px;"
                    text="Sign Up" wrapText="true" />
-
             <ShadcnInput fx:id="username" prefHeight="43.0" prefWidth="387.0" header="Username" />
             <ShadcnInput fx:id="email" prefHeight="43.0" prefWidth="387.0" header="Email" />
-            <ShadcnInput password="true"  fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
-
-            <ShadcnButton fx:id="continueButton" onAction="#handleSignUpProcess" fullWidth="true" text="Continue" type="PRIMARY" align="CENTER"
+            <ShadcnInput password="true" fx:id="password" prefHeight="43.0" prefWidth="387.0" header="Password" />
+            <ShadcnButton fx:id="continueButton" onAction="#handleSignUpProcess" fullWidth="true" text="Continue" type="PRIMARY"
                           mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
-
-            <ShadcnButton fx:id="backButton" onAction="#handleBack" fullWidth="true" text="Back" type="SECONDARY" align="CENTER"
+            <ShadcnButton fx:id="backButton"
+                          onAction="#handleBack"
+                          fullWidth="true" text="Back" type="SECONDARY"
                           mnemonicParsing="false" prefHeight="43.0" prefWidth="385.0" />
-
             <VBox fx:id="termsVBox" alignment="CENTER">
                 <Label fx:id="termsLabel" text="By clicking continue, you agree to our"
                        alignment="CENTER" textAlignment="CENTER" wrapText="true"

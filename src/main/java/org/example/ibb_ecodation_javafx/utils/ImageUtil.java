@@ -1,25 +1,25 @@
 package org.example.ibb_ecodation_javafx.utils;
 
-import javafx.scene.paint.ImagePattern;
-import lombok.experimental.UtilityClass;
-
+import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 
-@UtilityClass
 public class ImageUtil {
-    public static byte[] convertImageToByteArray(BufferedImage bufferedImage) {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-            return byteArrayOutputStream.toByteArray();
-        } catch (Exception ex) {
-            System.out.println("Geçersiz Resim Adresi: " + ex.getMessage());
-            return null;
+
+    public static byte[] convertImageToByteArray(File file) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(file);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            ImageIO.write(bufferedImage, "png", outputStream);
+            return outputStream.toByteArray();
         }
+    }
+
+    public static Image convertByteArrayToImage(byte[] imageData) throws IOException {
+        return new Image(new ByteArrayInputStream(imageData));
+    }
+
+    public static Image convertFileToImage(File file) throws IOException {
+        return new Image(file.toURI().toString());
     }
 }

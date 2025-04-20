@@ -1,5 +1,8 @@
 package org.example.ibb_ecodation_javafx.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
+import org.springframework.stereotype.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,8 +28,9 @@ import java.util.stream.Collectors;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeFilterColor;
 import static org.example.ibb_ecodation_javafx.utils.ThemeUtil.changeSecondaryBackground;
 
+@Controller
+@RequiredArgsConstructor
 public class UserManagementController {
-
     @FXML
     private ShadcnSplitPane splitPane;
 
@@ -45,10 +49,11 @@ public class UserManagementController {
     @FXML
     private DynamicTable<String> userTable;
 
-    private final Store store = Store.getInstance();
-    private final UserService userService = SpringContext.getContext().getBean(UserService.class);
-    private final PdfExportUtil pdfExportUtil = SpringContext.getContext().getBean(PdfExportUtil.class);
-    private final LanguageService languageService = SpringContext.getContext().getBean(LanguageService.class);
+    private  Store store = Store.getInstance();
+    private final UserService userService;
+    private final PdfExportUtil pdfExportUtil;
+    private final LanguageService languageService;
+    private final DialogUtil dialogUtil;
 
     private Map<String, String> comboItems;
     private List<User> userList = new ArrayList<>();
@@ -60,20 +65,20 @@ public class UserManagementController {
 
 
 
-        ResourceBundle bundle = languageService.loadAll(ShadcnLanguageComboBox.getCurrentLanguageCode());
+        languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
 
-        userTable.setHeaderText(bundle.getString("user.header"));
-        userTable.setDescriptionText(bundle.getString("user.description"));
+        userTable.setHeaderText(languageService.translate("user.header"));
+        userTable.setDescriptionText(languageService.translate("user.description"));
 
         userTable.addHeaders(
-                bundle.getString("user.id"),
-                bundle.getString("user.username"),
-                bundle.getString("user.email"),
-                bundle.getString("user.password"),
-                bundle.getString("user.role"),
-                bundle.getString("user.verified"),
-                bundle.getString("user.locked"),
-                bundle.getString("user.version")
+                languageService.translate("user.id"),
+                languageService.translate("user.username"),
+                languageService.translate("user.email"),
+                languageService.translate("user.password"),
+                languageService.translate("user.role"),
+                languageService.translate("user.verified"),
+                languageService.translate("user.locked"),
+                languageService.translate("user.version")
         );
 
         store.getState().subscribe(stateRegistry -> {
@@ -88,19 +93,19 @@ public class UserManagementController {
 
 
         comboItems = new HashMap<>();
-        comboItems.put("add", bundle.getString("user.add"));
-        comboItems.put("remove", bundle.getString("user.remove"));
-        comboItems.put("update", bundle.getString("user.update"));
-        comboItems.put("print", bundle.getString("user.print"));
-        comboItems.put("refresh", bundle.getString("user.refresh"));
-        comboItems.put("export_backup", bundle.getString("user.export_backup"));
-        comboItems.put("import_backup", bundle.getString("user.import_backup"));
+        comboItems.put("add", languageService.translate("user.add"));
+        comboItems.put("remove", languageService.translate("user.remove"));
+        comboItems.put("update", languageService.translate("user.update"));
+        comboItems.put("print", languageService.translate("user.print"));
+        comboItems.put("refresh", languageService.translate("user.refresh"));
+        comboItems.put("export_backup", languageService.translate("user.export_backup"));
+        comboItems.put("import_backup", languageService.translate("user.import_backup"));
 
-        userTable.setComboBoxTitle(bundle.getString("user.actions"));
+        userTable.setComboBoxTitle(languageService.translate("user.actions"));
         userTable.setComboBoxItems(comboItems);
 
-        name.setHeader(bundle.getString("user.name.filter"));
-        role.setHeader(bundle.getString("user.role.filter"));
+        name.setHeader(languageService.translate("user.name.filter"));
+        role.setHeader(languageService.translate("user.role.filter"));
 
         name.setTextChangeListener(newValue -> {
             nameFilter = newValue != null ? newValue.trim() : "";
@@ -117,7 +122,7 @@ public class UserManagementController {
             String actionLanguageCode = ShadcnLanguageComboBox.getCurrentLanguageCode();
             switch (pair.getKey()) {
                 case "add":
-                    DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-create-dialog-view.fxml", "User Create");
+                    dialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-create-dialog-view.fxml", "User Create");
                     break;
                 case "remove":
                     deleteSelectedUser();
@@ -132,7 +137,7 @@ public class UserManagementController {
                     refreshData();
                     break;
                 case "export_backup":
-                    userService.createBackup(userList, userPane.getScene().getWindow());
+                 //   userService.createBackup(userList, userPane.getScene().getWindow());
                     break;
                 case "import_backup":
                     List<User> userBackup = userService.loadBackup(userPane.getScene().getWindow());
@@ -171,7 +176,7 @@ public class UserManagementController {
     }
 
     private void refreshData() {
-        userList = userService.readAll();
+        userList = userService.findAll();
         userTable.clearData();
         userList.forEach(user -> userTable.addData(userToRow(user)));
         applyFilters();
@@ -219,7 +224,7 @@ public class UserManagementController {
 
         selectedUser.ifPresent(user -> {
             store.dispatch(UserState.class, new UserState(store.getCurrentState(UserState.class).getUserDetail(), true, user,store.getCurrentState(UserState.class).getSelectedUserNote()));
-            DialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-update-dialog-view.fxml", "User Update");
+            dialogUtil.showHelpPopup("/org/example/ibb_ecodation_javafx/views/user-update-dialog-view.fxml", "User Update");
             refreshData();
         });
     }

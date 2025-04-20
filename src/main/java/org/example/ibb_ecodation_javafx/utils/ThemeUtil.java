@@ -1,7 +1,9 @@
 package org.example.ibb_ecodation_javafx.utils;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
 import org.example.ibb_ecodation_javafx.statemanagement.state.DarkModeState;
 import org.example.ibb_ecodation_javafx.ui.avatar.ShadcnAvatar;
@@ -24,6 +26,20 @@ public class ThemeUtil {
         );
     }
 
+    public static Color changeIconColor(boolean isDarkMode) {
+        return isDarkMode ? Color.WHITE : Color.BLACK;
+    }
+    public static void changeDatePickerDayDisabledButtonStyle(boolean isDarkMode, Button node) {
+        node.setStyle("-fx-background-color:transparent; -fx-text-fill:#7f7f85;");
+    }
+    public static void changeDatePickerDayButtonStyle(boolean isDarkMode, Button node, boolean isHovering) {
+        node.setStyle(
+                String.format("-fx-border-color:%s; -fx-background-color:transparent; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill:%s; %s",
+                        isHovering ? "#8dd80a":"transparent",
+                        isHovering ? "#8dd80a":"#fff",
+                        isHovering ? "-fx-cursor: hand; ": "-fx-cursor: default; ")
+        );
+    }
     public static void changeContextMenuBackground(boolean isDarkMode, ContextMenu node) {
         node.setStyle(String.format("%s -fx-background-color: %s; -fx-border-color: %s; -fx-text-fill: %s;",
                 node.getStyle(),!isDarkMode ? "#fbfbfb":"#121214",!isDarkMode ? "#e5e5e8":"#2e2e2e",

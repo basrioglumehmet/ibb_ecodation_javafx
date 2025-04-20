@@ -96,6 +96,12 @@ public class FontAwesomeUtil {
             case "UPLOAD":
                 icon = FontAwesomeIcon.CLOUD_UPLOAD;
                 break;
+            case "PREV":
+                icon = FontAwesomeIcon.ARROW_LEFT;
+                break;
+            case "NEXT":
+                icon = FontAwesomeIcon.ARROW_RIGHT;
+                break;
             default:
                 icon = FontAwesomeIcon.USER;
                 break;
