@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.example.ibb_ecodation_javafx.core.config.SendGridConfig;
 import org.example.ibb_ecodation_javafx.core.service.LanguageService;
 import org.example.ibb_ecodation_javafx.model.request.SendGridRequest;
 import org.example.ibb_ecodation_javafx.model.response.MailResponse;
@@ -23,10 +24,8 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
-    private final String SENDGRID_API_KEY = ""; // Replace with a valid SendGrid API key
+    private final SendGridConfig sendGridConfig;
     private final String SENDGRID_API_URL = "https://api.sendgrid.com/v3/mail/send";
-    private final String TEMPLATE_ID = "d-03558ef2da8a41c4891e895128b8748e";
-    private final String BOOT_TEMPLATE_ID = "d-98fb17930a7c40fd8392226e500f7adf";
 
     //private final SecurityLogger securityLogger;
     private final LanguageService languageService;
@@ -41,7 +40,7 @@ public class MailServiceImpl implements MailService {
                         "\"from\": {\"email\": \"basrioglumehmet@gmail.com\"}, " +
                         "\"subject\": \"%s\", " +
                         "\"template_id\": \"%s\"}",
-                to, otpCode, subject, subject, TEMPLATE_ID
+                to, otpCode, subject, subject, sendGridConfig.getTemplateId()
         );
 
         System.out.println("Sending payload: " + jsonPayload);
@@ -49,7 +48,7 @@ public class MailServiceImpl implements MailService {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(SENDGRID_API_URL))
-                .header("Authorization", "Bearer " + SENDGRID_API_KEY)
+                .header("Authorization", "Bearer " + sendGridConfig.getApiKey())
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                 .build();
@@ -90,7 +89,7 @@ public class MailServiceImpl implements MailService {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(SENDGRID_API_URL))
-                    .header("Authorization", "Bearer " + SENDGRID_API_KEY)
+                    .header("Authorization", "Bearer " + sendGridConfig.getApiKey())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();
@@ -116,7 +115,7 @@ public class MailServiceImpl implements MailService {
         String fromEmail = "basrioglumehmet@gmail.com";
 
         // Use SendGridRequest to build the payload
-        SendGridRequest sendGridRequest = SendGridRequest.forOtpEmail(to, otpCode, subject, fromEmail, BOOT_TEMPLATE_ID);
+        SendGridRequest sendGridRequest = SendGridRequest.forOtpEmail(to, otpCode, subject, fromEmail, sendGridConfig.getBootTemplateId());
 
         String jsonPayload;
         try {
@@ -133,7 +132,7 @@ public class MailServiceImpl implements MailService {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(SENDGRID_API_URL))
-                .header("Authorization", "Bearer " + SENDGRID_API_KEY)
+                .header("Authorization", "Bearer " + sendGridConfig.getApiKey())
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                 .build();

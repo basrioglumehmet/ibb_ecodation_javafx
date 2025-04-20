@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import org.example.ibb_ecodation_javafx.constants.ViewPathConstant;
 import org.example.ibb_ecodation_javafx.controller.BootController;
 import org.example.ibb_ecodation_javafx.controller.LoginController;
+import org.example.ibb_ecodation_javafx.utils.AlertScheduler;
 import org.example.ibb_ecodation_javafx.utils.SceneUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.PropertiesPropertySource;
@@ -33,14 +34,13 @@ public class GUIStarter extends Application {
         context.getEnvironment().getPropertySources().addFirst(
                 new PropertiesPropertySource("dynamic", profileProps)
         );
-        System.out.println("Driver = " + profileProps.getProperty("jdbc.driverClassName")); // should print real class name
+        System.out.println("Driver = " + profileProps.getProperty("jdbc.driverClassName"));
         System.out.println("Loaded profile props = " + profileProps);
 
         // Scan + Refresh
         context.scan("org.example.ibb_ecodation_javafx");
         context.refresh();
 
-        // ⚠️ Get the SceneUtil bean
         sceneUtil = context.getBean(SceneUtil.class);
 
         System.out.println("Spring context initialized. Active profiles: " +
@@ -55,8 +55,8 @@ public class GUIStarter extends Application {
         sceneUtil.loadScene(
                 BootController.class,
                 primaryStage,
-                String.format(ViewPathConstant.FORMAT, "otp-verification"),
-                "Login"
+                String.format(ViewPathConstant.FORMAT, "boot"),
+                "App"
         );
     }
 

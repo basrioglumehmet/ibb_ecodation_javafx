@@ -195,7 +195,7 @@ public class ShadcnDatePicker extends VBox implements ValidatableComponent {
         customMenuItem.setHideOnClick(false);
         customMenuItem.getStyleClass().clear();
 
-        container.setPrefWidth(285);
+        container.setPrefWidth(444);
 
         changeContextMenuBackground(true, menu);
         menu.getItems().add(customMenuItem);
@@ -213,7 +213,7 @@ public class ShadcnDatePicker extends VBox implements ValidatableComponent {
         calendarGrid.setPadding(new Insets(10));
         calendarGrid.setAlignment(Pos.CENTER);
 
-        double totalWidth = 285;
+        double totalWidth = 444;
         double hGap = calendarGrid.getHgap();
         double totalGapsWidth = hGap * 6;
         double availableWidth = totalWidth - totalGapsWidth - (calendarGrid.getPadding().getLeft() + calendarGrid.getPadding().getRight());
