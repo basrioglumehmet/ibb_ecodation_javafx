@@ -33,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
     private final UserOtpCodeService otpCodeService;
     private final MailService mailService;
+    private final UserNotificationService userNotificationService;
     private final AppLogService appLogService;
 
     @Override
@@ -72,6 +73,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             entity.setAtTime(Timestamp.valueOf(LocalDateTime.now()));
             entity.setComputerName(SystemInfoUtil.getComputerName());
             appLogService.save(entity);
+            var notificationEntity = new UserNotification();
+            notificationEntity.setUserId(user.getId());
+            notificationEntity.setType("SUCCESS");
+            notificationEntity.setDescription("Bravo!");
+            notificationEntity.setHeader("Successful login");
+
+            userNotificationService.save(notificationEntity);
             return new SignInDto(AuthenticationResult.OK, user, userPicture);
 
         } catch (Exception e) {

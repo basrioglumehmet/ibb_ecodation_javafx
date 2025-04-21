@@ -5,6 +5,7 @@ import org.example.ibb_ecodation_javafx.core.db.EntityFilter;
 import org.example.ibb_ecodation_javafx.core.service.GenericService;
 import org.example.ibb_ecodation_javafx.model.UserNotification;
 import org.example.ibb_ecodation_javafx.repository.UserNotificationRepository;
+import org.example.ibb_ecodation_javafx.utils.TrayUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public UserNotification save(UserNotification entity) {
+        TrayUtil.showTrayNotification(entity.getDescription(), entity.getHeader());
         return userNotificationRepository.save(entity);
     }
 
@@ -56,4 +58,5 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     public Optional<UserNotification> findFirstByFilter(List<EntityFilter> filters) {
         return userNotificationRepository.findFirstByFilter(filters);
     }
+
 }
