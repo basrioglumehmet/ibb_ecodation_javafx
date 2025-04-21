@@ -5,4 +5,7 @@ The goal is to develop a desktop application based on JavaFX, which includes fun
 I uploaded a pdf file. Please read the final project document.
 
 # Executable (.exe) evidence
-[exe_dosyasi_kaniti.mp4](exe_dosyasi_kaniti.mp4)
+
+
+https://github.com/user-attachments/assets/b63bb38b-7472-4a9b-8fe9-16ad00d5aa3f
+
