@@ -37,6 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-# Executables
-!muhasebeprogrami.exe
 *.exe
