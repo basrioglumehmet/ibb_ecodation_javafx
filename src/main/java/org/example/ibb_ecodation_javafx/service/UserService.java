@@ -15,6 +15,7 @@ public interface UserService extends GenericService<User,Integer> {
      */
     void saveAll(List<User> entities);
 
+    void createBackup(List<User> users, Window window);
     List<User> loadBackup(Window window);
 
 

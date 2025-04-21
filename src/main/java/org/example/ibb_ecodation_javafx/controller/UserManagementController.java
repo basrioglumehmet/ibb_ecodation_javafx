@@ -136,7 +136,7 @@ public class UserManagementController {
                     refreshData();
                     break;
                 case "export_backup":
-                 //   userService.createBackup(userList, userPane.getScene().getWindow());
+                    userService.createBackup(userList, userPane.getScene().getWindow());
                     break;
                 case "import_backup":
                     List<User> userBackup = userService.loadBackup(userPane.getScene().getWindow());

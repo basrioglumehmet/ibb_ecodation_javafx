@@ -1,22 +1,23 @@
 package org.example.ibb_ecodation_javafx.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.util.Times;
 import org.example.ibb_ecodation_javafx.core.db.EntityFilter;
 import org.example.ibb_ecodation_javafx.mapper.UserMapper;
-import org.example.ibb_ecodation_javafx.model.Authentication;
-import org.example.ibb_ecodation_javafx.model.User;
-import org.example.ibb_ecodation_javafx.model.UserOtpCode;
-import org.example.ibb_ecodation_javafx.model.UserPicture;
+import org.example.ibb_ecodation_javafx.model.*;
 import org.example.ibb_ecodation_javafx.model.dto.RegisterDto;
 import org.example.ibb_ecodation_javafx.model.dto.SignInDto;
 import org.example.ibb_ecodation_javafx.model.enums.AuthenticationResult;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.example.ibb_ecodation_javafx.utils.OtpUtil;
+import org.example.ibb_ecodation_javafx.utils.SystemInfoUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
     private final UserOtpCodeService otpCodeService;
     private final MailService mailService;
+    private final AppLogService appLogService;
 
     @Override
     public SignInDto signin(Authentication authentication) {
@@ -64,9 +66,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
 
             logger.info("Successful login for user: {}", authentication.getEmail());
+            var entity = new AppLog();
+            entity.setIpAddresses(SystemInfoUtil.getIpAddress());
+            entity.setDescription(String.format("Successful login for user: {%s}", authentication.getEmail()));
+            entity.setAtTime(Timestamp.valueOf(LocalDateTime.now()));
+            entity.setComputerName(SystemInfoUtil.getComputerName());
+            appLogService.save(entity);
             return new SignInDto(AuthenticationResult.OK, user, userPicture);
 
         } catch (Exception e) {
+            var entity = new AppLog();
+            entity.setIpAddresses(SystemInfoUtil.getIpAddress());
+            entity.setDescription(String.format("Sign-in failed for email: {%s}, %s", authentication.getEmail(), e));
+            entity.setAtTime(Timestamp.valueOf(LocalDateTime.now()));
+            entity.setComputerName(SystemInfoUtil.getComputerName());
+            appLogService.save(entity);
             logger.error("Sign-in failed for email: {}", authentication.getEmail(), e);
             return new SignInDto(AuthenticationResult.ERROR, null, null);
         }
@@ -100,10 +114,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             sendVerificationEmail(savedUser.getEmail(), otpCode.getOtpCode());
 
             logger.info("User successfully registered with email: {}", registerDto.getEmail());
+            var entity = new AppLog();
+            entity.setIpAddresses(SystemInfoUtil.getIpAddress());
+            entity.setDescription(String.format("User successfully registered with email: {%s}", registerDto.getEmail()));
+            entity.setAtTime(Timestamp.valueOf(LocalDateTime.now()));
+            entity.setComputerName(SystemInfoUtil.getComputerName());
+            appLogService.save(entity);
             return AuthenticationResult.CREATED;
 
         } catch (Exception e) {
             logger.error("Signup failed for email: {}", registerDto.getEmail(), e);
+            var entity = new AppLog();
+            entity.setIpAddresses(SystemInfoUtil.getIpAddress());
+            entity.setDescription(String.format("Signup failed for email: {%s}, %s", registerDto.getEmail(), e));
+            entity.setAtTime(Timestamp.valueOf(LocalDateTime.now()));
+            entity.setComputerName(SystemInfoUtil.getComputerName());
+            appLogService.save(entity);
             return AuthenticationResult.ERROR;
         }
     }
