@@ -77,7 +77,6 @@ public class AdminDashboardController {
     public void initialize() {
         loadLanguage(store.getCurrentState(TranslatorState.class).countryCode().getCode());
         System.out.println(sendGridConfig.getApiKey());
-
         alertScheduler.start();
         navbar.setHelpButtonText(languageService.translate("navbar.help"));
         navbar.setExitButtonText(languageService.translate("navbar.exit"));
@@ -115,7 +114,7 @@ public class AdminDashboardController {
         setAvatarImageSource();
         updateUIText();
 
-
+        navbar.setLogoutAction(stage -> logout());
         btnLogout.setOnAction(actionEvent -> logout());
         btnCalculator.setOnAction(actionEvent -> operationSystemUtil.openCalculator());
 

@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User entity) {
-        entity.setPassword(BCrypt.hashpw(entity.getPassword(),BCrypt.gensalt(12)));
         userRepository.update(entity);
     }
 

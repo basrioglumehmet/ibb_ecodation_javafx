@@ -47,6 +47,7 @@ public class ShadcnNavbar extends HBox {
     private Region spacer;
     private Timeline timeline;
     private Consumer<Stage> onExitButtonClick;
+    private Consumer<Stage> onLogoutAction; // Added for logout action
     private String helpButtonText = "Help";
     private String exitButtonText = "Exit";
     private String dateFormatPattern = "yyyy-MM-dd HH:mm:ss";
@@ -121,7 +122,16 @@ public class ShadcnNavbar extends HBox {
             Platform.exit();
             System.exit(0);
         });
-        exitButton.setOnAction(actionEvent -> logout());
+
+        // Set action for exit button
+        exitButton.setOnAction(actionEvent -> {
+            Stage stage = (Stage) exitButton.getScene().getWindow();
+            if (onLogoutAction != null) {
+                onLogoutAction.accept(stage);
+            } else if (onExitButtonClick != null) {
+                onExitButtonClick.accept(stage);
+            }
+        });
 
         this.hideButtons.addListener((obs, oldValue, newValue) -> updateButtonVisibility());
     }
@@ -138,6 +148,11 @@ public class ShadcnNavbar extends HBox {
 
     public void setOnExitButtonClick(Consumer<Stage> handler) {
         this.onExitButtonClick = handler;
+    }
+
+    // New method to set logout action
+    public void setLogoutAction(Consumer<Stage> handler) {
+        this.onLogoutAction = handler;
     }
 
     // Getter and Setter for help button text
@@ -186,22 +201,6 @@ public class ShadcnNavbar extends HBox {
     private void updateTranslations() {
         helpButton.setText(helpButtonText);
         exitButton.setText(exitButtonText);
-    }
-
-    private void logout() {
-        try {
-            // Update states
-            store.dispatch(DarkModeState.class, new DarkModeState(true));
-            store.dispatch(UserState.class, new UserState(null, false, null, null));
-
-            // Invoke the exit button click handler
-            if (onExitButtonClick != null) {
-                Stage stage = (Stage) logoView.getScene().getWindow();
-                onExitButtonClick.accept(stage);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void updateButtonVisibility() {

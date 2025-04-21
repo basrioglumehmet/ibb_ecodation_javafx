@@ -27,6 +27,7 @@ import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.dragndrop.Upload;
 import org.example.ibb_ecodation_javafx.ui.input.ShadcnInput;
 import org.example.ibb_ecodation_javafx.utils.ImageUtil;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -200,7 +201,10 @@ public class ProfileController {
     private void updateUserDetails(UserDetailDto userDetail) {
         updateFieldIfChanged(userDetail, UserDetailDto::setUsername, userDetail.getUsername(), usernameInput.getText(), usernameInput);
         updateFieldIfChanged(userDetail, UserDetailDto::setEmail, userDetail.getEmail(), emailInput.getText(), emailInput);
-        updateFieldIfChanged(userDetail, UserDetailDto::setPassword, userDetail.getPassword(), passwordInput.getText(), passwordInput);
+        if(passwordInput.getText().length() > 5){
+            updateFieldIfChanged(userDetail, UserDetailDto::setPassword, userDetail.getPassword(), passwordInput.getText(), passwordInput);
+            userDetail.setPassword(BCrypt.hashpw(userDetail.getPassword(),BCrypt.gensalt(12)));
+        }
         updateRoleIfChanged(userDetail, roleInput.getText());
     }
 
