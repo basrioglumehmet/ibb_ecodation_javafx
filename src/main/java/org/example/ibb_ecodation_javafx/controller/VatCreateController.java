@@ -4,6 +4,7 @@ package org.example.ibb_ecodation_javafx.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.ui.ValidatableComponent;
+import org.example.ibb_ecodation_javafx.ui.datepicker.ShadcnDatePicker;
 import org.springframework.stereotype.Controller;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.fxml.FXML;
@@ -42,7 +43,7 @@ public class VatCreateController {
     @FXML private ShadcnInput rate;
     @FXML private ShadcnInput receipt;
     @FXML private ShadcnInput description;
-    @FXML private DatePicker transactionDateField;
+    @FXML private ShadcnDatePicker transactionDateField;
     @FXML private Label resultLabel;
     @FXML private ShadcnButton closeButton;
     @FXML private ShadcnButton insertButton;
@@ -72,7 +73,7 @@ public class VatCreateController {
         rate.setHeader(languageService.translate("input.rate"));
         receipt.setHeader(languageService.translate("input.receipt"));
         description.setHeader(languageService.translate("input.description"));
-        transactionDateField.setPromptText(languageService.translate("input.transactionDate"));
+        transactionDateField.setHeader(languageService.translate("input.transactionDate"));
 
         // Butonlara çevirileri uygular
         if (closeButton != null) {

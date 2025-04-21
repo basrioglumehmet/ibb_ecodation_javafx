@@ -3,6 +3,7 @@ package org.example.ibb_ecodation_javafx.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.ui.ValidatableComponent;
+import org.example.ibb_ecodation_javafx.ui.datepicker.ShadcnDatePicker;
 import org.springframework.stereotype.Controller;
 
 
@@ -45,7 +46,7 @@ public class VatUpdateController {
     @FXML private ShadcnInput rate;
     @FXML private ShadcnInput receipt;
     @FXML private ShadcnInput description;
-    @FXML private DatePicker transactionDateField;
+    @FXML private ShadcnDatePicker transactionDateField;
     @FXML private Label resultLabel;
     @FXML private ShadcnButton close;
     @FXML private ShadcnButton update;
@@ -73,7 +74,7 @@ public class VatUpdateController {
         rate.setHeader(languageService.translate("input.rate"));
         receipt.setHeader(languageService.translate("input.receipt"));
         description.setHeader(languageService.translate("input.description"));
-        transactionDateField.setPromptText(languageService.translate("input.transactionDate"));
+        transactionDateField.setHeader(languageService.translate("input.transactionDate"));
 
         // Butonlara çevirileri uygular
         if (close != null) {
@@ -94,7 +95,7 @@ public class VatUpdateController {
             rate.setText(selectedItemData.getRate().toPlainString());
             receipt.setText(selectedItemData.getReceiptNumber());
             description.setText(selectedItemData.getDescription());
-            transactionDateField.setValue(selectedItemData.getTransactionDate() != null ? selectedItemData.getTransactionDate().toLocalDateTime().toLocalDate() : null);
+
         }
 
         // Giriş değişikliklerini izler
