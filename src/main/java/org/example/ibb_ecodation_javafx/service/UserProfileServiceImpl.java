@@ -7,6 +7,8 @@ import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.model.enums.Role;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class UserProfileServiceImpl implements UserProfileService {
@@ -17,15 +19,20 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void updateProfile(UserDetailDto userDetail, UserPicture userPicture) {
         userService.findById(userDetail.getUserId()).ifPresent(user -> {
-            updateProfilePicture(userPicture);
+            if(userPicture != null){
+                updateProfilePicture(userPicture);
+            }
             updateUserDetails(user, userDetail);
             userService.update(user);
         });
     }
 
     private void updateProfilePicture(UserPicture userPicture) {
-        if (userPicture != null) {
+        if (userPicture.getVersion() != 1) {
             userPictureService.update(userPicture);
+        }
+        else{
+            userPictureService.save(userPicture);
         }
     }
 

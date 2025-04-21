@@ -49,12 +49,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Optional<UserPicture> pictureOptional = findUserPictureByUserId(user.getId());
             UserPicture userPicture = pictureOptional.orElseGet(() -> {
                 logger.warn("User picture not found for user ID: {}", user.getId());
-                return null;
+                return new UserPicture(
+                        user.getId(),
+                        null,
+                        0
+                );
             });
 
-            if (userPicture == null) {
-                return new SignInDto(AuthenticationResult.ERROR, null, null);
-            }
+
 
             if (!BCrypt.checkpw(authentication.getPassword(), user.getPassword())) {
                 logger.info("Password mismatch for email: {}", authentication.getEmail());
