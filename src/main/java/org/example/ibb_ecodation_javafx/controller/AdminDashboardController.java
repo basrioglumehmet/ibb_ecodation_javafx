@@ -75,8 +75,7 @@ public class AdminDashboardController {
 
     @FXML
     public void initialize() {
-
-        languageService.loadAll(store.getCurrentState(TranslatorState.class).countryCode().getCode());
+        loadLanguage(store.getCurrentState(TranslatorState.class).countryCode().getCode());
         System.out.println(sendGridConfig.getApiKey());
 
         alertScheduler.start();
@@ -109,21 +108,22 @@ public class AdminDashboardController {
                     btnBackup.setManaged(false);
                 }
             }
-
+            loadLanguage(stateRegistry.getState(TranslatorState.class).countryCode().getCode());
+            updateUIText();
         });
 
         setAvatarImageSource();
         updateUIText();
 
-        languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
-            String newLangCode = pair.getKey();
-            Platform.runLater(() -> updateUIText());
-        });
 
         btnLogout.setOnAction(actionEvent -> logout());
         btnCalculator.setOnAction(actionEvent -> operationSystemUtil.openCalculator());
 
 
+    }
+
+    private void loadLanguage(String code) {
+        languageService.loadAll(code);
     }
 
     private void logout(){
@@ -170,6 +170,8 @@ public class AdminDashboardController {
         var userState = store.getCurrentState(UserState.class);
         var userDetail = userState.getUserDetail();
         try {
+            navbar.setHelpButtonText(languageService.translate("navbar.help"));
+            navbar.setExitButtonText(languageService.translate("navbar.exit"));
             btnHome.setText(languageService.translate("dashboard.home"));
             btnNotifications.setText(languageService.translate("dashboard.notifications"));
             btnProfile.setText(languageService.translate("dashboard.profile"));
@@ -181,6 +183,8 @@ public class AdminDashboardController {
             labelUserName.setText(userDetail.getUsername());
             System.out.println(userDetail.getUsername());
         } catch (Exception e) {
+            navbar.setHelpButtonText("Help2");
+            navbar.setExitButtonText("Exit");
             btnHome.setText("Home");
             btnNotifications.setText("Notifications");
             btnProfile.setText("Profile");

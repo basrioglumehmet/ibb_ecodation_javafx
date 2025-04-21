@@ -77,6 +77,7 @@ public class DashboardConfigController {
             languageSubscription = ShadcnLanguageComboBox.watchLanguageValue().subscribe(pair -> {
                 languageCode = pair.getKey();
                 languageService.loadAll(languageCode);
+                store.dispatch(TranslatorState.class,new TranslatorState(CountryCode.fromCode(languageCode)));
                 updateUIWithLanguage();
             });
         }
