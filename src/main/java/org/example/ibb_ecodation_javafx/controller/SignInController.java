@@ -15,6 +15,8 @@ import org.example.ibb_ecodation_javafx.model.dto.SignInDto;
 import org.example.ibb_ecodation_javafx.model.dto.UserDetailDto;
 import org.example.ibb_ecodation_javafx.service.AuthenticationService;
 import org.example.ibb_ecodation_javafx.statemanagement.Store;
+import org.example.ibb_ecodation_javafx.statemanagement.enums.CountryCode;
+import org.example.ibb_ecodation_javafx.statemanagement.state.TranslatorState;
 import org.example.ibb_ecodation_javafx.statemanagement.state.UserState;
 import org.example.ibb_ecodation_javafx.ui.button.ShadcnButton;
 import org.example.ibb_ecodation_javafx.ui.combobox.ShadcnLanguageComboBox;
@@ -64,6 +66,7 @@ public class SignInController {
     private void updateUI(String languageCode) {
         try {
             languageService.loadAll(languageCode);
+            store.dispatch(TranslatorState.class,new TranslatorState(CountryCode.fromCode(languageCode)));
             updateUIText();
         } catch (Exception e) {
             setDefaultUIText();
